@@ -1,0 +1,23 @@
+{
+  "name": "kpop-random-dance-generator",
+  "version": "1.0.0",
+  "description": "Create random dance practice audio by combining YouTube song segments",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/uuid": "^11.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "hono": "^4.11.8",
+    "uuid": "^13.0.0"
+  }
+}
