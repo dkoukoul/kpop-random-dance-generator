@@ -47,4 +47,5 @@ console.log(`🎵 K-Pop Random Dance Generator running on http://localhost:${por
 export default {
   port,
   fetch: app.fetch,
+  idleTimeout: 60, // Increase timeout to 60s for long YouTube searches
 };

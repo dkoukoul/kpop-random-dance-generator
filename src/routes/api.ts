@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { join } from 'path';
 import { mkdir, access, stat } from 'fs/promises';
 import type { GenerateRequest, SongSegment } from '../types';
-import { getVideoInfo, downloadSegment } from '../services/youtube';
+import { getVideoInfo, downloadSegment, searchVideos } from '../services/youtube';
 import { generateReport, saveReport } from '../services/report';
 import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles } from '../services/audio';
 
@@ -64,6 +64,30 @@ api.get('/youtube/info', async (c) => {
   } catch (error) {
     console.error('Error fetching video info:', error);
     return c.json({ error: 'Failed to fetch video info' }, 500);
+  }
+});
+
+/**
+ * GET /api/youtube/search?q=...
+ * Search for videos on YouTube
+ */
+api.get('/youtube/search', async (c) => {
+  const query = c.req.query('q');
+  console.log(`📡 GET /api/youtube/search?q=${query}`);
+  
+  if (!query) {
+    console.warn('⚠️ Missing query parameter');
+    return c.json({ error: 'Query is required' }, 400);
+  }
+  
+  try {
+    console.log('🌐 Calling searchVideos...');
+    const results = await searchVideos(query);
+    console.log(`✅ Search successful, returning ${results.length} results`);
+    return c.json(results);
+  } catch (error) {
+    console.error('❌ Error searching YouTube API route:', error);
+    return c.json({ error: 'Failed to search YouTube' }, 500);
   }
 });
 

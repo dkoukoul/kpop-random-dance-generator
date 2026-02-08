@@ -8,39 +8,86 @@ const YTDLP_PATH = process.env.YTDLP_PATH || 'yt-dlp';
  * Extract video information using yt-dlp --dump-json
  */
 export async function getVideoInfo(url: string): Promise<VideoInfo> {
-  return new Promise((resolve, reject) => {
-    const process = spawn(YTDLP_PATH, ['--dump-json', '--no-download', url]);
-    
-    let stdout = '';
-    let stderr = '';
-    
-    process.stdout.on('data', (data) => {
-      stdout += data.toString();
+  console.log(`🔍 [Bun.spawn] Fetching info for: ${url}`);
+  try {
+    const proc = Bun.spawn([YTDLP_PATH, '--dump-json', '--no-download', url], {
+      stdout: "pipe",
+      stderr: "pipe",
     });
-    
-    process.stderr.on('data', (data) => {
-      stderr += data.toString();
+
+    const stdoutText = await new Response(proc.stdout).text();
+    const stderrText = await new Response(proc.stderr).text();
+    const exitCode = await proc.exited;
+
+    if (exitCode !== 0) {
+      console.error(`❌ yt-dlp info failed (exit ${exitCode}): ${stderrText}`);
+      throw new Error(`yt-dlp failed: ${stderrText}`);
+    }
+
+    const info = JSON.parse(stdoutText);
+    return {
+      title: info.title || 'Unknown Title',
+      duration: info.duration || 0,
+      thumbnail: info.thumbnail || '',
+      channel: info.channel || info.uploader || 'Unknown',
+    };
+  } catch (e) {
+    console.error('❌ Failed to fetch/parse video info:', e);
+    throw new Error('Failed to fetch video info');
+  }
+}
+
+export async function searchVideos(query: string, limit: number = 10): Promise<VideoInfo[]> {
+  console.log(`🔍 [Bun.spawn] Searching YouTube: "${query}" (limit: ${limit})`);
+  
+  try {
+    const proc = Bun.spawn([
+      YTDLP_PATH,
+      `ytsearch${limit}:${query}`,
+      '--dump-json',
+      '--no-download'
+    ], {
+      stdout: "pipe",
+      stderr: "pipe",
     });
-    
-    process.on('close', (code) => {
-      if (code !== 0) {
-        reject(new Error(`yt-dlp failed: ${stderr}`));
-        return;
+
+    const stdoutText = await new Response(proc.stdout).text();
+    const stderrText = await new Response(proc.stderr).text();
+    const exitCode = await proc.exited;
+
+    console.log(`📥 yt-dlp search exited with code ${exitCode}`);
+
+    if (stdoutText.trim() === '') {
+      if (exitCode !== 0) {
+        console.error(`❌ yt-dlp search failed (exit ${exitCode}): ${stderrText}`);
+        throw new Error(`yt-dlp search failed: ${stderrText}`);
       }
-      
+      return [];
+    }
+
+    const lines = stdoutText.trim().split('\n');
+    console.log(`✅ Found ${lines.length} search results`);
+
+    return lines.map(line => {
       try {
-        const info = JSON.parse(stdout);
-        resolve({
+        const info = JSON.parse(line);
+        return {
           title: info.title || 'Unknown Title',
           duration: info.duration || 0,
           thumbnail: info.thumbnail || '',
           channel: info.channel || info.uploader || 'Unknown',
-        });
+          url: info.webpage_url || `https://www.youtube.com/watch?v=${info.id}`
+        };
       } catch (e) {
-        reject(new Error('Failed to parse video info'));
+        console.error('⚠️ Failed to parse a search result line:', e);
+        return null;
       }
-    });
-  });
+    }).filter(item => item !== null) as VideoInfo[];
+
+  } catch (error) {
+    console.error('❌ Bun.spawn search error:', error);
+    throw error;
+  }
 }
 
 /**

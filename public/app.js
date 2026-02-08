@@ -33,6 +33,15 @@ const elements = {
   importFile: document.getElementById("importFile"),
   menuBtn: document.getElementById("menuBtn"),
   menuDropdown: document.getElementById("menuDropdown"),
+  statsBar: document.getElementById("statsBar"),
+  totalLengthVal: document.getElementById("totalLengthVal"),
+  bandVarietyVal: document.getElementById("bandVarietyVal"),
+  sidebarSearchInput: document.getElementById("sidebarSearchInput"),
+  searchResults: document.getElementById("searchResults"),
+  searchLoading: document.getElementById("searchLoading"),
+  searchResultTemplate: document.getElementById("searchResultTemplate"),
+  bandBreakdown: document.getElementById("bandBreakdown"),
+  varietyBar: document.getElementById("varietyBar"),
 };
 
 // Initialize
@@ -48,6 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Compact view toggle
   elements.compactViewToggle.addEventListener("change", (e) => {
     state.compactViewEnabled = e.target.checked;
+    // Update all songs to match global preference
+    state.songs.forEach((song) => {
+      song.isExpanded = !state.compactViewEnabled;
+    });
     rebuildSongList();
   });
 
@@ -82,6 +95,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add first song card
   addSong();
+  updateStats();
+
+  // Sidebar Search
+  let searchDebounceTimer = null;
+  elements.sidebarSearchInput.addEventListener("input", (e) => {
+    const query = e.target.value.trim();
+    clearTimeout(searchDebounceTimer);
+
+    if (query.length < 2) {
+      if (query.length === 0) {
+        performSearch("famous kpop songs 2025"); // Show defaults if empty
+      }
+      return;
+    }
+
+    searchDebounceTimer = setTimeout(() => {
+      performSearch(query);
+    }, 500);
+  });
+
+  // Initial search
+  performSearch("famous kpop songs 2025");
 });
 
 /**
@@ -95,6 +130,7 @@ function addSong() {
     startTime: "0:00",
     endTime: "0:30",
     info: null,
+    isExpanded: !state.compactViewEnabled,
   };
   state.songs.push(songData);
 
@@ -112,6 +148,12 @@ function addSong() {
   const startTimeInput = card.querySelector(".start-time");
   const endTimeInput = card.querySelector(".end-time");
   const removeBtn = card.querySelector(".btn-remove");
+  const toggleBtn = card.querySelector(".btn-toggle");
+
+  // Initial state class
+  if (!songData.isExpanded) {
+    card.classList.add("compact");
+  }
 
   // Debounce timer for auto-fetch
   let fetchDebounceTimer = null;
@@ -175,6 +217,11 @@ function addSong() {
 
   removeBtn.addEventListener("click", () => removeSong(card, index));
 
+  toggleBtn.addEventListener("click", () => {
+    songData.isExpanded = !songData.isExpanded;
+    card.classList.toggle("compact", !songData.isExpanded);
+  });
+
   // Drag and drop event handlers
   card.addEventListener("dragstart", (e) => {
     state.draggedIndex = parseInt(card.dataset.index);
@@ -233,6 +280,7 @@ function addSong() {
   urlInput.focus();
 
   updateGenerateButton();
+  updateStats();
 }
 
 /**
@@ -255,6 +303,7 @@ function removeSong(card, index) {
 
   updateDragHint();
   updateGenerateButton();
+  updateStats();
 }
 
 /**
@@ -298,11 +347,14 @@ async function fetchVideoInfo(card, songData) {
     const compactBand = card.querySelector(".compact-band");
     const compactTitle = card.querySelector(".compact-title");
     const parts = info.title.split(" - ");
-    if (compactBand)
-      compactBand.textContent = parts.length > 1 ? parts[0] : "Unknown";
-    if (compactTitle)
+    if (compactBand) {
+      compactBand.textContent =
+        parts.length > 1 ? parts[0] : info.channel || "Unknown";
+    }
+    if (compactTitle) {
       compactTitle.textContent =
         parts.length > 1 ? parts.slice(1).join(" - ") : info.title;
+    }
 
     // Set default end time to 30 seconds or video duration if shorter
     const defaultEndSeconds = Math.min(30, info.duration);
@@ -318,6 +370,7 @@ async function fetchVideoInfo(card, songData) {
     fetchIcon.classList.remove("loading");
     fetchBtn.disabled = false;
     updateGenerateButton();
+    updateStats();
   }
 }
 
@@ -573,14 +626,21 @@ function rebuildSongList() {
       const compactBand = card.querySelector(".compact-band");
       const compactTitle = card.querySelector(".compact-title");
       const parts = songData.info.title.split(" - ");
-      if (compactBand)
-        compactBand.textContent = parts.length > 1 ? parts[0] : "Unknown";
-      if (compactTitle)
+      if (compactBand) {
+        compactBand.textContent =
+          parts.length > 1 ? parts[0] : songData.info.channel || "Unknown";
+      }
+      if (compactTitle) {
         compactTitle.textContent =
           parts.length > 1 ? parts.slice(1).join(" - ") : songData.info.title;
+      }
     }
 
-    if (state.compactViewEnabled) {
+    if (songData.isExpanded === undefined) {
+      songData.isExpanded = !state.compactViewEnabled;
+    }
+
+    if (!songData.isExpanded) {
       card.classList.add("compact");
     }
 
@@ -632,6 +692,12 @@ function rebuildSongList() {
       removeSong(card, parseInt(card.dataset.index)),
     );
 
+    const toggleBtn = card.querySelector(".btn-toggle");
+    toggleBtn.addEventListener("click", () => {
+      songData.isExpanded = !songData.isExpanded;
+      card.classList.toggle("compact", !songData.isExpanded);
+    });
+
     // Drag events
     card.addEventListener("dragstart", (e) => {
       state.draggedIndex = parseInt(card.dataset.index);
@@ -671,6 +737,7 @@ function rebuildSongList() {
   elements.emptyState.classList.add("hidden");
   updateDragHint();
   updateGenerateButton();
+  updateStats();
 }
 
 /**
@@ -860,4 +927,232 @@ function handleTimeInput(e, card, songData, field) {
   songData[field] = value;
   checkTimeValidity(card, songData);
   updateGenerateButton();
+  updateStats();
+}
+
+/**
+ * Update the statistics bar
+ */
+function updateStats() {
+  if (state.songs.length === 0) {
+    elements.statsBar.classList.add("hidden");
+    return;
+  }
+
+  elements.statsBar.classList.remove("hidden");
+
+  let totalSeconds = 0;
+  const bandCounts = {};
+  const totalSongs = state.songs.length;
+
+  state.songs.forEach((song) => {
+    // Duration
+    const start = parseTimeSeconds(song.startTime) || 0;
+    const end = parseTimeSeconds(song.endTime) || 0;
+    if (end > start) {
+      totalSeconds += end - start;
+      // Add countdown (5s) for each segment
+      totalSeconds += 5;
+    }
+
+    // Band Variety counting
+    let band = "Unknown";
+    if (song.info) {
+      const parts = song.info.title.split(" - ");
+      band = parts.length > 1 ? parts[0] : song.info.channel || "Unknown";
+    }
+    bandCounts[band] = (bandCounts[band] || 0) + 1;
+  });
+
+  // Update UI - Duration
+  elements.totalLengthVal.textContent = formatDuration(totalSeconds);
+
+  // Update UI - Band Variety Summary
+  const uniqueBandsCount = Object.keys(bandCounts).length;
+  const varietyPercent = Math.round((uniqueBandsCount / totalSongs) * 100);
+  elements.bandVarietyVal.textContent = `${varietyPercent}%`;
+
+  // Render Detailed Breakdown
+  renderBandBreakdown(bandCounts, totalSongs);
+}
+
+/**
+ * Render the band breakdown list and variety bar
+ */
+function renderBandBreakdown(counts, total) {
+  // Clear containers
+  elements.bandBreakdown.innerHTML = "";
+  elements.varietyBar.innerHTML = "";
+
+  // Sort bands by count descending
+  const sortedBands = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+  // Colors for segments (a nice K-Pop palette)
+  const colors = [
+    "#a855f7", // Primary purple
+    "#ec4899", // Pink
+    "#06b6d4", // Cyan
+    "#f59e0b", // Amber
+    "#10b981", // Emerald
+    "#3b82f6", // Blue
+    "#ef4444", // Red
+  ];
+
+  sortedBands.forEach(([band, count], index) => {
+    const percent = Math.round((count / total) * 100);
+    const color = colors[index % colors.length];
+
+    // Add to breakdown list
+    const statItem = document.createElement("div");
+    statItem.className = "band-stat";
+    statItem.innerHTML = `
+      <span class="band-color-dot" style="background-color: ${color}"></span>
+      <span class="band-name">${band}</span>
+      <span class="band-percent">${percent}%</span>
+    `;
+    elements.bandBreakdown.appendChild(statItem);
+
+    // Add to variety bar
+    const segment = document.createElement("div");
+    segment.className = "variety-segment";
+    segment.style.width = `${(count / total) * 100}%`;
+    segment.style.backgroundColor = color;
+    segment.title = `${band}: ${percent}%`;
+    elements.varietyBar.appendChild(segment);
+  });
+}
+
+/**
+ * Perform YouTube search via API
+ */
+async function performSearch(query) {
+  elements.searchLoading.classList.remove("hidden");
+
+  try {
+    const response = await fetch(
+      `/api/youtube/search?q=${encodeURIComponent(query)}`,
+    );
+    if (!response.ok) throw new Error("Search failed");
+
+    const results = await response.json();
+    displaySearchResults(results);
+  } catch (error) {
+    console.error("Search error:", error);
+    elements.searchResults.innerHTML =
+      '<div class="search-empty"><p>Error searching YouTube</p></div>';
+  } finally {
+    elements.searchLoading.classList.add("hidden");
+  }
+}
+
+/**
+ * Display search results in the sidebar
+ */
+function displaySearchResults(results) {
+  elements.searchResults.innerHTML = "";
+
+  if (!results || results.length === 0) {
+    elements.searchResults.innerHTML =
+      '<div class="search-empty"><p>No results found</p></div>';
+    return;
+  }
+
+  results.forEach((result) => {
+    const template = elements.searchResultTemplate.content.cloneNode(true);
+    const item = template.querySelector(".search-result-item");
+
+    item.querySelector(".result-thumbnail img").src = result.thumbnail;
+    item.querySelector(".result-duration").textContent = formatDuration(
+      result.duration,
+    );
+    item.querySelector(".result-title").textContent = result.title;
+    item.querySelector(".result-channel").textContent = result.channel;
+
+    item.querySelector(".btn-add-result").addEventListener("click", () => {
+      addSearchResultToProject(result);
+    });
+
+    elements.searchResults.appendChild(item);
+  });
+}
+
+/**
+ * Add a selected search result to the project
+ */
+function addSearchResultToProject(result) {
+  // Check if first song is empty, if so, use it
+  let targetSong;
+  if (
+    state.songs.length === 1 &&
+    !state.songs[0].youtubeUrl &&
+    !state.songs[0].info
+  ) {
+    targetSong = state.songs[0];
+    const firstCard = document.querySelector('.song-card[data-index="0"]');
+    if (firstCard) {
+      populateCardWithResult(firstCard, targetSong, result);
+      return;
+    }
+  }
+
+  // Otherwise add a new song
+  addSong();
+  const lastIndex = state.songs.length - 1;
+  const newSong = state.songs[lastIndex];
+  const lastCard = document.querySelector(
+    `.song-card[data-index="${lastIndex}"]`,
+  );
+
+  if (lastCard) {
+    populateCardWithResult(lastCard, newSong, result);
+  }
+}
+
+/**
+ * Populate a song card with result data
+ */
+function populateCardWithResult(card, songData, result) {
+  const urlInput = card.querySelector(".url-input");
+  urlInput.value = result.url;
+  songData.youtubeUrl = result.url;
+
+  // We already have the info from search, so we can populate immediately
+  songData.info = {
+    title: result.title,
+    thumbnail: result.thumbnail,
+    channel: result.channel,
+    duration: result.duration,
+  };
+  songData.title = result.title;
+
+  // Update UI components
+  card.querySelector(".song-thumbnail img").src = result.thumbnail;
+  card.querySelector(".song-title").textContent = result.title;
+  card.querySelector(".song-channel").textContent = result.channel;
+  card.querySelector(".song-duration").textContent =
+    `Duration: ${formatDuration(result.duration)}`;
+
+  const songInfo = card.querySelector(".song-info");
+  songInfo.classList.remove("hidden");
+
+  // Update compact view info
+  const compactBand = card.querySelector(".compact-band");
+  const compactTitle = card.querySelector(".compact-title");
+  const parts = result.title.split(" - ");
+  if (compactBand) {
+    compactBand.textContent =
+      parts.length > 1 ? parts[0] : result.channel || "Unknown";
+  }
+  if (compactTitle) {
+    compactTitle.textContent =
+      parts.length > 1 ? parts.slice(1).join(" - ") : result.title;
+  }
+
+  // Set default end time
+  const defaultEndSeconds = Math.min(30, result.duration);
+  card.querySelector(".end-time").value = formatDuration(defaultEndSeconds);
+  songData.endTime = formatDuration(defaultEndSeconds);
+
+  updateGenerateButton();
+  updateStats();
 }

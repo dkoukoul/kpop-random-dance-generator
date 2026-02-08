@@ -29,98 +29,171 @@
 
       <!-- Main Content -->
       <main class="main-content">
-        <!-- Song List Section -->
-        <section class="song-section">
-          <div class="section-header">
-            <h2>Song Segments</h2>
-            <div class="header-controls">
-              <input type="file" id="importFile" accept=".json" class="hidden" />
-              
-              <div class="menu-container">
-                <button id="menuBtn" class="btn btn-secondary" title="Options">
-                  <span class="btn-icon">⚙️</span> Options
-                </button>
-                <div id="menuDropdown" class="menu-dropdown hidden">
-                  <button id="importBtn" class="menu-item">
-                    <span class="menu-icon">📂</span> Import Project
-                  </button>
-                  <button id="exportBtn" class="menu-item">
-                    <span class="menu-icon">💾</span> Export Project
-                  </button>
-                  <div class="menu-divider"></div>
-                  <label class="menu-item toggle-item" title="Shuffle songs randomly when generating">
-                    <span class="menu-icon">🎲</span> 
-                    <span>Shuffle Songs</span>
-                    <div class="toggle-switch small">
-                      <input type="checkbox" id="randomOrderToggle" />
-                      <span class="toggle-slider"></span>
+        <div class="app-layout">
+          <!-- Sidebar -->
+          <aside class="search-sidebar">
+            <div class="sidebar-header">
+              <h3><span class="sidebar-icon">🔍</span> Search Songs</h3>
+              <p class="sidebar-hint">Search YouTube to add songs quickly</p>
+            </div>
+
+            <div class="search-box">
+              <input
+                type="text"
+                id="sidebarSearchInput"
+                class="input search-input"
+                placeholder="Search BTS, BLACKPINK, NewJeans..."
+              />
+              <div id="searchLoading" class="search-loading hidden">
+                <div class="spinner"></div>
+              </div>
+            </div>
+
+            <div id="searchResults" class="search-results">
+              <!-- Search results will be added here -->
+              <div class="search-empty">
+                <p>Enter a name to search</p>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Song List Section -->
+          <div class="segments-area">
+            <section class="song-section">
+              <div class="section-header">
+                <h2>Song Segments</h2>
+                <div class="header-controls">
+                  <input
+                    type="file"
+                    id="importFile"
+                    accept=".json"
+                    class="hidden"
+                  />
+
+                  <div class="menu-container">
+                    <button
+                      id="menuBtn"
+                      class="btn btn-secondary"
+                      title="Options"
+                    >
+                      <span class="btn-icon">⚙️</span> Options
+                    </button>
+                    <div id="menuDropdown" class="menu-dropdown hidden">
+                      <button id="importBtn" class="menu-item">
+                        <span class="menu-icon">📂</span> Load Project
+                      </button>
+                      <button id="exportBtn" class="menu-item">
+                        <span class="menu-icon">💾</span> Save Project
+                      </button>
+                      <div class="menu-divider"></div>
+                      <label
+                        class="menu-item toggle-item"
+                        title="Shuffle songs randomly when generating"
+                      >
+                        <span class="menu-icon">🎲</span>
+                        <span>Shuffle Songs</span>
+                        <div class="toggle-switch small">
+                          <input type="checkbox" id="randomOrderToggle" />
+                          <span class="toggle-slider"></span>
+                        </div>
+                      </label>
+                      <label
+                        class="menu-item toggle-item"
+                        title="Show songs in a single-line compact view"
+                      >
+                        <span class="menu-icon">🗜️</span>
+                        <span>Compact View</span>
+                        <div class="toggle-switch small">
+                          <input type="checkbox" id="compactViewToggle" />
+                          <span class="toggle-slider"></span>
+                        </div>
+                      </label>
                     </div>
-                  </label>
-                  <label class="menu-item toggle-item" title="Show songs in a single-line compact view">
-                    <span class="menu-icon">🗜️</span> 
-                    <span>Compact View</span>
-                    <div class="toggle-switch small">
-                      <input type="checkbox" id="compactViewToggle" />
-                      <span class="toggle-slider"></span>
-                    </div>
-                  </label>
+                  </div>
+
+                  <button id="addSongBtn" class="btn btn-primary">
+                    <span class="btn-icon">+</span>
+                    Add Song
+                  </button>
                 </div>
               </div>
-              
-              <button id="addSongBtn" class="btn btn-primary">
-                <span class="btn-icon">+</span>
-                Add Song
-              </button>
-            </div>
-          </div>
 
-          <p class="drag-hint" id="dragHint">💡 Drag songs to reorder them</p>
+              <p class="drag-hint" id="dragHint">💡 Drag songs to reorder them</p>
 
-          <div id="songList" class="song-list">
-            <!-- Song cards will be added here dynamically -->
-            <div class="empty-state" id="emptyState">
-              <div class="empty-icon">🎤</div>
-              <p>No songs added yet</p>
-              <p class="empty-hint">
-                Click "Add Song" to start building your random dance
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Generate Section -->
-        <section class="generate-section">
-          <button id="generateBtn" class="btn btn-generate" disabled>
-            <span class="btn-icon">✨</span>
-            Generate Random Dance
-          </button>
-
-          <!-- Progress Indicator -->
-          <div id="progressContainer" class="progress-container hidden">
-            <div class="progress-bar">
-              <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <p class="progress-text" id="progressText">Processing...</p>
-          </div>
-
-          <!-- Download Section -->
-          <div id="downloadSection" class="download-section hidden">
-            <div class="download-card">
-              <div class="download-icon">🎉</div>
-              <h3>Your Random Dance is Ready!</h3>
-              <div class="download-buttons">
-                <a id="downloadLink" href="#" class="btn btn-download">
-                  <span class="btn-icon">⬇️</span>
-                  Download MP3
-                </a>
-                <a id="downloadReportLink" href="#" class="btn btn-download report">
-                  <span class="btn-icon">📝</span>
-                  Download Report
-                </a>
+              <!-- Statistics Bar -->
+              <div id="statsBar" class="stats-bar hidden">
+                <div class="stat-item">
+                  <span class="stat-icon">🕒</span>
+                  <div class="stat-details">
+                    <span class="stat-label">Total Duration</span>
+                    <span id="totalLengthVal" class="stat-value">0:00</span>
+                  </div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item band-variety-container">
+                  <span class="stat-icon">👯</span>
+                  <div class="stat-details">
+                    <span class="stat-label">Band Variety</span>
+                    <span id="bandVarietyVal" class="stat-value">0%</span>
+                  </div>
+                  <div class="variety-breakdown-wrapper">
+                    <div id="varietyBar" class="variety-bar"></div>
+                    <div id="bandBreakdown" class="band-breakdown"></div>
+                  </div>
+                </div>
               </div>
-            </div>
+
+              <div id="songList" class="song-list">
+                <!-- Song cards will be added here dynamically -->
+                <div class="empty-state" id="emptyState">
+                  <div class="empty-icon">🎤</div>
+                  <p>No songs added yet</p>
+                  <p class="empty-hint">
+                    Search or click "Add Song" to start
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Generate Section -->
+            <section class="generate-section">
+              <button id="generateBtn" class="btn btn-generate" disabled>
+                <span class="btn-icon">✨</span>
+                Generate Random Dance
+              </button>
+
+              <!-- Progress Indicator -->
+              <div id="progressContainer" class="progress-container hidden">
+                <div class="progress-bar">
+                  <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text" id="progressText">Processing...</p>
+              </div>
+
+              <!-- Download Section -->
+              <div id="downloadSection" class="download-section hidden">
+                <div class="download-card">
+                  <div class="download-icon">🎉</div>
+                  <h3>Your Random Dance is Ready!</h3>
+                  <div class="download-buttons">
+                    <a id="downloadLink" href="#" class="btn btn-download">
+                      <span class="btn-icon">⬇️</span>
+                      Download MP3
+                    </a>
+                    <a
+                      id="downloadReportLink"
+                      href="#"
+                      class="btn btn-download report"
+                    >
+                      <span class="btn-icon">📝</span>
+                      Download Report
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
-        </section>
+        </div>
       </main>
 
       <!-- Footer -->
@@ -135,6 +208,9 @@
         <div class="song-card-header">
           <div class="drag-handle" title="Drag to reorder">⠿</div>
           <span class="song-number"></span>
+          <button class="btn-toggle" title="Toggle Expand/Compact">
+            <span class="toggle-icon">▼</span>
+          </button>
           <button class="btn-remove" title="Remove song">×</button>
         </div>
 
@@ -189,6 +265,21 @@
             </div>
           </div>
         </div>
+      </div>
+    </template>
+
+    <!-- Search Result Template -->
+    <template id="searchResultTemplate">
+      <div class="search-result-item">
+        <div class="result-thumbnail">
+          <img src="" alt="Thumbnail" />
+          <span class="result-duration"></span>
+        </div>
+        <div class="result-info">
+          <h5 class="result-title"></h5>
+          <p class="result-channel"></p>
+        </div>
+        <button class="btn-add-result" title="Add to project">+</button>
       </div>
     </template>
 
