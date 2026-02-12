@@ -68,6 +68,22 @@ api.get('/youtube/info', async (c) => {
 });
 
 /**
+ * GET /api/bands
+ * Fetch the list of bands for variety tracking
+ */
+api.get('/bands', async (c) => {
+  const filePath = join(ASSETS_DIR, 'band-list.txt');
+  try {
+    const file = Bun.file(filePath);
+    const text = await file.text();
+    return c.text(text);
+  } catch (error) {
+    console.error('Error reading band list:', error);
+    return c.text('', 404);
+  }
+});
+
+/**
  * GET /api/youtube/search?q=...
  * Search for videos on YouTube
  */

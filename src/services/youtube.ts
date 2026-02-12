@@ -10,7 +10,20 @@ const YTDLP_PATH = process.env.YTDLP_PATH || 'yt-dlp';
 export async function getVideoInfo(url: string): Promise<VideoInfo> {
   console.log(`🔍 [Bun.spawn] Fetching info for: ${url}`);
   try {
-    const proc = Bun.spawn([YTDLP_PATH, '--dump-json', '--no-download', url], {
+    const proc = Bun.spawn([
+      YTDLP_PATH,
+      '--dump-json',
+      '--no-download',
+      '--skip-download',
+      '--flat-playlist',
+      '--no-playlist',
+      '--ignore-errors',
+      '--no-check-certificate',
+      '--no-warnings',
+      '--quiet',
+      '--extractor-args', 'youtube:player_client=web',
+      url
+    ], {
       stdout: "pipe",
       stderr: "pipe",
     });
@@ -24,11 +37,23 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
       throw new Error(`yt-dlp failed: ${stderrText}`);
     }
 
+    if (!stdoutText.trim()) {
+      throw new Error('No video info returned');
+    }
+
     const info = JSON.parse(stdoutText);
+    
+    // In flat-playlist mode, individual thumbnails might be in thumbnails array
+    let thumbnailUrl = info.thumbnail || '';
+    if (!thumbnailUrl && info.thumbnails && info.thumbnails.length > 0) {
+      // Pick the last one (usually highest quality)
+      thumbnailUrl = info.thumbnails[info.thumbnails.length - 1].url;
+    }
+
     return {
       title: info.title || 'Unknown Title',
       duration: info.duration || 0,
-      thumbnail: info.thumbnail || '',
+      thumbnail: thumbnailUrl,
       channel: info.channel || info.uploader || 'Unknown',
     };
   } catch (e) {
@@ -37,7 +62,7 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
   }
 }
 
-export async function searchVideos(query: string, limit: number = 10): Promise<VideoInfo[]> {
+export async function searchVideos(query: string, limit: number = 5): Promise<VideoInfo[]> {
   console.log(`🔍 [Bun.spawn] Searching YouTube: "${query}" (limit: ${limit})`);
   
   try {
@@ -45,7 +70,15 @@ export async function searchVideos(query: string, limit: number = 10): Promise<V
       YTDLP_PATH,
       `ytsearch${limit}:${query}`,
       '--dump-json',
-      '--no-download'
+      '--no-download',
+      '--skip-download',
+      '--ignore-errors',
+      '--no-check-certificate',
+      '--no-playlist',
+      '--flat-playlist',
+      '--no-warnings',
+      '--quiet',
+      '--extractor-args', 'youtube:player_client=web',
     ], {
       stdout: "pipe",
       stderr: "pipe",
@@ -71,12 +104,18 @@ export async function searchVideos(query: string, limit: number = 10): Promise<V
     return lines.map(line => {
       try {
         const info = JSON.parse(line);
+        
+        let thumbnailUrl = info.thumbnail || '';
+        if (!thumbnailUrl && info.thumbnails && info.thumbnails.length > 0) {
+          thumbnailUrl = info.thumbnails[info.thumbnails.length - 1].url;
+        }
+
         return {
           title: info.title || 'Unknown Title',
           duration: info.duration || 0,
-          thumbnail: info.thumbnail || '',
+          thumbnail: thumbnailUrl,
           channel: info.channel || info.uploader || 'Unknown',
-          url: info.webpage_url || `https://www.youtube.com/watch?v=${info.id}`
+          url: info.webpage_url || info.url || (info.id ? `https://www.youtube.com/watch?v=${info.id}` : '')
         };
       } catch (e) {
         console.error('⚠️ Failed to parse a search result line:', e);

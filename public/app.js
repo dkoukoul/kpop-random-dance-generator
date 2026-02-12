@@ -10,6 +10,7 @@ const state = {
   shuffleEnabled: false,
   compactViewEnabled: false,
   draggedIndex: null,
+  bandList: [],
 };
 
 // DOM Elements
@@ -95,7 +96,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add first song card
   addSong();
-  updateStats();
+
+  // Fetch bands list for variety tracking
+  fetchBands().then(() => {
+    updateStats();
+  });
 
   // Sidebar Search
   let searchDebounceTimer = null;
@@ -104,9 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
     clearTimeout(searchDebounceTimer);
 
     if (query.length < 2) {
-      if (query.length === 0) {
-        performSearch("famous kpop songs 2025"); // Show defaults if empty
-      }
       return;
     }
 
@@ -116,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Initial search
-  performSearch("famous kpop songs 2025");
+  performSearch("bts");
 });
 
 /**
@@ -346,14 +348,23 @@ async function fetchVideoInfo(card, songData) {
     // Update compact view info
     const compactBand = card.querySelector(".compact-band");
     const compactTitle = card.querySelector(".compact-title");
-    const parts = info.title.split(" - ");
     if (compactBand) {
-      compactBand.textContent =
-        parts.length > 1 ? parts[0] : info.channel || "Unknown";
+      compactBand.textContent = identifyBand(info.title, info.channel);
     }
     if (compactTitle) {
-      compactTitle.textContent =
-        parts.length > 1 ? parts.slice(1).join(" - ") : info.title;
+      const band = compactBand ? compactBand.textContent : "";
+      let displayTitle = info.title;
+      if (band && band !== "Unknown" && displayTitle.includes(band)) {
+        // If title has "Band - Song", try to strip the band part
+        const parts = displayTitle.split(" - ");
+        if (
+          parts.length > 1 &&
+          parts[0].toLowerCase().includes(band.toLowerCase())
+        ) {
+          displayTitle = parts.slice(1).join(" - ");
+        }
+      }
+      compactTitle.textContent = displayTitle;
     }
 
     // Set default end time to 30 seconds or video duration if shorter
@@ -625,14 +636,26 @@ function rebuildSongList() {
       // Update compact view info
       const compactBand = card.querySelector(".compact-band");
       const compactTitle = card.querySelector(".compact-title");
-      const parts = songData.info.title.split(" - ");
       if (compactBand) {
-        compactBand.textContent =
-          parts.length > 1 ? parts[0] : songData.info.channel || "Unknown";
+        compactBand.textContent = identifyBand(
+          songData.info.title,
+          songData.info.channel,
+        );
       }
       if (compactTitle) {
-        compactTitle.textContent =
-          parts.length > 1 ? parts.slice(1).join(" - ") : songData.info.title;
+        const band = compactBand ? compactBand.textContent : "";
+        let displayTitle = songData.info.title;
+        if (band && band !== "Unknown" && displayTitle.includes(band)) {
+          // If title has "Band - Song", try to strip the band part
+          const parts = displayTitle.split(" - ");
+          if (
+            parts.length > 1 &&
+            parts[0].toLowerCase().includes(band.toLowerCase())
+          ) {
+            displayTitle = parts.slice(1).join(" - ");
+          }
+        }
+        compactTitle.textContent = displayTitle;
       }
     }
 
@@ -958,8 +981,7 @@ function updateStats() {
     // Band Variety counting
     let band = "Unknown";
     if (song.info) {
-      const parts = song.info.title.split(" - ");
-      band = parts.length > 1 ? parts[0] : song.info.channel || "Unknown";
+      band = identifyBand(song.info.title, song.info.channel);
     }
     bandCounts[band] = (bandCounts[band] || 0) + 1;
   });
@@ -1108,9 +1130,6 @@ function addSearchResultToProject(result) {
   }
 }
 
-/**
- * Populate a song card with result data
- */
 function populateCardWithResult(card, songData, result) {
   const urlInput = card.querySelector(".url-input");
   urlInput.value = result.url;
@@ -1138,14 +1157,23 @@ function populateCardWithResult(card, songData, result) {
   // Update compact view info
   const compactBand = card.querySelector(".compact-band");
   const compactTitle = card.querySelector(".compact-title");
-  const parts = result.title.split(" - ");
   if (compactBand) {
-    compactBand.textContent =
-      parts.length > 1 ? parts[0] : result.channel || "Unknown";
+    compactBand.textContent = identifyBand(result.title, result.channel);
   }
   if (compactTitle) {
-    compactTitle.textContent =
-      parts.length > 1 ? parts.slice(1).join(" - ") : result.title;
+    const band = compactBand ? compactBand.textContent : "";
+    let displayTitle = result.title;
+    if (band && band !== "Unknown" && displayTitle.includes(band)) {
+      // If title has "Band - Song", try to strip the band part
+      const parts = displayTitle.split(" - ");
+      if (
+        parts.length > 1 &&
+        parts[0].toLowerCase().includes(band.toLowerCase())
+      ) {
+        displayTitle = parts.slice(1).join(" - ");
+      }
+    }
+    compactTitle.textContent = displayTitle;
   }
 
   // Set default end time
@@ -1155,4 +1183,67 @@ function populateCardWithResult(card, songData, result) {
 
   updateGenerateButton();
   updateStats();
+}
+
+/**
+ * Fetch the list of bands from the server
+ */
+async function fetchBands() {
+  try {
+    const response = await fetch("/api/bands");
+    if (response.ok) {
+      const text = await response.text();
+      state.bandList = text
+        .split("\n")
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0);
+      console.log(
+        `✅ Loaded ${state.bandList.length} bands for variety matching`,
+      );
+      rebuildSongList();
+    }
+  } catch (error) {
+    console.error("Failed to fetch band list:", error);
+  }
+}
+
+/**
+ * Identify the band from a song title and channel
+ */
+function identifyBand(title, channel) {
+  if (!title) return "Unknown";
+  if (!state.bandList || state.bandList.length === 0) {
+    const parts = title.split(" - ");
+    return parts.length > 1 ? parts[0] : channel || "Unknown";
+  }
+
+  // Sort by length descending to match more specific names first
+  const sortedBands = [...state.bandList].sort((a, b) => b.length - a.length);
+
+  // Helper to check for a match with word boundaries
+  const checkMatch = (text, band) => {
+    if (!text || !band) return false;
+    // Escape band name for regex
+    const escapedBand = band.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // Handle special characters in K-Pop names by allowing them in boundaries
+    const regex = new RegExp(
+      `(^|[^a-zA-Z0-9])${escapedBand}([^a-zA-Z0-9]|$)`,
+      "i",
+    );
+    return regex.test(text);
+  };
+
+  // Try title first
+  for (const band of sortedBands) {
+    if (checkMatch(title, band)) return band;
+  }
+
+  // Try channel if title doesn't match
+  for (const band of sortedBands) {
+    if (checkMatch(channel, band)) return band;
+  }
+
+  // Fallback to title split
+  const parts = title.split(" - ");
+  return parts.length > 1 ? parts[0] : channel || "Unknown";
 }
