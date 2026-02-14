@@ -143,3 +143,4 @@ temp/
 yt-dlp
 
 assets/*analytics.db
+cache.db

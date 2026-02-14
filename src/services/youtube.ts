@@ -4,6 +4,8 @@ import type { VideoInfo } from '../types';
 // Get yt-dlp path from environment, fallback to 'yt-dlp'
 const YTDLP_PATH = process.env.YTDLP_PATH || 'yt-dlp';
 
+import { getCache, setCache } from './cache';
+
 /**
  * Extract video information using yt-dlp --dump-json
  */
@@ -63,6 +65,14 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
 }
 
 export async function searchVideos(query: string, limit: number = 5): Promise<VideoInfo[]> {
+  const cacheKey = `search:${query}:${limit}`;
+  const cached = getCache<VideoInfo[]>(cacheKey);
+  
+  if (cached) {
+    console.log(`🎯 Cache hit for search: "${query}"`);
+    return cached;
+  }
+
   console.log(`🔍 [Bun.spawn] Searching YouTube: "${query}" (limit: ${limit})`);
   
   try {
@@ -101,7 +111,7 @@ export async function searchVideos(query: string, limit: number = 5): Promise<Vi
     const lines = stdoutText.trim().split('\n');
     console.log(`✅ Found ${lines.length} search results`);
 
-    return lines.map(line => {
+    const results = lines.map(line => {
       try {
         const info = JSON.parse(line);
         
@@ -122,6 +132,11 @@ export async function searchVideos(query: string, limit: number = 5): Promise<Vi
         return null;
       }
     }).filter(item => item !== null) as VideoInfo[];
+
+    // Cache results for 24 hours
+    setCache(cacheKey, results, 24 * 60 * 60);
+    
+    return results;
 
   } catch (error) {
     console.error('❌ Bun.spawn search error:', error);
