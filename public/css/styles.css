@@ -78,7 +78,7 @@ body {
 
 /* ===== App Container ===== */
 .app-container {
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: var(--spacing-lg);
   min-height: 100vh;
@@ -140,6 +140,15 @@ body {
   display: flex;
   gap: var(--spacing-xl);
   align-items: flex-start;
+}
+
+@media (max-width: 1200px) {
+  .ad-sidebar {
+    display: none;
+  }
+  .app-container {
+    max-width: 900px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -1314,4 +1323,97 @@ body {
   .time-divider {
     display: none;
   }
+}
+
+/* ===== Ad-related Styles ===== */
+.ad-sidebar {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  position: sticky;
+  top: var(--spacing-lg);
+  height: fit-content;
+  z-index: 10;
+}
+
+.ad-box {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px; /* Standard ad height + padding */
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.ad-box.small {
+  min-height: 150px;
+}
+
+.ad-box.tall {
+  min-height: 600px;
+}
+
+.ad-label {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.footer-support-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto var(--spacing-xl);
+  text-align: center;
+  padding: var(--spacing-lg);
+  background: rgba(168, 85, 247, 0.05); /* Subtle primary tint */
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(5px);
+}
+
+.footer-support-container h3 {
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.footer-support-container p {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.btn-kofi {
+  background: #FF5E5B; /* Ko-fi Brand Color */
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-xl);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(255, 94, 91, 0.3);
+  border: none;
+  transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-kofi:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 94, 91, 0.5);
+  background: #ff7471;
+}
+
+.kofi-icon {
+    font-size: 1.2rem;
 }
