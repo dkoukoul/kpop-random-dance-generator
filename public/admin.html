@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - K-Pop Random Dance Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .admin-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--spacing-xl);
+      }
+
+      .login-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-2xl);
+        max-width: 400px;
+        margin: 100px auto;
+        box-shadow: var(--shadow-md);
+      }
+
+      .login-card h2 {
+        margin-bottom: var(--spacing-lg);
+        text-align: center;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .form-group {
+        margin-bottom: var(--spacing-md);
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: var(--spacing-xs);
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: var(--spacing-sm) var(--spacing-md);
+        background: var(--bg-input);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        color: var(--text-primary);
+        font-family: inherit;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-2xl);
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-lg);
+        text-align: center;
+      }
+
+      .stat-card .value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-light);
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .stat-card .label {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .top-songs-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+      }
+
+      .top-songs-table th,
+      .top-songs-table td {
+        padding: var(--spacing-md);
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .top-songs-table th {
+        background: rgba(168, 85, 247, 0.1);
+        color: var(--primary-light);
+        font-weight: 600;
+      }
+
+      .top-songs-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .top-songs-table tr:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      #error-msg {
+        color: #ef4444;
+        text-align: center;
+        margin-top: var(--spacing-md);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="header">
+        <div class="logo">
+          <span class="logo-icon">📊</span>
+          <h1>Admin Dashboard</h1>
+        </div>
+        <p class="tagline">Analytics & Usage Statistics</p>
+      </header>
+
+      <main class="main-content">
+        <!-- Login Section -->
+        <div id="login-section" class="login-card">
+          <h2>Login</h2>
+          <form id="login-form">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%">
+              Enter Dashboard
+            </button>
+            <div id="error-msg" class="hidden">Invalid credentials</div>
+          </form>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="hidden">
+          <div class="section-header">
+            <h2>Overall Statistics</h2>
+            <button id="logout-btn" class="btn btn-secondary btn-sm">
+              Logout
+            </button>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div id="total-visits" class="value">0</div>
+              <div class="label">Total Visits</div>
+            </div>
+            <div class="stat-card">
+              <div id="total-generations" class="value">0</div>
+              <div class="label">Total Generations</div>
+            </div>
+          </div>
+
+          <div class="section-header">
+            <h2>Popular Songs</h2>
+          </div>
+          <table class="top-songs-table">
+            <thead>
+              <tr>
+                <th>Song Title</th>
+                <th>Usage Count</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody id="top-songs-body">
+              <!-- Rows will be added here -->
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

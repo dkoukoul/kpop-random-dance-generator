@@ -40,6 +40,9 @@ app.route('/api', api);
 // Fallback to index.html for SPA-like behavior
 app.get('/', serveStatic({ path: './public/index.html' }));
 
+// Serve admin page
+app.get('/admin', serveStatic({ path: './public/admin.html' }));
+
 const port = process.env.PORT || 3000;
 
 console.log(`🎵 K-Pop Random Dance Generator running on http://localhost:${port}`);

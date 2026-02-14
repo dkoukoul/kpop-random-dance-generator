@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { basicAuth } from 'hono/basic-auth';
 import { v4 as uuidv4 } from 'uuid';
 import { join } from 'path';
 import { mkdir, access, stat } from 'fs/promises';
@@ -6,6 +7,7 @@ import type { GenerateRequest, SongSegment } from '../types';
 import { getVideoInfo, downloadSegment, searchVideos } from '../services/youtube';
 import { generateReport, saveReport } from '../services/report';
 import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles } from '../services/audio';
+import { logVisit, logGeneration, getStats } from '../services/analytics';
 
 const api = new Hono();
 
@@ -46,6 +48,30 @@ async function ensureCountdownAudio() {
 // Initialize
 ensureDirs();
 ensureCountdownAudio();
+
+/**
+ * POST /api/visit
+ * Log a user visit
+ */
+api.post('/visit', async (c) => {
+  const userAgent = c.req.header('user-agent') || 'unknown';
+  const ip = c.req.header('x-forwarded-for') || 'unknown';
+  
+  await logVisit(userAgent, ip);
+  return c.json({ success: true });
+});
+
+/**
+ * GET /api/stats
+ * Get basic analytics stats (Protected)
+ */
+api.get('/stats', basicAuth({
+  username: process.env.ADMIN_USERNAME || 'admin',
+  password: process.env.ADMIN_PASSWORD || 'admin'
+}), async (c) => {
+  const stats = getStats();
+  return c.json(stats);
+});
 
 /**
  * GET /api/youtube/info?url=...
@@ -120,6 +146,9 @@ api.post('/generate', async (c) => {
   
   const jobId = uuidv4();
   jobs.set(jobId, { status: 'processing', progress: 'Starting...' });
+  
+  // Log generation for analytics
+  logGeneration(jobId, body.segments).catch(err => console.error('Logging generation error:', err));
   
   // Process in background
   processGeneration(jobId, body.segments).catch((error) => {

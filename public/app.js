@@ -119,7 +119,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initial search
   performSearch("bts");
+
+  // Track visit
+  trackVisit();
 });
+
+/**
+ * Track user visit
+ */
+async function trackVisit() {
+  try {
+    await fetch("/api/visit", { method: "POST" });
+  } catch (error) {
+    console.warn("Failed to track visit:", error);
+  }
+}
 
 /**
  * Add a new song card to the list
