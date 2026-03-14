@@ -2,6 +2,8 @@
 
 A sleek, modern web application that allows you to create the perfect K-Pop random dance practice mix. Combine your favorite song segments from YouTube with professional countdown transitions automatically.
 
+You can check it live at (kpopgenerator.cloud)
+
 ## ✨ Features
 
 - **YouTube Integration**: Search and import metadata directly from YouTube URLs.
