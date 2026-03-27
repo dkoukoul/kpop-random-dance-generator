@@ -159,12 +159,13 @@ body {
 
 .segments-area {
   flex: 1;
-  min-width: 0;
+  min-width: 100px;
+  width: 70%;
 }
 
 /* ===== Search Sidebar ===== */
 .search-sidebar {
-  width: 300px;
+  width: 40%;
   background: var(--bg-card);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
@@ -576,6 +577,8 @@ body {
   height: 100%;
   transition: width 0.3s ease;
 }
+
+
 
 .band-breakdown {
   display: flex;
@@ -1034,6 +1037,224 @@ body {
   color: var(--text-muted);
   font-size: 1.2rem;
 }
+
+/* ===== Timeline Bar ===== */
+.timeline-wrapper {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
+}
+
+.timeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  width: 100%;
+}
+
+.timeline-track {
+  position: relative;
+  height: 12px;
+  background: var(--bg-input);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  overflow: visible;
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+.timeline-track:hover {
+  border-color: var(--border-glow);
+}
+
+.timeline-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(168, 85, 247, 0.1) 0%, 
+    rgba(168, 85, 247, 0.3) 100%);
+  border-radius: var(--radius-full);
+  width: 100%;
+  pointer-events: none;
+}
+
+.timeline-range {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    var(--primary) 0%, 
+    var(--secondary) 100%);
+  border-radius: var(--radius-full);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.timeline-track:hover .timeline-range {
+  opacity: 0.8;
+}
+
+.timeline-handle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 3px solid var(--primary);
+  border-radius: 50%;
+  cursor: grab;
+  pointer-events: auto;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.timeline-handle:hover {
+  transform: translateY(-50%) scale(1.2);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.5);
+}
+
+.timeline-handle:focus {
+  outline: 2px solid var(--primary-light);
+  outline-offset: 2px;
+}
+
+.timeline-handle:active {
+  cursor: grabbing;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.timeline-handle-start {
+  border-color: #10b981; /* Green for start */
+  left: 0%;
+}
+
+.timeline-handle-start:hover,
+.timeline-handle-start:focus {
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+}
+
+.timeline-handle-end {
+  border-color: #ef4444; /* Red for end */
+  left: 30%;
+}
+
+.timeline-handle-end:hover,
+.timeline-handle-end:focus {
+  border-color: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
+}
+
+.timeline-markers {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 2px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-family: "Outfit", monospace;
+}
+
+.timeline-marker {
+  text-align: center;
+  position: relative;
+}
+
+.timeline-marker::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 6px;
+  background: var(--border-color);
+}
+
+.timeline-marker.major::before {
+  height: 10px;
+  background: var(--text-secondary);
+}
+
+.timeline-time-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding: var(--spacing-xs) 0;
+  font-family: "Outfit", monospace;
+}
+
+.timeline-current-time {
+  font-weight: 600;
+  color: var(--primary-light);
+}
+
+.timeline-duration {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.timeline-total {
+  color: var(--text-muted);
+}
+
+.timeline-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: var(--spacing-xs) 0 0 0;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* Compact view adjustments */
+.song-card.compact .timeline-wrapper {
+  display: none;
+}
+
+/* Invalid state */
+.timeline-track.invalid {
+  border-color: #ef4444;
+  animation: pulseInvalid 0.5s ease;
+}
+
+@keyframes pulseInvalid {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
+/* Tooltip for time display during drag */
+.timeline-tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 100;
+}
+
+.timeline-handle.dragging .timeline-tooltip {
+  opacity: 1;
+}
+
 
 /* ===== Generate Section ===== */
 .generate-section {
