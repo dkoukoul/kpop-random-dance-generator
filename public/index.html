@@ -171,10 +171,9 @@
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat-item band-variety-container">
-                  <span class="stat-icon">👯</span>
                   <div class="stat-details">
-                    <span class="stat-label">Band Variety</span>
-                    <span id="bandVarietyVal" class="stat-value">0%</span>
+                    <span class="stat-label">Songs</span>
+                    <span id="totalSongs" class="stat-value">0</span>
                   </div>
                   <div class="variety-breakdown-wrapper">
                     <div id="varietyBar" class="variety-bar"></div>
@@ -249,15 +248,16 @@
             <h3>About K-Pop Random Dance Generator</h3>
             <p>Our online <strong>K-Pop Random Dance Generator</strong> is designed for fans who love to practice their favorite choreographies. Whether you're preparing for a dance cover, a public random dance play (RDP) event, or just having fun at home, our tool helps you create the perfect practice mix.</p>
             <p>Features include automatic 5-second countdowns between songs, customizable start and end times for any YouTube video, and a variety tracker to ensure you're practicing a diverse range of bands like <em>BTS, BLACKPINK, NewJeans, TWICE, Stray Kids,</em> and more.</p>
+            <h3>Thank you to all the fans for their support!</h3>
         </section>
-        <p>Made with 💜 for K-Pop dance lovers</p>
+        <p>Made with 💜 for K-Pop dance lovers - Version <span id="versionNumber">loading...</span></p>
       </footer>
     </div>
 
     <!-- Song Card Template -->
     <template id="songCardTemplate">
-      <div class="song-card" data-index="" draggable="true">
-        <div class="song-card-header">
+      <div class="song-card" data-index="" >
+        <div class="song-card-header" draggable="true">
           <div class="drag-handle" title="Drag to reorder">⠿</div>
           <span class="song-number"></span>
           <button class="btn-toggle" title="Toggle Expand/Compact">
@@ -316,6 +316,25 @@
               />
             </div>
           </div>
+
+          <!-- Timeline Bar -->
+          <div class="timeline-wrapper">
+            <div class="timeline-container">
+              <div class="timeline-track">
+                <div class="timeline-progress"></div>
+                <div class="timeline-range"></div>
+                <div class="timeline-handle timeline-handle-start" tabindex="0" role="slider" aria-label="Start time handle" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+                <div class="timeline-handle timeline-handle-end" tabindex="0" role="slider" aria-label="End time handle" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+              </div>
+              <div class="timeline-markers"></div>
+              <div class="timeline-time-display">
+                <span class="timeline-current-time">0:00</span>
+                <span class="timeline-duration">Duration: 0:30</span>
+                <span class="timeline-total">Total: 0:00</span>
+              </div>
+              <p class="timeline-hint">💡 Drag handles or click on the timeline to set start and end times (visible after loading video)</p>
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -335,6 +354,6 @@
       </div>
     </template>
 
-    <script src="app/app.js"></script>
+    <script src="app/app.js?v=2"></script>
   </body>
 </html>
