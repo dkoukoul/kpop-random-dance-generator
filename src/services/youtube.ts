@@ -59,8 +59,10 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
       channel: info.channel || info.uploader || 'Unknown',
     };
   } catch (e) {
-    console.error('❌ Failed to fetch/parse video info:', e);
-    throw new Error('Failed to fetch video info');
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    console.error('❌ Failed to fetch/parse video info:', errorMessage);
+    console.error('Full error:', e);
+    throw new Error(`Failed to fetch video info: ${errorMessage}`);
   }
 }
 
