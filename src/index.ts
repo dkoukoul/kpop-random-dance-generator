@@ -31,8 +31,21 @@ function checkDependencies() {
 // Check dependencies before starting
 checkDependencies();
 
-// Serve static files from public directory
+// Serve static files from public directory with no-cache for JS/CSS
+app.use('/*', async (c, next) => {
+  const path = c.req.path;
+  await next();
+  
+  // Add cache control headers for JS and CSS files
+  if (path.endsWith('.js') || path.endsWith('.css')) {
+    c.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+  }
+});
+
 app.use('/*', serveStatic({ root: './public' }));
+
+// Serve package.json for version info
+app.get('/package.json', serveStatic({ path: './package.json' }));
 
 // Mount API routes
 app.route('/api', api);

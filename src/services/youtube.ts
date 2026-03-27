@@ -12,17 +12,14 @@ import { getCache, setCache } from './cache';
 export async function getVideoInfo(url: string): Promise<VideoInfo> {
   console.log(`🔍 [Bun.spawn] Fetching info for: ${url}`);
   try {
+    // Use minimal flags to avoid format selection issues
     const proc = Bun.spawn([
       YTDLP_PATH,
       '--dump-json',
       '--no-download',
-      '--skip-download',
-      '--flat-playlist',
+      '--skip-download', 
       '--no-playlist',
-      '--ignore-errors',
       '--no-check-certificate',
-      '--no-warnings',
-      '--quiet',
       '--extractor-args', 'youtube:player_client=web',
       url
     ], {
@@ -34,16 +31,33 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
     const stderrText = await new Response(proc.stderr).text();
     const exitCode = await proc.exited;
 
-    if (exitCode !== 0) {
-      console.error(`❌ yt-dlp info failed (exit ${exitCode}): ${stderrText}`);
-      throw new Error(`yt-dlp failed: ${stderrText}`);
+    console.log(`📥 yt-dlp info exited with code ${exitCode}`);
+    if (stdoutText.trim()) {
+      console.log(`📤 stdout: ${stdoutText.substring(0, 500)}${stdoutText.length > 500 ? '...' : ''}`);
+    }
+    if (stderrText.trim()) {
+      console.log(`⚠️ stderr: ${stderrText}`);
     }
 
+    // Handle case where yt-dlp returns empty output or fails
     if (!stdoutText.trim()) {
-      throw new Error('No video info returned');
+      console.error('❌ Empty response from yt-dlp');
+      if (exitCode !== 0) {
+        console.error(`❌ yt-dlp info failed (exit ${exitCode}): ${stderrText}`);
+        throw new Error(`yt-dlp failed with exit code ${exitCode}: ${stderrText}`);
+      }
+      throw new Error('No video info returned - yt-dlp produced empty output');
     }
 
-    const info = JSON.parse(stdoutText);
+    // Even with non-zero exit code, try to parse if we have output
+    let info;
+    try {
+      info = JSON.parse(stdoutText);
+    } catch (parseError) {
+      console.error('❌ Failed to parse JSON response:', parseError);
+      console.error('Raw stdout:', stdoutText);
+      throw new Error('Invalid JSON response from yt-dlp');
+    }
     
     // In flat-playlist mode, individual thumbnails might be in thumbnails array
     let thumbnailUrl = info.thumbnail || '';

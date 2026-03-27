@@ -36,7 +36,7 @@ const elements = {
   menuDropdown: document.getElementById("menuDropdown"),
   statsBar: document.getElementById("statsBar"),
   totalLengthVal: document.getElementById("totalLengthVal"),
-  bandVarietyVal: document.getElementById("bandVarietyVal"),
+  totalSongs: document.getElementById("totalSongs"),
   sidebarSearchInput: document.getElementById("sidebarSearchInput"),
   searchResults: document.getElementById("searchResults"),
   searchLoading: document.getElementById("searchLoading"),
@@ -47,6 +47,9 @@ const elements = {
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
+  // Load version number
+  loadVersion();
+  
   elements.addSongBtn.addEventListener("click", addSong);
   elements.generateBtn.addEventListener("click", generateRandomDance);
 
@@ -132,6 +135,24 @@ async function trackVisit() {
     await fetch("/api/visit", { method: "POST" });
   } catch (error) {
     console.warn("Failed to track visit:", error);
+  }
+}
+
+/**
+ * Load and display version number from package.json
+ */
+async function loadVersion() {
+  try {
+    const response = await fetch("/package.json");
+    if (response.ok) {
+      const data = await response.json();
+      const versionElement = document.getElementById("versionNumber");
+      if (versionElement) {
+        versionElement.textContent = data.version;
+      }
+    }
+  } catch (error) {
+    console.warn("Failed to load version:", error);
   }
 }
 
@@ -238,14 +259,16 @@ function addSong() {
     card.classList.toggle("compact", !songData.isExpanded);
   });
 
-  // Drag and drop event handlers
-  card.addEventListener("dragstart", (e) => {
+  // Drag and drop event handlers - only allow dragging from card header
+  const songCardHeader = card.querySelector(".song-card-header");
+  
+  songCardHeader.addEventListener("dragstart", (e) => {
     state.draggedIndex = parseInt(card.dataset.index);
     card.classList.add("dragging");
     e.dataTransfer.effectAllowed = "move";
   });
 
-  card.addEventListener("dragend", () => {
+  songCardHeader.addEventListener("dragend", () => {
     card.classList.remove("dragging");
     state.draggedIndex = null;
     // Remove drag-over class from all cards
@@ -254,7 +277,7 @@ function addSong() {
       .forEach((c) => c.classList.remove("drag-over"));
   });
 
-  card.addEventListener("dragover", (e) => {
+  songCardHeader.addEventListener("dragover", (e) => {
     e.preventDefault();
     const draggingCard = document.querySelector(".song-card.dragging");
     if (draggingCard && draggingCard !== card) {
@@ -262,11 +285,11 @@ function addSong() {
     }
   });
 
-  card.addEventListener("dragleave", () => {
+  songCardHeader.addEventListener("dragleave", () => {
     card.classList.remove("drag-over");
   });
 
-  card.addEventListener("drop", (e) => {
+  songCardHeader.addEventListener("drop", (e) => {
     e.preventDefault();
     card.classList.remove("drag-over");
 
@@ -303,6 +326,11 @@ function addSong() {
  * Remove a song from the list
  */
 function removeSong(card, index) {
+  // Cleanup timeline event listeners
+  if (state.songs[index] && state.songs[index].timelineCleanup) {
+    state.songs[index].timelineCleanup();
+  }
+
   card.remove();
   state.songs.splice(index, 1);
 
@@ -344,11 +372,13 @@ async function fetchVideoInfo(card, songData) {
       `/api/youtube/info?url=${encodeURIComponent(url)}`,
     );
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error("Failed to fetch video info");
+      throw new Error(data.error || "Failed to fetch video info");
     }
 
-    const info = await response.json();
+    const info = data;
     songData.info = info;
     songData.title = info.title;
 
@@ -387,9 +417,12 @@ async function fetchVideoInfo(card, songData) {
     songData.endTime = formatDuration(defaultEndSeconds);
 
     songInfo.classList.remove("hidden");
+
+    // Initialize timeline
+    initTimeline(card, songData);
   } catch (error) {
     console.error("Error fetching video info:", error);
-    alert("Failed to fetch video info. Please check the URL and try again.");
+    // alert("Failed to fetch video info. Please check the URL and try again.");
   } finally {
     fetchIcon.textContent = "🔍";
     fetchIcon.classList.remove("loading");
@@ -413,6 +446,7 @@ async function generateRandomDance() {
       title: song.title || "Song", // Fallback title if not fetched
       startTime: song.startTime || "0:00",
       endTime: song.endTime || "0:30",
+      artist: song.info?.channel || "", // Include channel for band detection
     }));
 
   if (segments.length === 0) {
@@ -498,7 +532,7 @@ async function pollJobStatus(jobId) {
       }
     } catch (error) {
       console.error("Poll error:", error);
-      alert("Error: " + error.message);
+      // alert("Error: " + error.message);
       resetGenerateButton();
     }
   };
@@ -671,6 +705,9 @@ function rebuildSongList() {
         }
         compactTitle.textContent = displayTitle;
       }
+
+      // Re-initialize timeline
+      initTimeline(card, songData);
     }
 
     if (songData.isExpanded === undefined) {
@@ -735,28 +772,30 @@ function rebuildSongList() {
       card.classList.toggle("compact", !songData.isExpanded);
     });
 
-    // Drag events
-    card.addEventListener("dragstart", (e) => {
+    // Drag events - only allow dragging from card header
+    const songCardHeader = card.querySelector(".song-card-header");
+    
+    songCardHeader.addEventListener("dragstart", (e) => {
       state.draggedIndex = parseInt(card.dataset.index);
       card.classList.add("dragging");
       e.dataTransfer.effectAllowed = "move";
     });
-    card.addEventListener("dragend", () => {
+    songCardHeader.addEventListener("dragend", () => {
       card.classList.remove("dragging");
       state.draggedIndex = null;
       document
         .querySelectorAll(".song-card")
         .forEach((c) => c.classList.remove("drag-over"));
     });
-    card.addEventListener("dragover", (e) => {
+    songCardHeader.addEventListener("dragover", (e) => {
       e.preventDefault();
       if (document.querySelector(".song-card.dragging") !== card)
         card.classList.add("drag-over");
     });
-    card.addEventListener("dragleave", () =>
+    songCardHeader.addEventListener("dragleave", () =>
       card.classList.remove("drag-over"),
     );
-    card.addEventListener("drop", (e) => {
+    songCardHeader.addEventListener("drop", (e) => {
       e.preventDefault();
       card.classList.remove("drag-over");
       const fromIndex = state.draggedIndex;
@@ -962,6 +1001,12 @@ function handleTimeInput(e, card, songData, field) {
   }
 
   songData[field] = value;
+  
+  // Update timeline if video info exists
+  if (songData.info && songData.info.duration) {
+    updateTimelinePositions(card, songData, songData.info.duration);
+  }
+  
   checkTimeValidity(card, songData);
   updateGenerateButton();
   updateStats();
@@ -1005,8 +1050,7 @@ function updateStats() {
 
   // Update UI - Band Variety Summary
   const uniqueBandsCount = Object.keys(bandCounts).length;
-  const varietyPercent = Math.round((uniqueBandsCount / totalSongs) * 100);
-  elements.bandVarietyVal.textContent = `${varietyPercent}%`;
+  elements.totalSongs.textContent = `${totalSongs}`;
 
   // Render Detailed Breakdown
   renderBandBreakdown(bandCounts, totalSongs);
@@ -1195,6 +1239,9 @@ function populateCardWithResult(card, songData, result) {
   card.querySelector(".end-time").value = formatDuration(defaultEndSeconds);
   songData.endTime = formatDuration(defaultEndSeconds);
 
+  // Initialize timeline
+  initTimeline(card, songData);
+
   updateGenerateButton();
   updateStats();
 }
@@ -1260,4 +1307,343 @@ function identifyBand(title, channel) {
   // Fallback to title split
   const parts = title.split(" - ");
   return parts.length > 1 ? parts[0] : channel || "Unknown";
+}
+
+/**
+ * Initialize timeline component for a song card
+ */
+function initTimeline(card, songData) {
+  console.log('🔍 initTimeline called', { 
+    hasInfo: !!songData.info, 
+    duration: songData.info?.duration,
+    title: songData.info?.title 
+  });
+
+  const timelineWrapper = card.querySelector(".timeline-wrapper");
+  const timelineTrack = card.querySelector(".timeline-track");
+  const timelineRange = card.querySelector(".timeline-range");
+  const startHandle = card.querySelector(".timeline-handle-start");
+  const endHandle = card.querySelector(".timeline-handle-end");
+  const timelineMarkers = card.querySelector(".timeline-markers");
+  const timelineCurrentTime = card.querySelector(".timeline-current-time");
+  const timelineDuration = card.querySelector(".timeline-duration");
+  const timelineTotal = card.querySelector(".timeline-total");
+
+  console.log('🔍 Timeline elements found:', {
+    wrapper: !!timelineWrapper,
+    track: !!timelineTrack,
+    startHandle: !!startHandle,
+    endHandle: !!endHandle
+  });
+
+  if (!songData.info || !songData.info.duration) {
+    console.log('⚠️ No video info, hiding timeline');
+    if (timelineWrapper) timelineWrapper.classList.add("hidden");
+    return;
+  }
+
+  console.log('✅ Showing timeline for video:', songData.info.title);
+  if (timelineWrapper) timelineWrapper.classList.remove("hidden");
+
+  const videoDuration = songData.info.duration;
+  console.log('📊 Video duration:', videoDuration, 'seconds');
+
+  // Create markers
+  renderTimelineMarkers(timelineMarkers, videoDuration);
+
+  // Update timeline positions
+  updateTimelinePositions(card, songData, videoDuration);
+
+  // Mouse/Touch event handlers for start handle
+  const onStartHandleDown = (e) => {
+    e.preventDefault();
+    startHandle.classList.add("dragging");
+    handleTimelineDragStart(e, card, songData, "start", videoDuration);
+  };
+
+  // Mouse/Touch event handlers for end handle
+  const onEndHandleDown = (e) => {
+    e.preventDefault();
+    endHandle.classList.add("dragging");
+    handleTimelineDragStart(e, card, songData, "end", videoDuration);
+  };
+
+  // Click on track to jump
+  const onTrackClick = (e) => {
+    const rect = timelineTrack.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+    const clickTime = percentage * videoDuration;
+
+    // Determine which handle to move (closer one)
+    const startTime = parseTimeSeconds(songData.startTime) || 0;
+    const endTime = parseTimeSeconds(songData.endTime) || 0;
+    const distToStart = Math.abs(clickTime - startTime);
+    const distToEnd = Math.abs(clickTime - endTime);
+
+    if (distToStart < distToEnd) {
+      // Move start handle
+      const newStart = Math.min(clickTime, endTime - 1);
+      songData.startTime = formatDuration(newStart);
+      card.querySelector(".start-time").value = songData.startTime;
+    } else {
+      // Move end handle
+      const newEnd = Math.max(clickTime, startTime + 1);
+      songData.endTime = formatDuration(newEnd);
+      card.querySelector(".end-time").value = songData.endTime;
+    }
+
+    updateTimelinePositions(card, songData, videoDuration);
+    checkTimeValidity(card, songData);
+    updateGenerateButton();
+    updateStats();
+  };
+
+  startHandle.addEventListener("mousedown", onStartHandleDown);
+  startHandle.addEventListener("touchstart", onStartHandleDown);
+
+  endHandle.addEventListener("mousedown", onEndHandleDown);
+  endHandle.addEventListener("touchstart", onEndHandleDown);
+
+  timelineTrack.addEventListener("click", onTrackClick);
+
+  // Keyboard navigation
+  startHandle.addEventListener("keydown", (e) => {
+    handleTimelineKeydown(e, card, songData, "start", videoDuration);
+  });
+
+  endHandle.addEventListener("keydown", (e) => {
+    handleTimelineKeydown(e, card, songData, "end", videoDuration);
+  });
+
+  // Store cleanup function
+  songData.timelineCleanup = () => {
+    startHandle.removeEventListener("mousedown", onStartHandleDown);
+    startHandle.removeEventListener("touchstart", onStartHandleDown);
+    endHandle.removeEventListener("mousedown", onEndHandleDown);
+    endHandle.removeEventListener("touchstart", onEndHandleDown);
+    timelineTrack.removeEventListener("click", onTrackClick);
+  };
+}
+
+/**
+ * Render timeline markers based on duration
+ */
+function renderTimelineMarkers(container, duration) {
+  container.innerHTML = "";
+
+  // Calculate marker intervals based on duration
+  let majorInterval, minorInterval;
+  if (duration <= 60) {
+    majorInterval = 10;
+    minorInterval = 5;
+  } else if (duration <= 300) {
+    majorInterval = 30;
+    minorInterval = 10;
+  } else {
+    majorInterval = 60;
+    minorInterval = 20;
+  }
+
+  // Add markers
+  for (let i = 0; i <= duration; i += minorInterval) {
+    const marker = document.createElement("div");
+    marker.className = `timeline-marker ${i % majorInterval === 0 ? "major" : ""}`;
+    
+    if (i % majorInterval === 0) {
+      marker.textContent = formatDuration(i);
+    }
+    
+    container.appendChild(marker);
+  }
+}
+
+/**
+ * Update timeline handle positions based on current times
+ */
+function updateTimelinePositions(card, songData, videoDuration) {
+  const timelineRange = card.querySelector(".timeline-range");
+  const startHandle = card.querySelector(".timeline-handle-start");
+  const endHandle = card.querySelector(".timeline-handle-end");
+  const timelineCurrentTime = card.querySelector(".timeline-current-time");
+  const timelineDuration = card.querySelector(".timeline-duration");
+  const timelineTotal = card.querySelector(".timeline-total");
+
+  const startTime = parseTimeSeconds(songData.startTime) || 0;
+  const endTime = parseTimeSeconds(songData.endTime) || 0;
+  const duration = Math.max(0, endTime - startTime);
+
+  const startPercent = (startTime / videoDuration) * 100;
+  const endPercent = (endTime / videoDuration) * 100;
+
+  // Update range
+  timelineRange.style.left = `${startPercent}%`;
+  timelineRange.style.width = `${Math.max(0, endPercent - startPercent)}%`;
+
+  // Update handles
+  startHandle.style.left = `${startPercent}%`;
+  endHandle.style.left = `${endPercent}%`;
+
+  // Update ARIA values
+  startHandle.setAttribute("aria-valuenow", Math.round(startPercent));
+  endHandle.setAttribute("aria-valuenow", Math.round(endPercent));
+
+  // Update time displays
+  timelineCurrentTime.textContent = formatDuration(startTime);
+  timelineDuration.textContent = `Duration: ${formatDuration(duration)}`;
+  timelineTotal.textContent = `Total: ${formatDuration(videoDuration)}`;
+
+  // Validate and show error state
+  const timelineTrack = card.querySelector(".timeline-track");
+  if (endTime <= startTime) {
+    timelineTrack.classList.add("invalid");
+  } else {
+    timelineTrack.classList.remove("invalid");
+  }
+}
+
+/**
+ * Handle timeline drag start
+ */
+function handleTimelineDragStart(e, card, songData, handleType, videoDuration) {
+  const timelineTrack = card.querySelector(".timeline-track");
+  const startHandle = card.querySelector(".timeline-handle-start");
+  const endHandle = card.querySelector(".timeline-handle-end");
+  const tooltip = document.createElement("div");
+  tooltip.className = "timeline-tooltip";
+
+  if (handleType === "start") {
+    startHandle.appendChild(tooltip);
+  } else {
+    endHandle.appendChild(tooltip);
+  }
+
+  const handleMove = (moveEvent) => {
+    handleTimelineDrag(moveEvent, card, songData, handleType, videoDuration, tooltip);
+  };
+
+  const handleUp = () => {
+    document.removeEventListener("mousemove", handleMove);
+    document.removeEventListener("mouseup", handleUp);
+    document.removeEventListener("touchmove", handleMove);
+    document.removeEventListener("touchend", handleUp);
+
+    startHandle.classList.remove("dragging");
+    endHandle.classList.remove("dragging");
+    tooltip.remove();
+
+    checkTimeValidity(card, songData);
+    updateGenerateButton();
+    updateStats();
+  };
+
+  document.addEventListener("mousemove", handleMove);
+  document.addEventListener("mouseup", handleUp);
+  document.addEventListener("touchmove", handleMove);
+  document.addEventListener("touchend", handleUp);
+}
+
+/**
+ * Handle timeline drag movement
+ */
+function handleTimelineDrag(e, card, songData, handleType, videoDuration, tooltip) {
+  const clientX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
+  const timelineTrack = card.querySelector(".timeline-track");
+  const rect = timelineTrack.getBoundingClientRect();
+
+  let percentage = (clientX - rect.left) / rect.width;
+  percentage = Math.max(0, Math.min(1, percentage));
+
+  const newTime = percentage * videoDuration;
+  const startTime = parseTimeSeconds(songData.startTime) || 0;
+  const endTime = parseTimeSeconds(songData.endTime) || 0;
+
+  if (handleType === "start") {
+    // Don't allow start handle to cross end handle
+    const maxStart = Math.max(0, endTime - 1);
+    const clampedTime = Math.min(newTime, maxStart);
+    songData.startTime = formatDuration(clampedTime);
+    card.querySelector(".start-time").value = songData.startTime;
+    tooltip.textContent = formatDuration(clampedTime);
+  } else {
+    // Don't allow end handle to cross start handle
+    const minEnd = Math.min(videoDuration, startTime + 1);
+    const clampedTime = Math.max(newTime, minEnd);
+    songData.endTime = formatDuration(clampedTime);
+    card.querySelector(".end-time").value = songData.endTime;
+    tooltip.textContent = formatDuration(clampedTime);
+  }
+
+  updateTimelinePositions(card, songData, videoDuration);
+}
+
+/**
+ * Handle keyboard navigation for timeline handles
+ */
+function handleTimelineKeydown(e, card, songData, handleType, videoDuration) {
+  const step = e.shiftKey ? 5 : 1; // Shift for larger steps
+  let startTime = parseTimeSeconds(songData.startTime) || 0;
+  let endTime = parseTimeSeconds(songData.endTime) || 0;
+
+  switch (e.key) {
+    case "ArrowLeft":
+    case "ArrowDown":
+      e.preventDefault();
+      if (handleType === "start") {
+        startTime = Math.max(0, startTime - step);
+        songData.startTime = formatDuration(startTime);
+        card.querySelector(".start-time").value = songData.startTime;
+      } else {
+        endTime = Math.max(startTime + 1, endTime - step);
+        songData.endTime = formatDuration(endTime);
+        card.querySelector(".end-time").value = songData.endTime;
+      }
+      break;
+
+    case "ArrowRight":
+    case "ArrowUp":
+      e.preventDefault();
+      if (handleType === "start") {
+        startTime = Math.min(endTime - 1, startTime + step);
+        songData.startTime = formatDuration(startTime);
+        card.querySelector(".start-time").value = songData.startTime;
+      } else {
+        endTime = Math.min(videoDuration, endTime + step);
+        songData.endTime = formatDuration(endTime);
+        card.querySelector(".end-time").value = songData.endTime;
+      }
+      break;
+
+    case "Home":
+      e.preventDefault();
+      if (handleType === "start") {
+        songData.startTime = formatDuration(0);
+        card.querySelector(".start-time").value = songData.startTime;
+      } else {
+        endTime = Math.max(startTime + 1, 1);
+        songData.endTime = formatDuration(endTime);
+        card.querySelector(".end-time").value = songData.endTime;
+      }
+      break;
+
+    case "End":
+      e.preventDefault();
+      if (handleType === "start") {
+        startTime = Math.max(0, endTime - 1);
+        songData.startTime = formatDuration(startTime);
+        card.querySelector(".start-time").value = songData.startTime;
+      } else {
+        songData.endTime = formatDuration(videoDuration);
+        card.querySelector(".end-time").value = songData.endTime;
+      }
+      break;
+
+    default:
+      return;
+  }
+
+  updateTimelinePositions(card, songData, videoDuration);
+  checkTimeValidity(card, songData);
+  updateGenerateButton();
+  updateStats();
 }
