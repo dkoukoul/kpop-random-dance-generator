@@ -89,7 +89,8 @@ api.get('/youtube/info', async (c) => {
     return c.json(info);
   } catch (error) {
     console.error('Error fetching video info:', error);
-    return c.json({ error: 'Failed to fetch video info' }, 500);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return c.json({ error: `Failed to fetch video info: ${errorMessage}` }, 500);
   }
 });
 
@@ -274,7 +275,7 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
     
     // Generate Report
     console.log(`Generating report for job ${jobId}...`);
-    const report = generateReport(segments);
+    const report = await generateReport(segments);
     const reportPath = await saveReport(report, jobId, TEMP_DIR);
     const reportFilename = reportPath.split('/').pop()!; // Extract filename
     
