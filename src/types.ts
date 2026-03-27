@@ -5,6 +5,7 @@ export interface SongSegment {
   title: string;
   startTime: string; // "MM:SS" or "HH:MM:SS"
   endTime: string;
+  artist?: string; // Optional channel/artist name for better band detection
 }
 
 export interface GenerateRequest {
