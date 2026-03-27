@@ -1440,21 +1440,47 @@ function renderTimelineMarkers(container, duration) {
   } else if (duration <= 300) {
     majorInterval = 30;
     minorInterval = 10;
-  } else {
+  } else if (duration <= 600) {
+    // For songs 10 minutes or less
     majorInterval = 60;
     minorInterval = 20;
+  } else if (duration <= 1800) {
+    // For songs 30 minutes or less
+    majorInterval = 300; // 5 minutes
+    minorInterval = 60;  // 1 minute
+  } else {
+    // For very long content (> 30 minutes)
+    majorInterval = 600; // 10 minutes
+    minorInterval = 120; // 2 minutes
   }
 
-  // Add markers
-  for (let i = 0; i <= duration; i += minorInterval) {
-    const marker = document.createElement("div");
-    marker.className = `timeline-marker ${i % majorInterval === 0 ? "major" : ""}`;
+  // Add markers - ensure we don't exceed the video duration
+  const markerCount = Math.floor(duration / minorInterval);
+  
+  for (let i = 0; i <= markerCount; i++) {
+    const time = i * minorInterval;
     
-    if (i % majorInterval === 0) {
-      marker.textContent = formatDuration(i);
+    // Skip if time exceeds duration
+    if (time > duration) break;
+    
+    const marker = document.createElement("div");
+    marker.className = `timeline-marker ${time % majorInterval === 0 ? "major" : ""}`;
+    
+    if (time % majorInterval === 0) {
+      marker.textContent = formatDuration(time);
     }
     
     container.appendChild(marker);
+  }
+  
+  // Always add a final marker at the exact end if it's not already there
+  const lastMarkerTime = markerCount * minorInterval;
+  if (lastMarkerTime < duration && duration - lastMarkerTime > minorInterval * 0.2) {
+    // Add end marker if there's significant time remaining (> 20% of interval)
+    const endMarker = document.createElement("div");
+    endMarker.className = "timeline-marker";
+    endMarker.textContent = formatDuration(duration);
+    container.appendChild(endMarker);
   }
 }
 
