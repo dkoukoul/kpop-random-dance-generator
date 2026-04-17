@@ -30,9 +30,24 @@ db.run(`
     generation_id INTEGER,
     youtube_url TEXT,
     title TEXT,
+    start_time TEXT,
+    end_time TEXT,
     FOREIGN KEY (generation_id) REFERENCES generations(id)
   )
 `);
+
+// Migration: Add start_time and end_time columns if they don't exist
+try {
+  db.run('ALTER TABLE generation_songs ADD COLUMN start_time TEXT');
+} catch (error) {
+  // Column already exists, ignore error
+}
+
+try {
+  db.run('ALTER TABLE generation_songs ADD COLUMN end_time TEXT');
+} catch (error) {
+  // Column already exists, ignore error
+}
 
 export async function logVisit(userAgent: string, ip: string) {
   try {
@@ -47,10 +62,10 @@ export async function logGeneration(jobId: string, segments: SongSegment[]) {
     const result = db.prepare('INSERT INTO generations (job_id, song_count) VALUES (?, ?)').run(jobId, segments.length);
     const generationId = result.lastInsertRowid;
 
-    const insertSong = db.prepare('INSERT INTO generation_songs (generation_id, youtube_url, title) VALUES (?, ?, ?)');
+    const insertSong = db.prepare('INSERT INTO generation_songs (generation_id, youtube_url, title, start_time, end_time) VALUES (?, ?, ?, ?, ?)');
     
     for (const segment of segments) {
-      insertSong.run(generationId, segment.youtubeUrl, segment.title);
+      insertSong.run(generationId, segment.youtubeUrl, segment.title, segment.startTime, segment.endTime);
     }
   } catch (error) {
     console.error('Failed to log generation:', error);
@@ -61,9 +76,9 @@ export function getStats() {
   const totalVisits = db.query('SELECT COUNT(*) as count FROM visits').get() as { count: number };
   const totalGenerations = db.query('SELECT COUNT(*) as count FROM generations').get() as { count: number };
   const topSongs = db.query(`
-    SELECT title, youtube_url, COUNT(*) as count 
+    SELECT title, youtube_url, start_time, end_time, COUNT(*) as count 
     FROM generation_songs 
-    GROUP BY youtube_url 
+    GROUP BY youtube_url, start_time, end_time 
     ORDER BY count DESC 
     LIMIT 10
   `).all();

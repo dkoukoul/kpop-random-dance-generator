@@ -84,8 +84,11 @@ async function refreshStats() {
     topSongsBody.innerHTML = "";
     data.topSongs.forEach((song) => {
       const tr = document.createElement("tr");
+      const timeInfo = song.start_time && song.end_time 
+        ? `<br><small style="color: var(--text-secondary)">Time: ${song.start_time} - ${song.end_time}</small>` 
+        : '';
       tr.innerHTML = `
-                <td>${song.title}</td>
+                <td>${song.title}${timeInfo}</td>
                 <td><strong>${song.count}</strong></td>
                 <td><a href="${song.youtube_url}" target="_blank" class="btn btn-secondary btn-sm" style="padding: 2px 8px; font-size: 0.75rem;">View</a></td>
             `;
