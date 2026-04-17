@@ -74,6 +74,15 @@ api.get('/stats', basicAuth({
 });
 
 /**
+ * GET /api/top-songs
+ * Get top 10 most used songs in generations (Public)
+ */
+api.get('/top-songs', async (c) => {
+  const stats = getStats();
+  return c.json(stats.topSongs);
+});
+
+/**
  * GET /api/youtube/info?url=...
  * Fetch video metadata from YouTube
  */

@@ -43,6 +43,8 @@ const elements = {
   searchResultTemplate: document.getElementById("searchResultTemplate"),
   bandBreakdown: document.getElementById("bandBreakdown"),
   varietyBar: document.getElementById("varietyBar"),
+  topSongsList: document.getElementById("topSongsList"),
+  topSongsLoading: document.getElementById("topSongsLoading"),
 };
 
 // Initialize
@@ -125,6 +127,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Track visit
   trackVisit();
+
+  // Load top songs
+  loadTopSongs();
 });
 
 /**
@@ -1154,6 +1159,116 @@ function displaySearchResults(results) {
 
     elements.searchResults.appendChild(item);
   });
+}
+
+/**
+ * Load top songs from analytics
+ */
+async function loadTopSongs() {
+  elements.topSongsLoading.classList.remove("hidden");
+  elements.topSongsList.innerHTML = "";
+
+  try {
+    const response = await fetch("/api/top-songs");
+    if (!response.ok) throw new Error("Failed to fetch top songs");
+
+    const topSongs = await response.json();
+    displayTopSongs(topSongs);
+  } catch (error) {
+    console.error("Error loading top songs:", error);
+    elements.topSongsList.innerHTML =
+      '<div class="top-songs-empty"><p>Unable to load top songs</p></div>';
+  } finally {
+    elements.topSongsLoading.classList.add("hidden");
+  }
+}
+
+/**
+ * Display top songs in the sidebar
+ */
+function displayTopSongs(topSongs) {
+  elements.topSongsList.innerHTML = "";
+
+  if (!topSongs || topSongs.length === 0) {
+    elements.topSongsList.innerHTML =
+      '<div class="top-songs-empty"><p>No songs generated yet</p></div>';
+    return;
+  }
+
+  topSongs.forEach((song, index) => {
+    const songItem = document.createElement("div");
+    songItem.className = "top-song-item";
+
+    // Extract YouTube video ID for thumbnail
+    const videoId = extractYouTubeVideoId(song.youtube_url);
+    const thumbnail = videoId 
+      ? `https://img.youtube.com/vi/${videoId}/default.jpg`
+      : "";
+
+    songItem.innerHTML = `
+      <div class="top-song-rank ${index < 3 ? "top-3" : ""}">${index + 1}</div>
+      <div class="top-song-thumbnail">
+        <img src="${thumbnail}" alt="Thumbnail" />
+      </div>
+      <div class="top-song-info">
+        <div class="top-song-title">${song.title || "Unknown Title"}</div>
+        <div class="top-song-channel">Used ${song.count} time${song.count > 1 ? "s" : ""}</div>
+      </div>
+      <button class="top-song-add-btn" title="Add to project">+</button>
+    `;
+
+    // Add click event to add song
+    songItem.querySelector(".top-song-add-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      addTopSongToProject(song);
+    });
+
+    // Also allow clicking the whole item
+    songItem.addEventListener("click", () => {
+      addTopSongToProject(song);
+    });
+
+    elements.topSongsList.appendChild(songItem);
+  });
+}
+
+/**
+ * Extract YouTube video ID from URL
+ */
+function extractYouTubeVideoId(url) {
+  if (!url) return null;
+  
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=)([\w-]+)/,
+    /(?:youtu\.be\/)([\w-]+)/,
+    /(?:youtube\.com\/shorts\/)([\w-]+)/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return match[1];
+  }
+
+  return null;
+}
+
+/**
+ * Add a top song to the project
+ */
+function addTopSongToProject(song) {
+  // Create a result object compatible with addSearchResultToProject
+  const videoId = extractYouTubeVideoId(song.youtube_url);
+  const result = {
+    url: song.youtube_url,
+    title: song.title || "Unknown Title",
+    channel: "",
+    thumbnail: videoId 
+      ? `https://img.youtube.com/vi/${videoId}/default.jpg`
+      : "",
+    duration: 180, // Default duration, will be updated when fetched
+  };
+
+  addSearchResultToProject(result);
 }
 
 /**
