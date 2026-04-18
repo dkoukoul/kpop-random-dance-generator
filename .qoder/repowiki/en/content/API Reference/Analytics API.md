@@ -7,10 +7,20 @@
 - [index.ts](file://src/index.ts)
 - [admin.html](file://public/admin.html)
 - [admin.js](file://public/app/admin.js)
+- [app.js](file://public/app/app.js)
+- [styles.css](file://public/css/styles.css)
 - [types.ts](file://src/types.ts)
 - [package.json](file://package.json)
 - [README.md](file://README.md)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Added documentation for the new `/api/top-songs` endpoint
+- Updated endpoint reference with comprehensive details
+- Added frontend integration documentation for the top songs feature
+- Enhanced response schema documentation with new endpoint data format
+- Updated architecture diagrams to reflect the new endpoint integration
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -28,9 +38,10 @@
 This document provides comprehensive API documentation for the analytics and administrative endpoints of the K-Pop Random Dance Generator. It focuses on:
 - POST /api/visit for user visit logging, including IP address handling and user agent parsing
 - GET /api/stats with basic authentication for retrieving analytics statistics
+- GET /api/top-songs for retrieving most frequently used songs in generated dances
 - Authentication setup examples, response schemas, security considerations, and privacy implications
 
-The analytics system persists visit logs and generation events in a SQLite database and exposes aggregated statistics to administrators via a protected endpoint.
+The analytics system persists visit logs and generation events in a SQLite database and exposes aggregated statistics to administrators via protected endpoints. The new top-songs endpoint provides real-time popularity insights for frontend integration.
 
 ## Project Structure
 The analytics API is implemented as part of a Hono-based Bun application. The relevant components are organized as follows:
@@ -38,6 +49,7 @@ The analytics API is implemented as part of a Hono-based Bun application. The re
 - Analytics service: src/services/analytics.ts
 - Application entry and routing: src/index.ts
 - Admin UI and client-side logic: public/admin.html, public/app/admin.js
+- Frontend application with top songs integration: public/app/app.js, public/css/styles.css
 - Shared types: src/types.ts
 - Project configuration: package.json, README.md
 
@@ -51,6 +63,8 @@ end
 subgraph "Public Assets"
 ADMIN_HTML["public/admin.html"]
 ADMIN_JS["public/app/admin.js"]
+APP_JS["public/app/app.js"]
+STYLES_CSS["public/css/styles.css"]
 end
 subgraph "Database"
 SQLITE["analytics.db"]
@@ -58,8 +72,10 @@ end
 IDX --> API
 API --> ANA
 ADMIN_HTML --> ADMIN_JS
+APP_JS --> API
 ADMIN_JS --> API
 ANA --> SQLITE
+APP_JS --> STYLES_CSS
 ```
 
 **Diagram sources**
@@ -68,42 +84,61 @@ ANA --> SQLITE
 - [analytics.ts:5](file://src/services/analytics.ts#L5)
 - [admin.html:213](file://public/admin.html#L213)
 - [admin.js:32](file://public/app/admin.js#L32)
+- [app.js:1167](file://public/app/app.js#L1167)
+- [styles.css:356](file://public/css/styles.css#L356)
 
 **Section sources**
 - [index.ts:1-68](file://src/index.ts#L1-L68)
-- [api.ts:1-297](file://src/routes/api.ts#L1-L297)
+- [api.ts:1-306](file://src/routes/api.ts#L1-L306)
 - [analytics.ts:1-92](file://src/services/analytics.ts#L1-L92)
 - [admin.html:1-216](file://public/admin.html#L1-L216)
 - [admin.js:1-106](file://public/app/admin.js#L1-L106)
+- [app.js:1160-1379](file://public/app/app.js#L1160-L1379)
+- [styles.css:356-515](file://public/css/styles.css#L356-L515)
 - [types.ts:1-45](file://src/types.ts#L1-L45)
 - [package.json:1-25](file://package.json#L1-L25)
 - [README.md:1-106](file://README.md#L1-L106)
 
 ## Core Components
 - Analytics service: Provides database initialization, visit logging, generation logging, and statistics aggregation.
-- API routes: Exposes POST /api/visit and GET /api/stats with basic authentication protection.
+- API routes: Exposes POST /api/visit, GET /api/stats (protected), and GET /api/top-songs (public) endpoints.
 - Admin UI: A browser-based dashboard that authenticates against /api/stats and displays analytics.
+- Frontend Integration: Real-time top songs display in the main application sidebar.
 
 Key responsibilities:
 - Visit logging captures user agent and IP address and stores them in the analytics database.
 - Statistics endpoint aggregates total visits, total generations, and top songs by usage count.
+- Top songs endpoint provides filtered data for frontend consumption without authentication.
 - Admin client constructs Basic Authentication headers and manages session state.
+- Frontend automatically loads and displays popular songs for user convenience.
 
 **Section sources**
 - [analytics.ts:52-91](file://src/services/analytics.ts#L52-L91)
-- [api.ts:56-74](file://src/routes/api.ts#L56-L74)
+- [api.ts:56-83](file://src/routes/api.ts#L56-L83)
 - [admin.js:23-46](file://public/app/admin.js#L23-L46)
+- [app.js:1167-1184](file://public/app/app.js#L1167-L1184)
 
 ## Architecture Overview
-The analytics API integrates with the frontend admin dashboard and the analytics database. The flow below illustrates how requests are handled and where data is persisted.
+The analytics API integrates with the frontend admin dashboard, main application, and the analytics database. The flow below illustrates how requests are handled and where data is persisted.
 
 ```mermaid
 sequenceDiagram
 participant Client as "Admin Browser"
+participant AppClient as "public/app/app.js"
 participant AdminJS as "public/app/admin.js"
 participant API as "src/routes/api.ts"
 participant Analytics as "src/services/analytics.ts"
 participant DB as "analytics.db"
+Client->>AppClient : "Load application"
+AppClient->>API : "GET /api/top-songs"
+API->>Analytics : "getStats()"
+Analytics->>DB : "SELECT COUNT(*) FROM visits"
+Analytics->>DB : "SELECT COUNT(*) FROM generations"
+Analytics->>DB : "SELECT title, youtube_url, start_time, end_time, COUNT(*) FROM generation_songs GROUP BY youtube_url, start_time, end_time ORDER BY count DESC LIMIT 10"
+DB-->>Analytics : "Aggregated stats"
+Analytics-->>API : "Stats object"
+API-->>AppClient : "JSON topSongs array"
+AppClient-->>Client : "Display popular songs"
 Client->>AdminJS : "Submit credentials"
 AdminJS->>API : "GET /api/stats<br/>Authorization : Basic ..."
 API->>Analytics : "getStats()"
@@ -117,7 +152,8 @@ AdminJS-->>Client : "Render dashboard"
 ```
 
 **Diagram sources**
-- [admin.js:32](file://public/app/admin.js#L32)
+- [app.js:1167](file://public/app/app.js#L1167)
+- [api.ts:76-83](file://src/routes/api.ts#L76-L83)
 - [api.ts:68-74](file://src/routes/api.ts#L68-L74)
 - [analytics.ts:75-91](file://src/services/analytics.ts#L75-L91)
 
@@ -189,6 +225,50 @@ Example response:
 - [api.ts:68-74](file://src/routes/api.ts#L68-L74)
 - [analytics.ts:75-91](file://src/services/analytics.ts#L75-L91)
 
+### GET /api/top-songs (Public)
+Purpose:
+- Retrieve the top 10 most frequently used songs in generated dances for frontend display.
+
+Authentication:
+- No authentication required.
+- Public endpoint designed for real-time frontend integration.
+
+Response schema:
+- Array of song objects with the same structure as topSongs in /api/stats:
+  - title: string
+  - youtube_url: string
+  - start_time: string or null
+  - end_time: string or null
+  - count: integer (usage count)
+
+Frontend integration:
+- Automatically loaded by the main application when the sidebar is opened.
+- Displays popular songs with thumbnails, rankings, and usage counts.
+- Allows users to quickly add popular songs to their projects.
+
+Example curl:
+- curl http://localhost:3000/api/top-songs
+
+Example response:
+- [
+  {
+    "title": "Song Title",
+    "youtube_url": "https://www.youtube.com/watch?v=...",
+    "start_time": "1:23",
+    "end_time": "2:45",
+    "count": 12
+  },
+  ...
+]
+
+**Updated** Added new endpoint for public access to top songs data
+
+**Section sources**
+- [api.ts:76-83](file://src/routes/api.ts#L76-L83)
+- [analytics.ts:75-91](file://src/services/analytics.ts#L75-L91)
+- [app.js:1167-1184](file://public/app/app.js#L1167-L1184)
+- [styles.css:356-515](file://public/css/styles.css#L356-L515)
+
 ### Admin Dashboard Integration
 The admin dashboard demonstrates:
 - Constructing Basic Authentication headers from username/password.
@@ -205,6 +285,26 @@ Client behavior highlights:
 - [admin.html:150-210](file://public/admin.html#L150-L210)
 - [admin.js:23-46](file://public/app/admin.js#L23-L46)
 - [admin.js:63-100](file://public/app/admin.js#L63-L100)
+
+### Frontend Top Songs Integration
+The main application integrates top songs data through:
+- Automatic loading when the sidebar opens.
+- Real-time display with visual rankings and thumbnails.
+- Click-to-add functionality for quick song insertion.
+- Responsive design with hover effects and loading states.
+
+Key frontend features:
+- Thumbnail extraction from YouTube URLs for visual appeal.
+- Usage count display showing popularity metrics.
+- Interactive elements allowing direct song addition to projects.
+- Loading indicators and error handling for network issues.
+
+**Updated** Added documentation for frontend integration of top songs feature
+
+**Section sources**
+- [app.js:1167-1184](file://public/app/app.js#L1167-L1184)
+- [app.js:1189-1233](file://public/app/app.js#L1189-L1233)
+- [styles.css:356-515](file://public/css/styles.css#L356-L515)
 
 ### Analytics Data Model
 The analytics database schema includes:
@@ -225,6 +325,7 @@ The analytics API depends on:
 - Bun SQLite for local analytics storage
 - Environment variables for admin credentials
 - Frontend admin assets for authentication and display
+- Frontend application assets for top songs display
 
 ```mermaid
 graph LR
@@ -233,6 +334,8 @@ API_TS --> BASIC_AUTH["hono/basic-auth"]
 API_TS --> ANALYTICS_TS["src/services/analytics.ts"]
 ANALYTICS_TS --> SQLITE["bun:sqlite"]
 ADMIN_JS["public/app/admin.js"] --> API_TS
+APP_JS["public/app/app.js"] --> API_TS
+APP_JS --> STYLES_CSS["public/css/styles.css"]
 ```
 
 **Diagram sources**
@@ -240,19 +343,21 @@ ADMIN_JS["public/app/admin.js"] --> API_TS
 - [package.json:20-23](file://package.json#L20-L23)
 - [analytics.ts:1](file://src/services/analytics.ts#L1)
 - [admin.js:32](file://public/app/admin.js#L32)
+- [app.js:1167](file://public/app/app.js#L1167)
 
 **Section sources**
 - [api.ts:1-10](file://src/routes/api.ts#L1-L10)
 - [package.json:20-23](file://package.json#L20-L23)
 - [analytics.ts:1](file://src/services/analytics.ts#L1)
 - [admin.js:32](file://public/app/admin.js#L32)
+- [app.js:1167](file://public/app/app.js#L1167)
 
 ## Performance Considerations
 - SQLite is used for local analytics storage; it is lightweight and suitable for small to medium loads.
 - The stats query performs aggregations on the analytics tables; ensure indexes are considered if scaling significantly.
 - The admin dashboard fetches stats periodically; consider caching or throttling to reduce load.
-
-[No sources needed since this section provides general guidance]
+- The top-songs endpoint is designed for frequent frontend polling; consider implementing client-side caching to reduce server load.
+- Thumbnail generation for top songs adds some overhead; ensure efficient image loading and caching.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -265,17 +370,20 @@ Common issues and resolutions:
   - Confirm analytics.db is writable and accessible by the process.
 - CORS or static asset serving:
   - The application serves static files from public; ensure paths are correct.
+- Top songs loading failures:
+  - Verify the analytics database contains generation data.
+  - Check network connectivity for frontend requests.
+  - Ensure the frontend has proper error handling for failed requests.
 
 **Section sources**
 - [api.ts:68-74](file://src/routes/api.ts#L68-L74)
 - [api.ts:56-62](file://src/routes/api.ts#L56-L62)
+- [api.ts:76-83](file://src/routes/api.ts#L76-L83)
 - [analytics.ts:5](file://src/services/analytics.ts#L5)
 - [index.ts:45-57](file://src/index.ts#L45-L57)
 
 ## Conclusion
-The analytics API provides essential visit and generation tracking with a simple admin interface. It uses Basic Authentication for access control and SQLite for persistent storage. Administrators can monitor usage trends and popular songs through the dashboard. For production deployments, consider environment variable management, data retention policies, and privacy-compliant handling of IP addresses and user agents.
-
-[No sources needed since this section summarizes without analyzing specific files]
+The analytics API provides essential visit and generation tracking with a simple admin interface and enhanced frontend integration. It uses Basic Authentication for access control and SQLite for persistent storage. Administrators can monitor usage trends and popular songs through the dashboard, while users benefit from real-time popularity insights in the main application. The new /api/top-songs endpoint enables seamless frontend integration without authentication requirements. For production deployments, consider environment variable management, data retention policies, and privacy-compliant handling of IP addresses and user agents.
 
 ## Appendices
 
@@ -293,34 +401,50 @@ The analytics API provides essential visit and generation tracking with a simple
   - Query: None
   - Response: 200 OK with JSON containing totalVisits, totalGenerations, and topSongs
 
+- GET /api/top-songs
+  - Authentication: None (Public)
+  - Query: None
+  - Response: 200 OK with JSON array of top 10 songs
+
+**Updated** Added new endpoint reference for /api/top-songs
+
 **Section sources**
 - [api.ts:56-62](file://src/routes/api.ts#L56-L62)
 - [api.ts:68-74](file://src/routes/api.ts#L68-L74)
+- [api.ts:76-83](file://src/routes/api.ts#L76-L83)
 
 ### Authentication Setup Examples
 
 - Using curl:
   - POST /api/visit: curl -X POST http://localhost:3000/api/visit -H "User-Agent: ..." -H "X-Forwarded-For: ..."
   - GET /api/stats: curl -u username:password http://localhost:3000/api/stats
+  - GET /api/top-songs: curl http://localhost:3000/api/top-songs
 
 - From browser JavaScript:
   - Construct Authorization header with Basic scheme using username and password.
   - Store the header in localStorage for subsequent requests.
+  - Access /api/top-songs without authentication for frontend integration.
+
+**Updated** Added curl example for new public endpoint
 
 **Section sources**
 - [admin.js:28-34](file://public/app/admin.js#L28-L34)
 - [admin.js:65-67](file://public/app/admin.js#L65-L67)
+- [app.js:1167](file://public/app/app.js#L1167)
 
 ### Data Retention and Privacy Considerations
 - Data retained:
   - Visit logs include timestamps, user agent, and IP address.
   - Generation logs include timestamps, job identifiers, and song metadata.
+  - Usage counts track song popularity without storing personal identifiers.
 - Privacy implications:
   - IP addresses are stored; consider anonymization or deletion policies.
   - User agents may reveal device/browser details; ensure compliance with applicable privacy laws.
+  - Top songs data is publicly accessible; ensure no sensitive information is exposed.
 - Recommendations:
   - Implement explicit retention periods and automated cleanup.
   - Provide opt-out mechanisms or anonymization options where feasible.
   - Review and document data processing activities in accordance with privacy regulations.
+  - Consider rate limiting for the /api/top-songs endpoint to prevent abuse.
 
-[No sources needed since this section provides general guidance]
+**Updated** Added privacy considerations for new public endpoint
