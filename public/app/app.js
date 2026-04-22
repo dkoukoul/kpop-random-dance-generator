@@ -45,6 +45,10 @@ const elements = {
   varietyBar: document.getElementById("varietyBar"),
   topSongsList: document.getElementById("topSongsList"),
   topSongsLoading: document.getElementById("topSongsLoading"),
+  duplicateModal: document.getElementById("duplicateModal"),
+  duplicateList: document.getElementById("duplicateList"),
+  removeDuplicatesBtn: document.getElementById("removeDuplicatesBtn"),
+  proceedWithDuplicatesBtn: document.getElementById("proceedWithDuplicatesBtn"),
 };
 
 // Initialize
@@ -438,30 +442,176 @@ async function fetchVideoInfo(card, songData) {
 }
 
 /**
- * Generate the random dance audio
+ * Find duplicate songs based on YouTube video ID
+ * Returns an array of duplicate groups
  */
-async function generateRandomDance() {
-  if (state.isGenerating) return;
+function findDuplicates() {
+  const urlMap = new Map();
 
-  // Validate segments
-  let segments = state.songs
-    .filter((song) => song.youtubeUrl && song.youtubeUrl.trim() !== "")
-    .map((song) => ({
-      youtubeUrl: song.youtubeUrl,
-      title: song.title || "Song", // Fallback title if not fetched
-      startTime: song.startTime || "0:00",
-      endTime: song.endTime || "0:30",
-      artist: song.info?.channel || "", // Include channel for band detection
-    }));
+  state.songs.forEach((song, index) => {
+    if (!song.youtubeUrl || !song.youtubeUrl.trim()) return;
 
-  if (segments.length === 0) {
-    alert("Please add at least one song with a valid URL");
-    return;
+    const videoId = extractYouTubeVideoId(song.youtubeUrl);
+    if (!videoId) return;
+
+    if (!urlMap.has(videoId)) {
+      urlMap.set(videoId, []);
+    }
+    urlMap.get(videoId).push({ index, song });
+  });
+
+  const duplicates = [];
+  for (const [videoId, occurrences] of urlMap.entries()) {
+    if (occurrences.length > 1) {
+      duplicates.push({
+        videoId,
+        occurrences,
+        title: occurrences[0].song.title || occurrences[0].song.youtubeUrl,
+      });
+    }
   }
 
-  // Shuffle if enabled
-  if (state.shuffleEnabled) {
-    segments = shuffleArray([...segments]);
+  return duplicates;
+}
+
+/**
+ * Show the duplicate detection modal
+ */
+function showDuplicateModal(duplicates, segments) {
+  // Build the duplicate list HTML
+  elements.duplicateList.innerHTML = "";
+
+  duplicates.forEach((group) => {
+    const groupEl = document.createElement("div");
+    groupEl.className = "duplicate-group";
+
+    const headerEl = document.createElement("div");
+    headerEl.className = "duplicate-group-header";
+
+    const badgeEl = document.createElement("span");
+    badgeEl.className = "duplicate-badge";
+    badgeEl.textContent = `${group.occurrences.length}x`;
+
+    const titleEl = document.createElement("span");
+    titleEl.className = "duplicate-group-title";
+    titleEl.textContent = group.title || "Unknown Song";
+    titleEl.title = group.title || "Unknown Song";
+
+    headerEl.appendChild(badgeEl);
+    headerEl.appendChild(titleEl);
+
+    const detailsEl = document.createElement("ul");
+    detailsEl.className = "duplicate-group-details";
+
+    group.occurrences.forEach((occ) => {
+      const li = document.createElement("li");
+      const start = occ.song.startTime || "0:00";
+      const end = occ.song.endTime || "0:30";
+      li.textContent = `Song #${occ.index + 1}: ${start} → ${end}`;
+      detailsEl.appendChild(li);
+    });
+
+    groupEl.appendChild(headerEl);
+    groupEl.appendChild(detailsEl);
+    elements.duplicateList.appendChild(groupEl);
+  });
+
+  // Show modal
+  elements.duplicateModal.classList.remove("hidden");
+
+  // Handle button clicks
+  const onRemoveDuplicates = () => {
+    cleanupModalListeners();
+    closeDuplicateModal();
+    removeDuplicatesAndGenerate(segments);
+  };
+
+  const onProceedWithDuplicates = () => {
+    cleanupModalListeners();
+    closeDuplicateModal();
+    startGeneration(segments);
+  };
+
+  const onOverlayClick = (e) => {
+    if (e.target === elements.duplicateModal) {
+      // Clicked outside dialog - do nothing, require explicit choice
+    }
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Escape") {
+      // Close modal without generating
+      cleanupModalListeners();
+      closeDuplicateModal();
+    }
+  };
+
+  function cleanupModalListeners() {
+    elements.removeDuplicatesBtn.removeEventListener("click", onRemoveDuplicates);
+    elements.proceedWithDuplicatesBtn.removeEventListener("click", onProceedWithDuplicates);
+    elements.duplicateModal.removeEventListener("click", onOverlayClick);
+    document.removeEventListener("keydown", onKeyDown);
+  }
+
+  elements.removeDuplicatesBtn.addEventListener("click", onRemoveDuplicates);
+  elements.proceedWithDuplicatesBtn.addEventListener("click", onProceedWithDuplicates);
+  elements.duplicateModal.addEventListener("click", onOverlayClick);
+  document.addEventListener("keydown", onKeyDown);
+}
+
+/**
+ * Close the duplicate detection modal
+ */
+function closeDuplicateModal() {
+  elements.duplicateModal.classList.add("hidden");
+}
+
+/**
+ * Remove duplicate songs (keep first occurrence) and generate
+ */
+function removeDuplicatesAndGenerate(originalSegments) {
+  const seenVideoIds = new Set();
+  const uniqueSegments = [];
+
+  for (const segment of originalSegments) {
+    const videoId = extractYouTubeVideoId(segment.youtubeUrl);
+    if (videoId && seenVideoIds.has(videoId)) {
+      continue;
+    }
+    if (videoId) {
+      seenVideoIds.add(videoId);
+    }
+    uniqueSegments.push(segment);
+  }
+
+  // Also update the state.songs array to remove duplicates visually
+  const seenIndices = new Set();
+  const uniqueSongs = [];
+  state.songs.forEach((song) => {
+    const videoId = extractYouTubeVideoId(song.youtubeUrl);
+    if (videoId && seenIndices.has(videoId)) {
+      return;
+    }
+    if (videoId) {
+      seenIndices.add(videoId);
+    }
+    uniqueSongs.push(song);
+  });
+
+  state.songs = uniqueSongs;
+  rebuildSongList();
+
+  startGeneration(uniqueSegments);
+}
+
+/**
+ * Start the actual generation process
+ */
+async function startGeneration(segments) {
+  if (segments.length === 0) {
+    alert("No valid songs remaining after removing duplicates.");
+    resetGenerateButton();
+    return;
   }
 
   state.isGenerating = true;
@@ -498,6 +648,43 @@ async function generateRandomDance() {
     alert("Failed to generate audio: " + error.message);
     resetGenerateButton();
   }
+}
+
+/**
+ * Generate the random dance audio
+ */
+async function generateRandomDance() {
+  if (state.isGenerating) return;
+
+  // Validate segments
+  let segments = state.songs
+    .filter((song) => song.youtubeUrl && song.youtubeUrl.trim() !== "")
+    .map((song) => ({
+      youtubeUrl: song.youtubeUrl,
+      title: song.title || "Song", // Fallback title if not fetched
+      startTime: song.startTime || "0:00",
+      endTime: song.endTime || "0:30",
+      artist: song.info?.channel || "", // Include channel for band detection
+    }));
+
+  if (segments.length === 0) {
+    alert("Please add at least one song with a valid URL");
+    return;
+  }
+
+  // Shuffle if enabled
+  if (state.shuffleEnabled) {
+    segments = shuffleArray([...segments]);
+  }
+
+  // Check for duplicates
+  const duplicates = findDuplicates();
+  if (duplicates.length > 0) {
+    showDuplicateModal(duplicates, segments);
+    return;
+  }
+
+  await startGeneration(segments);
 }
 
 /**
@@ -1041,7 +1228,7 @@ function updateStats() {
       // Add countdown (5s) for each segment
       totalSeconds += 5;
     }
-
+    console.log(`Song: ${song.title}, Duration: ${totalSeconds}`);
     // Band Variety counting
     let band = "Unknown";
     if (song.info) {

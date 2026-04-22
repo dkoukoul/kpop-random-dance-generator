@@ -19,10 +19,9 @@
 
 ## Update Summary
 **Changes Made**
-- Added new Top Songs feature implementation with frontend components and UI styling
-- Integrated analytics backend for trending K-pop song discovery
-- Added social discovery mechanism for popular songs in generated dances
-- Enhanced admin dashboard with popularity tracking and management
+- Updated search results display behavior documentation to reflect removal of automatic scrolling
+- Clarified current search results display characteristics and interaction model
+- Enhanced documentation for YouTube search functionality with improved visual presentation details
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -37,13 +36,13 @@
 
 ## Introduction
 This document explains the major feature implementations in the frontend application for the K-Pop Random Dance Generator. It focuses on:
-- YouTube search and metadata integration
+- YouTube search and metadata integration with enhanced visual presentation
 - Song segment management (drag-and-drop, manual URL entry, bulk operations)
 - Real-time validation (time inputs, URL verification)
 - Project management (import/export, shuffle, view modes)
 - Statistics visualization (duration, song count, band variety)
 - Progress tracking during audio generation, error handling, and user feedback
-- **New Top Songs feature with social discovery mechanism for trending K-pop songs**
+- **Enhanced Top Songs feature with social discovery mechanism for trending K-pop songs**
 - Performance optimization techniques for large datasets and smooth interactions
 
 ## Project Structure
@@ -105,7 +104,7 @@ CSS --> ADM
 - Templates: reusable song card and search result templates for dynamic rendering
 - Event-driven UI: input debouncing, drag-and-drop reordering, real-time validation, and progress polling
 - Backend integration: YouTube search/info, generation job lifecycle, and download/report endpoints
-- **Top Songs Discovery: Social discovery mechanism for trending K-pop songs with real-time popularity tracking**
+- **Enhanced Top Songs Discovery: Social discovery mechanism for trending K-pop songs with real-time popularity tracking**
 
 **Section sources**
 - [app.js:5-46](file://public/app/app.js#L5-L46)
@@ -113,7 +112,7 @@ CSS --> ADM
 - [app.js:108-128](file://public/app/app.js#L108-L128)
 
 ## Architecture Overview
-The frontend communicates with backend endpoints to manage YouTube metadata, generate audio, and download results. The backend orchestrates yt-dlp and FFmpeg, manages job state, and persists analytics. The new Top Songs feature integrates with the analytics system to provide social discovery capabilities.
+The frontend communicates with backend endpoints to manage YouTube metadata, generate audio, and download results. The backend orchestrates yt-dlp and FFmpeg, manages job state, and persists analytics. The enhanced Top Songs feature integrates with the analytics system to provide social discovery capabilities with improved visual presentation.
 
 ```mermaid
 sequenceDiagram
@@ -159,10 +158,13 @@ FE->>FE : Show download link
 ## Detailed Component Analysis
 
 ### YouTube Search and Metadata Integration
-- Search: Debounced input triggers search endpoint; results are rendered in the sidebar with thumbnails and durations
-- Info: On URL input/paste or manual fetch, the frontend requests video info; on success, it populates the song card and initializes the timeline
-- URL cleaning: Normalizes short URLs and extracts canonical YouTube watch URLs
-- Validation: Real-time URL validation prevents invalid requests
+**Updated** The search functionality maintains its core functionality while enhancing the visual presentation and interaction model. The search results display behavior has been modified to remove automatic scrolling behavior, providing a more controlled user experience.
+
+- **Search Implementation**: Debounced input triggers search endpoint; results are rendered in the sidebar with thumbnails and durations
+- **Enhanced Visual Presentation**: Results display with improved styling, hover effects, and custom scrollbar
+- **Info Retrieval**: On URL input/paste or manual fetch, the frontend requests video info; on success, it populates the song card and initializes the timeline
+- **URL Cleaning**: Normalizes short URLs and extracts canonical YouTube watch URLs
+- **Validation**: Real-time URL validation prevents invalid requests
 
 ```mermaid
 sequenceDiagram
@@ -174,7 +176,7 @@ FE->>API : GET /api/youtube/search?q=query
 API->>YT : searchVideos(query)
 YT-->>API : VideoInfo[]
 API-->>FE : VideoInfo[]
-FE->>FE : Render search results
+FE->>FE : Render search results (no automatic scroll)
 FE->>API : GET /api/youtube/info?url=...
 API->>YT : getVideoInfo(url)
 YT-->>API : VideoInfo
@@ -199,12 +201,42 @@ FE->>FE : Update song card, show timeline
 - [youtube.ts:12-81](file://src/services/youtube.ts#L12-L81)
 - [youtube.ts:83-161](file://src/services/youtube.ts#L83-L161)
 
+### Enhanced Search Results Display Behavior
+**Updated** The search results display behavior has been refined to provide a more controlled and predictable user experience by removing automatic scrolling behavior.
+
+- **Manual Scrolling Control**: Users can manually scroll through search results without automatic viewport adjustments
+- **Improved Visual Feedback**: Enhanced hover states and custom scrollbar styling for better interaction
+- **Responsive Design**: Maintains optimal display across different screen sizes and device orientations
+- **Accessibility**: Preserves keyboard navigation and screen reader compatibility
+- **Performance Optimization**: Reduces DOM manipulation overhead by avoiding automatic scroll positioning
+
+```mermaid
+flowchart TD
+Start(["User performs search"]) --> Results["Display results in sidebar"]
+Results --> ManualScroll["User can manually scroll results"]
+ManualScroll --> NoAutoScroll["No automatic scrolling behavior"]
+NoAutoScroll --> HoverEffects["Hover effects remain active"]
+HoverEffects --> AddSong["Click add button to add song"]
+AddSong --> PopulateCard["Populate song card with video info"]
+PopulateCard --> InitTimeline["Initialize timeline controls"]
+```
+
+**Diagram sources**
+- [app.js:1136-1162](file://public/app/app.js#L1136-L1162)
+- [styles.css:225-244](file://public/css/styles.css#L225-L244)
+- [styles.css:254-270](file://public/css/styles.css#L254-L270)
+
+**Section sources**
+- [app.js:1136-1162](file://public/app/app.js#L1136-L1162)
+- [styles.css:225-244](file://public/css/styles.css#L225-L244)
+- [styles.css:254-270](file://public/css/styles.css#L254-L270)
+
 ### Top Songs Discovery System
-**New Feature** - Social discovery mechanism for trending K-pop songs
+**New Feature** - Enhanced social discovery mechanism for trending K-pop songs with improved visual presentation
 
 - **Real-time Popularity Tracking**: The system tracks which songs are most frequently used in generated dances through analytics logging
 - **Automatic Trending Display**: Top 10 most popular songs are automatically displayed in the sidebar with rank indicators
-- **Visual Popularity Indicators**: Songs are ranked with special styling for top 3 positions (gold/red gradient)
+- **Enhanced Visual Popularity Indicators**: Songs are ranked with special styling for top 3 positions (gold/red gradient)
 - **Direct Integration**: Users can add popular songs directly to their project with a single click
 - **YouTube Thumbnail Integration**: Popular songs display YouTube thumbnails for better recognition
 - **Admin Dashboard**: Administrators can view detailed popularity statistics and song usage patterns
@@ -456,7 +488,7 @@ AnalyticsService --> Database : "SQLite"
 - Frontend depends on backend endpoints for YouTube metadata, generation, downloads, and analytics
 - Backend depends on yt-dlp and FFmpeg binaries; SQLite for analytics
 - Services share common types and utilities for time parsing/formatting
-- **Top Songs feature depends on analytics service for popularity tracking and admin dashboard for management**
+- **Enhanced Top Songs feature depends on analytics service for popularity tracking and admin dashboard for management**
 
 ```mermaid
 graph LR
@@ -495,7 +527,8 @@ REP --> TYPES
 - Minimal DOM manipulation: Timeline updates compute positions and apply CSS classes efficiently
 - Background processing: Generation runs asynchronously; UI remains responsive with polling
 - Large dataset handling: Timeline markers scale by duration; keyboard navigation supports fine-grained adjustments
-- **Top Songs caching: Analytics data is cached and refreshed periodically to minimize database queries**
+- **Enhanced Search Performance**: Improved search results display with manual scrolling control reduces layout thrashing and improves responsiveness
+- **Top Songs caching**: Analytics data is cached and refreshed periodically to minimize database queries
 
 ## Troubleshooting Guide
 - YouTube URL issues: Ensure URLs are valid YouTube links; the frontend cleans short URLs and validates formats
@@ -503,7 +536,8 @@ REP --> TYPES
 - Empty search results: Confirm network connectivity and that yt-dlp is available at configured path
 - Progress stuck: Verify job ID exists and polling continues; inspect status endpoint responses
 - Analytics not updating: Confirm SQLite database initialization and write permissions
-- **Top Songs not loading: Check /api/top-songs endpoint returns data; verify analytics logging is working; ensure database has generation records**
+- **Search results not displaying properly**: Check that search results container has proper height constraints and custom scrollbar styling
+- **Top Songs not loading**: Check /api/top-songs endpoint returns data; verify analytics logging is working; ensure database has generation records
 
 **Section sources**
 - [app.js:605-634](file://public/app/app.js#L605-L634)
@@ -513,8 +547,8 @@ REP --> TYPES
 - [analytics.ts:75-91](file://src/services/analytics.ts#L75-L91)
 
 ## Conclusion
-The frontend integrates seamlessly with backend services to deliver a robust, user-friendly experience for creating K-Pop random dance mixes. Its features—YouTube search, precise time editing, real-time validation, project management, statistics visualization, and progress tracking—are implemented with performance and usability in mind. 
+The frontend integrates seamlessly with backend services to deliver a robust, user-friendly experience for creating K-Pop random dance mixes. Its features—YouTube search, precise time editing, real-time validation, project management, statistics visualization, and progress tracking—are implemented with performance and usability in mind.
 
-**The new Top Songs feature significantly enhances the user experience by providing social discovery capabilities for trending K-pop songs. Through real-time popularity tracking and analytics integration, users can easily discover and incorporate the most popular songs in generated dances, creating a more engaging and community-driven experience. The feature includes comprehensive admin dashboard support for monitoring and managing popularity metrics, making it a valuable addition to the platform's social features.**
+**The enhanced Top Songs feature significantly improves the user experience by providing social discovery capabilities for trending K-pop songs. The recent enhancement to search results display behavior removes automatic scrolling, providing users with more control over their search experience while maintaining the visual appeal and functionality of the search interface. Through real-time popularity tracking and analytics integration, users can easily discover and incorporate the most popular songs in generated dances, creating a more engaging and community-driven experience. The feature includes comprehensive admin dashboard support for monitoring and managing popularity metrics, making it a valuable addition to the platform's social features.**
 
-The modular backend architecture scales well for future enhancements while maintaining reliability, with the Top Songs feature demonstrating the platform's commitment to community engagement and social discovery.
+The modular backend architecture scales well for future enhancements while maintaining reliability, with the enhanced Top Songs feature demonstrating the platform's commitment to community engagement and social discovery.

@@ -368,6 +368,32 @@
       </div>
     </template>
 
+    <!-- Duplicate Detection Modal -->
+    <div id="duplicateModal" class="modal-overlay hidden">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <span class="modal-icon">⚠️</span>
+          <h3>Duplicate Songs Detected</h3>
+        </div>
+        <div class="modal-body">
+          <p class="modal-message">
+            We found duplicate songs in your list. You can remove duplicates and keep only the first occurrence of each song, or proceed with all songs as they are.
+          </p>
+          <div id="duplicateList" class="duplicate-list"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="removeDuplicatesBtn" class="btn btn-primary">
+            <span class="btn-icon">🗑️</span>
+            Remove Duplicates & Generate
+          </button>
+          <button id="proceedWithDuplicatesBtn" class="btn btn-secondary">
+            <span class="btn-icon">▶️</span>
+            Proceed with Duplicates
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="app/app.js?v=2"></script>
   </body>
 </html>

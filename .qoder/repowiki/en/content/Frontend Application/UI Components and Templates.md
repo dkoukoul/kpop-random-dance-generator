@@ -9,6 +9,13 @@
 - [index.ts](file://src/index.ts)
 </cite>
 
+## Update Summary
+**Changes Made**
+- Updated Search Results Section documentation to reflect removal of scrollable behavior
+- Modified sizing and scrolling behavior description for search results container
+- Updated component analysis to show non-scrollable search results layout
+- Revised responsive design patterns to account for new search results behavior
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
@@ -51,14 +58,14 @@ ENTRY --> API
 ```
 
 **Diagram sources**
-- [index.html:1-360](file://public/index.html#L1-L360)
+- [index.html:1-374](file://public/index.html#L1-L374)
 - [styles.css:1-800](file://public/css/styles.css#L1-L800)
 - [app.js:1-800](file://public/app/app.js#L1-L800)
 - [api.ts:1-297](file://src/routes/api.ts#L1-L297)
 - [index.ts:1-68](file://src/index.ts#L1-L68)
 
 **Section sources**
-- [index.html:1-360](file://public/index.html#L1-L360)
+- [index.html:1-374](file://public/index.html#L1-L374)
 - [styles.css:1-800](file://public/css/styles.css#L1-L800)
 - [app.js:1-800](file://public/app/app.js#L1-L800)
 
@@ -125,7 +132,7 @@ subgraph "Search Sidebar"
 SIDEBAR[Search Sidebar]
 SEARCHBOX[Search Box]
 RESULTS[Search Results]
-end
+END
 subgraph "Segments Area"
 SONGSECTION[Song Section]
 STATS[Statistics Bar]
@@ -242,10 +249,20 @@ Key features include:
 
 ### Search Result Template
 
-The search result component provides quick addition of songs to the project:
+**Updated** The search results container now uses a non-scrollable flex layout instead of a scrollable container.
+
+The search result component provides quick addition of songs to the project with improved layout behavior:
 
 ```mermaid
 classDiagram
+class SearchResultContainer {
++display : flex
++flex-direction : column
++gap : var(--spacing-sm)
++padding-right : var(--spacing-xs)
++no flex : 1
++no overflow-y : auto
+}
 class SearchResultItem {
 +thumbnail : Video Thumbnail
 +duration : Video Duration Badge
@@ -257,16 +274,19 @@ class HoverState {
 +border-color : var(--border-color)
 +add-button : opacity : 1
 }
+SearchResultContainer --> SearchResultItem
 SearchResultItem --> HoverState
 ```
 
 **Diagram sources**
 - [index.html:342-355](file://public/index.html#L342-L355)
+- [styles.css:225-230](file://public/css/styles.css#L225-L230)
 - [styles.css:257-273](file://public/css/styles.css#L257-L273)
 - [styles.css:322-347](file://public/css/styles.css#L322-L347)
 
 **Section sources**
 - [index.html:342-355](file://public/index.html#L342-L355)
+- [styles.css:225-230](file://public/css/styles.css#L225-L230)
 - [styles.css:257-347](file://public/css/styles.css#L257-L347)
 
 ### Modal Components
@@ -363,17 +383,17 @@ subgraph "Desktop Layout"
 DESKTOP[Desktop: 70%/30% Split]
 SIDEBAR_WIDTH[40% Width]
 CONTENT_WIDTH[60% Width]
-end
+END
 subgraph "Mobile Layout"
 MOBILE[Mobile: Column Layout]
 STACKED[Stacked Sidebar + Content]
 FULL_WIDTH[Full Width Components]
-end
+END
 subgraph "Breakpoints"
 BP1[1200px: Hide Ads]
 BP2[900px: Stack Layout]
 BP3[640px: Mobile Optimizations]
-end
+END
 DESKTOP --> BP1
 BP1 --> MOBILE
 BP2 --> MOBILE
@@ -411,22 +431,22 @@ graph TD
 subgraph "HTML Templates"
 TEMPLATE1[Song Card Template]
 TEMPLATE2[Search Result Template]
-end
+END
 subgraph "CSS Dependencies"
 STYLES[Global Styles]
 GLASSMORPHISM[Backdrop Filter Effects]
 ANIMATIONS[Transition Effects]
-end
+END
 subgraph "JavaScript Logic"
 STATE[State Management]
 EVENTS[Event Handlers]
 VALIDATION[Form Validation]
-end
+END
 subgraph "Backend Integration"
 API[API Routes]
 SERVICES[YT Services]
 AUDIO[Audio Processing]
-end
+END
 TEMPLATE1 --> STATE
 TEMPLATE2 --> STATE
 STATE --> EVENTS
@@ -504,6 +524,12 @@ The interface features smooth animations and transitions:
 **Solution**: Verify media query breakpoints and flex properties
 **Debug Steps**: Test on various screen sizes, inspect computed styles
 
+#### Search Results Display Issues
+
+**Issue**: Search results not filling available space
+**Solution**: Search results container now uses flex column layout without scroll
+**Debug Steps**: Check that search results container has proper gap and padding values
+
 **Section sources**
 - [app.js:1315-1427](file://public/app/app.js#L1315-L1427)
 - [styles.css:1515-1547](file://public/css/styles.css#L1515-L1547)
@@ -513,3 +539,5 @@ The interface features smooth animations and transitions:
 The K-Pop Random Dance Generator demonstrates a sophisticated implementation of modern web design principles. The glassmorphism UI system, combined with a robust template-based component architecture, creates an intuitive and visually appealing user experience. The application successfully balances aesthetic appeal with functional requirements, providing users with powerful tools for creating custom dance practice mixes while maintaining excellent performance and accessibility standards.
 
 The modular design allows for easy maintenance and extension, while the comprehensive responsive design ensures optimal user experience across all device types. The integration of advanced interactive elements, including draggable song cards and precise timeline controls, showcases the application's commitment to providing professional-grade functionality for K-Pop dance enthusiasts.
+
+**Updated** The recent change to remove scrollable behavior from the search results section improves the user experience by allowing search results to naturally expand within the sidebar layout, eliminating the need for vertical scrolling within the search results container while maintaining the scrollable behavior for the top songs section.
