@@ -1,4 +1,5 @@
 import { spawn } from 'child_process';
+import { unlink } from 'fs/promises';
 import type { VideoInfo } from '../types';
 
 // Get yt-dlp path from environment, fallback to 'yt-dlp'
@@ -163,6 +164,7 @@ export async function searchVideos(query: string, limit: number = 5): Promise<Vi
 /**
  * Download a specific segment of audio from a YouTube video
  * Uses yt-dlp's --download-sections to only download the required portion
+ * Post-processes with ffmpeg to trim container cue-point rounding excess
  */
 export async function downloadSegment(
   url: string,
@@ -193,14 +195,106 @@ export async function downloadSegment(
       stderr += data.toString();
     });
     
-    process.on('close', (code) => {
+    process.on('close', async (code) => {
       if (code !== 0) {
         reject(new Error(`yt-dlp download failed: ${stderr}`));
         return;
       }
+      
+      // Trim excess duration caused by container cue-point rounding
+      try {
+        await trimSegmentToExactDuration(outputPath, startTime, endTime);
+      } catch (err) {
+        console.warn(`Failed to trim segment ${outputPath}:`, err);
+      }
+      
       resolve();
     });
   });
+}
+
+/**
+ * Trim a downloaded MP3 segment to its exact expected duration.
+ * yt-dlp --download-sections often starts from the nearest container cue point
+ * (which can be up to ~10 seconds earlier), so we trim the excess from the start.
+ */
+async function trimSegmentToExactDuration(
+  filePath: string,
+  startTime: string,
+  endTime: string
+): Promise<void> {
+  const expectedDuration = parseTimeToSeconds(endTime) - parseTimeToSeconds(startTime);
+  const trimmedPath = filePath.replace('.mp3', '_trimmed.mp3');
+  
+  // Get actual duration using ffprobe
+  const durationStr = await new Promise<string>((resolve, reject) => {
+    const probe = spawn('ffprobe', [
+      '-v', 'error',
+      '-show_entries', 'format=duration',
+      '-of', 'default=noprint_wrappers=1:nokey=1',
+      filePath
+    ]);
+    
+    let output = '';
+    probe.stdout.on('data', (data) => {
+      output += data.toString();
+    });
+    
+    probe.on('close', (code) => {
+      if (code !== 0) {
+        reject(new Error(`ffprobe failed with code ${code}`));
+        return;
+      }
+      resolve(output.trim());
+    });
+  });
+  
+  const actualDuration = parseFloat(durationStr);
+  const excess = actualDuration - expectedDuration;
+  
+  // Only trim if there's meaningful excess (> 0.5s)
+  if (excess > 0.5 && expectedDuration > 0 && actualDuration > 0) {
+    console.log(`Trimming ${excess.toFixed(2)}s from start of ${filePath} (actual: ${actualDuration.toFixed(2)}s, expected: ${expectedDuration.toFixed(2)}s)`);
+    
+    await new Promise<void>((resolve, reject) => {
+      const args = [
+        '-y',
+        '-i', filePath,
+        '-ss', excess.toFixed(3),
+        '-t', expectedDuration.toFixed(3),
+        '-c:a', 'libmp3lame',
+        '-q:a', '2',
+        '-ar', '44100',
+        '-ac', '2',
+        trimmedPath
+      ];
+      
+      const trimProcess = spawn('ffmpeg', args);
+      let stderr = '';
+      
+      trimProcess.stderr.on('data', (data) => {
+        stderr += data.toString();
+      });
+      
+      trimProcess.on('close', async (trimCode) => {
+        if (trimCode !== 0) {
+          reject(new Error(`ffmpeg trim failed: ${stderr}`));
+          return;
+        }
+        
+        try {
+          await unlink(filePath);
+          await Bun.write(filePath, Bun.file(trimmedPath));
+          await unlink(trimmedPath);
+        } catch (e) {
+          reject(e);
+          return;
+        }
+        
+        resolve();
+      });
+    });
+  }
 }
 
 /**

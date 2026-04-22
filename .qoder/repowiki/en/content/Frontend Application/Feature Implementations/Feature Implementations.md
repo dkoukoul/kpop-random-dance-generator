@@ -19,9 +19,12 @@
 
 ## Update Summary
 **Changes Made**
-- Updated search results display behavior documentation to reflect removal of automatic scrolling
-- Clarified current search results display characteristics and interaction model
-- Enhanced documentation for YouTube search functionality with improved visual presentation details
+- Added comprehensive duplicate detection feature documentation
+- Updated song segment management section to include duplicate handling workflow
+- Enhanced real-time validation section to include duplicate detection integration
+- Added new duplicate detection modal interface documentation
+- Updated progress tracking section to include duplicate handling flow
+- Enhanced troubleshooting guide with duplicate detection scenarios
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -37,17 +40,18 @@
 ## Introduction
 This document explains the major feature implementations in the frontend application for the K-Pop Random Dance Generator. It focuses on:
 - YouTube search and metadata integration with enhanced visual presentation
-- Song segment management (drag-and-drop, manual URL entry, bulk operations)
-- Real-time validation (time inputs, URL verification)
+- Song segment management (drag-and-drop, manual URL entry, bulk operations, **duplicate detection and resolution**)
+- Real-time validation (time inputs, URL verification, **duplicate detection integration**)
 - Project management (import/export, shuffle, view modes)
 - Statistics visualization (duration, song count, band variety)
 - Progress tracking during audio generation, error handling, and user feedback
 - **Enhanced Top Songs feature with social discovery mechanism for trending K-pop songs**
+- **Comprehensive duplicate detection system with modal interface for handling duplicate songs**
 - Performance optimization techniques for large datasets and smooth interactions
 
 ## Project Structure
 The application follows a clear separation of concerns:
-- Frontend (Vanilla JS): UI templates, state management, event handling, and user interactions
+- Frontend (Vanilla JS): UI templates, state management, event handling, user interactions, and **duplicate detection modal interface**
 - Backend (Bun + Hono): API endpoints for YouTube metadata, search, generation, downloads, and analytics
 - Services: yt-dlp integration, FFmpeg audio processing, caching, report generation, analytics logging
 
@@ -59,6 +63,7 @@ FE["app.js<br/>State, Events, UI Updates"]
 ADM["admin.html<br/>Admin Dashboard"]
 ADMA["admin.js<br/>Admin Controls"]
 CSS["styles.css<br/>UI Styling"]
+MODAL["Duplicate Detection Modal<br/>User Interaction Patterns"]
 end
 subgraph "Backend API"
 API["api.ts<br/>Routes & Jobs"]
@@ -79,14 +84,15 @@ API --> ANA
 YT --> CAC
 CSS --> UI
 CSS --> ADM
+MODAL --> FE
 ```
 
 **Diagram sources**
-- [index.html:1-374](file://public/index.html#L1-L374)
+- [index.html:1-400](file://public/index.html#L1-L400)
 - [admin.html:1-216](file://public/admin.html#L1-L216)
-- [app.js:1-1791](file://public/app/app.js#L1-L1791)
+- [app.js:1-1978](file://public/app/app.js#L1-L1978)
 - [admin.js:1-105](file://public/app/admin.js#L1-L105)
-- [styles.css:1-1808](file://public/css/styles.css#L1-L1808)
+- [styles.css:1-1950](file://public/css/styles.css#L1-L1950)
 - [api.ts:1-306](file://src/routes/api.ts#L1-L306)
 - [youtube.ts:1-232](file://src/services/youtube.ts#L1-L232)
 - [audio.ts:1-206](file://src/services/audio.ts#L1-L206)
@@ -96,15 +102,16 @@ CSS --> ADM
 
 **Section sources**
 - [README.md:82-100](file://README.md#L82-L100)
-- [index.html:1-374](file://public/index.html#L1-L374)
+- [index.html:1-400](file://public/index.html#L1-L400)
 - [app.js:1-128](file://public/app/app.js#L1-L128)
 
 ## Core Components
 - State management: central state object stores song segments, generation flags, toggles, and drag state
 - Templates: reusable song card and search result templates for dynamic rendering
-- Event-driven UI: input debouncing, drag-and-drop reordering, real-time validation, and progress polling
+- Event-driven UI: input debouncing, drag-and-drop reordering, real-time validation, progress polling, and **duplicate detection modal interface**
 - Backend integration: YouTube search/info, generation job lifecycle, and download/report endpoints
 - **Enhanced Top Songs Discovery: Social discovery mechanism for trending K-pop songs with real-time popularity tracking**
+- **Duplicate Detection System: Automatic duplicate identification with modal interface for user decision-making**
 
 **Section sources**
 - [app.js:5-46](file://public/app/app.js#L5-L46)
@@ -112,7 +119,7 @@ CSS --> ADM
 - [app.js:108-128](file://public/app/app.js#L108-L128)
 
 ## Architecture Overview
-The frontend communicates with backend endpoints to manage YouTube metadata, generate audio, and download results. The backend orchestrates yt-dlp and FFmpeg, manages job state, and persists analytics. The enhanced Top Songs feature integrates with the analytics system to provide social discovery capabilities with improved visual presentation.
+The frontend communicates with backend endpoints to manage YouTube metadata, generate audio, and download results. The backend orchestrates yt-dlp and FFmpeg, manages job state, and persists analytics. The enhanced Top Songs feature integrates with the analytics system to provide social discovery capabilities with improved visual presentation. The duplicate detection system provides seamless duplicate handling through modal interfaces.
 
 ```mermaid
 sequenceDiagram
@@ -128,6 +135,10 @@ API->>YT : getVideoInfo(url)
 YT-->>API : VideoInfo
 API-->>FE : VideoInfo
 FE->>FE : Populate song card, initialize timeline
+FE->>FE : Check for duplicates
+FE->>FE : Show duplicate modal if duplicates found
+User->>FE : Choose Remove Duplicates or Proceed
+FE->>FE : Process selection
 FE->>ANA : Log generation (for analytics)
 User->>FE : Click "Generate"
 FE->>API : POST /api/generate {segments}
@@ -149,6 +160,8 @@ FE->>FE : Show download link
 **Diagram sources**
 - [app.js:356-541](file://public/app/app.js#L356-L541)
 - [app.js:1164-1233](file://public/app/app.js#L1164-L1233)
+- [app.js:680-688](file://public/app/app.js#L680-L688)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
 - [api.ts:141-176](file://src/routes/api.ts#L141-L176)
 - [api.ts:76-83](file://src/routes/api.ts#L76-L83)
 - [youtube.ts:12-81](file://src/services/youtube.ts#L12-L81)
@@ -268,11 +281,55 @@ Populate --> InitTimeline["Initialize timeline"]
 - [analytics.ts:75-91](file://src/services/analytics.ts#L75-L91)
 - [admin.js:83-96](file://public/app/admin.js#L83-L96)
 
+### Duplicate Detection System
+**New Feature** - Comprehensive duplicate detection system with modal interface for handling duplicate songs in playlists
+
+- **Automatic Duplicate Identification**: The system scans all song URLs and identifies duplicates based on YouTube video IDs
+- **Intelligent Grouping**: Duplicate songs are grouped by video ID with detailed occurrence information
+- **Modal Interface**: Users are presented with a non-intrusive modal showing duplicate groups and their locations
+- **User Decision Making**: Two clear options - remove duplicates (keep first occurrence) or proceed with duplicates
+- **Seamless Integration**: Duplicate detection occurs during generation workflow without disrupting user experience
+- **Visual Feedback**: Duplicate groups display count badges and detailed timing information for each occurrence
+
+```mermaid
+flowchart TD
+Start(["User clicks Generate"]) --> Validate["Validate segments"]
+Validate --> HasDuplicates{"Any duplicates found?"}
+HasDuplicates --> |No| DirectGenerate["Start generation directly"]
+HasDuplicates --> |Yes| ShowModal["Show duplicate detection modal"]
+ShowModal --> RemoveDuplicates["User chooses Remove Duplicates"]
+RemoveDuplicates --> FilterUnique["Filter unique videos (keep first occurrence)"]
+FilterUnique --> UpdateState["Update state.songs array"]
+UpdateState --> StartGen["Start generation with unique segments"]
+ShowModal --> ProceedDuplicates["User chooses Proceed with Duplicates"]
+ProceedDuplicates --> StartGen
+DirectGenerate --> StartGen
+StartGen --> Complete["Generation complete"]
+```
+
+**Diagram sources**
+- [app.js:680-688](file://public/app/app.js#L680-L688)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
+- [app.js:572-605](file://public/app/app.js#L572-L605)
+- [app.js:448-475](file://public/app/app.js#L448-L475)
+
+**Section sources**
+- [app.js:680-688](file://public/app/app.js#L680-L688)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
+- [app.js:572-605](file://public/app/app.js#L572-L605)
+- [app.js:448-475](file://public/app/app.js#L448-L475)
+- [index.html:371-395](file://public/index.html#L371-L395)
+- [styles.css:1734-1812](file://public/css/styles.css#L1734-L1812)
+
 ### Song Segment Management
+**Updated** The song segment management now includes comprehensive duplicate detection and resolution capabilities.
+
 - Manual URL entry: URL input with paste/enter triggers auto-fetch; debounced to reduce network calls
 - Drag-and-drop reordering: Uses native HTML5 drag-and-drop on card headers; updates state and rebuilds UI
 - Bulk operations: Add/remove songs; import/export project JSON; toggle compact/expanding views
 - Timeline editing: Visual timeline with draggable handles and keyboard navigation; auto-updates time inputs and validates ranges
+- **Duplicate Detection**: Automatic duplicate identification during generation workflow with modal resolution interface
+- **Duplicate Resolution**: Users can choose to remove duplicates (keep first occurrence) or proceed with all songs
 
 ```mermaid
 flowchart TD
@@ -287,6 +344,15 @@ Drag --> Rebuild["Rebuild list UI"]
 Rebuild --> Export["Export project JSON"]
 Rebuild --> Import["Import project JSON"]
 Rebuild --> Compact["Toggle compact view"]
+Rebuild --> Generate["Click Generate"]
+Generate --> CheckDup{"Duplicates found?"}
+CheckDup --> |Yes| ShowModal["Show duplicate modal"]
+CheckDup --> |No| DirectGen["Direct generation"]
+ShowModal --> RemoveDup["Remove duplicates"]
+RemoveDup --> Filter["Filter unique videos"]
+Filter --> StartGen["Start generation"]
+DirectGen --> StartGen
+StartGen --> Complete["Generation complete"]
 ```
 
 **Diagram sources**
@@ -294,18 +360,25 @@ Rebuild --> Compact["Toggle compact view"]
 - [app.js:262-307](file://public/app/app.js#L262-L307)
 - [app.js:844-902](file://public/app/app.js#L844-L902)
 - [app.js:605-634](file://public/app/app.js#L605-L634)
+- [app.js:680-688](file://public/app/app.js#L680-L688)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
 
 **Section sources**
 - [app.js:162-323](file://public/app/app.js#L162-L323)
 - [app.js:262-307](file://public/app/app.js#L262-L307)
 - [app.js:844-902](file://public/app/app.js#L844-L902)
 - [app.js:1315-1427](file://public/app/app.js#L1315-L1427)
+- [app.js:680-688](file://public/app/app.js#L680-L688)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
 
 ### Real-time Validation System
+**Updated** The real-time validation system now includes duplicate detection integration to prevent duplicate submissions.
+
 - Time inputs: Auto-format numeric input (e.g., 123 → 1:23); strict validation ensures logical ranges (start < end)
 - URL validation: Regex-based checks for YouTube domains and formats; cleans URLs to canonical form
 - Timeline validation: Visual feedback when start ≥ end; ARIA attributes for accessibility
 - Button enable/disable: Generate button is enabled only when at least one song has a valid URL and all times are valid
+- **Duplicate detection integration**: Automatic duplicate checking during generation workflow with modal resolution interface
 
 ```mermaid
 flowchart TD
@@ -316,6 +389,13 @@ Valid --> |No| MarkInvalid["Mark inputs invalid"]
 Valid --> |Yes| UpdateUI["Update timeline & stats"]
 MarkInvalid --> UpdateUI
 UpdateUI --> EnableGen["Enable/disable generate button"]
+EnableGen --> CheckDup{"Checking for duplicates"}
+CheckDup --> |Duplicates found| ShowModal["Show duplicate modal"]
+CheckDup --> |No duplicates| Ready["Ready to generate"]
+ShowModal --> UserChoice{"User chooses?"}
+UserChoice --> |Remove duplicates| Filter["Filter unique videos"]
+UserChoice --> |Proceed| Ready
+Filter --> Ready
 ```
 
 **Diagram sources**
@@ -323,12 +403,16 @@ UpdateUI --> EnableGen["Enable/disable generate button"]
 - [app.js:907-950](file://public/app/app.js#L907-L950)
 - [app.js:955-983](file://public/app/app.js#L955-L983)
 - [app.js:557-572](file://public/app/app.js#L557-L572)
+- [app.js:680-688](file://public/app/app.js#L680-L688)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
 
 **Section sources**
 - [app.js:988-1013](file://public/app/app.js#L988-L1013)
 - [app.js:907-950](file://public/app/app.js#L907-L950)
 - [app.js:955-983](file://public/app/app.js#L955-L983)
 - [app.js:557-572](file://public/app/app.js#L557-L572)
+- [app.js:680-688](file://public/app/app.js#L680-L688)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
 
 ### Project Management Features
 - Import/Export: JSON serialization of current state; preserves shuffle setting and song list
@@ -385,8 +469,11 @@ Count --> Done
 - [app.js:1274-1310](file://public/app/app.js#L1274-L1310)
 
 ### Progress Tracking During Audio Generation
+**Updated** The progress tracking now includes duplicate detection workflow integration.
+
 - Job lifecycle: Start generation, poll status every 2 seconds, update progress bar and text, show download/report links upon completion
 - Error handling: Graceful failure states with user feedback; resets button state
+- **Duplicate handling**: If duplicates are detected, users can choose to remove them before generation begins
 
 ```mermaid
 sequenceDiagram
@@ -406,11 +493,15 @@ FE->>FE : Show download link
 
 **Diagram sources**
 - [app.js:438-541](file://public/app/app.js#L438-L541)
+- [app.js:680-688](file://public/app/app.js#L680-L688)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
 - [api.ts:141-176](file://src/routes/api.ts#L141-L176)
 - [api.ts:182-205](file://src/routes/api.ts#L182-L205)
 
 **Section sources**
 - [app.js:438-541](file://public/app/app.js#L438-L541)
+- [app.js:680-688](file://public/app/app.js#L680-L688)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
 - [api.ts:141-176](file://src/routes/api.ts#L141-L176)
 - [api.ts:182-205](file://src/routes/api.ts#L182-L205)
 
@@ -489,6 +580,7 @@ AnalyticsService --> Database : "SQLite"
 - Backend depends on yt-dlp and FFmpeg binaries; SQLite for analytics
 - Services share common types and utilities for time parsing/formatting
 - **Enhanced Top Songs feature depends on analytics service for popularity tracking and admin dashboard for management**
+- **Duplicate detection system depends on YouTube URL extraction and modal interface for user interaction**
 
 ```mermaid
 graph LR
@@ -505,10 +597,11 @@ API --> TYPES
 YT --> TYPES
 AUD --> TYPES
 REP --> TYPES
+FE --> MODAL["Duplicate Detection Modal"]
 ```
 
 **Diagram sources**
-- [app.js:1-1791](file://public/app/app.js#L1-L1791)
+- [app.js:1-1978](file://public/app/app.js#L1-L1978)
 - [admin.js:1-105](file://public/app/admin.js#L1-L105)
 - [api.ts:1-306](file://src/routes/api.ts#L1-L306)
 - [youtube.ts:1-232](file://src/services/youtube.ts#L1-L232)
@@ -529,6 +622,7 @@ REP --> TYPES
 - Large dataset handling: Timeline markers scale by duration; keyboard navigation supports fine-grained adjustments
 - **Enhanced Search Performance**: Improved search results display with manual scrolling control reduces layout thrashing and improves responsiveness
 - **Top Songs caching**: Analytics data is cached and refreshed periodically to minimize database queries
+- **Duplicate Detection Optimization**: Efficient video ID extraction and duplicate grouping algorithms minimize performance impact during generation workflow
 
 ## Troubleshooting Guide
 - YouTube URL issues: Ensure URLs are valid YouTube links; the frontend cleans short URLs and validates formats
@@ -538,9 +632,14 @@ REP --> TYPES
 - Analytics not updating: Confirm SQLite database initialization and write permissions
 - **Search results not displaying properly**: Check that search results container has proper height constraints and custom scrollbar styling
 - **Top Songs not loading**: Check /api/top-songs endpoint returns data; verify analytics logging is working; ensure database has generation records
+- **Duplicate detection modal not appearing**: Verify duplicate detection logic is triggered during generation; check console for JavaScript errors
+- **Duplicate modal buttons not responding**: Ensure event listeners are properly attached and modal elements exist in the DOM
+- **Duplicate removal not working**: Check that video ID extraction is successful and unique filtering logic is functioning correctly
 
 **Section sources**
 - [app.js:605-634](file://public/app/app.js#L605-L634)
+- [app.js:480-560](file://public/app/app.js#L480-L560)
+- [app.js:572-605](file://public/app/app.js#L572-L605)
 - [api.ts:237-294](file://src/routes/api.ts#L237-L294)
 - [youtube.ts:12-81](file://src/services/youtube.ts#L12-L81)
 - [audio.ts:188-204](file://src/services/audio.ts#L188-L204)
@@ -551,4 +650,6 @@ The frontend integrates seamlessly with backend services to deliver a robust, us
 
 **The enhanced Top Songs feature significantly improves the user experience by providing social discovery capabilities for trending K-pop songs. The recent enhancement to search results display behavior removes automatic scrolling, providing users with more control over their search experience while maintaining the visual appeal and functionality of the search interface. Through real-time popularity tracking and analytics integration, users can easily discover and incorporate the most popular songs in generated dances, creating a more engaging and community-driven experience. The feature includes comprehensive admin dashboard support for monitoring and managing popularity metrics, making it a valuable addition to the platform's social features.**
 
-The modular backend architecture scales well for future enhancements while maintaining reliability, with the enhanced Top Songs feature demonstrating the platform's commitment to community engagement and social discovery.
+**The comprehensive duplicate detection system represents a significant enhancement to the user experience. By automatically identifying and presenting duplicate songs with clear resolution options, the system prevents accidental duplicate submissions while maintaining user control over their playlist composition. The modal interface provides intuitive duplicate handling with visual feedback, ensuring users can quickly decide whether to remove duplicates or proceed with their current playlist. This feature demonstrates the platform's commitment to quality control and user experience optimization.**
+
+The modular backend architecture scales well for future enhancements while maintaining reliability, with the enhanced Top Songs feature and duplicate detection system showcasing the platform's evolution toward more sophisticated playlist management capabilities.
