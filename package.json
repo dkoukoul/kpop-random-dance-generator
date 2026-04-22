@@ -1,6 +1,6 @@
 {
   "name": "kpop-random-dance-generator",
-  "version": "0.8.5",
+  "version": "0.9.1",
   "description": "Create random dance practice audio by combining YouTube song segments",
   "module": "src/index.ts",
   "type": "module",
