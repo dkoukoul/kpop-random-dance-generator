@@ -11,6 +11,13 @@
 - [README.md](file://README.md)
 </cite>
 
+## Update Summary
+**Changes Made**
+- Updated YouTube segment precision section to reflect enhanced timing accuracy
+- Added detailed explanation of countdown audio reliability improvements
+- Enhanced error handling documentation for timing-related processing
+- Updated architecture diagrams to show improved precision mechanisms
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
@@ -25,7 +32,9 @@
 ## Introduction
 This document provides comprehensive API documentation for the audio generation workflow endpoints. The system enables users to create custom K-pop dance practice mixes by combining YouTube song segments with professional countdown transitions. The API exposes three primary endpoints: POST /api/generate for initiating audio processing, GET /api/status/:jobId for real-time progress tracking, and GET /api/download/:jobId for retrieving the generated audio file.
 
-The system operates as a background processing pipeline that handles YouTube video extraction, audio concatenation with countdown transitions, normalization, and report generation. All processing occurs asynchronously, allowing clients to poll for status updates and retrieve results when complete.
+The system operates as a background processing pipeline that handles YouTube video extraction, audio concatenation with countdown transitions, normalization, and report generation. Recent enhancements have focused on improving YouTube segment precision and countdown audio reliability, ensuring more accurate timing and reduced audio processing errors.
+
+All processing occurs asynchronously, allowing clients to poll for status updates and retrieve results when complete.
 
 ## Project Structure
 The application follows a modular architecture with clear separation of concerns:
@@ -135,9 +144,11 @@ API->>API : Create job entry (processing)
 API->>Audio : Start background processing
 Audio->>YT : Download segment 1
 YT-->>Audio : Audio file
+Audio->>Audio : Trim to exact duration
 Audio->>Audio : Concatenate with countdown
 Audio->>YT : Download segment 2
 YT-->>Audio : Audio file
+Audio->>Audio : Trim to exact duration
 Audio->>Audio : Continue processing
 Audio->>Audio : Generate final file
 Audio->>FS : Write output file
@@ -193,10 +204,13 @@ ReturnResponse --> End
 The system initiates asynchronous processing through the `processGeneration` function:
 
 1. **Preparation Phase**: Ensures countdown audio exists and directories are ready
-2. **Segment Processing**: Downloads each YouTube segment using yt-dlp
-3. **Concatenation**: Combines segments with countdown transitions using FFmpeg
-4. **Normalization**: Applies EBU R128 loudness normalization
-5. **Cleanup**: Removes temporary files and generates reports
+2. **Segment Processing**: Downloads each YouTube segment using yt-dlp with enhanced precision
+3. **Precision Control**: Trims segments to exact duration to eliminate cue-point rounding errors
+4. **Concatenation**: Combines segments with countdown transitions using FFmpeg
+5. **Normalization**: Applies EBU R128 loudness normalization
+6. **Cleanup**: Removes temporary files and generates reports
+
+**Updated** Enhanced with precision trimming mechanism that eliminates container cue-point rounding errors, ensuring accurate timing across all segments.
 
 **Section sources**
 - [api.ts:137-161](file://src/routes/api.ts#L137-L161)
@@ -306,7 +320,7 @@ The system relies on several external tools for core functionality:
 
 - **FFmpeg**: Audio processing, concatenation, and normalization
 - **yt-dlp**: YouTube video extraction and metadata retrieval
-- **UUID**: Unique identifier generation for job tracking
+- **UUID**: Unique identifier generation
 
 ### Internal Module Dependencies
 The API routes depend on multiple service modules:
@@ -344,6 +358,13 @@ The system utilizes caching for improved performance:
 - **Band List**: Static band list loaded once and cached
 - **Database Operations**: SQLite database for persistent storage
 
+### Precision Enhancements
+Recent improvements focus on timing accuracy:
+
+- **Container Cue-Point Elimination**: Automatic trimming removes up to 10-second precision errors
+- **Reliable Countdown Generation**: Precise beep timing ensures consistent transition points
+- **Timing Validation**: FFprobe-based duration verification prevents timing drift
+
 ## Troubleshooting Guide
 
 ### Common Issues and Solutions
@@ -360,6 +381,14 @@ The system utilizes caching for improved performance:
 **Problem**: Download endpoint returns 404 error
 **Solution**: Verify job completion status and file existence in temporary directory
 
+#### Timing Precision Issues
+**Problem**: Audio segments have incorrect timing or gaps
+**Solution**: Verify FFprobe installation and check that segment trimming completes successfully
+
+#### Countdown Audio Problems
+**Problem**: Countdown transitions sound inconsistent or mis-timed
+**Solution**: Ensure countdown.mp3 file exists in assets directory or allow automatic regeneration
+
 #### Performance Optimization
 **Problem**: Slow processing times for large playlists
 **Solution**: Consider reducing segment count, optimizing network conditions, or upgrading hardware
@@ -372,11 +401,14 @@ The system utilizes caching for improved performance:
 
 The Audio Generation API provides a robust, scalable solution for creating custom K-pop dance practice mixes. The system's asynchronous architecture ensures responsive user experiences while handling computationally intensive audio processing tasks efficiently.
 
-Key strengths of the implementation include:
+Recent enhancements have significantly improved the system's reliability and precision:
 
+- **Enhanced YouTube Segment Precision**: Automatic trimming eliminates container cue-point rounding errors, ensuring accurate timing across all segments
+- **Improved Countdown Audio Reliability**: Precise beep generation with proper timing validation guarantees consistent transition points
+- **Reduced Audio Processing Errors**: Advanced timing controls minimize timing drift and improve overall audio quality
 - **Comprehensive Error Handling**: Structured error responses and graceful degradation
 - **Real-time Progress Tracking**: Detailed status updates throughout the processing pipeline
 - **Professional Audio Quality**: High-quality MP3 output with proper normalization
 - **Extensible Architecture**: Modular design supporting future enhancements
 
-The API's design balances simplicity for client integration with powerful backend capabilities, making it suitable for both development and production environments.
+The API's design balances simplicity for client integration with powerful backend capabilities, making it suitable for both development and production environments. The precision improvements ensure that generated audio files maintain accurate timing relationships, crucial for dance practice applications.

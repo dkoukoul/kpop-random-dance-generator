@@ -13,19 +13,31 @@
 - [package.json](file://package.json)
 </cite>
 
+## Update Summary
+**Changes Made**
+- Added comprehensive post-processing system documentation
+- Updated segment downloading section to include precise duration trimming
+- Enhanced downloadSegment implementation details
+- Added trimSegmentToExactDuration function documentation
+- Updated architecture diagrams to reflect post-processing workflow
+- Enhanced troubleshooting guide with trimming-related issues
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [Dependency Analysis](#dependency-analysis)
-7. [Performance Considerations](#performance-considerations)
-8. [Troubleshooting Guide](#troubleshooting-guide)
-9. [Conclusion](#conclusion)
+6. [Post-Processing System](#post-processing-system)
+7. [Dependency Analysis](#dependency-analysis)
+8. [Performance Considerations](#performance-considerations)
+9. [Troubleshooting Guide](#troubleshooting-guide)
+10. [Conclusion](#conclusion)
 
 ## Introduction
 This document provides comprehensive technical documentation for the YouTube Integration Service implementation. It covers the yt-dlp integration architecture for video metadata extraction, segment downloading, and search functionality. The service uses Bun.spawn for asynchronous external command execution, implements robust error handling, and includes a caching layer for improved performance. The documentation also details time parsing utilities, API usage patterns, configuration options, and troubleshooting strategies for common YouTube API issues.
+
+**Updated** Added comprehensive post-processing system with precise duration trimming functionality to address yt-dlp section downloading limitations.
 
 ## Project Structure
 The YouTube integration service is implemented as a cohesive module within the K-Pop Random Dance Generator application. The service architecture follows a layered approach with clear separation of concerns:
@@ -47,19 +59,21 @@ end
 subgraph "Processing Layer"
 Audio[Audio Processing]
 FFmpeg[FFmpeg]
+FFprobe[FFprobe]
 end
 UI --> AppJS
 AppJS --> API
 API --> YTService
 YTService --> YTDLP
 YTService --> Cache
+YTService --> FFprobe
 API --> Audio
 Audio --> FFmpeg
 ```
 
 **Diagram sources**
-- [api.ts:12-297](file://src/routes/api.ts#L12-L297)
-- [youtube.ts:1-232](file://src/services/youtube.ts#L1-L232)
+- [api.ts:12-306](file://src/routes/api.ts#L12-L306)
+- [youtube.ts:1-326](file://src/services/youtube.ts#L1-L326)
 - [cache.ts:1-42](file://src/services/cache.ts#L1-L42)
 
 **Section sources**
@@ -73,7 +87,7 @@ The YouTube Integration Service consists of several key components that work tog
 The core service module provides three primary functions:
 - Video metadata extraction using yt-dlp
 - YouTube search functionality with caching
-- Segment downloading with precise time slicing
+- Segment downloading with precise time slicing and post-processing
 
 ### API Integration
 The service integrates with the Hono-based API framework, exposing endpoints for:
@@ -88,12 +102,12 @@ A SQLite-based caching system provides persistent storage for:
 - Consistent user experience across sessions
 
 **Section sources**
-- [youtube.ts:12-232](file://src/services/youtube.ts#L12-L232)
+- [youtube.ts:12-326](file://src/services/youtube.ts#L12-L326)
 - [api.ts:76-135](file://src/routes/api.ts#L76-L135)
 - [cache.ts:16-42](file://src/services/cache.ts#L16-L42)
 
 ## Architecture Overview
-The YouTube Integration Service follows a client-server architecture with asynchronous processing capabilities:
+The YouTube Integration Service follows a client-server architecture with asynchronous processing capabilities and comprehensive post-processing:
 
 ```mermaid
 sequenceDiagram
@@ -103,6 +117,7 @@ participant YT as "YouTube Service"
 participant YTDLP as "yt-dlp CLI"
 participant Cache as "SQLite Cache"
 participant Audio as "Audio Processor"
+participant FFprobe as "FFprobe"
 Client->>API : GET /api/youtube/info?url=...
 API->>YT : getVideoInfo(url)
 YT->>YTDLP : Spawn yt-dlp process
@@ -115,20 +130,25 @@ API->>Audio : Process segments
 Audio->>YT : downloadSegment(url, start, end)
 YT->>YTDLP : Download specific sections
 YTDLP-->>YT : Audio file
-YT-->>Audio : File path
+YT->>YT : trimSegmentToExactDuration()
+YT->>FFprobe : Probe actual duration
+FFprobe-->>YT : Actual duration
+YT->>YT : Trim excess duration
+YT-->>Audio : Processed audio file
 Audio-->>API : Combined audio
 API-->>Client : Download URL
 ```
 
 **Diagram sources**
 - [api.ts:76-135](file://src/routes/api.ts#L76-L135)
-- [youtube.ts:12-204](file://src/services/youtube.ts#L12-L204)
-- [audio.ts:9-117](file://src/services/audio.ts#L9-L117)
+- [youtube.ts:169-298](file://src/services/youtube.ts#L169-L298)
+- [audio.ts:9-208](file://src/services/audio.ts#L9-L208)
 
 The architecture emphasizes:
 - Non-blocking external process execution using Bun.spawn
 - Robust error handling and recovery mechanisms
 - Efficient caching for frequently accessed data
+- Precise duration trimming to address yt-dlp limitations
 - Modular design enabling easy maintenance and extension
 
 ## Detailed Component Analysis
@@ -178,7 +198,7 @@ CacheResults --> ReturnResults["Return processed results"]
 ```
 
 **Diagram sources**
-- [youtube.ts:83-161](file://src/services/youtube.ts#L83-L161)
+- [youtube.ts:84-162](file://src/services/youtube.ts#L84-L162)
 
 Implementation highlights:
 - Flat playlist mode for efficient search results
@@ -186,27 +206,44 @@ Implementation highlights:
 - Automatic cache expiration management
 - URL generation for search results
 
-#### Segment Downloading
-The `downloadSegment` function enables precise audio extraction:
+#### Enhanced Segment Downloading
+The `downloadSegment` function enables precise audio extraction with comprehensive post-processing:
 
 ```mermaid
 sequenceDiagram
 participant API as "API Route"
 participant YT as "YouTube Service"
 participant YTDLP as "yt-dlp Process"
+participant FFprobe as "FFprobe Process"
+participant FFmpeg as "FFmpeg Process"
 API->>YT : downloadSegment(url, start, end, outputPath)
 YT->>YT : Build section argument
 YT->>YTDLP : Spawn with --download-sections
 YTDLP-->>YT : Process completion
 YT->>YT : Validate exit code
+YT->>YT : trimSegmentToExactDuration()
+YT->>FFprobe : Probe actual duration
+FFprobe-->>YT : Actual duration
+YT->>YT : Calculate excess duration
+YT->>FFmpeg : Trim excess from start
+FFmpeg-->>YT : Trimmed audio file
 YT-->>API : Promise resolution
 ```
 
 **Diagram sources**
-- [youtube.ts:167-204](file://src/services/youtube.ts#L167-L204)
+- [youtube.ts:169-214](file://src/services/youtube.ts#L169-L214)
+- [youtube.ts:221-298](file://src/services/youtube.ts#L221-L298)
+
+**Updated** Enhanced with comprehensive post-processing system including precise duration trimming functionality.
+
+Key improvements:
+- Uses yt-dlp's `--download-sections` for efficient segment downloading
+- Implements `trimSegmentToExactDuration()` for precise timing control
+- Addresses yt-dlp container cue-point rounding limitations
+- Maintains audio quality through careful trimming process
 
 **Section sources**
-- [youtube.ts:12-232](file://src/services/youtube.ts#L12-L232)
+- [youtube.ts:169-326](file://src/services/youtube.ts#L169-L326)
 
 ### Time Parsing Utilities
 The service includes two essential time conversion functions:
@@ -229,7 +266,7 @@ These utilities are crucial for:
 - Audio processing precision
 
 **Section sources**
-- [youtube.ts:209-231](file://src/services/youtube.ts#L209-L231)
+- [youtube.ts:303-325](file://src/services/youtube.ts#L303-L325)
 
 ### API Integration Layer
 The API layer provides REST endpoints that integrate with the YouTube service:
@@ -251,13 +288,13 @@ The `/api/youtube/search` endpoint:
 #### Generation Orchestration
 The `/api/generate` endpoint coordinates:
 - Background job processing
-- Segment downloading workflow
+- Segment downloading workflow with post-processing
 - Audio concatenation pipeline
 - Progress tracking and reporting
 
 **Section sources**
 - [api.ts:76-135](file://src/routes/api.ts#L76-L135)
-- [api.ts:141-294](file://src/routes/api.ts#L141-L294)
+- [api.ts:150-303](file://src/routes/api.ts#L150-L303)
 
 ### Caching Layer Integration
 The SQLite-based caching system provides persistent storage with automatic expiration:
@@ -296,6 +333,47 @@ The frontend application integrates with the YouTube service through:
 - [app.js:1108-1126](file://public/app/app.js#L1108-L1126)
 - [app.js:356-433](file://public/app/app.js#L356-L433)
 
+## Post-Processing System
+
+### Duration Trimming Architecture
+The post-processing system addresses yt-dlp's section downloading limitations through a sophisticated trimming mechanism:
+
+```mermaid
+flowchart TD
+Start([Segment Download Complete]) --> ProbeDuration["Probe actual duration with ffprobe"]
+ProbeDuration --> CalcExcess["Calculate duration difference"]
+CalcExcess --> CheckThreshold{"Excess > 0.5s?"}
+CheckThreshold --> |No| SkipTrim["Skip trimming"]
+CheckThreshold --> |Yes| StartTrim["Start trimming process"]
+StartTrim --> TrimProcess["Execute ffmpeg trim with -ss and -t"]
+TrimProcess --> ReplaceFile["Replace original with trimmed version"]
+ReplaceFile --> Cleanup["Remove temporary files"]
+SkipTrim --> Complete([Complete])
+Cleanup --> Complete
+```
+
+**Diagram sources**
+- [youtube.ts:221-298](file://src/services/youtube.ts#L221-L298)
+
+### trimSegmentToExactDuration Function
+The `trimSegmentToExactDuration` function provides precise duration control:
+
+**Key Features:**
+- Calculates expected vs actual duration using `parseTimeToSeconds()`
+- Uses ffprobe for accurate duration measurement
+- Applies ffmpeg trimming with `-ss` (start offset) and `-t` (duration) parameters
+- Maintains audio quality through careful parameter selection
+- Implements safety checks to prevent unnecessary processing
+
+**Technical Details:**
+- Expected duration calculation: `parseTimeToSeconds(endTime) - parseTimeToSeconds(startTime)`
+- Excess threshold: 0.5 seconds minimum to avoid micro-adjustments
+- Audio quality settings: `-q:a 2`, `-ar 44100`, `-ac 2`
+- Temporary file handling: `_trimmed.mp3` suffix for safe replacement
+
+**Section sources**
+- [youtube.ts:221-298](file://src/services/youtube.ts#L221-L298)
+
 ## Dependency Analysis
 The YouTube Integration Service relies on several external dependencies and internal modules:
 
@@ -304,6 +382,7 @@ graph TB
 subgraph "External Dependencies"
 YTDLP[yt-dlp CLI]
 FFmpeg[FFmpeg]
+FFprobe[FFprobe]
 SQLite[SQLite]
 end
 subgraph "Internal Modules"
@@ -318,6 +397,7 @@ Node[Node.js APIs]
 end
 YTDLP --> YTService
 FFmpeg --> AudioService
+FFprobe --> YTService
 SQLite --> CacheService
 Bun --> YTService
 Node --> YTService
@@ -326,6 +406,7 @@ Node --> CacheService
 Node --> AudioService
 APIService --> YTService
 YTService --> CacheService
+YTService --> FFprobe
 ```
 
 **Diagram sources**
@@ -354,14 +435,22 @@ The YouTube Integration Service implements several performance optimization stra
 - Temporary file cleanup after processing
 - Memory-efficient streaming for large audio files
 - Optimized yt-dlp flag combinations to minimize processing overhead
+- **Updated** Post-processing optimization with conditional trimming
 
 ### Network Optimization
 - Flat playlist mode reduces metadata overhead
 - Certificate bypass for network reliability
 - Player client specification for consistent metadata
 
+### Post-Processing Efficiency
+- **New** Conditional trimming prevents unnecessary processing
+- **New** Threshold-based approach (0.5s minimum) avoids micro-adjustments
+- **New** Safe temporary file handling prevents data loss
+- **New** Integrated error handling for trimming failures
+
 **Section sources**
-- [youtube.ts:83-161](file://src/services/youtube.ts#L83-L161)
+- [youtube.ts:84-162](file://src/services/youtube.ts#L84-L162)
+- [youtube.ts:221-298](file://src/services/youtube.ts#L221-L298)
 - [cache.ts:38-41](file://src/services/cache.ts#L38-L41)
 
 ## Troubleshooting Guide
@@ -401,26 +490,46 @@ The YouTube Integration Service implements several performance optimization stra
 - **Validation**: Check file integrity and format compatibility
 - **Cleanup**: Ensure temporary files are properly removed
 
+### **New** Post-Processing Issues
+**Issue**: Duration trimming failures
+- **Solution**: Verify FFmpeg and FFprobe installations
+- **Debug**: Check ffprobe stderr for duration probing errors
+- **Configuration**: Ensure sufficient disk space for temporary files
+
+**Issue**: Excessive trimming or under-trimming
+- **Solution**: Adjust trimming threshold (currently 0.5s)
+- **Validation**: Manually verify segment durations
+- **Logging**: Monitor trimming logs for debugging
+
+**Issue**: Audio quality degradation
+- **Solution**: Verify ffmpeg quality parameters remain consistent
+- **Check**: Ensure `-q:a 2`, `-ar 44100`, `-ac 2` settings
+- **Backup**: Maintain original files until trimming verified
+
 ### Error Handling Patterns
 The service implements comprehensive error handling:
 - Try-catch blocks around external process execution
 - Structured error messages with context information
 - Graceful degradation when components fail
 - Logging of stderr output for debugging
+- **Updated** Post-processing error isolation and recovery
 
 **Section sources**
 - [youtube.ts:43-80](file://src/services/youtube.ts#L43-L80)
 - [youtube.ts:119-125](file://src/services/youtube.ts#L119-L125)
+- [youtube.ts:204-213](file://src/services/youtube.ts#L204-L213)
 - [api.ts:90-94](file://src/routes/api.ts#L90-L94)
 
 ## Conclusion
-The YouTube Integration Service provides a robust, scalable solution for YouTube video metadata extraction, search functionality, and audio segment downloading. The implementation leverages modern asynchronous processing patterns, comprehensive error handling, and intelligent caching strategies to deliver reliable performance. The modular architecture enables easy maintenance and future enhancements while maintaining backward compatibility with existing integrations.
+The YouTube Integration Service provides a robust, scalable solution for YouTube video metadata extraction, search functionality, and audio segment downloading. The implementation leverages modern asynchronous processing patterns, comprehensive error handling, and intelligent caching strategies to deliver reliable performance. The recent addition of comprehensive post-processing system with precise duration trimming functionality addresses critical yt-dlp limitations and ensures audio precision.
 
 Key strengths of the implementation include:
 - Non-blocking external process execution using Bun.spawn
 - Comprehensive error handling and recovery mechanisms
 - Persistent caching for improved performance
+- **New** Precise duration trimming to address yt-dlp limitations
+- **New** Conditional post-processing to optimize performance
 - Modular design enabling easy extension and maintenance
 - Robust time parsing utilities for precise segment validation
 
-The service successfully addresses the core requirements of the K-Pop Random Dance Generator application while providing a foundation for future enhancements and additional YouTube-related features.
+The service successfully addresses the core requirements of the K-Pop Random Dance Generator application while providing a foundation for future enhancements and additional YouTube-related features. The post-processing system ensures audio quality and precision while maintaining optimal performance through intelligent resource management.

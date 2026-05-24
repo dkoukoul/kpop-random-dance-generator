@@ -14,6 +14,12 @@
 - [band-list.txt](file://assets/band-list.txt)
 </cite>
 
+## Update Summary
+**Changes Made**
+- Updated countdown audio generation section to reflect the enhanced concatenation from 5 to 10 audio sources
+- Modified practical examples to show the corrected n=10 parameter
+- Updated troubleshooting guidance to address the improved timing precision
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
@@ -79,7 +85,7 @@ API --> TEMP
 
 ## Core Components
 - Concatenation and normalization pipeline: orchestrates FFmpeg concat demuxer and loudness normalization filters.
-- Countdown generation: produces a reusable countdown MP3 using synthetic audio generation.
+- Countdown generation: produces a reusable countdown MP3 using synthetic audio generation with enhanced precision.
 - Segment download and processing: retrieves audio segments from YouTube and writes them to temporary files.
 - Job lifecycle: tracks generation progress and exposes status and download endpoints.
 - Cleanup: removes temporary files after completion or failure.
@@ -140,7 +146,7 @@ API-->>Client : application/json attachment
 
 ### Audio Pipeline: Concatenation, Normalization, and Cleanup
 The audio pipeline performs two major steps:
-- Concatenation: Uses FFmpeg’s concat demuxer with a generated file list. Each segment is prefixed by a countdown audio file. The output is a temporary concatenated file encoded to MP3.
+- Concatenation: Uses FFmpeg's concat demuxer with a generated file list. Each segment is prefixed by a countdown audio file. The output is a temporary concatenated file encoded to MP3.
 - Normalization: Applies EBU R128 loudness normalization using the loudnorm filter, then writes the final MP3 to the requested output path.
 
 ```mermaid
@@ -165,12 +171,15 @@ CleanupBoth --> Done(["Complete"])
 **Section sources**
 - [audio.ts:9-117](file://src/services/audio.ts#L9-L117)
 
-### Countdown Audio Generation
-The countdown generator creates a short, five-beep countdown audio. It supports a concise single-filter approach and a more explicit multi-source concatenation approach. The resulting MP3 is stored under the assets directory and reused during concatenation.
+### Enhanced Countdown Audio Generation
+**Updated** The countdown generator has been enhanced with improved timing precision through the use of 10 audio sources instead of 5, providing better synchronization and consistent audio length.
+
+The countdown generator creates a precise five-beep countdown audio with enhanced timing accuracy. It uses a simplified approach with 10 audio sources in a single concat operation to achieve better timing precision and audio length consistency. The resulting MP3 is stored under the assets directory and reused during concatenation.
 
 ```mermaid
 flowchart TD
-GenStart(["Start generateCountdownAudio"]) --> BuildArgs["Prepare FFmpeg args<br/>lavfi sine + silence sources"]
+GenStart(["Start generateCountdownAudio"]) --> SimpleApproach["Use simplified 10-source approach:<br/>5 beeps + 5 silences"]
+SimpleApproach --> BuildArgs["Prepare FFmpeg args<br/>10 audio sources with concat=n=10"]
 BuildArgs --> SpawnProc["Spawn ffmpeg process"]
 SpawnProc --> ProcOK{"Exit code == 0?"}
 ProcOK --> |No| FailGen["Reject with error"]
@@ -179,7 +188,7 @@ WriteOut --> GenDone(["Complete"])
 ```
 
 **Diagram sources**
-- [audio.ts:123-192](file://src/services/audio.ts#L123-L192)
+- [audio.ts:142-194](file://src/services/audio.ts#L142-L194)
 
 **Section sources**
 - [audio.ts:123-192](file://src/services/audio.ts#L123-L192)
@@ -293,8 +302,6 @@ REP --> ASSETS["assets/band-list.txt"]
 - Network I/O: yt-dlp downloads are bandwidth-bound; throttle requests if necessary and reuse connections where supported.
 - Caching: Use the built-in cache for YouTube search results to minimize repeated network calls.
 
-[No sources needed since this section provides general guidance]
-
 ## Troubleshooting Guide
 Common issues and remedies:
 - FFmpeg not found or permission denied:
@@ -311,6 +318,7 @@ Common issues and remedies:
   - Ensure input files are compatible (same sample rate/stereo).
 - Countdown asset missing:
   - The service generates the countdown asset on demand; verify filesystem permissions in the assets directory.
+  - **Updated**: The countdown now uses 10 audio sources for improved timing precision.
 - Cleanup failures:
   - Temporary files are cleaned up best-effort; non-existent files are ignored. Investigate disk permissions if cleanup appears stuck.
 
@@ -322,9 +330,7 @@ Common issues and remedies:
 - [api.ts:39-46](file://src/routes/api.ts#L39-L46)
 
 ## Conclusion
-The Audio Processing Service integrates FFmpeg and yt-dlp to deliver a robust pipeline for assembling K-Pop segments with professional countdown transitions, applying loudness normalization, and producing downloadable outputs with detailed reports. The modular design enables maintainability, while the job lifecycle and cleanup routines support reliable operation in production environments.
-
-[No sources needed since this section summarizes without analyzing specific files]
+The Audio Processing Service integrates FFmpeg and yt-dlp to deliver a robust pipeline for assembling K-Pop segments with professional countdown transitions, applying loudness normalization, and producing downloadable outputs with detailed reports. The modular design enables maintainability, while the job lifecycle and cleanup routines support reliable operation in production environments. The enhanced countdown generation with 10 audio sources provides improved timing precision and audio length consistency.
 
 ## Appendices
 
@@ -333,10 +339,8 @@ The Audio Processing Service integrates FFmpeg and yt-dlp to deliver a robust pi
   - ffmpeg -y -f concat -safe 0 -i filelist.txt -c:a libmp3lame -q:a 2 -ar 44100 -ac 2 temp_output.mp3
 - Loudness normalization (EBU R128):
   - ffmpeg -y -i temp_concat.mp3 -af loudnorm=I=-16:TP=-1.5:LRA=11 -c:a libmp3lame -q:a 2 -ar 44100 -ac 2 final_output.mp3
-- Countdown generation (synthetic beeps):
-  - ffmpeg -y -f lavfi -i "sine=frequency=880:duration=0.15" -f lavfi -i "anullsrc=r=44100:cl=stereo:d=0.85" ... -filter_complex "[0][1][2][3][4][5][6][7][8]concat=n=9:v=0:a=1" -c:a libmp3lame -q:a 2 -ar 44100 -ac 2 countdown.mp3
-
-[No sources needed since this section provides general guidance]
+- **Updated** Enhanced countdown generation (10 audio sources for improved precision):
+  - ffmpeg -y -f lavfi -i sine=frequency=880:duration=0.15 -f lavfi -i anullsrc=r=44100:cl=stereo:d=0.85 ... -filter_complex "[0][1][2][3][4][5][6][7][8][9]concat=n=10:v=0:a=1[out]" -map "[out]" -c:a libmp3lame -q:a 2 -ar 44100 -ac 2 countdown.mp3
 
 ### Audio Normalization Techniques and Quality Preservation
 - Loudness normalization:
@@ -371,5 +375,3 @@ The Audio Processing Service integrates FFmpeg and yt-dlp to deliver a robust pi
   - Introduce a bounded-concurrency queue for segment downloads.
   - Serialize normalization to avoid saturating disk I/O.
   - Monitor system resources and adjust concurrency dynamically.
-
-[No sources needed since this section provides general guidance]
