@@ -12,7 +12,20 @@
 - [src/services/analytics.ts](file://src/services/analytics.ts)
 - [src/services/report.ts](file://src/services/report.ts)
 - [src/types.ts](file://src/types.ts)
+- [public/admin.html](file://public/admin.html)
+- [public/app/admin.js](file://public/app/admin.js)
+- [public/sitemap.xml](file://public/sitemap.xml)
+- [public/robots.txt](file://public/robots.txt)
+- [public/app/app.js](file://public/app/app.js)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Updated version information from 0.8.5 to 0.9.1 in package.json
+- Added new admin.html page with comprehensive admin dashboard functionality
+- Updated sitemap.xml to include admin.html entry with appropriate SEO settings
+- Enhanced robots.txt to disallow admin access while maintaining API restrictions
+- Added version display functionality in the frontend application
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -31,7 +44,7 @@
 14. [Conclusion](#conclusion)
 
 ## Introduction
-This document provides comprehensive configuration and deployment guidance for the K-Pop Random Dance Generator. It covers environment variables, Bun runtime configuration, dependency management, build and startup processes, production deployment strategies, performance tuning, security, monitoring, maintenance, and operational runbooks for system administrators.
+This document provides comprehensive configuration and deployment guidance for the K-Pop Random Dance Generator. It covers environment variables, Bun runtime configuration, dependency management, build and startup processes, production deployment strategies, performance tuning, security, monitoring, maintenance, and operational runbooks for system administrators. The application has been updated to version 0.9.1 with enhanced admin capabilities and improved SEO configuration.
 
 ## Project Structure
 The application is a Bun-based Hono server that serves a static frontend and exposes a REST API for YouTube metadata retrieval, audio segment generation, and report downloads. Key runtime directories and assets include:
@@ -39,6 +52,7 @@ The application is a Bun-based Hono server that serves a static frontend and exp
 - Temporary workspace for audio generation
 - SQLite-backed analytics and caching databases
 - Band list asset for statistics
+- **New in v0.9.1**: Admin dashboard with authentication and analytics visualization
 
 ```mermaid
 graph TB
@@ -51,6 +65,8 @@ B --> G["src/services/cache.ts<br/>SQLite cache"]
 A --> H["public/<br/>Static assets"]
 A --> I["temp/<br/>Temporary workspace"]
 E --> J["assets/band-list.txt<br/>Statistics source"]
+A --> K["public/admin.html<br/>Admin dashboard"]
+K --> L["public/app/admin.js<br/>Admin authentication & stats"]
 ```
 
 **Diagram sources**
@@ -61,6 +77,8 @@ E --> J["assets/band-list.txt<br/>Statistics source"]
 - [src/services/report.ts:1-172](file://src/services/report.ts#L1-L172)
 - [src/services/analytics.ts:1-92](file://src/services/analytics.ts#L1-L92)
 - [src/services/cache.ts:1-42](file://src/services/cache.ts#L1-L42)
+- [public/admin.html:1-216](file://public/admin.html#L1-L216)
+- [public/app/admin.js:1-105](file://public/app/admin.js#L1-L105)
 
 **Section sources**
 - [README.md:82-100](file://README.md#L82-L100)
@@ -73,6 +91,7 @@ E --> J["assets/band-list.txt<br/>Statistics source"]
 - API endpoints: YouTube info, search, generation orchestration, status polling, downloads, and admin stats.
 - Audio processing: Segment downloads via yt-dlp and concatenation with countdown audio using FFmpeg.
 - Analytics and caching: SQLite-backed analytics and a lightweight in-memory cache keyed by TTL.
+- **New in v0.9.1**: Admin dashboard with authentication, statistics visualization, and session management.
 
 **Section sources**
 - [src/index.ts:11-32](file://src/index.ts#L11-L32)
@@ -82,6 +101,7 @@ E --> J["assets/band-list.txt<br/>Statistics source"]
 - [src/services/audio.ts:9-117](file://src/services/audio.ts#L9-L117)
 - [src/services/analytics.ts:5-37](file://src/services/analytics.ts#L5-L37)
 - [src/services/cache.ts:4-35](file://src/services/cache.ts#L4-L35)
+- [public/admin.html:140-215](file://public/admin.html#L140-L215)
 
 ## Architecture Overview
 The system consists of a Bun/Hono server that:
@@ -89,6 +109,7 @@ The system consists of a Bun/Hono server that:
 - Exposes REST endpoints under /api
 - Spawns external binaries (yt-dlp, ffmpeg) for media processing
 - Writes temporary files during generation and persists analytics and cache in SQLite
+- **New in v0.9.1**: Provides admin dashboard with authentication and analytics visualization
 
 ```mermaid
 graph TB
@@ -100,6 +121,8 @@ API --> FF["FFmpeg<br/>Audio concatenation & normalization"]
 API --> Temp["Temp Workspace<br/>temp/"]
 API --> Cache["Cache DB<br/>cache.db"]
 API --> Analytics["Analytics DB<br/>analytics.db"]
+Server --> Admin["Admin Dashboard<br/>admin.html"]
+Admin --> StatsAPI["/api/stats<br/>Admin authentication"]
 ```
 
 **Diagram sources**
@@ -109,6 +132,7 @@ API --> Analytics["Analytics DB<br/>analytics.db"]
 - [src/services/audio.ts:9-117](file://src/services/audio.ts#L9-L117)
 - [src/services/cache.ts:4](file://src/services/cache.ts#L4)
 - [src/services/analytics.ts:5](file://src/services/analytics.ts#L5)
+- [public/admin.html:140-215](file://public/admin.html#L140-L215)
 
 ## Detailed Component Analysis
 
@@ -182,6 +206,37 @@ API-->>Client : JSON report
 - [src/routes/api.ts:141-294](file://src/routes/api.ts#L141-L294)
 - [src/services/youtube.ts:167-204](file://src/services/youtube.ts#L167-L204)
 - [src/services/audio.ts:9-117](file://src/services/audio.ts#L9-L117)
+
+### Admin Dashboard and Authentication
+**New in v0.9.1**: The admin dashboard provides secure access to analytics and statistics:
+- Basic authentication using ADMIN_USERNAME and ADMIN_PASSWORD environment variables
+- Session management with localStorage persistence
+- Real-time statistics visualization including total visits and generation counts
+- Popular songs ranking with usage metrics
+- Responsive design with glassmorphism styling
+
+```mermaid
+flowchart TD
+AdminUI["admin.html<br/>Admin Interface"] --> Auth["Basic Auth<br/>ADMIN_USERNAME/PASSWORD"]
+Auth --> Login["Login Form"]
+Login --> Validate["Validate Credentials<br/>/api/stats"]
+Validate --> Success{"Valid?"}
+Success --> |Yes| Dashboard["Show Dashboard"]
+Success --> |No| Error["Show Error Message"]
+Dashboard --> Stats["Fetch Analytics<br/>/api/stats"]
+Stats --> Update["Update UI<br/>Total Visits & Generations"]
+Stats --> TopSongs["Fetch Top Songs<br/>Usage Counts"]
+TopSongs --> UpdateTop["Update Table<br/>Song Titles & Links"]
+```
+
+**Diagram sources**
+- [public/admin.html:150-215](file://public/admin.html#L150-L215)
+- [public/app/admin.js:23-105](file://public/app/admin.js#L23-L105)
+
+**Section sources**
+- [src/routes/api.ts:68-74](file://src/routes/api.ts#L68-L74)
+- [public/admin.html:140-215](file://public/admin.html#L140-L215)
+- [public/app/admin.js:1-105](file://public/app/admin.js#L1-L105)
 
 ### yt-dlp Integration
 - Reads YTDLP_PATH from environment with default fallback.
@@ -279,6 +334,7 @@ GENERATIONS ||--o{ GENERATION_SONGS : "contains"
 - External binaries: FFmpeg and yt-dlp are required for media processing.
 - SQLite databases for analytics and cache are created on demand.
 - Temporary workspace and assets are created as needed.
+- **New in v0.9.1**: Admin dashboard requires additional frontend assets and JavaScript functionality.
 
 ```mermaid
 graph LR
@@ -291,6 +347,8 @@ API --> DB1["analytics.db"]
 API --> DB2["cache.db"]
 API --> Temp["temp/"]
 API --> Assets["assets/band-list.txt"]
+Admin["public/admin.html"] --> AdminJS["public/app/admin.js"]
+Admin --> Styles["public/css/styles.css"]
 ```
 
 **Diagram sources**
@@ -299,6 +357,7 @@ API --> Assets["assets/band-list.txt"]
 - [src/routes/api.ts:1-12](file://src/routes/api.ts#L1-L12)
 - [src/services/analytics.ts:5](file://src/services/analytics.ts#L5)
 - [src/services/cache.ts:4](file://src/services/cache.ts#L4)
+- [public/admin.html:13-14](file://public/admin.html#L13-L14)
 
 **Section sources**
 - [package.json:20-23](file://package.json#L20-L23)
@@ -317,6 +376,10 @@ API --> Assets["assets/band-list.txt"]
   - Temporary files are cleaned up after completion; ensure sufficient disk space for concurrent jobs.
 - Resource limits:
   - Monitor CPU and memory usage during batch generation; consider limiting concurrent generation jobs if needed.
+- **New in v0.9.1**: Admin dashboard performance considerations:
+  - Statistics queries should be optimized for large datasets
+  - Session storage management to prevent localStorage bloat
+  - Efficient chart rendering for popular songs data
 
 **Section sources**
 - [src/index.ts:63-67](file://src/index.ts#L63-L67)
@@ -326,16 +389,22 @@ API --> Assets["assets/band-list.txt"]
 ## Security and Access Control
 - Admin stats endpoint:
   - Protected by basic authentication using ADMIN_USERNAME and ADMIN_PASSWORD environment variables.
+  - **Enhanced in v0.9.1**: Session management with localStorage persistence for convenience.
 - Network exposure:
   - Bind to localhost or internal networks; expose publicly behind a reverse proxy with TLS termination.
 - File system:
   - Restrict write permissions to temp and cache directories; ensure non-root operation.
 - Secrets:
   - Store ADMIN_USERNAME and ADMIN_PASSWORD in environment variables; avoid committing secrets to source control.
+- **New in v0.9.1**: Admin dashboard security:
+  - Basic authentication headers for API requests
+  - Session token storage with automatic logout on 401 responses
+  - CSRF protection considerations for admin forms
 
 **Section sources**
 - [src/routes/api.ts:68-74](file://src/routes/api.ts#L68-L74)
 - [README.md:50-55](file://README.md#L50-L55)
+- [public/app/admin.js:16-53](file://public/app/admin.js#L16-L53)
 
 ## Production Deployment
 - Server requirements:
@@ -351,6 +420,10 @@ API --> Assets["assets/band-list.txt"]
   - Set PORT and YTDLP_PATH in the service environment; define ADMIN_USERNAME and ADMIN_PASSWORD for admin stats.
 - Static assets:
   - Ensure public directory is readable and writable only as needed; precompress assets if desired.
+- **New in v0.9.1**: Admin dashboard deployment:
+  - Ensure admin.html is accessible but protected by robots.txt and authentication
+  - Configure proper caching headers for admin assets
+  - Monitor admin dashboard performance and user sessions
 
 **Section sources**
 - [README.md:27-34](file://README.md#L27-L34)
@@ -368,6 +441,10 @@ API --> Assets["assets/band-list.txt"]
   - Implement a simple health endpoint (e.g., GET /health) returning OK.
 - Database maintenance:
   - Periodically vacuum SQLite databases and monitor disk usage for analytics.db and cache.db.
+- **New in v0.9.1**: Admin dashboard monitoring:
+  - Track admin login attempts and session durations
+  - Monitor API stats endpoint performance
+  - Log authentication failures for security auditing
 
 **Section sources**
 - [src/services/analytics.ts:52-91](file://src/services/analytics.ts#L52-L91)
@@ -381,6 +458,10 @@ API --> Assets["assets/band-list.txt"]
   - Update Bun, Hono, FFmpeg, and yt-dlp regularly; test generation workflows after updates.
 - Cleanup:
   - Implement periodic cleanup of temp/ and cache.db expired entries.
+- **New in v0.9.1**: Admin dashboard maintenance:
+  - Monitor localStorage usage for admin sessions
+  - Regularly review admin access logs
+  - Update admin interface styling and functionality as needed
 
 **Section sources**
 - [src/services/cache.ts:38-41](file://src/services/cache.ts#L38-L41)
@@ -397,6 +478,10 @@ API --> Assets["assets/band-list.txt"]
   - Check disk space and permissions; confirm FFmpeg installation and filters support.
 - Admin stats unauthorized:
   - Confirm ADMIN_USERNAME and ADMIN_PASSWORD environment variables are set.
+- **New in v0.9.1**: Admin dashboard issues:
+  - Verify admin.html accessibility and proper authentication
+  - Check localStorage for session tokens
+  - Monitor /api/stats endpoint for authentication failures
 
 **Section sources**
 - [src/index.ts:11-32](file://src/index.ts#L11-L32)
@@ -412,20 +497,22 @@ API --> Assets["assets/band-list.txt"]
 - [ ] Prepare public/, temp/, and assets/ directories with appropriate permissions
 - [ ] Build and start the service using Bun
 - [ ] Verify static assets and API endpoints
+- [ ] **New in v0.9.1**: Test admin dashboard authentication and statistics
+- [ ] **New in v0.9.1**: Verify sitemap.xml includes admin.html entry
 
 ### Daily Operations Runbook
 - [ ] Monitor server logs and reverse proxy access/error logs
 - [ ] Check disk usage for temp/ and databases
 - [ ] Rotate and archive logs
 - [ ] Validate admin stats endpoint access
+- [ ] **New in v0.9.1**: Monitor admin dashboard performance and user sessions
 
 ### Incident Response
 - [ ] Dependency failure: Reinstall or fix PATH/YTDLP_PATH; restart service
 - [ ] High latency: Scale horizontally or optimize FFmpeg settings
 - [ ] Disk pressure: Clean temp/ and prune old cache entries
 - [ ] Unauthorized access attempts: Review reverse proxy logs and update credentials
-
-[No sources needed since this section provides general guidance]
+- [ ] **New in v0.9.1**: Admin dashboard compromise: Reset ADMIN_USERNAME/PASSWORD and audit access logs
 
 ## Conclusion
-By following this configuration and deployment guide, you can reliably operate the K-Pop Random Dance Generator in production. Ensure proper environment configuration, secure access controls, robust monitoring, and regular maintenance to sustain performance and reliability.
+By following this configuration and deployment guide, you can reliably operate the K-Pop Random Dance Generator in production. The application has been updated to version 0.9.1 with enhanced admin capabilities, improved SEO configuration, and comprehensive monitoring features. Ensure proper environment configuration, secure access controls, robust monitoring, and regular maintenance to sustain performance and reliability.
