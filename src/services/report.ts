@@ -1,4 +1,4 @@
-import type { SongSegment, Report, ReportItem, ReportStats } from "../types";
+import type { SongSegment, Report, ReportItem, ReportStats, FailedSegment } from "../types";
 import { join } from "path";
 
 // Cache for band list
@@ -133,7 +133,7 @@ async function parseTitle(videoTitle: string, videoChannel?: string): Promise<{ 
   return { band: "Unknown", title: videoTitle.trim() };
 }
 
-export async function generateReport(segments: SongSegment[]): Promise<Report> {
+export async function generateReport(segments: SongSegment[], failedSegments: FailedSegment[] = []): Promise<Report> {
   const playlist: ReportItem[] = [];
   const bandCounts: Record<string, number> = {};
   
@@ -161,7 +161,11 @@ export async function generateReport(segments: SongSegment[]): Promise<Report> {
     statistics[band] = `${percentage}%`;
   });
   
-  return { playlist, statistics };
+  return {
+    playlist,
+    statistics,
+    failedSongs: failedSegments.length > 0 ? failedSegments : undefined
+  };
 }
 
 export async function saveReport(report: Report, jobId: string, tempDir: string): Promise<string> {

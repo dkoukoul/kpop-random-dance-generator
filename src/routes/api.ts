@@ -3,7 +3,7 @@ import { basicAuth } from 'hono/basic-auth';
 import { v4 as uuidv4 } from 'uuid';
 import { join } from 'path';
 import { mkdir, access, stat } from 'fs/promises';
-import type { GenerateRequest, SongSegment } from '../types';
+import type { GenerateRequest, SongSegment, FailedSegment } from '../types';
 import { getVideoInfo, downloadSegment, searchVideos } from '../services/youtube';
 import { generateReport, saveReport } from '../services/report';
 import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles } from '../services/audio';
@@ -18,7 +18,15 @@ const jobs = new Map<string, {
   reportFilename?: string;
   error?: string;
   progress?: string;
+  failedSegments?: FailedSegment[];
 }>();
+
+// Pull out the actual yt-dlp/ffmpeg ERROR line so failure reasons shown to users
+// aren't buried in version-warning noise.
+function extractErrorReason(message: string): string {
+  const match = message.match(/ERROR:\s*(.+)/);
+  return match ? match[1]!.trim() : message;
+}
 
 // Paths
 const TEMP_DIR = join(process.cwd(), 'temp');
@@ -245,56 +253,77 @@ api.get('/download-report/:jobId', async (c) => {
  */
 async function processGeneration(jobId: string, segments: SongSegment[]) {
   const segmentPaths: string[] = [];
-  
+  const successfulSegments: SongSegment[] = [];
+  const failedSegments: FailedSegment[] = [];
+
   try {
     await ensureCountdownAudio();
-    
-    // Download each segment
+
+    // Download each segment. A single segment failing (bad/blocked video,
+    // yt-dlp/ffmpeg hiccup, etc.) shouldn't throw away everything already
+    // downloaded, so failures are recorded and the rest of the mix continues.
     for (let i = 0; i < segments.length; i++) {
       const segment = segments[i];
       if (!segment) continue;
-      
+
       const segmentPath = join(TEMP_DIR, `${jobId}_segment_${i}.mp3`);
-      
-      jobs.set(jobId, { 
-        status: 'processing', 
-        progress: `Downloading segment ${i + 1}/${segments.length}: ${segment.title}` 
+
+      jobs.set(jobId, {
+        status: 'processing',
+        progress: `Downloading segment ${i + 1}/${segments.length}: ${segment.title}`
       });
-      
-      await downloadSegment(
-        segment.youtubeUrl,
-        segment.startTime,
-        segment.endTime,
-        segmentPath
-      );
-      
-      segmentPaths.push(segmentPath);
+
+      try {
+        await downloadSegment(
+          segment.youtubeUrl,
+          segment.startTime,
+          segment.endTime,
+          segmentPath
+        );
+        segmentPaths.push(segmentPath);
+        successfulSegments.push(segment);
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        console.error(`Skipping segment "${segment.title}" (${segment.youtubeUrl}):`, reason);
+        failedSegments.push({
+          title: segment.title,
+          youtubeUrl: segment.youtubeUrl,
+          reason: extractErrorReason(reason)
+        });
+      }
     }
-    
-    // Concatenate all segments with countdown
+
+    if (segmentPaths.length === 0) {
+      throw new Error('All segments failed to download');
+    }
+
+    // Concatenate all successfully-downloaded segments with countdown.
+    // Failed segments were never added to segmentPaths, so no orphan
+    // countdown is mixed in for songs that didn't make it in.
     jobs.set(jobId, { status: 'processing', progress: 'Combining audio...' });
-    
+
     const outputFilename = `output_${jobId}.mp3`;
     const outputPath = join(TEMP_DIR, outputFilename);
-    
+
     await concatenateWithCountdown(segmentPaths, COUNTDOWN_PATH, outputPath);
-    
+
     // Clean up segment files
     await cleanupTempFiles(segmentPaths);
-    
-    // Generate Report
+
+    // Generate Report (only reflects songs actually included in the mix)
     console.log(`Generating report for job ${jobId}...`);
-    const report = await generateReport(segments);
+    const report = await generateReport(successfulSegments, failedSegments);
     const reportPath = await saveReport(report, jobId, TEMP_DIR);
     const reportFilename = reportPath.split('/').pop()!; // Extract filename
-    
-    jobs.set(jobId, { 
-      status: 'complete', 
+
+    jobs.set(jobId, {
+      status: 'complete',
       filename: outputFilename,
-      reportFilename: reportFilename
+      reportFilename: reportFilename,
+      failedSegments: failedSegments.length > 0 ? failedSegments : undefined
     });
-    console.log(`Generation complete: ${outputFilename}, Report: ${reportFilename}`);
-    
+    console.log(`Generation complete: ${outputFilename}, Report: ${reportFilename}${failedSegments.length > 0 ? `, ${failedSegments.length} segment(s) skipped` : ''}`);
+
   } catch (error) {
     // Clean up on error
     await cleanupTempFiles(segmentPaths);

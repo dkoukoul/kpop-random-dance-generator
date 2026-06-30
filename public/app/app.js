@@ -25,6 +25,11 @@ const elements = {
   downloadSection: document.getElementById("downloadSection"),
   downloadLink: document.getElementById("downloadLink"),
   downloadReportLink: document.getElementById("downloadReportLink"),
+  failedSongsSection: document.getElementById("failedSongsSection"),
+  failedSongsCount: document.getElementById("failedSongsCount"),
+  failedSongsList: document.getElementById("failedSongsList"),
+  generateErrorSection: document.getElementById("generateErrorSection"),
+  generateErrorText: document.getElementById("generateErrorText"),
   songCardTemplate: document.getElementById("songCardTemplate"),
   randomOrderToggle: document.getElementById("randomOrderToggle"),
   compactViewToggle: document.getElementById("compactViewToggle"),
@@ -623,6 +628,8 @@ async function startGeneration(segments) {
     '<span class="btn-icon">⏳</span> Generating...';
   elements.progressContainer.classList.remove("hidden");
   elements.downloadSection.classList.add("hidden");
+  elements.failedSongsSection.classList.add("hidden");
+  elements.generateErrorSection.classList.add("hidden");
   elements.progressFill.style.width = "10%";
   elements.progressText.textContent = "Starting generation...";
 
@@ -717,19 +724,60 @@ async function pollJobStatus(jobId) {
           elements.downloadSection.classList.remove("hidden");
           elements.downloadLink.href = `/api/download/${jobId}`;
           elements.downloadReportLink.href = `/api/download-report/${jobId}`;
+          showFailedSongs(status.failedSegments);
           resetGenerateButton();
         }, 500);
       } else if (status.status === "error") {
-        throw new Error(status.error || "Unknown error");
+        showGenerateError(status.error || "Unknown error");
+        resetGenerateButton();
       }
     } catch (error) {
       console.error("Poll error:", error);
-      // alert("Error: " + error.message);
+      showGenerateError(error.message || "Lost connection while checking generation status");
       resetGenerateButton();
     }
   };
 
   poll();
+}
+
+/**
+ * Show the list of songs that were skipped because they failed to download
+ */
+function showFailedSongs(failedSegments) {
+  if (!failedSegments || failedSegments.length === 0) {
+    elements.failedSongsSection.classList.add("hidden");
+    return;
+  }
+
+  elements.failedSongsCount.textContent = failedSegments.length;
+  elements.failedSongsList.innerHTML = "";
+
+  for (const failed of failedSegments) {
+    const li = document.createElement("li");
+
+    const titleSpan = document.createElement("span");
+    titleSpan.textContent = failed.title || failed.youtubeUrl;
+    li.appendChild(titleSpan);
+
+    const reasonSpan = document.createElement("span");
+    reasonSpan.className = "failed-song-reason";
+    reasonSpan.textContent = failed.reason || "Failed to download";
+    li.appendChild(reasonSpan);
+
+    elements.failedSongsList.appendChild(li);
+  }
+
+  elements.failedSongsSection.classList.remove("hidden");
+}
+
+/**
+ * Show a generation error message and hide the progress bar
+ */
+function showGenerateError(message) {
+  elements.progressContainer.classList.add("hidden");
+  elements.generateErrorText.textContent = message;
+  elements.generateErrorSection.classList.remove("hidden");
 }
 
 /**

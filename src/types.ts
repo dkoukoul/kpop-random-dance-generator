@@ -26,6 +26,12 @@ export interface GenerateResult {
   error?: string;
 }
 
+export interface FailedSegment {
+  title: string;
+  youtubeUrl: string;
+  reason: string;
+}
+
 export interface ReportItem {
   order: number;
   band: string;
@@ -41,4 +47,5 @@ export interface ReportStats {
 export interface Report {
   playlist: ReportItem[];
   statistics: ReportStats;
+  failedSongs?: FailedSegment[];
 }

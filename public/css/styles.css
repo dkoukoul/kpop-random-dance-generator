@@ -1501,6 +1501,60 @@ body {
   margin-bottom: var(--spacing-md);
 }
 
+/* ===== Failed Songs Warning ===== */
+.failed-songs-section {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: var(--radius-lg);
+}
+
+.failed-songs-title {
+  color: #f59e0b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+}
+
+.failed-songs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.failed-songs-list li {
+  padding: var(--spacing-xs) 0;
+  border-top: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.failed-songs-list li:first-child {
+  border-top: none;
+}
+
+.failed-songs-list .failed-song-reason {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* ===== Generation Error ===== */
+.generate-error-section {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.generate-error-text {
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+
 /* ===== Footer ===== */
 .footer {
   text-align: center;
