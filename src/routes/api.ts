@@ -18,6 +18,8 @@ const jobs = new Map<string, {
   reportFilename?: string;
   error?: string;
   progress?: string;
+  progressCurrent?: number;
+  progressTotal?: number;
   failedSegments?: FailedSegment[];
 }>();
 
@@ -26,6 +28,10 @@ const jobs = new Map<string, {
 function extractErrorReason(message: string): string {
   const match = message.match(/ERROR:\s*(.+)/);
   return match ? match[1]!.trim() : message;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // Paths
@@ -270,8 +276,15 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
 
       jobs.set(jobId, {
         status: 'processing',
-        progress: `Downloading segment ${i + 1}/${segments.length}: ${segment.title}`
+        progress: `Downloading segment ${i + 1}/${segments.length}: ${segment.title}`,
+        progressCurrent: i + 1,
+        progressTotal: segments.length
       });
+
+      // Space out requests to YouTube so large batches don't read as bot-like bursts
+      if (i > 0) {
+        await sleep(1500);
+      }
 
       try {
         await downloadSegment(

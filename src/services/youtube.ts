@@ -161,12 +161,51 @@ export async function searchVideos(query: string, limit: number = 5): Promise<Vi
   }
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// YouTube's anti-bot challenge and its own rate-limit cooldown are transient -
+// a short backoff and retry often succeeds where an immediate retry wouldn't.
+function isTransientYoutubeError(message: string): boolean {
+  return /sign in to confirm you.?re not a bot/i.test(message) ||
+    /rate-limited by youtube/i.test(message) ||
+    /content isn.?t available, try again later/i.test(message);
+}
+
 /**
  * Download a specific segment of audio from a YouTube video
  * Uses yt-dlp's --download-sections to only download the required portion
  * Post-processes with ffmpeg to trim container cue-point rounding excess
+ * Retries transient YouTube bot-check/rate-limit failures with backoff.
  */
 export async function downloadSegment(
+  url: string,
+  startTime: string,
+  endTime: string,
+  outputPath: string,
+  maxRetries: number = 2
+): Promise<void> {
+  let lastError: Error = new Error('Download failed');
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      await attemptDownloadSegment(url, startTime, endTime, outputPath);
+      return;
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (attempt < maxRetries && isTransientYoutubeError(lastError.message)) {
+        const backoffMs = 5000 * (attempt + 1);
+        console.warn(`⏳ Transient YouTube error for ${url}, retrying in ${backoffMs / 1000}s (attempt ${attempt + 1}/${maxRetries})`);
+        await sleep(backoffMs);
+        continue;
+      }
+      throw lastError;
+    }
+  }
+  throw lastError;
+}
+
+function attemptDownloadSegment(
   url: string,
   startTime: string,
   endTime: string,

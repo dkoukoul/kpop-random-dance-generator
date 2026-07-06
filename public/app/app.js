@@ -707,8 +707,19 @@ async function pollJobStatus(jobId) {
       const status = await response.json();
 
       if (status.status === "processing") {
-        // Update progress
-        progress = Math.min(progress + 15, 90);
+        // Update progress. While downloading segments, scale linearly with
+        // actual song count (status.progressCurrent/progressTotal) so a
+        // 150-song mix doesn't look nearly done after song 4. Reserve the
+        // top of the bar for the final combine-audio step, which has no
+        // song count of its own.
+        if (status.progressTotal) {
+          progress = Math.max(
+            progress,
+            5 + Math.round((status.progressCurrent / status.progressTotal) * 85)
+          );
+        } else {
+          progress = Math.max(progress, 95);
+        }
         elements.progressFill.style.width = `${progress}%`;
         elements.progressText.textContent = status.progress || "Processing...";
 
