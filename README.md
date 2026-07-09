@@ -7,6 +7,7 @@ You can check it live at (kpopgenerator.cloud)
 ## ✨ Features
 
 - **YouTube Integration**: Search and import metadata directly from YouTube URLs.
+- **Inline Preview Player**: Watch or just listen to each song right in the app, with Play/Pause, segment looping, and Set Start/Set End buttons, so you never have to leave the page to find your cut points.
 - **Smart Time Formatting**: Quickly enter times like `123` and have them auto-formatted to `1:23`.
 - **Advanced Validation**: Real-time checking of time ranges and YouTube URL validity.
 - **Project Management**:
