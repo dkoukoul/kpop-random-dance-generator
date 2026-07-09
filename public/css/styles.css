@@ -1897,6 +1897,28 @@ body {
   margin-bottom: 2px;
 }
 
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group textarea.input {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contact-status {
+  font-size: 0.9rem;
+  margin-top: var(--spacing-sm);
+}
+
+.contact-status.success {
+  color: #22c55e;
+}
+
+.contact-status.error {
+  color: #ef4444;
+}
+
 .modal-footer {
   display: flex;
   gap: var(--spacing-sm);

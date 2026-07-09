@@ -254,6 +254,69 @@ api.get('/download-report/:jobId', async (c) => {
   }
 });
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * POST /api/contact
+ * Send a contact form message via Resend, without exposing the recipient's email to the client
+ */
+api.post('/contact', async (c) => {
+  const body = await c.req.json<{ email?: string; message?: string; website?: string }>();
+
+  // Honeypot field: real users never fill in a field hidden via CSS, bots do.
+  // Pretend success so bots don't learn to skip it.
+  if (body.website) {
+    return c.json({ success: true });
+  }
+
+  const email = (body.email || '').trim();
+  const message = (body.message || '').trim();
+
+  if (!email || !EMAIL_REGEX.test(email)) {
+    return c.json({ error: 'Please provide a valid email address' }, 400);
+  }
+
+  if (!message || message.length > 5000) {
+    return c.json({ error: 'Please provide a message (max 5000 characters)' }, 400);
+  }
+
+  const apiKey = process.env.RESEND_API_KEY;
+  const toEmail = process.env.CONTACT_TO_EMAIL;
+
+  if (!apiKey || !toEmail) {
+    console.error('Contact form submitted but RESEND_API_KEY or CONTACT_TO_EMAIL is not configured');
+    return c.json({ error: 'Contact form is not configured' }, 500);
+  }
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: process.env.CONTACT_FROM_EMAIL || 'Contact Form <onboarding@resend.dev>',
+        to: [toEmail],
+        reply_to: email,
+        subject: 'New message from Random Dance Generator contact form',
+        text: `From: ${email}\n\n${message}`,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error('Resend API error:', response.status, errorBody);
+      return c.json({ error: 'Failed to send message' }, 502);
+    }
+
+    return c.json({ success: true });
+  } catch (error) {
+    console.error('Error sending contact message:', error);
+    return c.json({ error: 'Failed to send message' }, 500);
+  }
+});
+
 /**
  * Background processing function
  */
