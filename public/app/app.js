@@ -67,6 +67,15 @@ const elements = {
   duplicateList: document.getElementById("duplicateList"),
   removeDuplicatesBtn: document.getElementById("removeDuplicatesBtn"),
   proceedWithDuplicatesBtn: document.getElementById("proceedWithDuplicatesBtn"),
+  contactBtn: document.getElementById("contactBtn"),
+  contactModal: document.getElementById("contactModal"),
+  contactForm: document.getElementById("contactForm"),
+  contactEmail: document.getElementById("contactEmail"),
+  contactMessage: document.getElementById("contactMessage"),
+  contactWebsite: document.getElementById("contactWebsite"),
+  contactSendBtn: document.getElementById("contactSendBtn"),
+  contactCancelBtn: document.getElementById("contactCancelBtn"),
+  contactStatus: document.getElementById("contactStatus"),
 };
 
 // Initialize
@@ -120,6 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   elements.importFile.addEventListener("change", importProject);
+
+  // Contact modal
+  elements.contactBtn.addEventListener("click", openContactModal);
+  elements.contactCancelBtn.addEventListener("click", closeContactModal);
+  elements.contactModal.addEventListener("click", (e) => {
+    if (e.target === elements.contactModal) closeContactModal();
+  });
+  elements.contactForm.addEventListener("submit", submitContactForm);
 
   // Add first song card
   addSong();
@@ -601,6 +618,62 @@ function showDuplicateModal(duplicates, segments) {
  */
 function closeDuplicateModal() {
   elements.duplicateModal.classList.add("hidden");
+}
+
+/**
+ * Open the contact modal
+ */
+function openContactModal() {
+  elements.contactStatus.classList.add("hidden");
+  elements.contactModal.classList.remove("hidden");
+}
+
+/**
+ * Close the contact modal
+ */
+function closeContactModal() {
+  elements.contactModal.classList.add("hidden");
+}
+
+/**
+ * Submit the contact form to the backend, which relays it via Resend
+ */
+async function submitContactForm(e) {
+  e.preventDefault();
+
+  elements.contactSendBtn.disabled = true;
+  elements.contactStatus.classList.add("hidden");
+
+  try {
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: elements.contactEmail.value,
+        message: elements.contactMessage.value,
+        website: elements.contactWebsite.value,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to send message");
+    }
+
+    elements.contactStatus.textContent = "Message sent! Thanks for reaching out.";
+    elements.contactStatus.classList.remove("hidden", "error");
+    elements.contactStatus.classList.add("success");
+    elements.contactForm.reset();
+
+    setTimeout(closeContactModal, 1500);
+  } catch (error) {
+    elements.contactStatus.textContent = error.message || "Something went wrong. Please try again.";
+    elements.contactStatus.classList.remove("hidden", "success");
+    elements.contactStatus.classList.add("error");
+  } finally {
+    elements.contactSendBtn.disabled = false;
+  }
 }
 
 /**
