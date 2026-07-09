@@ -13,6 +13,19 @@ const state = {
   bandList: [],
 };
 
+// YouTube IFrame API readiness
+let ytApiReady = false;
+const ytApiPendingCallbacks = [];
+window.onYouTubeIframeAPIReady = function () {
+  ytApiReady = true;
+  const callbacks = ytApiPendingCallbacks.splice(0);
+  callbacks.forEach((cb) => cb());
+};
+
+// Live YT.Player instances, kept out of songData so JSON.stringify(state.songs)
+// (used by exportProject) never touches a player object.
+const previewPlayers = new WeakMap();
+
 // DOM Elements
 const elements = {
   songList: document.getElementById("songList"),
@@ -271,7 +284,22 @@ function addSong() {
   toggleBtn.addEventListener("click", () => {
     songData.isExpanded = !songData.isExpanded;
     card.classList.toggle("compact", !songData.isExpanded);
+    if (!songData.isExpanded) pausePreviewPlayer(songData);
   });
+
+  // Preview player controls
+  card
+    .querySelector(".btn-preview-play")
+    .addEventListener("click", () => togglePreviewPlayback(songData));
+  card
+    .querySelector(".btn-preview-toggle")
+    .addEventListener("click", () => togglePreviewVideoVisibility(card));
+  card
+    .querySelector(".btn-set-start")
+    .addEventListener("click", () => setTimeFromPlayer(card, songData, "startTime"));
+  card
+    .querySelector(".btn-set-end")
+    .addEventListener("click", () => setTimeFromPlayer(card, songData, "endTime"));
 
   // Drag and drop event handlers - only allow dragging from card header
   const songCardHeader = card.querySelector(".song-card-header");
@@ -343,6 +371,9 @@ function removeSong(card, index) {
   // Cleanup timeline event listeners
   if (state.songs[index] && state.songs[index].timelineCleanup) {
     state.songs[index].timelineCleanup();
+  }
+  if (state.songs[index]) {
+    destroyPreviewPlayer(state.songs[index]);
   }
 
   card.remove();
@@ -434,6 +465,7 @@ async function fetchVideoInfo(card, songData) {
 
     // Initialize timeline
     initTimeline(card, songData);
+    initPreviewPlayer(card, songData);
   } catch (error) {
     console.error("Error fetching video info:", error);
     // alert("Failed to fetch video info. Please check the URL and try again.");
@@ -891,6 +923,9 @@ function rebuildSongList() {
   // Store current song data
   const songsData = [...state.songs];
 
+  // Destroy existing preview players before their cards are torn down
+  songsData.forEach((songData) => destroyPreviewPlayer(songData));
+
   // Remove all cards except empty state
   document.querySelectorAll(".song-card").forEach((card) => card.remove());
 
@@ -959,6 +994,7 @@ function rebuildSongList() {
 
       // Re-initialize timeline
       initTimeline(card, songData);
+      initPreviewPlayer(card, songData);
     }
 
     if (songData.isExpanded === undefined) {
@@ -1021,7 +1057,22 @@ function rebuildSongList() {
     toggleBtn.addEventListener("click", () => {
       songData.isExpanded = !songData.isExpanded;
       card.classList.toggle("compact", !songData.isExpanded);
+      if (!songData.isExpanded) pausePreviewPlayer(songData);
     });
+
+    // Preview player controls
+    card
+      .querySelector(".btn-preview-play")
+      .addEventListener("click", () => togglePreviewPlayback(songData));
+    card
+      .querySelector(".btn-preview-toggle")
+      .addEventListener("click", () => togglePreviewVideoVisibility(card));
+    card
+      .querySelector(".btn-set-start")
+      .addEventListener("click", () => setTimeFromPlayer(card, songData, "startTime"));
+    card
+      .querySelector(".btn-set-end")
+      .addEventListener("click", () => setTimeFromPlayer(card, songData, "endTime"));
 
     // Drag events - only allow dragging from card header
     const songCardHeader = card.querySelector(".song-card-header");
@@ -1252,12 +1303,17 @@ function handleTimeInput(e, card, songData, field) {
   }
 
   songData[field] = value;
-  
+
   // Update timeline if video info exists
   if (songData.info && songData.info.duration) {
     updateTimelinePositions(card, songData, songData.info.duration);
   }
-  
+
+  if (validateTimeInput(value)) {
+    const seconds = parseTimeSeconds(value);
+    if (seconds !== null) seekPreviewPlayer(songData, seconds);
+  }
+
   checkTimeValidity(card, songData);
   updateGenerateButton();
   updateStats();
@@ -1602,6 +1658,7 @@ function populateCardWithResult(card, songData, result) {
 
   // Initialize timeline
   initTimeline(card, songData);
+  initPreviewPlayer(card, songData);
 
   updateGenerateButton();
   updateStats();
@@ -1668,6 +1725,197 @@ function identifyBand(title, channel) {
   // Fallback to title split
   const parts = title.split(" - ");
   return parts.length > 1 ? parts[0] : channel || "Unknown";
+}
+
+/**
+ * Destroy any existing YT.Player + sync interval for a song
+ */
+function destroyPreviewPlayer(songData) {
+  const entry = previewPlayers.get(songData);
+  if (!entry) return;
+
+  if (entry.syncInterval) clearInterval(entry.syncInterval);
+  try {
+    entry.player.destroy();
+  } catch (e) {
+    // Player may already be torn down (e.g. iframe removed with its card)
+  }
+  previewPlayers.delete(songData);
+}
+
+/**
+ * Pause playback for a song's preview player, if it exists
+ */
+function pausePreviewPlayer(songData) {
+  const entry = previewPlayers.get(songData);
+  if (entry && entry.player && typeof entry.player.pauseVideo === "function") {
+    entry.player.pauseVideo();
+  }
+}
+
+/**
+ * Seek a song's preview player to a given time, if it exists
+ */
+function seekPreviewPlayer(songData, seconds) {
+  const entry = previewPlayers.get(songData);
+  if (entry && entry.player && typeof entry.player.seekTo === "function") {
+    entry.player.seekTo(seconds, true);
+  }
+}
+
+/**
+ * Create (or recreate) the inline YouTube preview player for a song card
+ */
+function initPreviewPlayer(card, songData) {
+  const wrapper = card.querySelector(".preview-player-wrapper");
+  const playerBox = card.querySelector(".preview-player-box");
+  const playBtn = card.querySelector(".btn-preview-play");
+  const setStartBtn = card.querySelector(".btn-set-start");
+  const setEndBtn = card.querySelector(".btn-set-end");
+
+  if (!wrapper || !songData.info || !songData.info.duration) return;
+
+  const videoId = extractYouTubeVideoId(songData.youtubeUrl);
+  if (!videoId) return;
+
+  destroyPreviewPlayer(songData);
+
+  // YT.Player replaces its mount element with an iframe, so the node can't
+  // be reused across re-inits (e.g. re-fetching a URL) - give it a fresh one.
+  playerBox.innerHTML = "";
+  const mount = document.createElement("div");
+  playerBox.appendChild(mount);
+
+  playBtn.disabled = true;
+  setStartBtn.disabled = true;
+  setEndBtn.disabled = true;
+
+  const timelineProgress = card.querySelector(".timeline-progress");
+  if (timelineProgress) timelineProgress.style.width = "0%";
+
+  const videoDuration = songData.info.duration;
+
+  const create = () => {
+    const player = new YT.Player(mount, {
+      videoId,
+      playerVars: { rel: 0, playsinline: 1 },
+      events: {
+        onReady: () => {
+          playBtn.disabled = false;
+          setStartBtn.disabled = false;
+          setEndBtn.disabled = false;
+        },
+        onStateChange: (e) =>
+          onPreviewStateChange(e, card, songData, videoDuration),
+      },
+    });
+    previewPlayers.set(songData, { player, syncInterval: null });
+  };
+
+  if (ytApiReady && window.YT && window.YT.Player) {
+    create();
+  } else {
+    ytApiPendingCallbacks.push(create);
+  }
+}
+
+/**
+ * Handle YouTube player state changes: sync the timeline playhead and
+ * loop playback within the selected start/end segment
+ */
+function onPreviewStateChange(event, card, songData, videoDuration) {
+  const entry = previewPlayers.get(songData);
+  if (!entry) return;
+
+  const playBtn = card.querySelector(".btn-preview-play");
+
+  if (event.data === YT.PlayerState.PLAYING) {
+    if (playBtn) playBtn.textContent = "⏸";
+
+    if (entry.syncInterval) clearInterval(entry.syncInterval);
+    entry.syncInterval = setInterval(() => {
+      const player = entry.player;
+      if (!player || typeof player.getCurrentTime !== "function") return;
+
+      const currentTime = player.getCurrentTime();
+      const startTime = parseTimeSeconds(songData.startTime) || 0;
+      const endTime = parseTimeSeconds(songData.endTime) || videoDuration;
+
+      if (currentTime >= endTime) {
+        player.seekTo(startTime, true);
+        player.pauseVideo();
+        return;
+      }
+
+      const timelineProgress = card.querySelector(".timeline-progress");
+      if (timelineProgress) {
+        const percent = Math.min(100, (currentTime / videoDuration) * 100);
+        timelineProgress.style.width = `${percent}%`;
+      }
+    }, 250);
+  } else {
+    if (playBtn) playBtn.textContent = "▶";
+    if (entry.syncInterval) {
+      clearInterval(entry.syncInterval);
+      entry.syncInterval = null;
+    }
+  }
+}
+
+/**
+ * Play/pause the preview, starting from the segment's start time if the
+ * player is currently outside the selected [start, end] range
+ */
+function togglePreviewPlayback(songData) {
+  const entry = previewPlayers.get(songData);
+  if (!entry || !entry.player) return;
+  const player = entry.player;
+
+  if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+    player.pauseVideo();
+    return;
+  }
+
+  const startTime = parseTimeSeconds(songData.startTime) || 0;
+  const endTime = parseTimeSeconds(songData.endTime) || 0;
+  const currentTime = player.getCurrentTime();
+  if (currentTime < startTime || currentTime >= endTime) {
+    player.seekTo(startTime, true);
+  }
+  player.playVideo();
+}
+
+/**
+ * Show/hide the embedded video box (playback is unaffected either way)
+ */
+function togglePreviewVideoVisibility(card) {
+  const playerBox = card.querySelector(".preview-player-box");
+  const toggleBtn = card.querySelector(".btn-preview-toggle");
+  if (!playerBox || !toggleBtn) return;
+  const nowHidden = playerBox.classList.toggle("hidden");
+  toggleBtn.textContent = nowHidden ? "👁 Show video" : "🙈 Hide video";
+}
+
+/**
+ * Set the song's start/end time from the preview player's current position
+ */
+function setTimeFromPlayer(card, songData, field) {
+  const entry = previewPlayers.get(songData);
+  if (!entry || !entry.player) return;
+
+  const seconds = Math.floor(entry.player.getCurrentTime());
+  const formatted = formatDuration(seconds);
+  songData[field] = formatted;
+
+  const input = card.querySelector(field === "startTime" ? ".start-time" : ".end-time");
+  if (input) input.value = formatted;
+
+  if (songData.info && songData.info.duration) {
+    updateTimelinePositions(card, songData, songData.info.duration);
+  }
+  checkTimeValidity(card, songData);
+  updateGenerateButton();
+  updateStats();
 }
 
 /**
@@ -1747,11 +1995,13 @@ function initTimeline(card, songData) {
       const newStart = Math.min(clickTime, endTime - 1);
       songData.startTime = formatDuration(newStart);
       card.querySelector(".start-time").value = songData.startTime;
+      seekPreviewPlayer(songData, newStart);
     } else {
       // Move end handle
       const newEnd = Math.max(clickTime, startTime + 1);
       songData.endTime = formatDuration(newEnd);
       card.querySelector(".end-time").value = songData.endTime;
+      seekPreviewPlayer(songData, newEnd);
     }
 
     updateTimelinePositions(card, songData, videoDuration);
@@ -1919,6 +2169,11 @@ function handleTimelineDragStart(e, card, songData, handleType, videoDuration) {
     endHandle.classList.remove("dragging");
     tooltip.remove();
 
+    const finalTime = parseTimeSeconds(
+      songData[handleType === "start" ? "startTime" : "endTime"],
+    );
+    if (finalTime !== null) seekPreviewPlayer(songData, finalTime);
+
     checkTimeValidity(card, songData);
     updateGenerateButton();
     updateStats();
@@ -2028,6 +2283,11 @@ function handleTimelineKeydown(e, card, songData, handleType, videoDuration) {
     default:
       return;
   }
+
+  const finalTime = parseTimeSeconds(
+    songData[handleType === "start" ? "startTime" : "endTime"],
+  );
+  if (finalTime !== null) seekPreviewPlayer(songData, finalTime);
 
   updateTimelinePositions(card, songData, videoDuration);
   checkTimeValidity(card, songData);

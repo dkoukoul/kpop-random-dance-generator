@@ -440,6 +440,19 @@
 
           <!-- Timeline Bar -->
           <div class="timeline-wrapper">
+            <!-- Inline Preview Player -->
+            <div class="preview-player-wrapper">
+              <div class="preview-player-box hidden">
+                <div class="preview-player"></div>
+              </div>
+              <div class="preview-controls">
+                <button class="btn btn-fetch btn-preview-play" title="Play/Pause preview" disabled>▶</button>
+                <button class="btn btn-fetch btn-preview-toggle" title="Show/hide video">👁 Show video</button>
+                <button class="btn btn-fetch btn-set-start" title="Set start to current playback time" disabled>Set Start</button>
+                <button class="btn btn-fetch btn-set-end" title="Set end to current playback time" disabled>Set End</button>
+              </div>
+            </div>
+
             <div class="timeline-container">
               <div class="timeline-track">
                 <div class="timeline-progress"></div>
@@ -501,6 +514,7 @@
       </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="app/app.js?v=2"></script>
   </body>
 </html>
