@@ -141,6 +141,7 @@ vite.config.ts.timestamp-*
 temp/
 
 yt-dlp
+yt-dlp.bak-*
 
 assets/*analytics.db
 cache.db
