@@ -204,10 +204,9 @@ async function loadVersion() {
 }
 
 /**
- * Add a new song card to the list
+ * Add a new, empty song card to the end of the list
  */
-function addSong() {
-  const index = state.songs.length;
+function addSong({ focus = true } = {}) {
   const songData = {
     youtubeUrl: "",
     title: "",
@@ -218,15 +217,25 @@ function addSong() {
   };
   state.songs.push(songData);
 
-  // Clone template
+  const card = insertSongCard(songData, state.songs.length - 1);
+  renumberCards();
+
+  if (focus) card.querySelector(".url-input").focus();
+
+  updateGenerateButton();
+  updateStats();
+  return card;
+}
+
+/**
+ * Build the card for a song and wire up its controls. Handlers read the
+ * card's position from data-index at event time (renumberCards keeps it
+ * current), so a card stays correct after songs around it move or go.
+ */
+function createSongCard(songData) {
   const template = elements.songCardTemplate.content.cloneNode(true);
   const card = template.querySelector(".song-card");
-  card.dataset.index = index;
 
-  // Set song number
-  card.querySelector(".song-number").textContent = index + 1;
-
-  // Get input elements
   const urlInput = card.querySelector(".url-input");
   const fetchBtn = card.querySelector(".btn-fetch");
   const startTimeInput = card.querySelector(".start-time");
@@ -234,62 +243,43 @@ function addSong() {
   const removeBtn = card.querySelector(".btn-remove");
   const toggleBtn = card.querySelector(".btn-toggle");
 
-  // Initial state class
-  if (!songData.isExpanded) {
-    card.classList.add("compact");
+  urlInput.value = songData.youtubeUrl;
+  startTimeInput.value = songData.startTime;
+  endTimeInput.value = songData.endTime;
+  if (songData.info) renderSongInfo(card, songData.info);
+
+  if (songData.isExpanded === undefined) {
+    songData.isExpanded = !state.compactViewEnabled;
   }
+  card.classList.toggle("compact", !songData.isExpanded);
 
-  // Debounce timer for auto-fetch
+  // Clean the URL as it's typed or pasted, and look the video up once it's a
+  // valid YouTube link (straight away on paste, after a pause when typing).
   let fetchDebounceTimer = null;
-
-  // Event listeners
-  urlInput.addEventListener("input", (e) => {
-    const rawUrl = e.target.value;
+  const onUrlChange = (immediate) => {
+    const rawUrl = urlInput.value;
     const cleanedUrl = cleanYouTubeUrl(rawUrl);
-
-    // Update the input with cleaned URL if it was modified
     if (cleanedUrl && cleanedUrl !== rawUrl) {
       urlInput.value = cleanedUrl;
     }
-
     songData.youtubeUrl = cleanedUrl || rawUrl;
     updateGenerateButton();
 
-    // Auto-fetch if valid YouTube URL (with debounce)
     if (isValidYouTubeUrl(songData.youtubeUrl) && !songData.info) {
       clearTimeout(fetchDebounceTimer);
-      fetchDebounceTimer = setTimeout(() => {
+      if (immediate) {
         fetchVideoInfo(card, songData);
-      }, 500); // Wait 500ms after typing stops
+      } else {
+        fetchDebounceTimer = setTimeout(() => fetchVideoInfo(card, songData), 500);
+      }
     }
-  });
-
-  // Handle paste event for immediate fetch
-  urlInput.addEventListener("paste", (e) => {
-    setTimeout(() => {
-      const rawUrl = urlInput.value;
-      const cleanedUrl = cleanYouTubeUrl(rawUrl);
-
-      if (cleanedUrl && cleanedUrl !== rawUrl) {
-        urlInput.value = cleanedUrl;
-      }
-
-      songData.youtubeUrl = cleanedUrl || rawUrl;
-      updateGenerateButton();
-
-      // Auto-fetch immediately on paste if valid
-      if (isValidYouTubeUrl(songData.youtubeUrl) && !songData.info) {
-        fetchVideoInfo(card, songData);
-      }
-    }, 10);
-  });
+  };
+  urlInput.addEventListener("input", () => onUrlChange(false));
+  urlInput.addEventListener("paste", () => setTimeout(() => onUrlChange(true), 10));
 
   fetchBtn.addEventListener("click", () => fetchVideoInfo(card, songData));
-
   urlInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      fetchVideoInfo(card, songData);
-    }
+    if (e.key === "Enter") fetchVideoInfo(card, songData);
   });
 
   startTimeInput.addEventListener("input", (e) =>
@@ -323,9 +313,9 @@ function addSong() {
     .querySelector(".btn-set-end")
     .addEventListener("click", () => setTimeFromPlayer(card, songData, "endTime"));
 
-  // Drag and drop event handlers - only allow dragging from card header
+  // Drag and drop - only allow dragging from card header
   const songCardHeader = card.querySelector(".song-card-header");
-  
+
   songCardHeader.addEventListener("dragstart", (e) => {
     state.draggedIndex = parseInt(card.dataset.index);
     card.classList.add("dragging");
@@ -335,7 +325,6 @@ function addSong() {
   songCardHeader.addEventListener("dragend", () => {
     card.classList.remove("dragging");
     state.draggedIndex = null;
-    // Remove drag-over class from all cards
     document
       .querySelectorAll(".song-card")
       .forEach((c) => c.classList.remove("drag-over"));
@@ -361,58 +350,83 @@ function addSong() {
     const toIndex = parseInt(card.dataset.index);
 
     if (fromIndex !== null && fromIndex !== toIndex) {
-      // Reorder songs array
       const [movedSong] = state.songs.splice(fromIndex, 1);
       state.songs.splice(toIndex, 0, movedSong);
-
-      // Rebuild the UI
       rebuildSongList();
     }
   });
 
-  // Hide empty state if visible
-  elements.emptyState.classList.add("hidden");
+  return card;
+}
 
-  // Show drag hint when there are 2+ songs
+/**
+ * Create a song's card and put it at `index` in the list. The timeline and
+ * preview player are set up after the card is in the page.
+ */
+function insertSongCard(songData, index) {
+  const card = createSongCard(songData);
+  const next = elements.songList.querySelectorAll(".song-card")[index] || null;
+  elements.songList.insertBefore(card, next);
+
+  if (songData.info) {
+    initTimeline(card, songData);
+    initPreviewPlayer(card, songData);
+  }
+  return card;
+}
+
+/**
+ * Bring every card's index and number in line with its place in the list
+ */
+function renumberCards() {
+  const cards = elements.songList.querySelectorAll(".song-card");
+  cards.forEach((card, i) => {
+    card.dataset.index = i;
+    card.querySelector(".song-number").textContent = i + 1;
+  });
+
+  elements.emptyState.classList.toggle("hidden", cards.length > 0);
   updateDragHint();
+}
 
-  // Add card to list
-  elements.songList.appendChild(card);
+/**
+ * Show a video's title, channel, thumbnail and duration on its card
+ */
+function renderSongInfo(card, info) {
+  card.querySelector(".song-thumbnail img").src = info.thumbnail;
+  card.querySelector(".song-title").textContent = info.title;
+  card.querySelector(".song-channel").textContent = info.channel;
+  card.querySelector(".song-duration").textContent =
+    `Duration: ${formatDuration(info.duration)}`;
+  card.querySelector(".song-info").classList.remove("hidden");
 
-  // Focus URL input
-  urlInput.focus();
-
-  updateGenerateButton();
-  updateStats();
+  // Compact view shows "Band  Song": strip the band from "Band - Song" titles
+  const band = identifyBand(info.title, info.channel);
+  let displayTitle = info.title;
+  if (band && band !== "Unknown" && displayTitle.includes(band)) {
+    const parts = displayTitle.split(" - ");
+    if (parts.length > 1 && parts[0].toLowerCase().includes(band.toLowerCase())) {
+      displayTitle = parts.slice(1).join(" - ");
+    }
+  }
+  card.querySelector(".compact-band").textContent = band;
+  card.querySelector(".compact-title").textContent = displayTitle;
 }
 
 /**
  * Remove a song from the list
  */
 function removeSong(card, index) {
-  // Cleanup timeline event listeners
-  if (state.songs[index] && state.songs[index].timelineCleanup) {
-    state.songs[index].timelineCleanup();
-  }
-  if (state.songs[index]) {
-    destroyPreviewPlayer(state.songs[index]);
+  const songData = state.songs[index];
+  if (songData) {
+    if (songData.timelineCleanup) songData.timelineCleanup();
+    destroyPreviewPlayer(songData);
   }
 
   card.remove();
   state.songs.splice(index, 1);
+  renumberCards();
 
-  // Update indices for remaining cards
-  document.querySelectorAll(".song-card").forEach((c, i) => {
-    c.dataset.index = i;
-    c.querySelector(".song-number").textContent = i + 1;
-  });
-
-  // Show empty state if no songs
-  if (state.songs.length === 0) {
-    elements.emptyState.classList.remove("hidden");
-  }
-
-  updateDragHint();
   updateGenerateButton();
   updateStats();
 }
@@ -461,40 +475,10 @@ async function fetchVideoInfo(card, songData) {
       card = findCardForSong(songData);
       if (!card) return;
     }
-    const songInfo = card.querySelector(".song-info");
-
     const info = data;
     songData.info = info;
     songData.title = info.title;
-
-    // Update UI
-    card.querySelector(".song-thumbnail img").src = info.thumbnail;
-    card.querySelector(".song-title").textContent = info.title;
-    card.querySelector(".song-channel").textContent = info.channel;
-    card.querySelector(".song-duration").textContent =
-      `Duration: ${formatDuration(info.duration)}`;
-
-    // Update compact view info
-    const compactBand = card.querySelector(".compact-band");
-    const compactTitle = card.querySelector(".compact-title");
-    if (compactBand) {
-      compactBand.textContent = identifyBand(info.title, info.channel);
-    }
-    if (compactTitle) {
-      const band = compactBand ? compactBand.textContent : "";
-      let displayTitle = info.title;
-      if (band && band !== "Unknown" && displayTitle.includes(band)) {
-        // If title has "Band - Song", try to strip the band part
-        const parts = displayTitle.split(" - ");
-        if (
-          parts.length > 1 &&
-          parts[0].toLowerCase().includes(band.toLowerCase())
-        ) {
-          displayTitle = parts.slice(1).join(" - ");
-        }
-      }
-      compactTitle.textContent = displayTitle;
-    }
+    renderSongInfo(card, info);
 
     // Set default end time to 30 seconds or video duration if shorter, but
     // only while the song still has the untouched 0:00-0:30 cut. A cut from a
@@ -507,8 +491,6 @@ async function fetchVideoInfo(card, songData) {
       card.querySelector(".end-time").value = formatDuration(defaultEndSeconds);
       songData.endTime = formatDuration(defaultEndSeconds);
     }
-
-    songInfo.classList.remove("hidden");
 
     // Initialize timeline
     initTimeline(card, songData);
@@ -1020,203 +1002,16 @@ function cleanYouTubeUrl(url) {
 }
 
 /**
- * Rebuild the song list UI after reordering
+ * Rebuild every card from state.songs (after a reorder, a view change or a
+ * load). Cards are replaced, so card references held elsewhere go stale.
  */
 function rebuildSongList() {
-  // Store current song data
-  const songsData = [...state.songs];
-
-  // Destroy existing preview players before their cards are torn down
-  songsData.forEach((songData) => destroyPreviewPlayer(songData));
-
-  // Remove all cards except empty state
+  state.songs.forEach((songData) => destroyPreviewPlayer(songData));
   document.querySelectorAll(".song-card").forEach((card) => card.remove());
 
-  // Clear songs array
-  state.songs = [];
+  state.songs.forEach((songData, index) => insertSongCard(songData, index));
+  renumberCards();
 
-  // Re-add each song
-  songsData.forEach((songData) => {
-    const index = state.songs.length;
-    state.songs.push(songData);
-
-    // Clone template
-    const template = elements.songCardTemplate.content.cloneNode(true);
-    const card = template.querySelector(".song-card");
-    card.dataset.index = index;
-
-    // Set song number
-    card.querySelector(".song-number").textContent = index + 1;
-
-    // Get input elements
-    const urlInput = card.querySelector(".url-input");
-    const fetchBtn = card.querySelector(".btn-fetch");
-    const startTimeInput = card.querySelector(".start-time");
-    const endTimeInput = card.querySelector(".end-time");
-    const removeBtn = card.querySelector(".btn-remove");
-    const songInfo = card.querySelector(".song-info");
-
-    // Restore values
-    urlInput.value = songData.youtubeUrl;
-    startTimeInput.value = songData.startTime;
-    endTimeInput.value = songData.endTime;
-
-    // If we have video info, show it
-    if (songData.info) {
-      card.querySelector(".song-thumbnail img").src = songData.info.thumbnail;
-      card.querySelector(".song-title").textContent = songData.info.title;
-      card.querySelector(".song-channel").textContent = songData.info.channel;
-      card.querySelector(".song-duration").textContent =
-        `Duration: ${formatDuration(songData.info.duration)}`;
-      songInfo.classList.remove("hidden");
-
-      // Update compact view info
-      const compactBand = card.querySelector(".compact-band");
-      const compactTitle = card.querySelector(".compact-title");
-      if (compactBand) {
-        compactBand.textContent = identifyBand(
-          songData.info.title,
-          songData.info.channel,
-        );
-      }
-      if (compactTitle) {
-        const band = compactBand ? compactBand.textContent : "";
-        let displayTitle = songData.info.title;
-        if (band && band !== "Unknown" && displayTitle.includes(band)) {
-          // If title has "Band - Song", try to strip the band part
-          const parts = displayTitle.split(" - ");
-          if (
-            parts.length > 1 &&
-            parts[0].toLowerCase().includes(band.toLowerCase())
-          ) {
-            displayTitle = parts.slice(1).join(" - ");
-          }
-        }
-        compactTitle.textContent = displayTitle;
-      }
-
-      // Re-initialize timeline
-      initTimeline(card, songData);
-      initPreviewPlayer(card, songData);
-    }
-
-    if (songData.isExpanded === undefined) {
-      songData.isExpanded = !state.compactViewEnabled;
-    }
-
-    if (!songData.isExpanded) {
-      card.classList.add("compact");
-    }
-
-    // Debounce timer for auto-fetch
-    let fetchDebounceTimer = null;
-
-    // Event listeners
-    urlInput.addEventListener("input", (e) => {
-      const rawUrl = e.target.value;
-      const cleanedUrl = cleanYouTubeUrl(rawUrl);
-      if (cleanedUrl && cleanedUrl !== rawUrl) {
-        urlInput.value = cleanedUrl;
-      }
-      songData.youtubeUrl = cleanedUrl || rawUrl;
-      updateGenerateButton();
-      if (isValidYouTubeUrl(songData.youtubeUrl) && !songData.info) {
-        clearTimeout(fetchDebounceTimer);
-        fetchDebounceTimer = setTimeout(
-          () => fetchVideoInfo(card, songData),
-          500,
-        );
-      }
-    });
-
-    urlInput.addEventListener("paste", (e) => {
-      setTimeout(() => {
-        const rawUrl = urlInput.value;
-        const cleanedUrl = cleanYouTubeUrl(rawUrl);
-        if (cleanedUrl && cleanedUrl !== rawUrl) urlInput.value = cleanedUrl;
-        songData.youtubeUrl = cleanedUrl || rawUrl;
-        updateGenerateButton();
-        if (isValidYouTubeUrl(songData.youtubeUrl) && !songData.info) {
-          fetchVideoInfo(card, songData);
-        }
-      }, 10);
-    });
-
-    fetchBtn.addEventListener("click", () => fetchVideoInfo(card, songData));
-    urlInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") fetchVideoInfo(card, songData);
-    });
-    startTimeInput.addEventListener("input", (e) =>
-      handleTimeInput(e, card, songData, "startTime"),
-    );
-    endTimeInput.addEventListener("input", (e) =>
-      handleTimeInput(e, card, songData, "endTime"),
-    );
-    removeBtn.addEventListener("click", () =>
-      removeSong(card, parseInt(card.dataset.index)),
-    );
-
-    const toggleBtn = card.querySelector(".btn-toggle");
-    toggleBtn.addEventListener("click", () => {
-      songData.isExpanded = !songData.isExpanded;
-      card.classList.toggle("compact", !songData.isExpanded);
-      if (!songData.isExpanded) pausePreviewPlayer(songData);
-    });
-
-    // Preview player controls
-    card
-      .querySelector(".btn-preview-play")
-      .addEventListener("click", () => togglePreviewPlayback(songData));
-    card
-      .querySelector(".btn-preview-toggle")
-      .addEventListener("click", () => togglePreviewVideoVisibility(card));
-    card
-      .querySelector(".btn-set-start")
-      .addEventListener("click", () => setTimeFromPlayer(card, songData, "startTime"));
-    card
-      .querySelector(".btn-set-end")
-      .addEventListener("click", () => setTimeFromPlayer(card, songData, "endTime"));
-
-    // Drag events - only allow dragging from card header
-    const songCardHeader = card.querySelector(".song-card-header");
-    
-    songCardHeader.addEventListener("dragstart", (e) => {
-      state.draggedIndex = parseInt(card.dataset.index);
-      card.classList.add("dragging");
-      e.dataTransfer.effectAllowed = "move";
-    });
-    songCardHeader.addEventListener("dragend", () => {
-      card.classList.remove("dragging");
-      state.draggedIndex = null;
-      document
-        .querySelectorAll(".song-card")
-        .forEach((c) => c.classList.remove("drag-over"));
-    });
-    songCardHeader.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      if (document.querySelector(".song-card.dragging") !== card)
-        card.classList.add("drag-over");
-    });
-    songCardHeader.addEventListener("dragleave", () =>
-      card.classList.remove("drag-over"),
-    );
-    songCardHeader.addEventListener("drop", (e) => {
-      e.preventDefault();
-      card.classList.remove("drag-over");
-      const fromIndex = state.draggedIndex;
-      const toIndex = parseInt(card.dataset.index);
-      if (fromIndex !== null && fromIndex !== toIndex) {
-        const [movedSong] = state.songs.splice(fromIndex, 1);
-        state.songs.splice(toIndex, 0, movedSong);
-        rebuildSongList();
-      }
-    });
-
-    elements.songList.appendChild(card);
-  });
-
-  elements.emptyState.classList.add("hidden");
-  updateDragHint();
   updateGenerateButton();
   updateStats();
 }
@@ -1773,16 +1568,8 @@ function addSearchResultToProject(result) {
   }
 
   // Otherwise add a new song
-  addSong();
-  const lastIndex = state.songs.length - 1;
-  const newSong = state.songs[lastIndex];
-  const lastCard = document.querySelector(
-    `.song-card[data-index="${lastIndex}"]`,
-  );
-
-  if (lastCard) {
-    populateCardWithResult(lastCard, newSong, result);
-  }
+  const card = addSong();
+  populateCardWithResult(card, state.songs[state.songs.length - 1], result);
 }
 
 function populateCardWithResult(card, songData, result) {
@@ -1799,37 +1586,7 @@ function populateCardWithResult(card, songData, result) {
   };
   songData.title = result.title;
 
-  // Update UI components
-  card.querySelector(".song-thumbnail img").src = result.thumbnail;
-  card.querySelector(".song-title").textContent = result.title;
-  card.querySelector(".song-channel").textContent = result.channel;
-  card.querySelector(".song-duration").textContent =
-    `Duration: ${formatDuration(result.duration)}`;
-
-  const songInfo = card.querySelector(".song-info");
-  songInfo.classList.remove("hidden");
-
-  // Update compact view info
-  const compactBand = card.querySelector(".compact-band");
-  const compactTitle = card.querySelector(".compact-title");
-  if (compactBand) {
-    compactBand.textContent = identifyBand(result.title, result.channel);
-  }
-  if (compactTitle) {
-    const band = compactBand ? compactBand.textContent : "";
-    let displayTitle = result.title;
-    if (band && band !== "Unknown" && displayTitle.includes(band)) {
-      // If title has "Band - Song", try to strip the band part
-      const parts = displayTitle.split(" - ");
-      if (
-        parts.length > 1 &&
-        parts[0].toLowerCase().includes(band.toLowerCase())
-      ) {
-        displayTitle = parts.slice(1).join(" - ");
-      }
-    }
-    compactTitle.textContent = displayTitle;
-  }
+  renderSongInfo(card, songData.info);
 
   // Set default end time
   const defaultEndSeconds = Math.min(30, result.duration);
@@ -2136,6 +1893,9 @@ function initTimeline(card, songData) {
 
   const videoDuration = songData.info.duration;
   console.log('📊 Video duration:', videoDuration, 'seconds');
+
+  // Re-fetching a video re-runs this on the same card; drop the old handlers
+  if (songData.timelineCleanup) songData.timelineCleanup();
 
   // Create markers
   renderTimelineMarkers(timelineMarkers, videoDuration);
