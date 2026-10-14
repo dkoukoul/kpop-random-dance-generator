@@ -416,13 +416,23 @@ function removeSong(card, index) {
 }
 
 /**
+ * Find the card currently showing a song, or null if the song is gone.
+ * rebuildSongList() replaces every card, so a card reference held across an
+ * await or a timer can be stale.
+ */
+function findCardForSong(songData) {
+  const index = state.songs.indexOf(songData);
+  if (index === -1) return null;
+  return document.querySelector(`.song-card[data-index="${index}"]`);
+}
+
+/**
  * Fetch video info from YouTube
  */
 async function fetchVideoInfo(card, songData) {
   const urlInput = card.querySelector(".url-input");
   const fetchBtn = card.querySelector(".btn-fetch");
   const fetchIcon = fetchBtn.querySelector(".fetch-icon");
-  const songInfo = card.querySelector(".song-info");
 
   const url = urlInput.value.trim();
   if (!url) return;
@@ -442,6 +452,14 @@ async function fetchVideoInfo(card, songData) {
     if (!response.ok) {
       throw new Error(data.error || "Failed to fetch video info");
     }
+
+    // The list may have been rebuilt while the lookup was in flight
+    // (e.g. by fetchBands), so write to the song's current card.
+    if (!card.isConnected) {
+      card = findCardForSong(songData);
+      if (!card) return;
+    }
+    const songInfo = card.querySelector(".song-info");
 
     const info = data;
     songData.info = info;
@@ -476,10 +494,17 @@ async function fetchVideoInfo(card, songData) {
       compactTitle.textContent = displayTitle;
     }
 
-    // Set default end time to 30 seconds or video duration if shorter
-    const defaultEndSeconds = Math.min(30, info.duration);
-    card.querySelector(".end-time").value = formatDuration(defaultEndSeconds);
-    songData.endTime = formatDuration(defaultEndSeconds);
+    // Set default end time to 30 seconds or video duration if shorter, but
+    // only while the song still has the untouched 0:00-0:30 cut. A cut from a
+    // landing page, a pending mix or the user is kept.
+    const hasDefaultCut =
+      parseTimeSeconds(songData.startTime) === 0 &&
+      parseTimeSeconds(songData.endTime) === 30;
+    if (hasDefaultCut) {
+      const defaultEndSeconds = Math.min(30, info.duration);
+      card.querySelector(".end-time").value = formatDuration(defaultEndSeconds);
+      songData.endTime = formatDuration(defaultEndSeconds);
+    }
 
     songInfo.classList.remove("hidden");
 
@@ -1317,11 +1342,14 @@ function loadPendingMix() {
 
     // Fill in titles, thumbnails and durations. Staggered because each lookup
     // spawns a yt-dlp process on the server and a ten-song mix would otherwise
-    // fire ten at once.
-    document.querySelectorAll(".song-card").forEach((card, index) => {
-      const songData = state.songs[index];
-      if (!songData || !songData.youtubeUrl) return;
-      setTimeout(() => fetchVideoInfo(card, songData), index * 400);
+    // fire ten at once. The card is looked up when the timer fires, because
+    // fetchBands() may rebuild the list (replacing every card) in the meantime.
+    state.songs.forEach((songData, index) => {
+      if (!songData.youtubeUrl) return;
+      setTimeout(() => {
+        const card = findCardForSong(songData);
+        if (card && !songData.info) fetchVideoInfo(card, songData);
+      }, index * 400);
     });
 
     return true;
