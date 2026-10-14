@@ -109,7 +109,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/styles.css?v=5" />
+    <link rel="stylesheet" href="css/styles.css?v=6" />
     <link rel="icon" type="image/png" href="assets/favicon.png" />
     <link rel="canonical" href="https://kpopgenerator.cloud/" />
     <meta name="theme-color" content="#8b5cf6" />
@@ -246,6 +246,13 @@
               </div>
 
               <p class="drag-hint" id="dragHint">💡 Drag songs or use ↑ ↓ to reorder them</p>
+
+              <!-- Shown after a saved mix was restored on page load -->
+              <div id="draftBanner" class="draft-banner hidden" role="status">
+                <span class="draft-banner-text"></span>
+                <button type="button" class="draft-banner-fresh">Start fresh</button>
+                <button type="button" class="draft-banner-close" aria-label="Dismiss" title="Dismiss">×</button>
+              </div>
 
               <!-- Statistics Bar -->
               <div id="statsBar" class="stats-bar hidden">
@@ -590,6 +597,23 @@
       </div>
     </div>
 
+    <!-- Ready-made mix vs. saved mix -->
+    <div id="replaceMixModal" class="modal-overlay hidden">
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="replaceMixTitle">
+        <div class="modal-header">
+          <span class="modal-icon" aria-hidden="true">🎵</span>
+          <h3 id="replaceMixTitle">Replace your saved mix?</h3>
+        </div>
+        <div class="modal-body">
+          <p id="replaceMixText" class="modal-message"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="openReadyMixBtn" class="btn btn-primary">Open ready-made mix</button>
+          <button type="button" id="keepMyMixBtn" class="btn btn-secondary">Keep my mix</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Contact Modal -->
     <div id="contactModal" class="modal-overlay hidden">
       <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
@@ -651,6 +675,6 @@
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="app/app.js?v=5"></script>
+    <script src="app/app.js?v=6"></script>
   </body>
 </html>

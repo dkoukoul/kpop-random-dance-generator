@@ -78,6 +78,11 @@ const elements = {
   contactStatus: document.getElementById("contactStatus"),
   topSongsSection: document.getElementById("topSongsSection"),
   generateHint: document.getElementById("generateHint"),
+  draftBanner: document.getElementById("draftBanner"),
+  replaceMixModal: document.getElementById("replaceMixModal"),
+  replaceMixText: document.getElementById("replaceMixText"),
+  openReadyMixBtn: document.getElementById("openReadyMixBtn"),
+  keepMyMixBtn: document.getElementById("keepMyMixBtn"),
   toast: document.getElementById("toast"),
 };
 
@@ -92,11 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Shuffle toggle
   elements.randomOrderToggle.addEventListener("change", (e) => {
     state.shuffleEnabled = e.target.checked;
+    saveSettings();
   });
 
   // Compact view toggle
   elements.compactViewToggle.addEventListener("change", (e) => {
     state.compactViewEnabled = e.target.checked;
+    saveSettings();
     // Update all songs to match global preference
     state.songs.forEach((song) => {
       song.isExpanded = !state.compactViewEnabled;
@@ -157,11 +164,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   elements.contactForm.addEventListener("submit", submitContactForm);
 
-  // A ready-made mix handed over from a /random-dance/ landing page takes the
-  // place of the empty first card.
-  if (!loadPendingMix()) {
-    addSong();
-  }
+  // Start from a ready-made mix (landing page), the saved draft, or an
+  // empty card
+  applySavedSettings();
+  startMix();
+
+  elements.draftBanner
+    .querySelector(".draft-banner-fresh")
+    .addEventListener("click", startFresh);
+  elements.draftBanner
+    .querySelector(".draft-banner-close")
+    .addEventListener("click", hideDraftBanner);
+  // Last chance to save an edit made within the save delay
+  window.addEventListener("pagehide", saveDraft);
 
   // Fetch bands list for variety tracking
   fetchBands().then(() => {
@@ -1265,6 +1280,9 @@ function findGenerateProblem() {
  * Enable or disable Generate, and say why it's disabled
  */
 function updateGenerateButton() {
+  // Every edit to the list ends up here, so it's also where the draft is saved
+  scheduleDraftSave();
+
   const problem = findGenerateProblem();
   elements.generateBtn.disabled = !!problem || state.isGenerating;
 
@@ -1458,6 +1476,8 @@ function importProject(event) {
       state.shuffleEnabled = !!projectData.shuffleEnabled;
 
       // Update UI
+      hideToast(); // an Undo from before would act on the old list
+      hideDraftBanner();
       elements.randomOrderToggle.checked = state.shuffleEnabled;
       rebuildSongList();
 
@@ -1474,59 +1494,271 @@ function importProject(event) {
 }
 
 /**
- * Pick up a ready-made mix handed over from a /random-dance/ landing page.
- *
- * The payload is the same shape as an exported project file, minus the video
- * metadata -- the landing pages only know the URL and the cut points, so the
- * titles and thumbnails are fetched here. Returns true if a mix was loaded.
+ * Decide what the page starts with: a ready-made mix handed over from a
+ * landing page, the draft saved from the last visit, or one empty card. A
+ * ready-made mix only replaces a saved draft if the user says so.
  */
-function loadPendingMix() {
-  let raw = null;
-  try {
-    raw = sessionStorage.getItem("pendingMix");
-    // Clear immediately so a refresh doesn't re-import the same mix.
-    sessionStorage.removeItem("pendingMix");
-  } catch (error) {
-    return false; // storage blocked; nothing to restore
+function startMix() {
+  const mix = takePendingMix();
+  const draft = readDraft();
+
+  if (mix && draft) {
+    restoreDraft(draft, { banner: false });
+    askToReplaceDraft(mix, draft.songs.length);
+  } else if (mix) {
+    loadMix(mix);
+  } else if (draft) {
+    restoreDraft(draft);
+  } else {
+    addSong();
   }
-  if (!raw) return false;
+  draftSavingEnabled = true;
+}
+
+function askToReplaceDraft(mix, savedCount) {
+  elements.replaceMixText.textContent =
+    `You have a saved mix with ${savedCount} song${savedCount === 1 ? "" : "s"}. ` +
+    `Opening the ready-made mix (${mix.songs.length} songs) will replace it.`;
+  elements.openReadyMixBtn.onclick = () => {
+    closeModal(elements.replaceMixModal);
+    loadMix(mix);
+    saveDraft();
+  };
+  elements.keepMyMixBtn.onclick = () => closeModal(elements.replaceMixModal);
+  // Escape or closing keeps the saved mix
+  openModal(elements.replaceMixModal);
+}
+
+/**
+ * Autosave: the songs (not players or handlers) go to localStorage shortly
+ * after every change, so a refresh or the back button doesn't lose the mix.
+ * Storage can be blocked or full; then the page just works without it.
+ */
+const DRAFT_KEY = "kpopgen:draft";
+const SETTINGS_KEY = "kpopgen:settings";
+let draftSavingEnabled = false; // off until startMix() has run
+let draftSaveTimer = null;
+let restoredDraftSignature = null; // to hide the banner on the first edit
+
+function scheduleDraftSave() {
+  if (!draftSavingEnabled) return;
+  clearTimeout(draftSaveTimer);
+  draftSaveTimer = setTimeout(saveDraft, 300);
+}
+
+function draftSongs() {
+  return state.songs
+    .filter((song) => song.youtubeUrl && song.youtubeUrl.trim())
+    .map((song) => ({
+      youtubeUrl: song.youtubeUrl,
+      title: song.title || "",
+      startTime: song.startTime,
+      endTime: song.endTime,
+      cutSource: song.cutSource || null,
+      popularUses: song.popularUses || null,
+      info: song.info
+        ? {
+            title: song.info.title,
+            thumbnail: song.info.thumbnail,
+            channel: song.info.channel,
+            duration: song.info.duration,
+          }
+        : null,
+    }));
+}
+
+/** Which songs, in which order, with which cuts */
+function draftSignature(songs = draftSongs()) {
+  return JSON.stringify(songs.map((s) => [s.youtubeUrl, s.startTime, s.endTime]));
+}
+
+function saveDraft() {
+  clearTimeout(draftSaveTimer);
+  if (!draftSavingEnabled) return;
+
+  const songs = draftSongs();
+  if (restoredDraftSignature !== null && draftSignature(songs) !== restoredDraftSignature) {
+    restoredDraftSignature = null;
+    hideDraftBanner();
+  }
 
   try {
-    const mix = JSON.parse(raw);
-    if (!mix || !Array.isArray(mix.songs) || mix.songs.length === 0) return false;
+    if (songs.length === 0) {
+      localStorage.removeItem(DRAFT_KEY);
+    } else {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({ version: 1, savedAt: Date.now(), songs }));
+    }
+  } catch (error) {
+    // Private mode, blocked or full storage: nothing to do
+  }
+}
 
-    state.songs = mix.songs.map((song) => ({
-      youtubeUrl: song.youtubeUrl || "",
+function readDraft() {
+  try {
+    const draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
+    if (draft && Array.isArray(draft.songs) && draft.songs.length > 0) return draft;
+  } catch (error) {
+    // Blocked storage or a damaged entry: start without it
+  }
+  return null;
+}
+
+function restoreDraft(draft, { banner = true } = {}) {
+  state.songs = draft.songs
+    .filter((song) => song && typeof song.youtubeUrl === "string")
+    .map((song) => ({
+      youtubeUrl: song.youtubeUrl,
       title: song.title || "",
       startTime: song.startTime || "0:00",
       endTime: song.endTime || "0:30",
-      cutSource: "mix", // never replaced by a popular cut
-      info: null,
+      // A restored cut is the user's: never prefill over it
+      cutSource: song.cutSource || "draft",
+      popularUses: song.popularUses || null,
+      info: song.info && song.info.duration ? song.info : null,
       isExpanded: !state.compactViewEnabled,
     }));
-    state.shuffleEnabled = mix.shuffleEnabled !== false;
-    elements.randomOrderToggle.checked = state.shuffleEnabled;
+  if (state.songs.length === 0) {
+    addSong();
+    return;
+  }
 
-    rebuildSongList();
-    updateGenerateButton();
+  rebuildSongList();
+  lookUpMissingInfo();
+  restoredDraftSignature = draftSignature();
+  if (banner) {
+    const n = state.songs.length;
+    showDraftBanner(`Restored your mix (${n} song${n === 1 ? "" : "s"})`);
+  }
+}
 
-    // Fill in titles, thumbnails and durations. Staggered because each lookup
-    // spawns a yt-dlp process on the server and a ten-song mix would otherwise
-    // fire ten at once. The card is looked up when the timer fires, because
-    // fetchBands() may rebuild the list (replacing every card) in the meantime.
-    state.songs.forEach((songData, index) => {
-      if (!songData.youtubeUrl) return;
+function showDraftBanner(message) {
+  elements.draftBanner.querySelector(".draft-banner-text").textContent = message;
+  elements.draftBanner.classList.remove("hidden");
+}
+
+function hideDraftBanner() {
+  elements.draftBanner.classList.add("hidden");
+}
+
+/**
+ * Clear the list (from the restore banner), with Undo
+ */
+function startFresh() {
+  const previous = state.songs;
+  hideDraftBanner();
+  restoredDraftSignature = null;
+
+  previous.forEach((songData) => destroyPreviewPlayer(songData));
+  state.songs = [];
+  rebuildSongList();
+  addSong();
+  saveDraft();
+
+  showToast("Started a new mix", {
+    actionLabel: "Undo",
+    onAction: () => {
+      state.songs.forEach((songData) => destroyPreviewPlayer(songData));
+      state.songs = previous;
+      rebuildSongList();
+      saveDraft();
+    },
+  });
+}
+
+/**
+ * Remembered view settings
+ */
+function applySavedSettings() {
+  let settings = {};
+  try {
+    settings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
+  } catch (error) {
+    // Blocked storage: defaults
+  }
+  state.compactViewEnabled = settings.compactView === true;
+  state.shuffleEnabled = settings.shuffle === true;
+  elements.compactViewToggle.checked = state.compactViewEnabled;
+  elements.randomOrderToggle.checked = state.shuffleEnabled;
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(
+      SETTINGS_KEY,
+      JSON.stringify({ compactView: state.compactViewEnabled, shuffle: state.shuffleEnabled }),
+    );
+  } catch (error) {
+    // Blocked storage: not remembered
+  }
+}
+
+/**
+ * Look up titles, thumbnails and durations for songs that don't have them.
+ * Staggered because each lookup spawns a yt-dlp process on the server and a
+ * ten-song mix would otherwise fire ten at once. The card is looked up when
+ * the timer fires, because fetchBands() may rebuild the list (replacing
+ * every card) in the meantime.
+ */
+function lookUpMissingInfo() {
+  state.songs
+    .filter((songData) => songData.youtubeUrl && !songData.info)
+    .forEach((songData, i) => {
       setTimeout(() => {
         const card = findCardForSong(songData);
         if (card && !songData.info) fetchVideoInfo(card, songData);
-      }, index * 400);
+      }, i * 400);
     });
+}
 
-    return true;
+/**
+ * Take the ready-made mix a /random-dance/ landing page handed over, if any.
+ * It's removed straight away so a refresh doesn't import it again.
+ */
+function takePendingMix() {
+  let raw = null;
+  try {
+    raw = sessionStorage.getItem("pendingMix");
+    sessionStorage.removeItem("pendingMix");
   } catch (error) {
-    console.error("Failed to load ready-made mix:", error);
-    return false;
+    return null; // storage blocked; nothing handed over
   }
+  if (!raw) return null;
+
+  try {
+    const mix = JSON.parse(raw);
+    if (!mix || !Array.isArray(mix.songs) || mix.songs.length === 0) return null;
+    return mix;
+  } catch (error) {
+    console.error("Failed to read ready-made mix:", error);
+    return null;
+  }
+}
+
+/**
+ * Load a ready-made mix. The payload is the same shape as an exported
+ * project file, minus the video metadata -- the landing pages only know the
+ * URL and the cut points, so the titles and thumbnails are fetched here.
+ */
+function loadMix(mix) {
+  hideToast(); // an Undo from before would act on the old list
+  hideDraftBanner();
+  restoredDraftSignature = null;
+  state.songs.forEach((songData) => destroyPreviewPlayer(songData));
+
+  state.songs = mix.songs.map((song) => ({
+    youtubeUrl: song.youtubeUrl || "",
+    title: song.title || "",
+    startTime: song.startTime || "0:00",
+    endTime: song.endTime || "0:30",
+    cutSource: "mix", // never replaced by a popular cut
+    info: null,
+    isExpanded: !state.compactViewEnabled,
+  }));
+  state.shuffleEnabled = mix.shuffleEnabled !== false;
+  elements.randomOrderToggle.checked = state.shuffleEnabled;
+
+  rebuildSongList();
+  lookUpMissingInfo();
 }
 
 /**
