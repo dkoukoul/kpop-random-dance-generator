@@ -76,6 +76,8 @@ const elements = {
   contactSendBtn: document.getElementById("contactSendBtn"),
   contactCancelBtn: document.getElementById("contactCancelBtn"),
   contactStatus: document.getElementById("contactStatus"),
+  topSongsSection: document.getElementById("topSongsSection"),
+  toast: document.getElementById("toast"),
 };
 
 // Initialize
@@ -83,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load version number
   loadVersion();
   
-  elements.addSongBtn.addEventListener("click", addSong);
+  elements.addSongBtn.addEventListener("click", () => addSong({ focus: true }));
   elements.generateBtn.addEventListener("click", generateRandomDance);
 
   // Shuffle toggle
@@ -149,6 +151,13 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStats();
   });
 
+  // On phones the sidebar sits above the song list; keep it short
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    elements.topSongsSection.open = false;
+  }
+
+  initToast();
+
   // Sidebar Search
   let searchDebounceTimer = null;
   elements.sidebarSearchInput.addEventListener("input", (e) => {
@@ -162,6 +171,12 @@ document.addEventListener("DOMContentLoaded", () => {
     searchDebounceTimer = setTimeout(() => {
       performSearch(query);
     }, 500);
+  });
+  elements.sidebarSearchInput.addEventListener("keydown", (e) => {
+    const query = e.target.value.trim();
+    if (e.key !== "Enter" || query.length < 2) return;
+    clearTimeout(searchDebounceTimer);
+    performSearch(query);
   });
 
   // Initial search
@@ -186,6 +201,57 @@ async function trackVisit() {
 }
 
 /**
+ * Toast: a short message near the bottom of the screen, with an optional
+ * action button (e.g. "Undo"). One element is reused, so a new toast
+ * replaces the current one. It stays while hovered or focused.
+ */
+let toastTimer = null;
+let toastDuration = 0;
+
+function initToast() {
+  const toast = elements.toast;
+  const pause = () => clearTimeout(toastTimer);
+  const resume = () => {
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, Math.min(toastDuration, 3000));
+  };
+  toast.addEventListener("mouseenter", pause);
+  toast.addEventListener("mouseleave", resume);
+  toast.addEventListener("focusin", pause);
+  toast.addEventListener("focusout", resume);
+}
+
+function showToast(message, { actionLabel, onAction } = {}) {
+  const toast = elements.toast;
+  const text = toast.querySelector(".toast-text");
+  const action = toast.querySelector(".toast-action");
+
+  text.textContent = message;
+  if (actionLabel && onAction) {
+    action.textContent = actionLabel;
+    action.onclick = () => {
+      hideToast();
+      onAction();
+    };
+    action.classList.remove("hidden");
+  } else {
+    action.onclick = null;
+    action.classList.add("hidden");
+  }
+
+  toast.classList.add("visible");
+  // Longer when there's something to click
+  toastDuration = actionLabel ? 8000 : 3500;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, toastDuration);
+}
+
+function hideToast() {
+  clearTimeout(toastTimer);
+  elements.toast.classList.remove("visible");
+}
+
+/**
  * Load and display version number from package.json
  */
 async function loadVersion() {
@@ -206,7 +272,7 @@ async function loadVersion() {
 /**
  * Add a new, empty song card to the end of the list
  */
-function addSong({ focus = true } = {}) {
+function addSong({ focus = false } = {}) {
   const songData = {
     youtubeUrl: "",
     title: "",
@@ -1563,13 +1629,16 @@ function addSearchResultToProject(result) {
     const firstCard = document.querySelector('.song-card[data-index="0"]');
     if (firstCard) {
       populateCardWithResult(firstCard, targetSong, result);
+      showToast(`Added: ${result.title} (#1)`);
       return;
     }
   }
 
-  // Otherwise add a new song
+  // Otherwise add a new song. No focus: on phones that would scroll away
+  // from the search results and open the keyboard.
   const card = addSong();
   populateCardWithResult(card, state.songs[state.songs.length - 1], result);
+  showToast(`Added: ${result.title} (#${state.songs.length})`);
 }
 
 function populateCardWithResult(card, songData, result) {

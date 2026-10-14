@@ -153,7 +153,13 @@ body {
 
 @media (max-width: 900px) {
   .app-layout {
-    flex-direction: column-reverse; /* Sidebar below on small screens */
+    flex-direction: column; /* Search first, then the song list */
+    align-items: stretch;
+  }
+
+  .search-results {
+    max-height: 50vh;
+    overflow-y: auto;
   }
 }
 
@@ -161,6 +167,12 @@ body {
   flex: 1;
   min-width: 100px;
   width: 70%;
+}
+
+@media (max-width: 900px) {
+  .segments-area {
+    width: 100%;
+  }
 }
 
 /* ===== Search Sidebar ===== */
@@ -348,6 +360,32 @@ body {
   margin-top: var(--spacing-lg);
   padding-top: var(--spacing-lg);
   border-top: 1px solid var(--border-color);
+}
+
+/* Top Songs is a <details> so it can start closed on phones */
+.top-songs-header {
+  list-style: none;
+  cursor: pointer;
+}
+
+.top-songs-header::-webkit-details-marker {
+  display: none;
+}
+
+.top-songs-header h3::after {
+  content: "▾";
+  margin-left: auto;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  transition: transform var(--transition-fast);
+}
+
+.top-songs-section:not([open]) .top-songs-header h3::after {
+  transform: rotate(-90deg);
+}
+
+.top-songs-section:not([open]) .top-songs-hint {
+  margin-bottom: 0;
 }
 
 .top-songs-header h3 {
@@ -2144,4 +2182,123 @@ body {
 
 .all-mixes-link:hover {
   text-decoration: underline;
+}
+
+/* ===== Touch & small screens ===== */
+
+/* No hover on touch screens: the add buttons must always be visible */
+@media (hover: none) {
+  .btn-add-result,
+  .top-song-add-btn {
+    opacity: 1;
+  }
+}
+
+/* Drag-and-drop doesn't work on touch; the move buttons replace it there */
+@media (hover: none) and (pointer: coarse) {
+  .drag-handle {
+    display: none;
+  }
+}
+
+/* Tap targets of at least 44px */
+@media (hover: none), (max-width: 768px) {
+  .btn-remove,
+  .btn-toggle,
+  .btn-add-result,
+  .top-song-add-btn,
+  .song-card.compact .btn-remove,
+  .song-card.compact .btn-toggle {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+  }
+
+  /* Keep the 20px handle, grow the area that catches the finger */
+  .timeline-handle::before {
+    content: "";
+    position: absolute;
+    inset: -12px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* iOS zooms into any input under 16px when it gets focus */
+  .input,
+  .song-card.compact .time-input {
+    font-size: 16px;
+  }
+}
+
+.modal-dialog {
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed;
+  left: 50%;
+  /* Clear of the sticky Generate bar */
+  bottom: calc(96px + env(safe-area-inset-bottom));
+  transform: translate(-50%, 12px);
+  width: max-content;
+  max-width: calc(100% - 32px);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: 10px 16px;
+  background: #26263f;
+  color: var(--text-primary);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  font-size: 0.9rem;
+  z-index: 1100;
+  opacity: 0;
+  visibility: hidden; /* keeps the hidden action button out of the tab order */
+  pointer-events: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast),
+    visibility 0s linear 0.2s;
+}
+
+.toast.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.toast-text {
+  overflow-wrap: anywhere;
+}
+
+.toast-action {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 4px;
+  background: none;
+  border: none;
+  color: var(--primary-light);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.toast-action:hover {
+  text-decoration: underline;
+}
+
+/* On phones the keyboard would cover it; it comes back once typing stops */
+@media (hover: none) {
+  body:has(input:focus, textarea:focus) .toast {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: none;
+  }
 }

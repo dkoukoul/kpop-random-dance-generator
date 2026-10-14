@@ -147,10 +147,12 @@
 
             <div class="search-box">
               <input
-                type="text"
+                type="search"
                 id="sidebarSearchInput"
                 class="input search-input"
                 placeholder="Search BTS, BLACKPINK, NewJeans..."
+                enterkeyhint="search"
+                aria-label="Search YouTube for songs"
               />
               <div id="searchLoading" class="search-loading hidden">
                 <div class="spinner"></div>
@@ -165,18 +167,18 @@
             </div>
 
             <!-- Top Songs Section -->
-            <div class="top-songs-section">
-              <div class="top-songs-header">
+            <details id="topSongsSection" class="top-songs-section" open>
+              <summary class="top-songs-header">
                 <h3><span class="top-songs-icon">🔥</span> Top 10 Songs</h3>
                 <p class="top-songs-hint">Most used in generated dances</p>
-              </div>
+              </summary>
               <div id="topSongsLoading" class="top-songs-loading">
                 <div class="spinner"></div>
               </div>
               <div id="topSongsList" class="top-songs-list">
                 <!-- Top songs will be added here -->
               </div>
-            </div>
+            </details>
           </aside>
 
           <!-- Song List Section -->
@@ -591,6 +593,12 @@
           </div>
         </form>
       </div>
+    </div>
+
+    <!-- Toast: one reused element for short confirmations ("Added: ...") -->
+    <div id="toast" class="toast" role="status" aria-live="polite">
+      <span class="toast-text"></span>
+      <button type="button" class="toast-action hidden"></button>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
