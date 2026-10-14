@@ -109,7 +109,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/styles.css?v=4" />
+    <link rel="stylesheet" href="css/styles.css?v=5" />
     <link rel="icon" type="image/png" href="assets/favicon.png" />
     <link rel="canonical" href="https://kpopgenerator.cloud/" />
     <meta name="theme-color" content="#8b5cf6" />
@@ -289,7 +289,7 @@
               </button>
 
               <!-- Why Generate is disabled (first problem only) -->
-              <p id="generateHint" class="generate-hint hidden" aria-live="polite">
+              <p id="generateHint" class="generate-hint hidden">
                 <span class="generate-hint-text"></span>
                 <button type="button" class="generate-hint-link hidden">Show me</button>
               </p>
@@ -488,7 +488,8 @@
           </div>
 
           <!-- Timeline Bar -->
-          <div class="timeline-wrapper">
+          <!-- Hidden until the video is looked up (initTimeline shows it) -->
+          <div class="timeline-wrapper hidden">
             <!-- Inline Preview Player -->
             <div class="preview-player-wrapper">
               <div class="preview-player-box hidden">
@@ -643,6 +644,6 @@
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="app/app.js?v=4"></script>
+    <script src="app/app.js?v=5"></script>
   </body>
 </html>

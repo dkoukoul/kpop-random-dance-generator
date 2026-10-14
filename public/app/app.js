@@ -408,13 +408,16 @@ function createSongCard(songData) {
     handleTimeInput(e, card, songData, "endTime"),
   );
   // Typed digits are read as a time straight away ("123" = 1:23); show
-  // them formatted once the field is left
-  startTimeInput.addEventListener("change", () => {
-    startTimeInput.value = songData.startTime;
-  });
-  endTimeInput.addEventListener("change", () => {
-    endTimeInput.value = songData.endTime;
-  });
+  // them formatted once the field is left. Plain seconds that can't be
+  // m:ss ("160") are shown as m:ss too.
+  const formatOnLeave = (input, field) => {
+    if (/^\d+$/.test(songData[field])) {
+      songData[field] = formatDuration(Number(songData[field]));
+    }
+    input.value = songData[field];
+  };
+  startTimeInput.addEventListener("change", () => formatOnLeave(startTimeInput, "startTime"));
+  endTimeInput.addEventListener("change", () => formatOnLeave(endTimeInput, "endTime"));
 
   removeBtn.addEventListener("click", () =>
     removeSong(card, parseInt(card.dataset.index)),
@@ -550,9 +553,10 @@ function renderSongInfo(card, info) {
   card.querySelector(".song-thumbnail img").src = info.thumbnail;
   card.querySelector(".song-title").textContent = info.title;
   card.querySelector(".song-channel").textContent = info.channel;
+  // No duration: null while a Top Song is still being looked up, 0 if unknown
   card.querySelector(".song-duration").textContent = info.duration
     ? `Duration: ${formatDuration(info.duration)}`
-    : "Duration: loading…";
+    : info.duration === null ? "Duration: loading…" : "";
   card.querySelector(".song-info").classList.remove("hidden");
 
   // Compact view shows "Band  Song": strip the band from "Band - Song" titles
@@ -705,17 +709,9 @@ async function fetchVideoInfo(card, songData) {
       throw new Error(data.error || "Failed to fetch video info");
     }
 
-    // The list may have been rebuilt while the lookup was in flight
-    // (e.g. by fetchBands), so write to the song's current card.
-    if (!card.isConnected) {
-      card = findCardForSong(songData);
-      if (!card) return;
-    }
     const info = data;
     songData.info = info;
     songData.title = info.title;
-    renderSongInfo(card, info);
-    showSongError(card, "");
 
     // Set default end time to 30 seconds or video duration if shorter, but
     // only while the song still has the untouched 0:00-0:30 cut. A cut from a
@@ -724,18 +720,32 @@ async function fetchVideoInfo(card, songData) {
       parseTimeSeconds(songData.startTime) === 0 &&
       parseTimeSeconds(songData.endTime) === 30;
     if (hasDefaultCut) {
-      const defaultEndSeconds = Math.min(30, info.duration);
-      card.querySelector(".end-time").value = formatDuration(defaultEndSeconds);
-      songData.endTime = formatDuration(defaultEndSeconds);
+      songData.endTime = formatDuration(Math.min(30, info.duration));
     }
+
+    // The list may have been rebuilt while the lookup was in flight
+    // (e.g. by fetchBands), so write to the song's current card. The info is
+    // kept on the song even if it has no card (removed, Undo may follow).
+    if (!card.isConnected) {
+      card = findCardForSong(songData);
+      if (!card) return;
+    }
+    renderSongInfo(card, info);
+    showSongError(card, "");
+    if (hasDefaultCut) card.querySelector(".end-time").value = songData.endTime;
 
     // Initialize timeline
     initTimeline(card, songData);
     initPreviewPlayer(card, songData);
   } catch (error) {
     console.error("Error fetching video info:", error);
+    // A Top Song's length is now unknown (0), no longer "loading"
+    if (songData.info && songData.info.duration === null) songData.info.duration = 0;
     if (!card.isConnected) card = findCardForSong(songData);
-    if (card) showSongError(card, "Couldn't load this video: private or removed?");
+    if (card) {
+      showSongError(card, "Couldn't load this video: private or removed?");
+      if (songData.info) renderSongInfo(card, songData.info);
+    }
   } finally {
     fetchIcon.textContent = "🔍";
     fetchIcon.classList.remove("loading");
@@ -1724,20 +1734,27 @@ function renderBandBreakdown(counts, total) {
 /**
  * Perform YouTube search via API
  */
+let latestSearch = 0;
+
 async function performSearch(query) {
   elements.searchLoading.classList.remove("hidden");
+  // A slow reply (e.g. a pasted link's lookup) mustn't replace newer results
+  const searchId = ++latestSearch;
+  const isCurrent = () => searchId === latestSearch;
 
   try {
     // A pasted YouTube link: show that one video, ready to add
     const url = cleanYouTubeUrl(query);
     if (isValidYouTubeUrl(url)) {
       const response = await fetch(`/api/youtube/info?url=${encodeURIComponent(url)}`);
+      if (!isCurrent()) return;
       if (!response.ok) {
         elements.searchResults.innerHTML =
           '<div class="search-empty"><p>Couldn\'t load this video: private or removed?</p></div>';
         return;
       }
-      displaySearchResults([{ ...(await response.json()), url }]);
+      const info = await response.json();
+      if (isCurrent()) displaySearchResults([{ ...info, url }]);
       return;
     }
 
@@ -1747,13 +1764,15 @@ async function performSearch(query) {
     if (!response.ok) throw new Error("Search failed");
 
     const results = await response.json();
-    displaySearchResults(results);
+    if (isCurrent()) displaySearchResults(results);
   } catch (error) {
     console.error("Search error:", error);
-    elements.searchResults.innerHTML =
-      '<div class="search-empty"><p>Error searching YouTube</p></div>';
+    if (isCurrent()) {
+      elements.searchResults.innerHTML =
+        '<div class="search-empty"><p>Error searching YouTube</p></div>';
+    }
   } finally {
-    elements.searchLoading.classList.add("hidden");
+    if (isCurrent()) elements.searchLoading.classList.add("hidden");
   }
 }
 
@@ -2250,7 +2269,15 @@ function nudgeTime(card, songData, field, delta) {
   }
   if (next === (field === "startTime" ? start : end)) return;
 
-  setCutTime(card, songData, field, next);
+  if (field === "startTime") {
+    setCutTime(card, songData, field, next);
+  } else {
+    // Seeking to the end itself would stop playback (the preview stops at
+    // the end of the cut), so go to just before it: if the preview is
+    // playing, the user hears the new ending straight away
+    setCutTime(card, songData, field, next, { seek: false });
+    seekPreviewPlayer(songData, Math.max(start, next - 3));
+  }
 }
 
 /**
