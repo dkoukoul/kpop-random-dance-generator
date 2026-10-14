@@ -147,3 +147,8 @@ assets/*analytics.db
 cache.db
 
 *.db
+# Private: Claude setup and business reports (repo is public)
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+docs/business/
