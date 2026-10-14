@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeEach, describe, expect, mock, test } from 'b
 import { rmSync } from 'fs';
 import { join } from 'path';
 import api from '../src/routes/api';
-import { getStats } from '../src/services/analytics';
+import { getStats, logGeneration } from '../src/services/analytics';
 import { resetFakeYtdlp } from './helpers';
 
 const TEMP_DIR = join(process.cwd(), 'temp');
@@ -180,6 +180,28 @@ describe('public endpoints', () => {
 
   test('GET /youtube/search needs a query', async () => {
     expect((await api.request('/youtube/search')).status).toBe(400);
+  });
+});
+
+describe('GET /popular-cut', () => {
+  // Runs before any other popular-cut request, so the cached index is built
+  // after these generations are logged.
+  test('returns the most common cut once 3 mixes used it', async () => {
+    const cut = { youtubeUrl: 'https://www.youtube.com/watch?v=popCut00001', title: 'IVE - Love Dive', startTime: '0:41', endTime: '1:12' };
+    for (let i = 0; i < 3; i++) await logGeneration(`pop-${i}`, [cut]);
+
+    const res = await api.request(`/popular-cut?url=${encodeURIComponent('https://youtu.be/popCut00001?si=x')}`);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ cut: { startTime: '0:41', endTime: '1:12', uses: 3 } });
+  });
+
+  test('returns null for a video nobody cut', async () => {
+    const res = await api.request(`/popular-cut?url=${encodeURIComponent('https://www.youtube.com/watch?v=noData00001')}`);
+    expect(await res.json()).toEqual({ cut: null });
+  });
+
+  test('needs a url', async () => {
+    expect((await api.request('/popular-cut')).status).toBe(400);
   });
 });
 

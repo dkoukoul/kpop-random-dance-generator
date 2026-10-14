@@ -431,6 +431,7 @@
 
         <div class="song-card-content">
           <div class="compact-info">
+            <span class="compact-star hidden" title="Popular cut" aria-label="Popular cut">★</span>
             <span class="compact-band">Band</span>
             <span class="compact-title">Song Title</span>
           </div>
@@ -486,6 +487,12 @@
               />
             </div>
           </div>
+
+          <!-- Shown when the cut was prefilled from the community's choice -->
+          <p class="cut-source hidden">
+            <span class="cut-source-text"></span>
+            · <button type="button" class="btn-reset-cut">Use 0:00–0:30</button>
+          </p>
 
           <!-- Timeline Bar -->
           <!-- Hidden until the video is looked up (initTimeline shows it) -->

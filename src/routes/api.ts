@@ -7,7 +7,7 @@ import type { GenerateRequest, SongSegment, FailedSegment } from '../types';
 import { getVideoInfo, downloadSegment, searchVideos } from '../services/youtube';
 import { generateReport, saveReport } from '../services/report';
 import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles } from '../services/audio';
-import { logVisit, logGeneration, getStats } from '../services/analytics';
+import { logVisit, logGeneration, getStats, getPopularCut } from '../services/analytics';
 import { getYtdlpStatus, updateYtdlp } from '../services/ytdlp-updater';
 
 const api = new Hono();
@@ -119,6 +119,19 @@ api.post('/ytdlp-update', basicAuth({
 api.get('/top-songs', async (c) => {
   const stats = getStats();
   return c.json(stats.topSongs);
+});
+
+/**
+ * GET /api/popular-cut?url=...
+ * The community's most common cut for a video, used to prefill new cards.
+ * Returns { cut: null } when fewer than 3 people picked the same cut.
+ */
+api.get('/popular-cut', (c) => {
+  const url = c.req.query('url');
+  if (!url) {
+    return c.json({ error: 'URL is required' }, 400);
+  }
+  return c.json({ cut: getPopularCut(url) });
 });
 
 /**

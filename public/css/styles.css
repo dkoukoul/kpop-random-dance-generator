@@ -1760,6 +1760,40 @@ body {
   animation: pulseInvalid 0.6s ease 2;
 }
 
+/* "★ Popular cut · used N times · Use 0:00–0:30" */
+.cut-source {
+  margin-top: var(--spacing-sm);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.cut-source-text {
+  color: #fcd34d;
+}
+
+.btn-reset-cut {
+  padding: 4px 2px;
+  background: none;
+  border: none;
+  color: var(--primary-light);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.song-card.compact .cut-source {
+  display: none;
+}
+
+.compact-star {
+  color: #fcd34d;
+  flex-shrink: 0;
+}
+
+.song-card:not(.compact) .compact-star {
+  display: none;
+}
+
 /* A video that couldn't be looked up */
 .song-error {
   margin: calc(-1 * var(--spacing-xs)) 0 var(--spacing-md);

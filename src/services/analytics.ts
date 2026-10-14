@@ -1,6 +1,7 @@
 import { Database } from 'bun:sqlite';
 import { join } from 'path';
 import type { SongSegment } from '../types';
+import { createPopularCutLookup } from './popular-cut';
 
 // Tests point this at a throwaway file so they never touch production data.
 const DB_PATH = process.env.ANALYTICS_DB_PATH || join(process.cwd(), 'analytics.db');
@@ -90,3 +91,6 @@ export function getStats() {
     topSongs
   };
 }
+
+/** Most common cut for a video (3+ uses), or null. Cached; see popular-cut.ts. */
+export const getPopularCut = createPopularCutLookup(db);

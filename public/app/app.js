@@ -370,6 +370,10 @@ function createSongCard(songData) {
     songData.isExpanded = !state.compactViewEnabled;
   }
   card.classList.toggle("compact", !songData.isExpanded);
+  renderCutSource(card, songData);
+  card
+    .querySelector(".btn-reset-cut")
+    .addEventListener("click", () => resetCut(card, songData));
 
   // Clean the URL as it's typed or pasted, and look the video up once it's a
   // valid YouTube link (straight away on paste, after a pause when typing).
@@ -733,6 +737,7 @@ async function fetchVideoInfo(card, songData) {
     renderSongInfo(card, info);
     showSongError(card, "");
     if (hasDefaultCut) card.querySelector(".end-time").value = songData.endTime;
+    applyPopularCut(songData);
 
     // Initialize timeline
     initTimeline(card, songData);
@@ -1445,8 +1450,11 @@ function importProject(event) {
         throw new Error("Invalid project file format");
       }
 
-      // Restore state
-      state.songs = projectData.songs;
+      // Restore state. The file's cuts are the user's: never prefill over them.
+      state.songs = projectData.songs.map((song) => ({
+        ...song,
+        cutSource: song.cutSource || "import",
+      }));
       state.shuffleEnabled = !!projectData.shuffleEnabled;
 
       // Update UI
@@ -1492,6 +1500,7 @@ function loadPendingMix() {
       title: song.title || "",
       startTime: song.startTime || "0:00",
       endTime: song.endTime || "0:30",
+      cutSource: "mix", // never replaced by a popular cut
       info: null,
       isExpanded: !state.compactViewEnabled,
     }));
@@ -1602,6 +1611,86 @@ function checkTimeValidity(card, songData) {
 }
 
 /**
+ * Prefill a new song with the community's most common cut for its video
+ * (3+ uses), unless the cut was already set: by the user, a landing-page
+ * mix, a saved draft or a project file. Asked once per video per song.
+ */
+async function applyPopularCut(songData) {
+  const url = songData.youtubeUrl;
+  if (!canPrefillCut(songData) || !url || songData.popularCutFor === url) return;
+  songData.popularCutFor = url;
+
+  try {
+    const response = await fetch(`/api/popular-cut?url=${encodeURIComponent(url)}`);
+    if (!response.ok) return;
+    const { cut } = await response.json();
+
+    // Things may have moved on while the request was out
+    if (!cut || songData.youtubeUrl !== url || !canPrefillCut(songData)) return;
+    const duration = songData.info && songData.info.duration;
+    if (duration && parseTimeSeconds(cut.endTime) > duration) return;
+
+    songData.startTime = cut.startTime;
+    songData.endTime = cut.endTime;
+    songData.cutSource = "popular";
+    songData.popularUses = cut.uses;
+
+    const card = findCardForSong(songData);
+    if (card) {
+      card.querySelector(".start-time").value = cut.startTime;
+      card.querySelector(".end-time").value = cut.endTime;
+      if (duration) updateTimelinePositions(card, songData, duration);
+      seekPreviewPlayer(songData, parseTimeSeconds(cut.startTime));
+      checkTimeValidity(card, songData);
+      renderCutSource(card, songData);
+    }
+    updateGenerateButton();
+    updateStats();
+  } catch (error) {
+    console.warn("Popular cut lookup failed:", error);
+  }
+}
+
+/** Only a cut nobody has chosen yet may be prefilled */
+function canPrefillCut(songData) {
+  return !songData.cutSource;
+}
+
+/**
+ * The user changed the cut: it's theirs now, so drop the popular-cut note
+ * and never prefill over it
+ */
+function markCutEdited(card, songData) {
+  if (songData.cutSource === "user") return;
+  songData.cutSource = "user";
+  renderCutSource(card, songData);
+}
+
+/**
+ * Show "★ Popular cut · used N times · Use 0:00–0:30" for prefilled cuts
+ */
+function renderCutSource(card, songData) {
+  const isPopular = songData.cutSource === "popular";
+  card.querySelector(".cut-source").classList.toggle("hidden", !isPopular);
+  card.querySelector(".compact-star").classList.toggle("hidden", !isPopular);
+  if (isPopular) {
+    const uses = songData.popularUses;
+    card.querySelector(".cut-source-text").textContent =
+      `★ Popular cut · used ${uses} time${uses === 1 ? "" : "s"}`;
+  }
+}
+
+/**
+ * Back to the plain 0:00–0:30 default (end capped at the video's length)
+ */
+function resetCut(card, songData) {
+  const duration = songData.info && songData.info.duration;
+  setCutTime(card, songData, "startTime", 0);
+  setCutTime(card, songData, "endTime", duration ? Math.min(30, duration) : 30);
+  card.querySelector(".start-time").focus();
+}
+
+/**
  * Read digits as a time, for phone number pads (they have no colon):
  * "45" -> "0:45", "123" -> "1:23", "1234" -> "12:34". Anything else,
  * including 3-4 digits whose last two aren't valid seconds, is unchanged.
@@ -1630,6 +1719,8 @@ function handleTimeInput(e, card, songData, field) {
     const seconds = parseTimeSeconds(value);
     if (seconds !== null) seekPreviewPlayer(songData, seconds);
   }
+
+  markCutEdited(card, songData);
 
   checkTimeValidity(card, songData);
   updateGenerateButton();
@@ -1996,6 +2087,7 @@ function populateCardWithResult(card, songData, result) {
   // Initialize timeline
   initTimeline(card, songData);
   initPreviewPlayer(card, songData);
+  applyPopularCut(songData);
 
   updateGenerateButton();
   updateStats();
@@ -2295,6 +2387,7 @@ function setCutTime(card, songData, field, seconds, { seek = true } = {}) {
     updateTimelinePositions(card, songData, songData.info.duration);
   }
   if (seek) seekPreviewPlayer(songData, seconds);
+  markCutEdited(card, songData);
   checkTimeValidity(card, songData);
   updateGenerateButton();
   updateStats();
@@ -2404,6 +2497,7 @@ function initTimeline(card, songData) {
     }
 
     updateTimelinePositions(card, songData, videoDuration);
+    markCutEdited(card, songData);
     checkTimeValidity(card, songData);
     updateGenerateButton();
     updateStats();
@@ -2577,6 +2671,8 @@ function handleTimelineDragStart(e, card, songData, handleType, videoDuration) {
     );
     if (finalTime !== null) seekPreviewPlayer(songData, finalTime);
 
+    markCutEdited(card, songData);
+
     checkTimeValidity(card, songData);
     updateGenerateButton();
     updateStats();
@@ -2693,6 +2789,7 @@ function handleTimelineKeydown(e, card, songData, handleType, videoDuration) {
   if (finalTime !== null) seekPreviewPlayer(songData, finalTime);
 
   updateTimelinePositions(card, songData, videoDuration);
+  markCutEdited(card, songData);
   checkTimeValidity(card, songData);
   updateGenerateButton();
   updateStats();
