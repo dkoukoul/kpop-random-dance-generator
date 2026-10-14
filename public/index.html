@@ -109,7 +109,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/styles.css?v=3" />
+    <link rel="stylesheet" href="css/styles.css?v=4" />
     <link rel="icon" type="image/png" href="assets/favicon.png" />
     <link rel="canonical" href="https://kpopgenerator.cloud/" />
     <meta name="theme-color" content="#8b5cf6" />
@@ -470,6 +470,7 @@
                 type="text"
                 class="input time-input start-time"
                 placeholder="0:00"
+                inputmode="numeric"
                 aria-label="Start time"
               />
             </div>
@@ -480,6 +481,7 @@
                 type="text"
                 class="input time-input end-time"
                 placeholder="0:30"
+                inputmode="numeric"
                 aria-label="End time"
               />
             </div>
@@ -493,10 +495,29 @@
                 <div class="preview-player"></div>
               </div>
               <div class="preview-controls">
-                <button type="button" class="btn btn-fetch btn-preview-play" title="Play/Pause preview" aria-label="Play preview" disabled>▶</button>
-                <button class="btn btn-fetch btn-preview-toggle" title="Show/hide video">👁 Show video</button>
-                <button class="btn btn-fetch btn-set-start" title="Set start to current playback time" disabled>Set Start</button>
-                <button class="btn btn-fetch btn-set-end" title="Set end to current playback time" disabled>Set End</button>
+                <div class="preview-row">
+                  <button type="button" class="btn btn-fetch btn-preview-play" title="Play/Pause preview" aria-label="Play preview" disabled>▶</button>
+                  <button type="button" class="btn btn-fetch btn-preview-toggle" title="Show/hide video">👁 Show video</button>
+                  <button type="button" class="btn btn-fetch btn-play-ending" title="Play the last 3 seconds of the cut" disabled>▶ Hear ending</button>
+                </div>
+                <div class="cut-groups">
+                  <div class="cut-group" role="group" aria-label="Start of the cut">
+                    <span class="cut-group-label" aria-hidden="true">Start</span>
+                    <div class="cut-group-buttons">
+                      <button type="button" class="btn btn-fetch btn-nudge" data-field="startTime" data-delta="-1" title="Start 1 second earlier" aria-label="Start 1 second earlier">−1s</button>
+                      <button type="button" class="btn btn-fetch btn-set-start" title="Set start to current playback time" disabled>Set Start</button>
+                      <button type="button" class="btn btn-fetch btn-nudge" data-field="startTime" data-delta="1" title="Start 1 second later" aria-label="Start 1 second later">+1s</button>
+                    </div>
+                  </div>
+                  <div class="cut-group" role="group" aria-label="End of the cut">
+                    <span class="cut-group-label" aria-hidden="true">End</span>
+                    <div class="cut-group-buttons">
+                      <button type="button" class="btn btn-fetch btn-nudge" data-field="endTime" data-delta="-1" title="End 1 second earlier" aria-label="End 1 second earlier">−1s</button>
+                      <button type="button" class="btn btn-fetch btn-set-end" title="Set end to current playback time" disabled>Set End</button>
+                      <button type="button" class="btn btn-fetch btn-nudge" data-field="endTime" data-delta="1" title="End 1 second later" aria-label="End 1 second later">+1s</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -622,6 +643,6 @@
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="app/app.js?v=3"></script>
+    <script src="app/app.js?v=4"></script>
   </body>
 </html>

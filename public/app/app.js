@@ -407,6 +407,14 @@ function createSongCard(songData) {
   endTimeInput.addEventListener("input", (e) =>
     handleTimeInput(e, card, songData, "endTime"),
   );
+  // Typed digits are read as a time straight away ("123" = 1:23); show
+  // them formatted once the field is left
+  startTimeInput.addEventListener("change", () => {
+    startTimeInput.value = songData.startTime;
+  });
+  endTimeInput.addEventListener("change", () => {
+    endTimeInput.value = songData.endTime;
+  });
 
   removeBtn.addEventListener("click", () =>
     removeSong(card, parseInt(card.dataset.index)),
@@ -444,6 +452,14 @@ function createSongCard(songData) {
   card
     .querySelector(".btn-set-end")
     .addEventListener("click", () => setTimeFromPlayer(card, songData, "endTime"));
+  card
+    .querySelector(".btn-play-ending")
+    .addEventListener("click", () => playEnding(songData));
+  card.querySelectorAll(".btn-nudge").forEach((btn) => {
+    btn.addEventListener("click", () =>
+      nudgeTime(card, songData, btn.dataset.field, Number(btn.dataset.delta)),
+    );
+  });
 
   // Drag and drop - only allow dragging from card header
   const songCardHeader = card.querySelector(".song-card-header");
@@ -1576,23 +1592,23 @@ function checkTimeValidity(card, songData) {
 }
 
 /**
+ * Read digits as a time, for phone number pads (they have no colon):
+ * "45" -> "0:45", "123" -> "1:23", "1234" -> "12:34". Anything else,
+ * including 3-4 digits whose last two aren't valid seconds, is unchanged.
+ */
+function normalizeTimeInput(value) {
+  const trimmed = value.trim();
+  if (/^\d{1,2}$/.test(trimmed)) return formatDuration(Number(trimmed));
+  const match = trimmed.match(/^(\d{1,2})(\d{2})$/);
+  if (match && Number(match[2]) < 60) return `${Number(match[1])}:${match[2]}`;
+  return value;
+}
+
+/**
  * Handle time input with auto-formatting
  */
 function handleTimeInput(e, card, songData, field) {
-  let value = e.target.value;
-
-  // Auto-format 3 digits to M:SS (e.g., 123 -> 1:23)
-  // Only if inserting text (not deleting)
-  if (e.inputType !== "deleteContentBackward" && /^\d{3}$/.test(value)) {
-    const formatted = `${value.charAt(0)}:${value.substring(1)}`;
-    // Validate the seconds part before applying
-    const secs = parseInt(value.substring(1));
-    if (secs < 60) {
-      value = formatted;
-      e.target.value = value;
-    }
-  }
-
+  const value = normalizeTimeInput(e.target.value);
   songData[field] = value;
 
   // Update timeline if video info exists
@@ -2074,6 +2090,7 @@ function initPreviewPlayer(card, songData) {
   const playBtn = card.querySelector(".btn-preview-play");
   const setStartBtn = card.querySelector(".btn-set-start");
   const setEndBtn = card.querySelector(".btn-set-end");
+  const endingBtn = card.querySelector(".btn-play-ending");
 
   if (!wrapper || !songData.info || !songData.info.duration) return;
 
@@ -2091,6 +2108,7 @@ function initPreviewPlayer(card, songData) {
   playBtn.disabled = true;
   setStartBtn.disabled = true;
   setEndBtn.disabled = true;
+  endingBtn.disabled = true;
 
   const timelineProgress = card.querySelector(".timeline-progress");
   if (timelineProgress) timelineProgress.style.width = "0%";
@@ -2106,6 +2124,7 @@ function initPreviewPlayer(card, songData) {
           playBtn.disabled = false;
           setStartBtn.disabled = false;
           setEndBtn.disabled = false;
+          endingBtn.disabled = false;
         },
         onStateChange: (e) =>
           onPreviewStateChange(e, card, songData, videoDuration),
@@ -2211,7 +2230,34 @@ function setTimeFromPlayer(card, songData, field) {
   const entry = previewPlayers.get(songData);
   if (!entry || !entry.player) return;
 
-  const seconds = Math.floor(entry.player.getCurrentTime());
+  setCutTime(card, songData, field, Math.floor(entry.player.getCurrentTime()), { seek: false });
+}
+
+/**
+ * Move the start or end of the cut by `delta` seconds (the ±1s buttons),
+ * staying inside the video and keeping the cut at least 1s long
+ */
+function nudgeTime(card, songData, field, delta) {
+  const duration = songData.info && songData.info.duration ? songData.info.duration : Infinity;
+  const start = parseTimeSeconds(songData.startTime) ?? 0;
+  const end = parseTimeSeconds(songData.endTime) ?? 0;
+
+  let next;
+  if (field === "startTime") {
+    next = Math.max(0, Math.min(start + delta, end - 1));
+  } else {
+    next = Math.min(duration, Math.max(end + delta, start + 1));
+  }
+  if (next === (field === "startTime" ? start : end)) return;
+
+  setCutTime(card, songData, field, next);
+}
+
+/**
+ * Write a new start/end time (in seconds) to the song, its input, the
+ * timeline and the Generate check, and move the preview there
+ */
+function setCutTime(card, songData, field, seconds, { seek = true } = {}) {
   const formatted = formatDuration(seconds);
   songData[field] = formatted;
 
@@ -2221,9 +2267,24 @@ function setTimeFromPlayer(card, songData, field) {
   if (songData.info && songData.info.duration) {
     updateTimelinePositions(card, songData, songData.info.duration);
   }
+  if (seek) seekPreviewPlayer(songData, seconds);
   checkTimeValidity(card, songData);
   updateGenerateButton();
   updateStats();
+}
+
+/**
+ * Play the last 3 seconds of the cut, to check where it ends (playback
+ * stops at the end of the cut on its own)
+ */
+function playEnding(songData) {
+  const entry = previewPlayers.get(songData);
+  if (!entry || !entry.player) return;
+
+  const start = parseTimeSeconds(songData.startTime) || 0;
+  const end = parseTimeSeconds(songData.endTime) || 0;
+  entry.player.seekTo(Math.max(start, end - 3), true);
+  entry.player.playVideo();
 }
 
 /**

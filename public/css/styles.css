@@ -1503,6 +1503,51 @@ body {
   min-width: 44px;
 }
 
+/* Row 1: play / show video / hear ending. Row 2: Start and End groups,
+   each "−1s  Set  +1s"; side by side on wide cards, stacked on phones. */
+.preview-controls {
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  min-width: 0; /* never wider than the card */
+}
+
+.preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.preview-row .btn,
+.cut-group-buttons .btn {
+  padding-left: var(--spacing-sm);
+  padding-right: var(--spacing-sm);
+}
+
+.cut-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.cut-group-label {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.cut-group-buttons {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  gap: 4px;
+}
+
+.btn-nudge {
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 0.85rem;
+}
+
 /* Compact view adjustments */
 .song-card.compact .timeline-wrapper {
   display: none;
@@ -2107,8 +2152,16 @@ body {
     display: none;
   }
 
-  .preview-controls .btn {
-    flex: 1 1 45%;
+  .preview-row .btn {
+    flex: 1 1 auto;
+  }
+
+  .preview-row .btn-preview-play {
+    flex: 0 0 44px;
+  }
+
+  .cut-groups {
+    grid-template-columns: 1fr;
   }
 
   .modal-footer {
