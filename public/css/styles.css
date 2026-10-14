@@ -16,7 +16,7 @@
   /* Text */
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-muted: #8b9ab0; /* 5.9:1 on the card background */
 
   /* Borders */
   --border-color: rgba(168, 85, 247, 0.3);
@@ -2404,4 +2404,15 @@ body {
     order: 8;
     margin-left: auto;
   }
+}
+
+/* ===== Keyboard focus ===== */
+/* A visible ring for keyboard users on every control (mouse clicks don't
+   trigger :focus-visible on buttons) */
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+input[type="checkbox"]:focus-visible + .toggle-slider {
+  outline: 2px solid var(--primary-light);
+  outline-offset: 2px;
 }

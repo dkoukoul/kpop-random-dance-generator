@@ -199,6 +199,9 @@
                       id="menuBtn"
                       class="btn btn-secondary"
                       title="Options"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      aria-controls="menuDropdown"
                     >
                       <span class="btn-icon">⚙️</span> Options
                     </button>
@@ -408,16 +411,16 @@
     <template id="songCardTemplate">
       <div class="song-card" data-index="" >
         <div class="song-card-header" draggable="true">
-          <div class="drag-handle" title="Drag to reorder">⠿</div>
+          <div class="drag-handle" title="Drag to reorder" aria-hidden="true">⠿</div>
           <span class="song-number"></span>
-          <button class="btn-toggle" title="Toggle Expand/Compact">
-            <span class="toggle-icon">▼</span>
+          <button type="button" class="btn-toggle" title="Collapse or expand" aria-label="Collapse song" aria-expanded="true">
+            <span class="toggle-icon" aria-hidden="true">▼</span>
           </button>
           <div class="move-buttons">
             <button type="button" class="btn-move btn-move-up" title="Move up">↑</button>
             <button type="button" class="btn-move btn-move-down" title="Move down">↓</button>
           </div>
-          <button class="btn-remove" title="Remove song">×</button>
+          <button type="button" class="btn-remove" title="Remove song" aria-label="Remove song">×</button>
         </div>
 
         <div class="song-card-content">
@@ -433,16 +436,17 @@
                 type="text"
                 class="input url-input"
                 placeholder="https://www.youtube.com/watch?v=..."
+                aria-label="YouTube URL"
               />
-              <button class="btn btn-fetch" title="Fetch video info">
-                <span class="fetch-icon">🔍</span>
+              <button type="button" class="btn btn-fetch" title="Load video details" aria-label="Load video details">
+                <span class="fetch-icon" aria-hidden="true">🔍</span>
               </button>
             </div>
           </div>
 
           <div class="song-info hidden">
             <div class="song-thumbnail">
-              <img src="" alt="Thumbnail" />
+              <img src="" alt="" />
             </div>
             <div class="song-details">
               <h4 class="song-title"></h4>
@@ -458,6 +462,7 @@
                 type="text"
                 class="input time-input start-time"
                 placeholder="0:00"
+                aria-label="Start time"
               />
             </div>
             <div class="time-divider">→</div>
@@ -467,6 +472,7 @@
                 type="text"
                 class="input time-input end-time"
                 placeholder="0:30"
+                aria-label="End time"
               />
             </div>
           </div>
@@ -479,7 +485,7 @@
                 <div class="preview-player"></div>
               </div>
               <div class="preview-controls">
-                <button class="btn btn-fetch btn-preview-play" title="Play/Pause preview" disabled>▶</button>
+                <button type="button" class="btn btn-fetch btn-preview-play" title="Play/Pause preview" aria-label="Play preview" disabled>▶</button>
                 <button class="btn btn-fetch btn-preview-toggle" title="Show/hide video">👁 Show video</button>
                 <button class="btn btn-fetch btn-set-start" title="Set start to current playback time" disabled>Set Start</button>
                 <button class="btn btn-fetch btn-set-end" title="Set end to current playback time" disabled>Set End</button>
@@ -490,8 +496,8 @@
               <div class="timeline-track">
                 <div class="timeline-progress"></div>
                 <div class="timeline-range"></div>
-                <div class="timeline-handle timeline-handle-start" tabindex="0" role="slider" aria-label="Start time handle" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
-                <div class="timeline-handle timeline-handle-end" tabindex="0" role="slider" aria-label="End time handle" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+                <div class="timeline-handle timeline-handle-start" tabindex="0" role="slider" aria-label="Start of the cut" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                <div class="timeline-handle timeline-handle-end" tabindex="0" role="slider" aria-label="End of the cut" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
               </div>
               <div class="timeline-markers"></div>
               <div class="timeline-time-display">
@@ -510,23 +516,23 @@
     <template id="searchResultTemplate">
       <div class="search-result-item">
         <div class="result-thumbnail">
-          <img src="" alt="Thumbnail" />
+          <img src="" alt="" />
           <span class="result-duration"></span>
         </div>
         <div class="result-info">
           <h5 class="result-title"></h5>
           <p class="result-channel"></p>
         </div>
-        <button class="btn-add-result" title="Add to project">+</button>
+        <button type="button" class="btn-add-result" title="Add to mix" aria-label="Add to mix">+</button>
       </div>
     </template>
 
     <!-- Duplicate Detection Modal -->
     <div id="duplicateModal" class="modal-overlay hidden">
-      <div class="modal-dialog">
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="duplicateModalTitle">
         <div class="modal-header">
-          <span class="modal-icon">⚠️</span>
-          <h3>Duplicate Songs Detected</h3>
+          <span class="modal-icon" aria-hidden="true">⚠️</span>
+          <h3 id="duplicateModalTitle">Duplicate Songs Detected</h3>
         </div>
         <div class="modal-body">
           <p class="modal-message">
@@ -549,10 +555,10 @@
 
     <!-- Contact Modal -->
     <div id="contactModal" class="modal-overlay hidden">
-      <div class="modal-dialog">
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
         <div class="modal-header">
-          <span class="modal-icon">✉️</span>
-          <h3>Contact</h3>
+          <span class="modal-icon" aria-hidden="true">✉️</span>
+          <h3 id="contactModalTitle">Contact</h3>
         </div>
         <form id="contactForm">
           <div class="modal-body">
@@ -573,6 +579,7 @@
                 id="contactEmail"
                 class="input"
                 placeholder="Your email"
+                aria-label="Your email"
                 required
               />
             </div>
@@ -582,6 +589,7 @@
                 class="input"
                 rows="5"
                 placeholder="Your message"
+                aria-label="Your message"
                 required
               ></textarea>
             </div>

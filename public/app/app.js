@@ -103,31 +103,41 @@ document.addEventListener("DOMContentLoaded", () => {
     rebuildSongList();
   });
 
-  // Menu Toggle
+  // Options menu
   elements.menuBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    elements.menuDropdown.classList.toggle("hidden");
+    setMenuOpen(elements.menuDropdown.classList.contains("hidden"));
   });
 
   // Close menu when clicking outside
   document.addEventListener("click", (e) => {
     if (
       !elements.menuDropdown.contains(e.target) &&
-      e.target !== elements.menuBtn
+      !elements.menuBtn.contains(e.target)
     ) {
-      elements.menuDropdown.classList.add("hidden");
+      setMenuOpen(false);
     }
   });
+
+  // ...or when keyboard focus leaves it
+  elements.menuDropdown.parentElement.addEventListener("focusout", (e) => {
+    if (!elements.menuDropdown.parentElement.contains(e.relatedTarget)) {
+      setMenuOpen(false);
+    }
+  });
+
+  // Escape closes the open modal or the Options menu
+  document.addEventListener("keydown", handleOverlayKeydown);
 
   // Export/Import
   elements.exportBtn.addEventListener("click", () => {
     exportProject();
-    elements.menuDropdown.classList.add("hidden");
+    setMenuOpen(false, { focusButton: true });
   });
 
   elements.importBtn.addEventListener("click", () => {
     elements.importFile.click();
-    elements.menuDropdown.classList.add("hidden");
+    setMenuOpen(false);
   });
 
   elements.importFile.addEventListener("change", importProject);
@@ -366,9 +376,15 @@ function createSongCard(songData) {
     .querySelector(".btn-move-down")
     .addEventListener("click", () => nudgeSong(card, 1));
 
+  const syncToggleLabel = () => {
+    toggleBtn.setAttribute("aria-expanded", String(songData.isExpanded));
+    toggleBtn.setAttribute("aria-label", songData.isExpanded ? "Collapse song" : "Expand song");
+  };
+  syncToggleLabel();
   toggleBtn.addEventListener("click", () => {
     songData.isExpanded = !songData.isExpanded;
     card.classList.toggle("compact", !songData.isExpanded);
+    syncToggleLabel();
     if (!songData.isExpanded) pausePreviewPlayer(songData);
   });
 
@@ -461,6 +477,7 @@ function renumberCards() {
     downBtn.disabled = i === cards.length - 1;
     upBtn.setAttribute("aria-label", `Move song ${i + 1} up`);
     downBtn.setAttribute("aria-label", `Move song ${i + 1} down`);
+    card.querySelector(".btn-remove").setAttribute("aria-label", `Remove song ${i + 1}`);
   });
 
   elements.emptyState.classList.toggle("hidden", cards.length > 0);
@@ -729,9 +746,6 @@ function showDuplicateModal(duplicates, segments) {
     elements.duplicateList.appendChild(groupEl);
   });
 
-  // Show modal
-  elements.duplicateModal.classList.remove("hidden");
-
   // Handle button clicks
   const onRemoveDuplicates = () => {
     cleanupModalListeners();
@@ -745,38 +759,23 @@ function showDuplicateModal(duplicates, segments) {
     startGeneration(segments);
   };
 
-  const onOverlayClick = (e) => {
-    if (e.target === elements.duplicateModal) {
-      // Clicked outside dialog - do nothing, require explicit choice
-    }
-  };
-
-  const onKeyDown = (e) => {
-    if (e.key === "Escape") {
-      // Close modal without generating
-      cleanupModalListeners();
-      closeDuplicateModal();
-    }
-  };
-
+  // Clicking outside the dialog does nothing (an explicit choice is needed);
+  // Escape closes it without generating.
   function cleanupModalListeners() {
     elements.removeDuplicatesBtn.removeEventListener("click", onRemoveDuplicates);
     elements.proceedWithDuplicatesBtn.removeEventListener("click", onProceedWithDuplicates);
-    elements.duplicateModal.removeEventListener("click", onOverlayClick);
-    document.removeEventListener("keydown", onKeyDown);
   }
 
   elements.removeDuplicatesBtn.addEventListener("click", onRemoveDuplicates);
   elements.proceedWithDuplicatesBtn.addEventListener("click", onProceedWithDuplicates);
-  elements.duplicateModal.addEventListener("click", onOverlayClick);
-  document.addEventListener("keydown", onKeyDown);
+  openModal(elements.duplicateModal, { onClose: cleanupModalListeners });
 }
 
 /**
  * Close the duplicate detection modal
  */
 function closeDuplicateModal() {
-  elements.duplicateModal.classList.add("hidden");
+  closeModal(elements.duplicateModal);
 }
 
 /**
@@ -784,14 +783,91 @@ function closeDuplicateModal() {
  */
 function openContactModal() {
   elements.contactStatus.classList.add("hidden");
-  elements.contactModal.classList.remove("hidden");
+  openModal(elements.contactModal);
 }
 
 /**
  * Close the contact modal
  */
 function closeContactModal() {
-  elements.contactModal.classList.add("hidden");
+  closeModal(elements.contactModal);
+}
+
+/**
+ * Modals: focus moves into the dialog when it opens and stays inside it
+ * (Tab wraps), Escape closes it, and focus goes back to whatever opened it.
+ */
+let activeModal = null;
+
+function focusableIn(container) {
+  return [
+    ...container.querySelectorAll(
+      'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  ].filter((el) => el.tabIndex !== -1 && el.offsetParent !== null);
+}
+
+function openModal(modal, { onClose } = {}) {
+  activeModal = { modal, opener: document.activeElement, onClose };
+  modal.classList.remove("hidden");
+  const first = focusableIn(modal)[0];
+  if (first) first.focus();
+}
+
+function closeModal(modal) {
+  modal.classList.add("hidden");
+  if (!activeModal || activeModal.modal !== modal) return;
+
+  const { opener, onClose } = activeModal;
+  activeModal = null;
+  if (onClose) onClose();
+  if (opener && opener.isConnected) opener.focus();
+}
+
+/**
+ * Open or close the Options menu, keeping aria-expanded in step
+ */
+function setMenuOpen(open, { focusButton = false } = {}) {
+  const wasOpen = !elements.menuDropdown.classList.contains("hidden");
+  elements.menuDropdown.classList.toggle("hidden", !open);
+  elements.menuBtn.setAttribute("aria-expanded", String(open));
+  if (open && !wasOpen) {
+    focusableIn(elements.menuDropdown)[0]?.focus();
+  }
+  if (!open && wasOpen && focusButton) elements.menuBtn.focus();
+}
+
+/**
+ * Escape closes the open modal (or else the Options menu); Tab stays inside
+ * an open modal.
+ */
+function handleOverlayKeydown(e) {
+  if (activeModal) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeModal(activeModal.modal);
+    } else if (e.key === "Tab") {
+      const items = focusableIn(activeModal.modal);
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      } else if (!activeModal.modal.contains(document.activeElement)) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+    return;
+  }
+
+  if (e.key === "Escape" && !elements.menuDropdown.classList.contains("hidden")) {
+    setMenuOpen(false, { focusButton: true });
+  }
 }
 
 /**
@@ -1560,6 +1636,9 @@ function displaySearchResults(results) {
     item.querySelector(".result-title").textContent = result.title;
     item.querySelector(".result-channel").textContent = result.channel;
 
+    item
+      .querySelector(".btn-add-result")
+      .setAttribute("aria-label", `Add ${result.title} to mix`);
     item.querySelector(".btn-add-result").addEventListener("click", () => {
       addSearchResultToProject(result);
     });
@@ -1621,7 +1700,7 @@ function displayTopSongs(topSongs) {
     thumbBox.className = "top-song-thumbnail";
     const img = document.createElement("img");
     img.src = thumbnail;
-    img.alt = "Thumbnail";
+    img.alt = "";
     thumbBox.appendChild(img);
 
     const info = document.createElement("div");
@@ -1635,8 +1714,10 @@ function displayTopSongs(topSongs) {
     info.append(title, used);
 
     const addBtn = document.createElement("button");
+    addBtn.type = "button";
     addBtn.className = "top-song-add-btn";
-    addBtn.title = "Add to project";
+    addBtn.title = "Add to mix";
+    addBtn.setAttribute("aria-label", `Add ${song.title || "this song"} to mix`);
     addBtn.textContent = "+";
 
     songItem.append(rank, thumbBox, info, addBtn);
@@ -1917,7 +1998,10 @@ function onPreviewStateChange(event, card, songData, videoDuration) {
   const playBtn = card.querySelector(".btn-preview-play");
 
   if (event.data === YT.PlayerState.PLAYING) {
-    if (playBtn) playBtn.textContent = "⏸";
+    if (playBtn) {
+      playBtn.textContent = "⏸";
+      playBtn.setAttribute("aria-label", "Pause preview");
+    }
 
     if (entry.syncInterval) clearInterval(entry.syncInterval);
     entry.syncInterval = setInterval(() => {
@@ -1941,7 +2025,10 @@ function onPreviewStateChange(event, card, songData, videoDuration) {
       }
     }, 250);
   } else {
-    if (playBtn) playBtn.textContent = "▶";
+    if (playBtn) {
+      playBtn.textContent = "▶";
+      playBtn.setAttribute("aria-label", "Play preview");
+    }
     if (entry.syncInterval) {
       clearInterval(entry.syncInterval);
       entry.syncInterval = null;
@@ -2211,9 +2298,12 @@ function updateTimelinePositions(card, songData, videoDuration) {
   startHandle.style.left = `${startPercent}%`;
   endHandle.style.left = `${endPercent}%`;
 
-  // Update ARIA values
-  startHandle.setAttribute("aria-valuenow", Math.round(startPercent));
-  endHandle.setAttribute("aria-valuenow", Math.round(endPercent));
+  // Update ARIA values (in seconds, read out as m:ss)
+  for (const [handle, seconds] of [[startHandle, startTime], [endHandle, endTime]]) {
+    handle.setAttribute("aria-valuemax", Math.round(videoDuration));
+    handle.setAttribute("aria-valuenow", Math.round(seconds));
+    handle.setAttribute("aria-valuetext", formatDuration(seconds));
+  }
 
   // Update time displays
   timelineCurrentTime.textContent = formatDuration(startTime);
