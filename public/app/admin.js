@@ -83,15 +83,35 @@ async function refreshStats() {
     // Update top songs table
     topSongsBody.innerHTML = "";
     data.topSongs.forEach((song) => {
+      // Built with DOM APIs: these values come from user-submitted mixes.
       const tr = document.createElement("tr");
-      const timeInfo = song.start_time && song.end_time 
-        ? `<br><small style="color: var(--text-secondary)">Time: ${song.start_time} - ${song.end_time}</small>` 
-        : '';
-      tr.innerHTML = `
-                <td>${song.title}${timeInfo}</td>
-                <td><strong>${song.count}</strong></td>
-                <td><a href="${song.youtube_url}" target="_blank" class="btn btn-secondary btn-sm" style="padding: 2px 8px; font-size: 0.75rem;">View</a></td>
-            `;
+
+      const titleCell = document.createElement("td");
+      titleCell.append(song.title ?? "");
+      if (song.start_time && song.end_time) {
+        const time = document.createElement("small");
+        time.style.color = "var(--text-secondary)";
+        time.textContent = `Time: ${song.start_time} - ${song.end_time}`;
+        titleCell.append(document.createElement("br"), time);
+      }
+
+      const countCell = document.createElement("td");
+      const count = document.createElement("strong");
+      count.textContent = song.count;
+      countCell.appendChild(count);
+
+      const linkCell = document.createElement("td");
+      const link = document.createElement("a");
+      if (/^https?:\/\//i.test(song.youtube_url || "")) {
+        link.href = song.youtube_url;
+      }
+      link.target = "_blank";
+      link.className = "btn btn-secondary btn-sm";
+      link.style.cssText = "padding: 2px 8px; font-size: 0.75rem;";
+      link.textContent = "View";
+      linkCell.appendChild(link);
+
+      tr.append(titleCell, countCell, linkCell);
       topSongsBody.appendChild(tr);
     });
   } catch (err) {

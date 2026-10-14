@@ -1550,11 +1550,16 @@ function renderBandBreakdown(counts, total) {
     // Add to breakdown list
     const statItem = document.createElement("div");
     statItem.className = "band-stat";
-    statItem.innerHTML = `
-      <span class="band-color-dot" style="background-color: ${color}"></span>
-      <span class="band-name">${band}</span>
-      <span class="band-percent">${percent}%</span>
-    `;
+    const dot = document.createElement("span");
+    dot.className = "band-color-dot";
+    dot.style.backgroundColor = color;
+    const name = document.createElement("span");
+    name.className = "band-name";
+    name.textContent = band;
+    const percentEl = document.createElement("span");
+    percentEl.className = "band-percent";
+    percentEl.textContent = `${percent}%`;
+    statItem.append(dot, name, percentEl);
     elements.bandBreakdown.appendChild(statItem);
 
     // Add to variety bar
@@ -1665,20 +1670,37 @@ function displayTopSongs(topSongs) {
       ? `https://img.youtube.com/vi/${videoId}/default.jpg`
       : "";
 
-    songItem.innerHTML = `
-      <div class="top-song-rank ${index < 3 ? "top-3" : ""}">${index + 1}</div>
-      <div class="top-song-thumbnail">
-        <img src="${thumbnail}" alt="Thumbnail" />
-      </div>
-      <div class="top-song-info">
-        <div class="top-song-title">${song.title || "Unknown Title"}</div>
-        <div class="top-song-channel">Used ${song.count} time${song.count > 1 ? "s" : ""}</div>
-      </div>
-      <button class="top-song-add-btn" title="Add to project">+</button>
-    `;
+    // Built with DOM APIs: titles come from user-submitted mixes.
+    const rank = document.createElement("div");
+    rank.className = `top-song-rank ${index < 3 ? "top-3" : ""}`;
+    rank.textContent = index + 1;
+
+    const thumbBox = document.createElement("div");
+    thumbBox.className = "top-song-thumbnail";
+    const img = document.createElement("img");
+    img.src = thumbnail;
+    img.alt = "Thumbnail";
+    thumbBox.appendChild(img);
+
+    const info = document.createElement("div");
+    info.className = "top-song-info";
+    const title = document.createElement("div");
+    title.className = "top-song-title";
+    title.textContent = song.title || "Unknown Title";
+    const used = document.createElement("div");
+    used.className = "top-song-channel";
+    used.textContent = `Used ${song.count} time${song.count > 1 ? "s" : ""}`;
+    info.append(title, used);
+
+    const addBtn = document.createElement("button");
+    addBtn.className = "top-song-add-btn";
+    addBtn.title = "Add to project";
+    addBtn.textContent = "+";
+
+    songItem.append(rank, thumbBox, info, addBtn);
 
     // Add click event to add song
-    songItem.querySelector(".top-song-add-btn").addEventListener("click", (e) => {
+    addBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       addTopSongToProject(song);
     });
