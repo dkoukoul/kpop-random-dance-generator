@@ -359,6 +359,13 @@ function createSongCard(songData) {
     removeSong(card, parseInt(card.dataset.index)),
   );
 
+  card
+    .querySelector(".btn-move-up")
+    .addEventListener("click", () => nudgeSong(card, -1));
+  card
+    .querySelector(".btn-move-down")
+    .addEventListener("click", () => nudgeSong(card, 1));
+
   toggleBtn.addEventListener("click", () => {
     songData.isExpanded = !songData.isExpanded;
     card.classList.toggle("compact", !songData.isExpanded);
@@ -416,9 +423,7 @@ function createSongCard(songData) {
     const toIndex = parseInt(card.dataset.index);
 
     if (fromIndex !== null && fromIndex !== toIndex) {
-      const [movedSong] = state.songs.splice(fromIndex, 1);
-      state.songs.splice(toIndex, 0, movedSong);
-      rebuildSongList();
+      moveSong(fromIndex, toIndex);
     }
   });
 
@@ -449,6 +454,13 @@ function renumberCards() {
   cards.forEach((card, i) => {
     card.dataset.index = i;
     card.querySelector(".song-number").textContent = i + 1;
+
+    const upBtn = card.querySelector(".btn-move-up");
+    const downBtn = card.querySelector(".btn-move-down");
+    upBtn.disabled = i === 0;
+    downBtn.disabled = i === cards.length - 1;
+    upBtn.setAttribute("aria-label", `Move song ${i + 1} up`);
+    downBtn.setAttribute("aria-label", `Move song ${i + 1} down`);
   });
 
   elements.emptyState.classList.toggle("hidden", cards.length > 0);
@@ -480,7 +492,44 @@ function renderSongInfo(card, info) {
 }
 
 /**
- * Remove a song from the list
+ * Move the song at `from` to position `to`. Only that card moves in the
+ * page; moving a node reloads the iframe inside it, so its preview player
+ * is rebuilt.
+ */
+function moveSong(from, to) {
+  if (from === to || to < 0 || to >= state.songs.length) return;
+
+  const cards = elements.songList.querySelectorAll(".song-card");
+  const card = cards[from];
+  const songData = state.songs[from];
+
+  destroyPreviewPlayer(songData);
+  state.songs.splice(from, 1);
+  state.songs.splice(to, 0, songData);
+  elements.songList.insertBefore(card, to > from ? cards[to].nextSibling : cards[to]);
+  renumberCards();
+
+  if (songData.info) initPreviewPlayer(card, songData);
+  updateGenerateButton();
+  updateStats();
+}
+
+/**
+ * Move a song one place up (-1) or down (+1) from its arrow buttons. Focus
+ * stays on the arrow so it can be pressed again; at the end of the list that
+ * arrow is disabled, so focus goes to the other one.
+ */
+function nudgeSong(card, delta) {
+  const from = parseInt(card.dataset.index);
+  moveSong(from, from + delta);
+
+  const sameBtn = card.querySelector(delta < 0 ? ".btn-move-up" : ".btn-move-down");
+  const otherBtn = card.querySelector(delta < 0 ? ".btn-move-down" : ".btn-move-up");
+  (sameBtn.disabled ? otherBtn : sameBtn).focus();
+}
+
+/**
+ * Remove a song from the list, with an Undo for songs that had a video
  */
 function removeSong(card, index) {
   const songData = state.songs[index];
@@ -489,10 +538,42 @@ function removeSong(card, index) {
     destroyPreviewPlayer(songData);
   }
 
+  // Keep keyboard focus in the list instead of dropping it on the page
+  const hadFocus = card.contains(document.activeElement);
+  const nextCard = card.nextElementSibling?.classList.contains("song-card")
+    ? card.nextElementSibling
+    : card.previousElementSibling;
+
   card.remove();
   state.songs.splice(index, 1);
   renumberCards();
 
+  if (hadFocus) {
+    const target = nextCard?.classList.contains("song-card")
+      ? nextCard.querySelector(".btn-remove")
+      : elements.addSongBtn;
+    target.focus();
+  }
+
+  if (songData && songData.youtubeUrl) {
+    showToast(`Removed: ${songData.title || `song #${index + 1}`}`, {
+      actionLabel: "Undo",
+      onAction: () => restoreSong(songData, index),
+    });
+  }
+
+  updateGenerateButton();
+  updateStats();
+}
+
+/**
+ * Put a removed song back where it was (Undo)
+ */
+function restoreSong(songData, index) {
+  const at = Math.min(index, state.songs.length);
+  state.songs.splice(at, 0, songData);
+  insertSongCard(songData, at);
+  renumberCards();
   updateGenerateButton();
   updateStats();
 }

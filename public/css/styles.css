@@ -1097,9 +1097,46 @@ body {
 
 .song-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-md);
+}
+
+.move-buttons {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+/* Gap so a missed tap on an arrow doesn't remove the song */
+.song-card-header .btn-remove {
+  margin-left: var(--spacing-sm);
+}
+
+.btn-move {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--primary-light);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-move:hover:not(:disabled) {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: var(--primary);
+}
+
+.btn-move:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 
 .song-number {
@@ -1809,8 +1846,19 @@ body {
   color: var(--text-muted);
 }
 
-.song-card.compact .btn-remove {
+.song-card.compact .move-buttons {
   order: 6;
+  margin-left: 0;
+}
+
+.song-card.compact .btn-move {
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+}
+
+.song-card.compact .btn-remove {
+  order: 7;
   width: 24px;
   height: 24px;
   font-size: 1rem;
@@ -2205,10 +2253,12 @@ body {
 @media (hover: none), (max-width: 768px) {
   .btn-remove,
   .btn-toggle,
+  .btn-move,
   .btn-add-result,
   .top-song-add-btn,
   .song-card.compact .btn-remove,
-  .song-card.compact .btn-toggle {
+  .song-card.compact .btn-toggle,
+  .song-card.compact .btn-move {
     width: 44px;
     height: 44px;
     min-width: 44px;
@@ -2266,8 +2316,13 @@ body {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0);
-  pointer-events: auto;
   transition-delay: 0s;
+}
+
+/* Taps go through the toast to what's under it (e.g. the next + in the
+   search results); only its button catches them */
+.toast.visible .toast-action {
+  pointer-events: auto;
 }
 
 .toast-text {
@@ -2300,5 +2355,53 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .toast {
     transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .song-card.compact .time-inputs {
+    flex-direction: row;
+  }
+}
+
+/* Compact rows on phones wrap to two lines:
+   # ▼ title ×   /   start → end  ↑ ↓ */
+@media (max-width: 480px) {
+  .song-card.compact {
+    flex-wrap: wrap;
+    row-gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .song-card.compact .song-card-content {
+    display: contents;
+  }
+
+  .song-card.compact .compact-info {
+    order: 4;
+    flex: 1 1 0;
+  }
+
+  .song-card.compact .btn-remove {
+    order: 5;
+    margin-left: 0;
+  }
+
+  .song-card.compact::after {
+    content: "";
+    order: 6;
+    flex-basis: 100%;
+  }
+
+  .song-card.compact .time-inputs {
+    order: 7;
+    margin-left: 32px;
+    flex-direction: row; /* the full card stacks them below 640px */
+    gap: var(--spacing-xs);
+  }
+
+  .song-card.compact .move-buttons {
+    order: 8;
+    margin-left: auto;
   }
 }
