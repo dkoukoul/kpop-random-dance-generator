@@ -187,9 +187,9 @@ api.get('/youtube/search', async (c) => {
  * Generate the final audio file with all segments and countdowns
  */
 api.post('/generate', async (c) => {
-  const body = await c.req.json<GenerateRequest>();
+  const body = await c.req.json<GenerateRequest>().catch(() => null);
   
-  if (!body.segments || body.segments.length === 0) {
+  if (!body || !Array.isArray(body.segments) || body.segments.length === 0) {
     return c.json({ error: 'No segments provided' }, 400);
   }
   
@@ -286,7 +286,10 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  * Send a contact form message via Resend, without exposing the recipient's email to the client
  */
 api.post('/contact', async (c) => {
-  const body = await c.req.json<{ email?: string; message?: string; website?: string }>();
+  const body = await c.req.json<{ email?: string; message?: string; website?: string }>().catch(() => null);
+  if (!body) {
+    return c.json({ error: 'Invalid request' }, 400);
+  }
 
   // Honeypot field: real users never fill in a field hidden via CSS, bots do.
   // Pretend success so bots don't learn to skip it.

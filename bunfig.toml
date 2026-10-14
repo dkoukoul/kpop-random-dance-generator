@@ -1,0 +1,4 @@
+[test]
+# Runs before any test file imports app code: points the databases and yt-dlp
+# at throwaway fakes so tests never touch production data or YouTube.
+preload = ["./tests/setup.ts"]

@@ -21,6 +21,9 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
       '--skip-download', 
       '--no-playlist',
       '--no-check-certificate',
+      // `--` stops option parsing, so a "URL" like `--update-to=...` can't be
+      // smuggled in as a yt-dlp option.
+      '--',
       url
     ], {
       stdout: "pipe",
@@ -180,7 +183,7 @@ const PLAYER_CLIENT_FALLBACKS: (string | null)[] = [null, 'web_embedded', 'tv_em
 
 // YouTube's anti-bot challenge and its own rate-limit cooldown are transient -
 // a short backoff and retry often succeeds where an immediate retry wouldn't.
-function isTransientYoutubeError(message: string): boolean {
+export function isTransientYoutubeError(message: string): boolean {
   return /sign in to confirm you.?re not a bot/i.test(message) ||
     /rate-limited by youtube/i.test(message) ||
     /content isn.?t available, try again later/i.test(message) ||
@@ -194,7 +197,7 @@ function isTransientYoutubeError(message: string): boolean {
 // these are worth a fallback rather than a backoff.
 // Note: `--download-sections` hands the media URL to ffmpeg, so a 403 there
 // surfaces only as "ffmpeg exited with code 8".
-function isClientBlockedError(message: string): boolean {
+export function isClientBlockedError(message: string): boolean {
   return /HTTP Error 403|403 Forbidden/i.test(message) ||
     /ffmpeg exited with code 8/i.test(message) ||
     /requested format is not available/i.test(message) ||
@@ -291,7 +294,8 @@ function attemptDownloadSegment(
       args.push('--extractor-args', `youtube:player_client=${playerClient}`);
     }
 
-    args.push(url);
+    // `--` stops option parsing, so a user-supplied URL can never be read as a yt-dlp option.
+    args.push('--', url);
 
     console.log(`Downloading segment: ${startTime} - ${endTime} from ${url}${playerClient ? ` [client: ${playerClient}]` : ''}`);
 
@@ -427,11 +431,14 @@ async function trimSegmentToExactDuration(
 }
 
 /**
- * Parse time string (MM:SS or HH:MM:SS) to seconds
+ * Parse time string (SS, MM:SS or HH:MM:SS) to seconds.
+ * The frontend accepts plain seconds ("90"), so those must parse too.
  */
 export function parseTimeToSeconds(time: string): number {
   const parts = time.split(':').map(Number);
-  if (parts.length === 2) {
+  if (parts.length === 1) {
+    return parts[0] || 0;
+  } else if (parts.length === 2) {
     return (parts[0] ?? 0) * 60 + (parts[1] ?? 0);
   } else if (parts.length === 3) {
     return (parts[0] ?? 0) * 3600 + (parts[1] ?? 0) * 60 + (parts[2] ?? 0);

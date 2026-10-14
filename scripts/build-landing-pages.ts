@@ -20,7 +20,7 @@ const OUT_DIR = join(process.cwd(), 'public', 'random-dance');
 // Groups
 // ---------------------------------------------------------------------------
 
-interface BandDef {
+export interface BandDef {
   slug: string;
   name: string;
   hangul?: string;
@@ -33,7 +33,7 @@ interface BandDef {
  * otherwise it is a thin doorway page, which Google treats as spam and which
  * is no use to a dancer either.
  */
-const BANDS: BandDef[] = [
+export const BANDS: BandDef[] = [
   { slug: 'nct', name: 'NCT', hangul: '엔시티', match: /\bNCT\b|엔시티|WayV/i },
   { slug: 'bts', name: 'BTS', hangul: '방탄소년단', match: /\bBTS\b|방탄소년단/i },
   { slug: 'twice', name: 'TWICE', hangul: '트와이스', match: /\bTWICE\b|트와이스/i },
@@ -62,7 +62,7 @@ const BANDS: BandDef[] = [
 // Mining analytics.db
 // ---------------------------------------------------------------------------
 
-interface Video {
+export interface Video {
   url: string;
   videoId: string;
   title: string;
@@ -90,7 +90,7 @@ const PRACTICE = /dance practice|choreography|performance video|studio choom|be 
  * re-emit canonically via formatClock so the generator only ever receives a
  * value its own validator accepts.
  */
-function toSeconds(t: string): number {
+export function toSeconds(t: string): number {
   const parts = t.trim().split(':');
   if (parts.length > 3) return NaN;
   let total = 0;
@@ -102,7 +102,7 @@ function toSeconds(t: string): number {
   return total;
 }
 
-function formatClock(total: number): string {
+export function formatClock(total: number): string {
   const t = Math.round(total);
   const h = Math.floor(t / 3600);
   const m = Math.floor((t % 3600) / 60);
@@ -111,7 +111,7 @@ function formatClock(total: number): string {
   return `${h ? `${h}:` : ''}${mm}:${String(s).padStart(2, '0')}`;
 }
 
-function videoId(url: string): string {
+export function videoId(url: string): string {
   const m = url.match(/[?&]v=([\w-]{6,})/) || url.match(/youtu\.be\/([\w-]{6,})/);
   return m?.[1] ?? '';
 }
@@ -129,7 +129,7 @@ const BRACKET_TAG =
  * enough that the quoted segment is almost always the track name; everything
  * else goes through stripFurniture as a fallback.
  */
-function songName(title: string, band: string): string {
+export function songName(title: string, band: string): string {
   const quoted = title.match(/['‘’"“”]([^'‘’"“”]{2,60})['‘’"“”]/);
   const raw = quoted?.[1] ?? stripFurniture(title, band);
   return tidy(preferLatin(raw)) || tidy(stripFurniture(title, band)) || title;
@@ -141,7 +141,7 @@ function songName(title: string, band: string): string {
  * and format labels. Without this, "Dope" and "DOPE Dance Practice" read as two
  * different songs and both end up in the same mix.
  */
-function stripFurniture(title: string, band: string): string {
+export function stripFurniture(title: string, band: string): string {
   const bandPattern = band.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return (title.split('|')[0] ?? title)
     // Drop bracketed tags outright; keep the contents of anything else, since
@@ -160,7 +160,7 @@ function stripFurniture(title: string, band: string): string {
  * useful one, and picking it consistently also stops the two spellings of one
  * song appearing in the same mix.
  */
-function preferLatin(name: string): string {
+export function preferLatin(name: string): string {
   const withoutCredits = name.replace(/\s*\((feat|prod|with|ft)\.?[^)]*\)/gi, ' ');
   if (!/[가-힣]/.test(withoutCredits)) return withoutCredits;
   const latin = [...withoutCredits.matchAll(/\(([^)]*[A-Za-z][^)]*)\)/g)]
@@ -170,7 +170,7 @@ function preferLatin(name: string): string {
 }
 
 /** Collapse whitespace and shave leftover separators from an extracted name. */
-function tidy(s: string): string {
+export function tidy(s: string): string {
   return s
     // Parens left empty by the strips above, e.g. "부석순 ( ) - 청바지".
     .replace(/\(\s*[^A-Za-z0-9가-힣]*\s*\)/g, ' ')
@@ -228,7 +228,9 @@ function loadVideos(): Video[] {
     if (seconds < 8 || seconds > 150) continue;
 
     out.push({
-      url,
+      // Rebuilt from the id: the stored URL is whatever a user submitted, and
+      // it lands in an href on a public page.
+      url: `https://www.youtube.com/watch?v=${id}`,
       videoId: id,
       title: v.title,
       song: '',
@@ -243,7 +245,7 @@ function loadVideos(): Video[] {
 }
 
 /** One video per song title, so a mix never repeats a track via two uploads. */
-function dedupeBySong(videos: Video[]): Video[] {
+export function dedupeBySong(videos: Video[]): Video[] {
   const seen = new Map<string, Video>();
   for (const v of videos) {
     const key = v.song.toLowerCase().replace(/[^a-z0-9가-힣]/g, '');
@@ -257,7 +259,7 @@ function dedupeBySong(videos: Video[]): Video[] {
 // Mix construction
 // ---------------------------------------------------------------------------
 
-interface Mix {
+export interface Mix {
   id: string;
   name: string;
   blurb: string;
@@ -266,18 +268,18 @@ interface Mix {
 
 const COUNTDOWN_SECONDS = 5;
 
-function runtime(songs: Video[]): number {
+export function runtime(songs: Video[]): number {
   return songs.reduce((s, v) => s + v.seconds, 0) + COUNTDOWN_SECONDS * (songs.length - 1);
 }
 
-function fmt(total: number): string {
+export function fmt(total: number): string {
   const m = Math.floor(total / 60);
   const s = Math.round(total % 60);
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
 /** Deterministic shuffle, so rebuilding the site doesn't churn every page. */
-function seededShuffle<T>(arr: T[], seed: number): T[] {
+export function seededShuffle<T>(arr: T[], seed: number): T[] {
   const a = [...arr];
   let s = seed;
   for (let i = a.length - 1; i > 0; i--) {
@@ -295,7 +297,7 @@ const MAX_MIX_SONGS = 10;
 const MAX_MIXES = 10;
 
 /** Would this mix just be a reshuffle of one we already kept? */
-function tooSimilar(mix: Mix, kept: Mix[]): boolean {
+export function tooSimilar(mix: Mix, kept: Mix[]): boolean {
   const ids = new Set(mix.songs.map((s) => s.videoId));
   return kept.some((k) => {
     const overlap = k.songs.filter((s) => ids.has(s.videoId)).length;
@@ -303,7 +305,7 @@ function tooSimilar(mix: Mix, kept: Mix[]): boolean {
   });
 }
 
-function buildMixes(band: BandDef, pool: Video[]): Mix[] {
+export function buildMixes(band: BandDef, pool: Video[]): Mix[] {
   const byUses = [...pool].sort((a, b) => b.uses - a.uses);
   const byShort = [...pool].sort((a, b) => a.seconds - b.seconds);
   const byLong = [...pool].sort((a, b) => b.seconds - a.seconds);
@@ -406,7 +408,15 @@ function plural(n: number, one: string, many = one + 's'): string {
   return n === 1 ? one : many;
 }
 
-function esc(s: string): string {
+/**
+ * JSON for a <script> tag. JSON.stringify leaves `</script>` intact, and song
+ * titles come straight from user input, so escape `<` to keep it inert.
+ */
+export function scriptJson(o: unknown, space?: number): string {
+  return JSON.stringify(o, null, space).replace(/</g, '\\u003c');
+}
+
+export function esc(s: string): string {
   return s
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -453,7 +463,7 @@ function shell(opts: {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/css/landing.css" />
-${opts.jsonLd.map((o) => `    <script type="application/ld+json">\n${JSON.stringify(o, null, 2)}\n    </script>`).join('\n')}
+${opts.jsonLd.map((o) => `    <script type="application/ld+json">\n${scriptJson(o, 2)}\n    </script>`).join('\n')}
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q93H8H3JP4"></script>
     <script>
@@ -471,7 +481,7 @@ ${opts.body}
 `;
 }
 
-function renderMix(mix: Mix, band: BandDef): string {
+export function renderMix(mix: Mix, band: BandDef): string {
   const payload = {
     version: '1.0',
     name: `${band.name} - ${mix.name}`,
@@ -516,7 +526,7 @@ ${rows}
             <button class="btn btn-primary js-load-mix" data-mix="${band.slug}-${mix.id}">Open in generator</button>
             <button class="btn btn-ghost js-download-mix" data-mix="${band.slug}-${mix.id}">Download .json</button>
           </div>
-          <script type="application/json" id="data-${band.slug}-${mix.id}">${JSON.stringify(payload)}</script>
+          <script type="application/json" id="data-${band.slug}-${mix.id}">${scriptJson(payload)}</script>
         </article>`;
 }
 
@@ -820,4 +830,5 @@ function main() {
   console.log(`\nBuilt ${entries.length} group pages + hub, ${totalMixes} mixes total.`);
 }
 
-main();
+// Only build when run directly, so tests can import the helpers.
+if (import.meta.main) main();

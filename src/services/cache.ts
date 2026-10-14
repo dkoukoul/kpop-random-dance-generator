@@ -1,7 +1,8 @@
 import { Database } from 'bun:sqlite';
 import { join } from 'path';
 
-const CACHE_DB_PATH = join(process.cwd(), 'cache.db');
+// Tests point this at a throwaway file so they never touch the live cache.
+const CACHE_DB_PATH = process.env.CACHE_DB_PATH || join(process.cwd(), 'cache.db');
 const db = new Database(CACHE_DB_PATH);
 
 // Initialize cache table

@@ -2,7 +2,8 @@ import { Database } from 'bun:sqlite';
 import { join } from 'path';
 import type { SongSegment } from '../types';
 
-const DB_PATH = join(process.cwd(), 'analytics.db');
+// Tests point this at a throwaway file so they never touch production data.
+const DB_PATH = process.env.ANALYTICS_DB_PATH || join(process.cwd(), 'analytics.db');
 const db = new Database(DB_PATH);
 
 // Initialize database

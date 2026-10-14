@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# Stand-in for yt-dlp in tests. Never touches the network.
+#
+# Settings are files in the state dir rather than env vars, because Bun.spawn
+# doesn't pass on env changes made at runtime. Paths below are relative to
+# $FAKE_YTDLP_STATE (set by the wrapper that tests/setup.ts generates).
+#
+# Every call is appended (one line of args) to calls.log.
+#
+#   --version         prints version
+#   -U                moves next-version over version if it exists;
+#                     an update-fail file makes it fail; a sleep file delays it
+#   search / info     prints the files stdout and stderr, exits with the
+#                     number in exit (default 0)
+#   download (-o)     behaviour depends on the URL:
+#                       ...unavailable...  fails like a deleted video
+#                       ...blocked...      fails like a 403 on every client
+#                       ...needs-mweb...   403 unless player_client=mweb
+#                       anything else      copies $FAKE_YTDLP_AUDIO to the -o path
+#
+# A file's absence means the default.
+
+state="${FAKE_YTDLP_STATE:?FAKE_YTDLP_STATE not set}"
+echo "$*" >> "$state/calls.log"
+
+case "$1" in
+  --version)
+    cat "$state/version"
+    exit 0
+    ;;
+  -U)
+    [ -f "$state/sleep" ] && sleep "$(cat "$state/sleep")"
+    if [ -f "$state/update-fail" ]; then
+      echo "ERROR: Unable to check for updates: network unreachable" >&2
+      exit 1
+    fi
+    if [ -f "$state/next-version" ]; then
+      mv "$state/next-version" "$state/version"
+      echo "Updated yt-dlp to $(cat "$state/version")"
+    else
+      echo "yt-dlp is up to date"
+    fi
+    exit 0
+    ;;
+esac
+
+out=""
+url=""
+prev=""
+for arg in "$@"; do
+  [ "$prev" = "-o" ] && out="$arg"
+  prev="$arg"
+  url="$arg"
+done
+
+if [ -z "$out" ]; then
+  [ -f "$state/stdout" ] && cat "$state/stdout"
+  [ -f "$state/stderr" ] && cat "$state/stderr" >&2
+  exit "$(cat "$state/exit" 2>/dev/null || echo 0)"
+fi
+
+case "$url" in
+  *unavailable*)
+    echo "WARNING: [youtube] Falling back to generic n function search" >&2
+    echo "ERROR: [youtube] $url: Video unavailable. This video has been removed by the uploader" >&2
+    exit 1
+    ;;
+  *blocked*)
+    echo "ERROR: unable to download video data: HTTP Error 403: Forbidden" >&2
+    exit 1
+    ;;
+  *needs-mweb*)
+    if [[ "$*" != *"player_client=mweb"* ]]; then
+      echo "ERROR: unable to download video data: HTTP Error 403: Forbidden" >&2
+      exit 1
+    fi
+    ;;
+esac
+
+cp "$FAKE_YTDLP_AUDIO" "$out"
