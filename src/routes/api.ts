@@ -8,6 +8,7 @@ import { getVideoInfo, downloadSegment, searchVideos } from '../services/youtube
 import { generateReport, saveReport } from '../services/report';
 import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles } from '../services/audio';
 import { logVisit, logGeneration, getStats } from '../services/analytics';
+import { getYtdlpStatus, updateYtdlp } from '../services/ytdlp-updater';
 
 const api = new Hono();
 
@@ -85,6 +86,30 @@ api.get('/stats', basicAuth({
 }), async (c) => {
   const stats = getStats();
   return c.json(stats);
+});
+
+/**
+ * GET /api/ytdlp-status
+ * Report the yt-dlp version and last update check (Protected).
+ * Downloads failing en masse is almost always a stale yt-dlp, so make it visible.
+ */
+api.get('/ytdlp-status', basicAuth({
+  username: process.env.ADMIN_USERNAME || 'admin',
+  password: process.env.ADMIN_PASSWORD || 'admin'
+}), async (c) => {
+  return c.json(getYtdlpStatus());
+});
+
+/**
+ * POST /api/ytdlp-update
+ * Force a yt-dlp self-update without restarting the server (Protected)
+ */
+api.post('/ytdlp-update', basicAuth({
+  username: process.env.ADMIN_USERNAME || 'admin',
+  password: process.env.ADMIN_PASSWORD || 'admin'
+}), async (c) => {
+  const updated = await updateYtdlp();
+  return c.json({ updated, ...getYtdlpStatus() });
 });
 
 /**

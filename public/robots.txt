@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /admin.html
 Disallow: /api/
 
 Sitemap: https://kpopgenerator.cloud/sitemap.xml

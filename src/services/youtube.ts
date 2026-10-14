@@ -21,7 +21,6 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
       '--skip-download', 
       '--no-playlist',
       '--no-check-certificate',
-      '--extractor-args', 'youtube:player_client=web',
       url
     ], {
       stdout: "pipe",
@@ -105,7 +104,6 @@ export async function searchVideos(query: string, limit: number = 5): Promise<Vi
       '--flat-playlist',
       '--no-warnings',
       '--quiet',
-      '--extractor-args', 'youtube:player_client=web',
     ], {
       stdout: "pipe",
       stderr: "pipe",
@@ -165,19 +163,56 @@ function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// Hard ceiling on a single yt-dlp invocation so a wedged process can't stall
+// an entire generation job forever.
+const DOWNLOAD_TIMEOUT_MS = 4 * 60 * 1000;
+
+// Ceiling across all retries and client fallbacks for one segment. Without this,
+// repeated timeouts could chain into tens of minutes on a single song.
+const SEGMENT_BUDGET_MS = 8 * 60 * 1000;
+
+// YouTube periodically breaks extraction for whichever player client yt-dlp
+// picks by default (the default client's media URLs start returning 403).
+// Trying a couple of alternates keeps downloads working during the window
+// between YouTube's change and a yt-dlp release that handles it.
+// `null` means "let yt-dlp choose", which is the fast path that normally works.
+const PLAYER_CLIENT_FALLBACKS: (string | null)[] = [null, 'web_embedded', 'tv_embedded', 'mweb'];
+
 // YouTube's anti-bot challenge and its own rate-limit cooldown are transient -
 // a short backoff and retry often succeeds where an immediate retry wouldn't.
 function isTransientYoutubeError(message: string): boolean {
   return /sign in to confirm you.?re not a bot/i.test(message) ||
     /rate-limited by youtube/i.test(message) ||
-    /content isn.?t available, try again later/i.test(message);
+    /content isn.?t available, try again later/i.test(message) ||
+    /too many requests/i.test(message) ||
+    /HTTP Error 5\d\d/i.test(message) ||
+    /timed out|timeout/i.test(message);
+}
+
+// Symptoms of the current player client being blocked or broken rather than the
+// video being unavailable. A different client usually succeeds immediately, so
+// these are worth a fallback rather than a backoff.
+// Note: `--download-sections` hands the media URL to ffmpeg, so a 403 there
+// surfaces only as "ffmpeg exited with code 8".
+function isClientBlockedError(message: string): boolean {
+  return /HTTP Error 403|403 Forbidden/i.test(message) ||
+    /ffmpeg exited with code 8/i.test(message) ||
+    /requested format is not available/i.test(message) ||
+    /unable to download video data/i.test(message) ||
+    /only images are available/i.test(message) ||
+    /the page needs to be reloaded/i.test(message) ||
+    /po token/i.test(message) ||
+    /sabr/i.test(message);
 }
 
 /**
  * Download a specific segment of audio from a YouTube video
  * Uses yt-dlp's --download-sections to only download the required portion
  * Post-processes with ffmpeg to trim container cue-point rounding excess
- * Retries transient YouTube bot-check/rate-limit failures with backoff.
+ *
+ * Resilience has two layers: transient bot-check/rate-limit failures get a
+ * backoff and retry on the same client, while failures that look like the
+ * client itself being blocked move on to the next client in the fallback list.
  */
 export async function downloadSegment(
   url: string,
@@ -187,21 +222,43 @@ export async function downloadSegment(
   maxRetries: number = 2
 ): Promise<void> {
   let lastError: Error = new Error('Download failed');
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      await attemptDownloadSegment(url, startTime, endTime, outputPath);
-      return;
-    } catch (error) {
-      lastError = error instanceof Error ? error : new Error(String(error));
-      if (attempt < maxRetries && isTransientYoutubeError(lastError.message)) {
-        const backoffMs = 5000 * (attempt + 1);
-        console.warn(`⏳ Transient YouTube error for ${url}, retrying in ${backoffMs / 1000}s (attempt ${attempt + 1}/${maxRetries})`);
-        await sleep(backoffMs);
-        continue;
+  const deadline = Date.now() + SEGMENT_BUDGET_MS;
+
+  for (const playerClient of PLAYER_CLIENT_FALLBACKS) {
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      if (Date.now() >= deadline) {
+        console.warn(`⌛ Giving up on ${url} after ${SEGMENT_BUDGET_MS / 60000} minutes`);
+        throw lastError;
       }
-      throw lastError;
+
+      try {
+        await attemptDownloadSegment(url, startTime, endTime, outputPath, playerClient);
+        if (playerClient) {
+          console.log(`✅ Downloaded ${url} using fallback player client "${playerClient}"`);
+        }
+        return;
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+
+        if (isTransientYoutubeError(lastError.message) && attempt < maxRetries && Date.now() + 5000 * (attempt + 1) < deadline) {
+          const backoffMs = 5000 * (attempt + 1);
+          console.warn(`⏳ Transient YouTube error for ${url}, retrying in ${backoffMs / 1000}s (attempt ${attempt + 1}/${maxRetries})`);
+          await sleep(backoffMs);
+          continue;
+        }
+
+        if (isClientBlockedError(lastError.message)) {
+          console.warn(`🔁 Player client "${playerClient ?? 'default'}" blocked for ${url}, trying next client`);
+        } else {
+          // Genuinely unavailable video (private, deleted, geo-blocked):
+          // no client or retry will help.
+          throw lastError;
+        }
+        break;
+      }
     }
   }
+
   throw lastError;
 }
 
@@ -209,11 +266,12 @@ function attemptDownloadSegment(
   url: string,
   startTime: string,
   endTime: string,
-  outputPath: string
+  outputPath: string,
+  playerClient: string | null = null
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const sectionArg = `*${startTime}-${endTime}`;
-    
+
     const args = [
       '--download-sections', sectionArg,
       '-x',                    // Extract audio
@@ -221,33 +279,65 @@ function attemptDownloadSegment(
       '-o', outputPath,        // Output path
       '--no-playlist',         // Don't download playlists
       '--quiet',               // Less output
-      url
+      '--no-warnings',
+      // Let yt-dlp absorb brief network/CDN hiccups before we fall back
+      '--retries', '3',
+      '--fragment-retries', '3',
+      '--extractor-retries', '2',
+      '--socket-timeout', '30',
     ];
-    
-    console.log(`Downloading segment: ${startTime} - ${endTime} from ${url}`);
-    
+
+    if (playerClient) {
+      args.push('--extractor-args', `youtube:player_client=${playerClient}`);
+    }
+
+    args.push(url);
+
+    console.log(`Downloading segment: ${startTime} - ${endTime} from ${url}${playerClient ? ` [client: ${playerClient}]` : ''}`);
+
     const process = spawn(YTDLP_PATH, args);
-    
+
     let stderr = '';
-    
+    let settled = false;
+
+    const finish = (fn: () => void) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      fn();
+    };
+
+    const timer = setTimeout(() => {
+      process.kill('SIGKILL');
+      finish(() => reject(new Error(`yt-dlp download timed out after ${DOWNLOAD_TIMEOUT_MS / 1000}s`)));
+    }, DOWNLOAD_TIMEOUT_MS);
+
     process.stderr.on('data', (data) => {
       stderr += data.toString();
     });
-    
+
+    // Without this, a spawn failure (missing binary, EACCES) would leave the
+    // promise pending forever and hang the job.
+    process.on('error', (err) => {
+      finish(() => reject(new Error(`Failed to run yt-dlp: ${err.message}`)));
+    });
+
     process.on('close', async (code) => {
+      if (settled) return;
+
       if (code !== 0) {
-        reject(new Error(`yt-dlp download failed: ${stderr}`));
+        finish(() => reject(new Error(`yt-dlp download failed: ${stderr}`)));
         return;
       }
-      
+
       // Trim excess duration caused by container cue-point rounding
       try {
         await trimSegmentToExactDuration(outputPath, startTime, endTime);
       } catch (err) {
         console.warn(`Failed to trim segment ${outputPath}:`, err);
       }
-      
-      resolve();
+
+      finish(resolve);
     });
   });
 }

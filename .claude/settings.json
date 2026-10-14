@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:disboard.org)",
+      "Bash(sudo journalctl -u kpop-generator -n 60 --no-pager)",
+      "Bash(sudo ss -ltnp)",
+      "Bash(ps -o pid,lstart,cmd -p 1127297,2137970,2175430,2182648)"
+    ]
+  }
+}
