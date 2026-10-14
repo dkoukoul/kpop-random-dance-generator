@@ -203,9 +203,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.matchMedia("(hover: none)").matches) e.target.blur();
   });
 
-  // Initial search
-  performSearch("bts");
-
   // Track visit
   trackVisit();
 
@@ -537,8 +534,9 @@ function renderSongInfo(card, info) {
   card.querySelector(".song-thumbnail img").src = info.thumbnail;
   card.querySelector(".song-title").textContent = info.title;
   card.querySelector(".song-channel").textContent = info.channel;
-  card.querySelector(".song-duration").textContent =
-    `Duration: ${formatDuration(info.duration)}`;
+  card.querySelector(".song-duration").textContent = info.duration
+    ? `Duration: ${formatDuration(info.duration)}`
+    : "Duration: loading…";
   card.querySelector(".song-info").classList.remove("hidden");
 
   // Compact view shows "Band  Song": strip the band from "Band - Song" titles
@@ -1714,6 +1712,19 @@ async function performSearch(query) {
   elements.searchLoading.classList.remove("hidden");
 
   try {
+    // A pasted YouTube link: show that one video, ready to add
+    const url = cleanYouTubeUrl(query);
+    if (isValidYouTubeUrl(url)) {
+      const response = await fetch(`/api/youtube/info?url=${encodeURIComponent(url)}`);
+      if (!response.ok) {
+        elements.searchResults.innerHTML =
+          '<div class="search-empty"><p>Couldn\'t load this video: private or removed?</p></div>';
+        return;
+      }
+      displaySearchResults([{ ...(await response.json()), url }]);
+      return;
+    }
+
     const response = await fetch(
       `/api/youtube/search?q=${encodeURIComponent(query)}`,
     );
@@ -1875,10 +1886,10 @@ function extractYouTubeVideoId(url) {
 }
 
 /**
- * Add a top song to the project
+ * Add a top song to the project. Top Songs don't know the video's length,
+ * so the card shows what we have and the real details are looked up.
  */
 function addTopSongToProject(song) {
-  // Create a result object compatible with addSearchResultToProject
   const videoId = extractYouTubeVideoId(song.youtube_url);
   const result = {
     url: song.youtube_url,
@@ -1887,10 +1898,11 @@ function addTopSongToProject(song) {
     thumbnail: videoId 
       ? `https://img.youtube.com/vi/${videoId}/default.jpg`
       : "",
-    duration: 180, // Default duration, will be updated when fetched
+    duration: null, // filled in by fetchVideoInfo below
   };
 
-  addSearchResultToProject(result);
+  const { card, songData } = addSearchResultToProject(result);
+  fetchVideoInfo(card, songData);
 }
 
 /**
@@ -1909,15 +1921,17 @@ function addSearchResultToProject(result) {
     if (firstCard) {
       populateCardWithResult(firstCard, targetSong, result);
       showToast(`Added: ${result.title} (#1)`);
-      return;
+      return { card: firstCard, songData: targetSong };
     }
   }
 
   // Otherwise add a new song. No focus: on phones that would scroll away
   // from the search results and open the keyboard.
   const card = addSong();
-  populateCardWithResult(card, state.songs[state.songs.length - 1], result);
+  const songData = state.songs[state.songs.length - 1];
+  populateCardWithResult(card, songData, result);
   showToast(`Added: ${result.title} (#${state.songs.length})`);
+  return { card, songData };
 }
 
 function populateCardWithResult(card, songData, result) {
@@ -1936,10 +1950,13 @@ function populateCardWithResult(card, songData, result) {
 
   renderSongInfo(card, songData.info);
 
-  // Set default end time
-  const defaultEndSeconds = Math.min(30, result.duration);
-  card.querySelector(".end-time").value = formatDuration(defaultEndSeconds);
-  songData.endTime = formatDuration(defaultEndSeconds);
+  // Set default end time (when the length is known; otherwise the lookup
+  // that follows does it)
+  if (result.duration) {
+    const defaultEndSeconds = Math.min(30, result.duration);
+    card.querySelector(".end-time").value = formatDuration(defaultEndSeconds);
+    songData.endTime = formatDuration(defaultEndSeconds);
+  }
 
   // Initialize timeline
   initTimeline(card, songData);
