@@ -2086,3 +2086,62 @@ body {
 .kofi-icon {
     font-size: 1.2rem;
 }
+
+/* ==========================================================================
+   Ready-made mixes (links to the /random-dance/ landing pages)
+   The anchors between the BAND_LINKS markers in index.html are written by
+   scripts/build-landing-pages.ts, so this list tracks whatever got built.
+   ========================================================================== */
+
+.ready-mixes {
+  max-width: 800px;
+  margin: 40px auto 0;
+  padding: 20px;
+  text-align: left;
+  border-top: 1px solid var(--border-color);
+}
+
+.ready-mixes h2 {
+  font-size: 1.25rem;
+  margin: 0 0 var(--spacing-xs);
+}
+
+.ready-mixes p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0 0 var(--spacing-md);
+}
+
+.ready-mixes .band-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.ready-mixes .band-links a {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.9rem;
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.ready-mixes .band-links a:hover {
+  color: var(--text-primary);
+  background: var(--bg-card-hover);
+  border-color: var(--border-glow);
+}
+
+.all-mixes-link {
+  color: var(--primary-light);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.all-mixes-link:hover {
+  text-decoration: underline;
+}

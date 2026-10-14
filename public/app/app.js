@@ -138,8 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   elements.contactForm.addEventListener("submit", submitContactForm);
 
-  // Add first song card
-  addSong();
+  // A ready-made mix handed over from a /random-dance/ landing page takes the
+  // place of the empty first card.
+  if (!loadPendingMix()) {
+    addSong();
+  }
 
   // Fetch bands list for variety tracking
   fetchBands().then(() => {
@@ -1274,6 +1277,58 @@ function importProject(event) {
     event.target.value = "";
   };
   reader.readAsText(file);
+}
+
+/**
+ * Pick up a ready-made mix handed over from a /random-dance/ landing page.
+ *
+ * The payload is the same shape as an exported project file, minus the video
+ * metadata -- the landing pages only know the URL and the cut points, so the
+ * titles and thumbnails are fetched here. Returns true if a mix was loaded.
+ */
+function loadPendingMix() {
+  let raw = null;
+  try {
+    raw = sessionStorage.getItem("pendingMix");
+    // Clear immediately so a refresh doesn't re-import the same mix.
+    sessionStorage.removeItem("pendingMix");
+  } catch (error) {
+    return false; // storage blocked; nothing to restore
+  }
+  if (!raw) return false;
+
+  try {
+    const mix = JSON.parse(raw);
+    if (!mix || !Array.isArray(mix.songs) || mix.songs.length === 0) return false;
+
+    state.songs = mix.songs.map((song) => ({
+      youtubeUrl: song.youtubeUrl || "",
+      title: song.title || "",
+      startTime: song.startTime || "0:00",
+      endTime: song.endTime || "0:30",
+      info: null,
+      isExpanded: !state.compactViewEnabled,
+    }));
+    state.shuffleEnabled = mix.shuffleEnabled !== false;
+    elements.randomOrderToggle.checked = state.shuffleEnabled;
+
+    rebuildSongList();
+    updateGenerateButton();
+
+    // Fill in titles, thumbnails and durations. Staggered because each lookup
+    // spawns a yt-dlp process on the server and a ten-song mix would otherwise
+    // fire ten at once.
+    document.querySelectorAll(".song-card").forEach((card, index) => {
+      const songData = state.songs[index];
+      if (!songData || !songData.youtubeUrl) return;
+      setTimeout(() => fetchVideoInfo(card, songData), index * 400);
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Failed to load ready-made mix:", error);
+    return false;
+  }
 }
 
 /**

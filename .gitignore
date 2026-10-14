@@ -145,3 +145,5 @@ yt-dlp.bak-*
 
 assets/*analytics.db
 cache.db
+
+*.db
