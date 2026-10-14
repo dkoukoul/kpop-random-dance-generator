@@ -119,9 +119,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ...or when keyboard focus leaves it
+  // ...or when keyboard focus moves out of it. A click on a non-focusable
+  // part of the menu (a toggle's label) blurs to nothing (relatedTarget is
+  // null); closing then would swallow the click, so leave that to the
+  // click-outside handler above.
   elements.menuDropdown.parentElement.addEventListener("focusout", (e) => {
-    if (!elements.menuDropdown.parentElement.contains(e.relatedTarget)) {
+    if (
+      e.relatedTarget &&
+      !elements.menuDropdown.parentElement.contains(e.relatedTarget)
+    ) {
       setMenuOpen(false);
     }
   });
@@ -166,6 +172,11 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.topSongsSection.open = false;
   }
 
+  // Drag-and-drop doesn't work on touch screens; only the arrows do
+  if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+    elements.dragHint.textContent = "💡 Use ↑ ↓ to reorder songs";
+  }
+
   initToast();
 
   // Sidebar Search
@@ -187,6 +198,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key !== "Enter" || query.length < 2) return;
     clearTimeout(searchDebounceTimer);
     performSearch(query);
+    // On phones, close the keyboard so the results (and toasts) can be seen
+    if (window.matchMedia("(hover: none)").matches) e.target.blur();
   });
 
   // Initial search
@@ -229,6 +242,18 @@ function initToast() {
   toast.addEventListener("mouseleave", resume);
   toast.addEventListener("focusin", pause);
   toast.addEventListener("focusout", resume);
+
+  // Keep clear of the Generate bar while the page scrolls under the toast
+  let frame = 0;
+  const reposition = () => {
+    if (frame || !toast.classList.contains("visible")) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      positionToast();
+    });
+  };
+  window.addEventListener("scroll", reposition, { passive: true });
+  window.addEventListener("resize", reposition);
 }
 
 function showToast(message, { actionLabel, onAction } = {}) {
@@ -249,11 +274,30 @@ function showToast(message, { actionLabel, onAction } = {}) {
     action.classList.add("hidden");
   }
 
+  positionToast();
   toast.classList.add("visible");
   // Longer when there's something to click
   toastDuration = actionLabel ? 8000 : 3500;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(hideToast, toastDuration);
+}
+
+/**
+ * Low on the screen, but above the Generate bar when that's at the bottom of
+ * the screen (stuck there, or about to be)
+ */
+function positionToast() {
+  const bar = document.querySelector(".generate-section").getBoundingClientRect();
+  const barAtBottom =
+    bar.top > 0 && bar.top < window.innerHeight && bar.bottom > window.innerHeight - 80;
+  elements.toast.style.bottom = barAtBottom
+    ? `${window.innerHeight - bar.top + 12}px`
+    : "";
+
+  // Two columns on wide screens: center it under the song list
+  const list = elements.songList.getBoundingClientRect();
+  elements.toast.style.left =
+    window.innerWidth > 900 ? `${list.left + list.width / 2}px` : "";
 }
 
 function hideToast() {
@@ -587,10 +631,22 @@ function removeSong(card, index) {
  * Put a removed song back where it was (Undo)
  */
 function restoreSong(songData, index) {
+  // A quick second press on Undo (before the toast finishes hiding) must not
+  // add the same song twice
+  if (state.songs.includes(songData)) return;
+
   const at = Math.min(index, state.songs.length);
   state.songs.splice(at, 0, songData);
-  insertSongCard(songData, at);
+  const card = insertSongCard(songData, at);
   renumberCards();
+
+  // Undo pressed from the keyboard: focus would be lost with the hiding
+  // toast. Put it on the card itself, not a button, so a quick second Enter
+  // doesn't act on the restored song.
+  if (elements.toast.contains(document.activeElement)) {
+    card.tabIndex = -1;
+    card.focus();
+  }
   updateGenerateButton();
   updateStats();
 }
@@ -2196,13 +2252,12 @@ function initTimeline(card, songData) {
   timelineTrack.addEventListener("click", onTrackClick);
 
   // Keyboard navigation
-  startHandle.addEventListener("keydown", (e) => {
+  const onStartHandleKey = (e) =>
     handleTimelineKeydown(e, card, songData, "start", videoDuration);
-  });
-
-  endHandle.addEventListener("keydown", (e) => {
+  const onEndHandleKey = (e) =>
     handleTimelineKeydown(e, card, songData, "end", videoDuration);
-  });
+  startHandle.addEventListener("keydown", onStartHandleKey);
+  endHandle.addEventListener("keydown", onEndHandleKey);
 
   // Store cleanup function
   songData.timelineCleanup = () => {
@@ -2211,6 +2266,8 @@ function initTimeline(card, songData) {
     endHandle.removeEventListener("mousedown", onEndHandleDown);
     endHandle.removeEventListener("touchstart", onEndHandleDown);
     timelineTrack.removeEventListener("click", onTrackClick);
+    startHandle.removeEventListener("keydown", onStartHandleKey);
+    endHandle.removeEventListener("keydown", onEndHandleKey);
   };
 }
 

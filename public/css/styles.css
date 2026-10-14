@@ -2059,6 +2059,7 @@ body {
 
   .time-inputs {
     flex-direction: column;
+    align-items: stretch; /* full-width inputs, not pushed right */
     gap: var(--spacing-sm);
   }
 
@@ -2272,6 +2273,21 @@ body {
   }
 }
 
+@media (max-width: 640px) {
+  /* A shorter header so the search box shows on the first screen */
+  .header {
+    padding: var(--spacing-lg) 0 var(--spacing-md);
+  }
+
+  .logo-icon {
+    font-size: 1.75rem;
+  }
+
+  .tagline {
+    font-size: 0.95rem;
+  }
+}
+
 @media (max-width: 768px) {
   /* iOS zooms into any input under 16px when it gets focus */
   .input,
@@ -2289,8 +2305,8 @@ body {
 .toast {
   position: fixed;
   left: 50%;
-  /* Clear of the sticky Generate bar */
-  bottom: calc(96px + env(safe-area-inset-bottom));
+  /* showToast() lifts it above the sticky Generate bar when that's showing */
+  bottom: calc(16px + env(safe-area-inset-bottom));
   transform: translate(-50%, 12px);
   width: max-content;
   max-width: calc(100% - 32px);
