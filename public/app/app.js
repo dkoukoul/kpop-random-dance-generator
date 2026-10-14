@@ -77,6 +77,7 @@ const elements = {
   contactCancelBtn: document.getElementById("contactCancelBtn"),
   contactStatus: document.getElementById("contactStatus"),
   topSongsSection: document.getElementById("topSongsSection"),
+  generateHint: document.getElementById("generateHint"),
   toast: document.getElementById("toast"),
 };
 
@@ -383,6 +384,7 @@ function createSongCard(songData) {
       urlInput.value = cleanedUrl;
     }
     songData.youtubeUrl = cleanedUrl || rawUrl;
+    showSongError(card, "");
     updateGenerateButton();
 
     if (isValidYouTubeUrl(songData.youtubeUrl) && !songData.info) {
@@ -699,6 +701,7 @@ async function fetchVideoInfo(card, songData) {
     songData.info = info;
     songData.title = info.title;
     renderSongInfo(card, info);
+    showSongError(card, "");
 
     // Set default end time to 30 seconds or video duration if shorter, but
     // only while the song still has the untouched 0:00-0:30 cut. A cut from a
@@ -717,7 +720,8 @@ async function fetchVideoInfo(card, songData) {
     initPreviewPlayer(card, songData);
   } catch (error) {
     console.error("Error fetching video info:", error);
-    // alert("Failed to fetch video info. Please check the URL and try again.");
+    if (!card.isConnected) card = findCardForSong(songData);
+    if (card) showSongError(card, "Couldn't load this video: private or removed?");
   } finally {
     fetchIcon.textContent = "🔍";
     fetchIcon.classList.remove("loading");
@@ -1010,7 +1014,7 @@ function removeDuplicatesAndGenerate(originalSegments) {
  */
 async function startGeneration(segments) {
   if (segments.length === 0) {
-    alert("No valid songs remaining after removing duplicates.");
+    showToast("No songs left to generate after removing duplicates.");
     resetGenerateButton();
     return;
   }
@@ -1048,7 +1052,7 @@ async function startGeneration(segments) {
     await pollJobStatus(jobId);
   } catch (error) {
     console.error("Generation error:", error);
-    alert("Failed to generate audio: " + error.message);
+    showGenerateError("Couldn't start generating: " + error.message);
     resetGenerateButton();
   }
 }
@@ -1071,7 +1075,7 @@ async function generateRandomDance() {
     }));
 
   if (segments.length === 0) {
-    alert("Please add at least one song with a valid URL");
+    showToast("Add at least one song with a YouTube link first.");
     return;
   }
 
@@ -1199,23 +1203,81 @@ function resetGenerateButton() {
 }
 
 /**
- * Update generate button enabled state
+ * The first thing stopping Generate, or null if the mix is ready.
+ * `index`/`field` point at the song and input to fix.
  */
-function updateGenerateButton() {
-  // Enable if at least one song has a valid YouTube URL AND all times are valid
+function findGenerateProblem() {
+  for (let i = 0; i < state.songs.length; i++) {
+    const song = state.songs[i];
+    const startSec = parseTimeSeconds(song.startTime);
+    const endSec = parseTimeSeconds(song.endTime);
+    if (startSec === null) {
+      return { index: i, field: "startTime", message: `Song #${i + 1}: start time isn't a time (use m:ss)` };
+    }
+    if (endSec === null) {
+      return { index: i, field: "endTime", message: `Song #${i + 1}: end time isn't a time (use m:ss)` };
+    }
+    if (endSec <= startSec) {
+      return { index: i, field: "endTime", message: `Song #${i + 1}: end must be after start` };
+    }
+  }
+
   const hasValidSongs = state.songs.some(
     (song) => song.youtubeUrl && song.youtubeUrl.trim() !== "",
   );
+  if (!hasValidSongs) {
+    // The normal starting point, not an error
+    return { index: -1, message: "Add at least one song with a YouTube link" };
+  }
+  return null;
+}
 
-  // Check if any song has invalid time
-  const hasInvalidTimes = state.songs.some((song) => {
-    const startSec = parseTimeSeconds(song.startTime);
-    const endSec = parseTimeSeconds(song.endTime);
-    return startSec === null || endSec === null || endSec <= startSec;
-  });
+/**
+ * Enable or disable Generate, and say why it's disabled
+ */
+function updateGenerateButton() {
+  const problem = findGenerateProblem();
+  elements.generateBtn.disabled = !!problem || state.isGenerating;
 
-  elements.generateBtn.disabled =
-    !hasValidSongs || hasInvalidTimes || state.isGenerating;
+  const hint = elements.generateHint;
+  const link = hint.querySelector(".generate-hint-link");
+  if (!problem || state.isGenerating) {
+    hint.classList.add("hidden");
+    return;
+  }
+  hint.querySelector(".generate-hint-text").textContent = problem.message;
+  hint.classList.toggle("problem", problem.index >= 0);
+  link.classList.toggle("hidden", problem.index < 0);
+  link.onclick = () => showProblemInput(problem);
+  hint.classList.remove("hidden");
+}
+
+/**
+ * "Show me": scroll to the card with the problem and focus its time input
+ */
+function showProblemInput(problem) {
+  const card = elements.songList.querySelectorAll(".song-card")[problem.index];
+  if (!card) return;
+  const input = card.querySelector(problem.field === "startTime" ? ".start-time" : ".end-time");
+  card.scrollIntoView({ block: "center", behavior: smoothScroll() });
+  input.focus({ preventScroll: true });
+  input.classList.remove("flash");
+  void input.offsetWidth; // restart the animation
+  input.classList.add("flash");
+}
+
+/** "smooth", unless the user asked for less motion */
+function smoothScroll() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+}
+
+/**
+ * Show (or with "" clear) a lookup error on a song card
+ */
+function showSongError(card, message) {
+  const el = card.querySelector(".song-error");
+  el.textContent = message;
+  el.classList.toggle("hidden", !message);
 }
 
 /**
@@ -1367,11 +1429,10 @@ function importProject(event) {
       elements.randomOrderToggle.checked = state.shuffleEnabled;
       rebuildSongList();
 
-      // Show success feedback?
-      alert("Project imported successfully!");
+      showToast(`Loaded project (${state.songs.length} songs)`);
     } catch (error) {
       console.error("Import error:", error);
-      alert("Failed to import project: " + error.message);
+      showToast("Couldn't load that project file: " + error.message);
     }
 
     // Reset file input so same file can be selected again

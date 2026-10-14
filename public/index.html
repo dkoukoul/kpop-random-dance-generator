@@ -283,10 +283,16 @@
 
             <!-- Generate Section -->
             <section class="generate-section">
-              <button id="generateBtn" class="btn btn-generate" disabled>
+              <button id="generateBtn" class="btn btn-generate" disabled aria-describedby="generateHint">
                 <span class="btn-icon">✨</span>
                 Generate Random Dance
               </button>
+
+              <!-- Why Generate is disabled (first problem only) -->
+              <p id="generateHint" class="generate-hint hidden" aria-live="polite">
+                <span class="generate-hint-text"></span>
+                <button type="button" class="generate-hint-link hidden">Show me</button>
+              </p>
 
               <!-- Progress Indicator -->
               <div id="progressContainer" class="progress-container hidden">
@@ -443,6 +449,8 @@
               </button>
             </div>
           </div>
+
+          <p class="song-error hidden" role="alert"></p>
 
           <div class="song-info hidden">
             <div class="song-thumbnail">

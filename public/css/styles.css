@@ -1675,6 +1675,46 @@ body {
 }
 
 /* ===== Generation Error ===== */
+/* Why Generate is disabled */
+.generate-hint {
+  margin-top: var(--spacing-sm);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.generate-hint.problem .generate-hint-text {
+  color: #fca5a5;
+}
+
+.generate-hint-link {
+  margin-left: var(--spacing-xs);
+  padding: 4px;
+  background: none;
+  border: none;
+  color: var(--primary-light);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Brief highlight on the input "Show me" jumps to */
+.input.flash {
+  animation: pulseInvalid 0.6s ease 2;
+}
+
+/* A video that couldn't be looked up */
+.song-error {
+  margin: calc(-1 * var(--spacing-xs)) 0 var(--spacing-md);
+  font-size: 0.85rem;
+  color: #fca5a5;
+}
+
+.song-card.compact .song-error {
+  display: none;
+}
+
 .generate-error-section {
   margin-top: var(--spacing-lg);
   padding: var(--spacing-md);
