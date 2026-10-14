@@ -299,7 +299,9 @@ function addSong() {
     handleTimeInput(e, card, songData, "endTime"),
   );
 
-  removeBtn.addEventListener("click", () => removeSong(card, index));
+  removeBtn.addEventListener("click", () =>
+    removeSong(card, parseInt(card.dataset.index)),
+  );
 
   toggleBtn.addEventListener("click", () => {
     songData.isExpanded = !songData.isExpanded;
