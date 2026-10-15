@@ -215,17 +215,6 @@
                       <div class="menu-divider"></div>
                       <label
                         class="menu-item toggle-item"
-                        title="Shuffle songs randomly when generating"
-                      >
-                        <span class="menu-icon">🎲</span>
-                        <span>Shuffle Songs</span>
-                        <div class="toggle-switch small">
-                          <input type="checkbox" id="randomOrderToggle" />
-                          <span class="toggle-slider"></span>
-                        </div>
-                      </label>
-                      <label
-                        class="menu-item toggle-item"
                         title="Show songs in a single-line compact view"
                       >
                         <span class="menu-icon">🗜️</span>
@@ -237,6 +226,16 @@
                       </label>
                     </div>
                   </div>
+
+                  <button
+                    type="button"
+                    id="shuffleBtn"
+                    class="btn btn-secondary"
+                    title="Shuffle the order of the songs"
+                    disabled
+                  >
+                    <span class="btn-icon" aria-hidden="true">🎲</span> Shuffle
+                  </button>
 
                   <button id="addSongBtn" class="btn btn-primary">
                     <span class="btn-icon">+</span>

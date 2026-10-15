@@ -2611,3 +2611,8 @@ input[type="checkbox"]:focus-visible + .toggle-slider {
   outline: 2px solid var(--primary-light);
   outline-offset: 2px;
 }
+
+#shuffleBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

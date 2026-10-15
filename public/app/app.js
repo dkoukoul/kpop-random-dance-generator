@@ -7,7 +7,6 @@ const state = {
   songs: [],
   currentJobId: null,
   isGenerating: false,
-  shuffleEnabled: false,
   compactViewEnabled: false,
   draggedIndex: null,
   bandList: [],
@@ -44,7 +43,7 @@ const elements = {
   generateErrorSection: document.getElementById("generateErrorSection"),
   generateErrorText: document.getElementById("generateErrorText"),
   songCardTemplate: document.getElementById("songCardTemplate"),
-  randomOrderToggle: document.getElementById("randomOrderToggle"),
+  shuffleBtn: document.getElementById("shuffleBtn"),
   compactViewToggle: document.getElementById("compactViewToggle"),
   dragHint: document.getElementById("dragHint"),
   exportBtn: document.getElementById("exportBtn"),
@@ -94,11 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   elements.addSongBtn.addEventListener("click", () => addSong({ focus: true }));
   elements.generateBtn.addEventListener("click", generateRandomDance);
 
-  // Shuffle toggle
-  elements.randomOrderToggle.addEventListener("change", (e) => {
-    state.shuffleEnabled = e.target.checked;
-    saveSettings();
-  });
+  elements.shuffleBtn.addEventListener("click", shuffleSongs);
 
   // Compact view toggle
   elements.compactViewToggle.addEventListener("change", (e) => {
@@ -562,6 +557,7 @@ function renumberCards() {
   });
 
   elements.emptyState.classList.toggle("hidden", cards.length > 0);
+  elements.shuffleBtn.disabled = cards.length < 2;
   updateDragHint();
 }
 
@@ -1126,7 +1122,7 @@ async function generateRandomDance() {
   if (state.isGenerating) return;
 
   // Validate segments
-  let segments = state.songs
+  const segments = state.songs
     .filter((song) => song.youtubeUrl && song.youtubeUrl.trim() !== "")
     .map((song) => ({
       youtubeUrl: song.youtubeUrl,
@@ -1139,11 +1135,6 @@ async function generateRandomDance() {
   if (segments.length === 0) {
     showToast("Add at least one song with a YouTube link first.");
     return;
-  }
-
-  // Shuffle if enabled
-  if (state.shuffleEnabled) {
-    segments = shuffleArray([...segments]);
   }
 
   // Check for duplicates
@@ -1434,6 +1425,66 @@ function updateDragHint() {
 }
 
 /**
+ * "Shuffle": put the songs in a random order, on screen, so the numbers
+ * match the MP3. Where possible the same group never plays twice in a row.
+ * Undo puts the old order back.
+ */
+function shuffleSongs() {
+  if (state.songs.length < 2) return;
+  const previous = [...state.songs];
+
+  state.songs = spreadOutGroups(shuffleArray([...state.songs]));
+  rebuildSongList();
+
+  showToast(`Shuffled ${state.songs.length} songs`, {
+    actionLabel: "Undo",
+    onAction: () => {
+      // Only if the list is still the same set of songs
+      if (previous.length !== state.songs.length || !previous.every((s) => state.songs.includes(s))) return;
+      state.songs = previous;
+      rebuildSongList();
+    },
+  });
+}
+
+/**
+ * Reorder (an already shuffled list) so no group plays twice in a row where
+ * that's possible. Songs are taken in shuffled order, skipping ones from the
+ * group that just played, except when one group has so many songs left that
+ * it must go now for the rest to work out. Songs whose group isn't known
+ * never count as a repeat.
+ */
+function spreadOutGroups(songs) {
+  const groupOf = (song, i) => {
+    const band = song.info ? identifyBand(song.info.title, song.info.channel) : "Unknown";
+    return band === "Unknown" ? `#${i}` : band.toLowerCase();
+  };
+  let remaining = songs.map((song, i) => ({ song, group: groupOf(song, i) }));
+  const result = [];
+  let last = null;
+
+  while (remaining.length > 0) {
+    const counts = new Map();
+    remaining.forEach(({ group }) => counts.set(group, (counts.get(group) || 0) + 1));
+
+    // A group with more than half of what's left (after this pick) can't
+    // wait: picking anything else would force a repeat later
+    const limit = Math.ceil((remaining.length - 1) / 2);
+    const forced = [...counts].find(([group, count]) => group !== last && count > limit);
+
+    let pick = forced
+      ? remaining.findIndex(({ group }) => group === forced[0])
+      : remaining.findIndex(({ group }) => group !== last);
+    if (pick === -1) pick = 0; // only the last group is left: a repeat can't be avoided
+
+    result.push(remaining[pick].song);
+    last = remaining[pick].group;
+    remaining = remaining.filter((_, k) => k !== pick);
+  }
+  return result;
+}
+
+/**
  * Shuffle an array using Fisher-Yates algorithm
  */
 function shuffleArray(array) {
@@ -1452,7 +1503,6 @@ function exportProject() {
     version: "1.0",
     timestamp: new Date().toISOString(),
     songs: state.songs,
-    shuffleEnabled: state.shuffleEnabled,
   };
 
   const dataStr =
@@ -1491,12 +1541,10 @@ function importProject(event) {
         ...song,
         cutSource: song.cutSource || "import",
       }));
-      state.shuffleEnabled = !!projectData.shuffleEnabled;
 
       // Update UI
       hideToast(); // an Undo from before would act on the old list
       hideDraftBanner();
-      elements.randomOrderToggle.checked = state.shuffleEnabled;
       rebuildSongList();
 
       showToast(`Loaded project (${state.songs.length} songs)`);
@@ -1713,16 +1761,14 @@ function applySavedSettings() {
     // Blocked storage: defaults
   }
   state.compactViewEnabled = settings.compactView === true;
-  state.shuffleEnabled = settings.shuffle === true;
   elements.compactViewToggle.checked = state.compactViewEnabled;
-  elements.randomOrderToggle.checked = state.shuffleEnabled;
 }
 
 function saveSettings() {
   try {
     localStorage.setItem(
       SETTINGS_KEY,
-      JSON.stringify({ compactView: state.compactViewEnabled, shuffle: state.shuffleEnabled }),
+      JSON.stringify({ compactView: state.compactViewEnabled }),
     );
   } catch (error) {
     // Blocked storage: not remembered
@@ -1791,11 +1837,12 @@ function loadMix(mix) {
     info: null,
     isExpanded: !state.compactViewEnabled,
   }));
-  state.shuffleEnabled = mix.shuffleEnabled !== false;
-  elements.randomOrderToggle.checked = state.shuffleEnabled;
-
   rebuildSongList();
   lookUpMissingInfo();
+
+  // The mix plays in the order shown (the landing pages already shuffled
+  // it); point out the button for a fresh order
+  showToast("Tip: press Shuffle for a new random order");
 }
 
 /**
