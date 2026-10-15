@@ -761,27 +761,44 @@ ${urls
 `;
 }
 
+const BAND_LINKS_START = '<!-- BAND_LINKS:START -->';
+const BAND_LINKS_END = '<!-- BAND_LINKS:END -->';
+
+/**
+ * The page with the group links between the BAND_LINKS markers replaced, and
+ * everything else left byte for byte; null when the markers are missing.
+ * The links are bare <a> tags, so each page styles them through their container.
+ */
+export function replaceBandLinks(html: string, bands: { slug: string; name: string }[]): string | null {
+  const from = html.indexOf(BAND_LINKS_START);
+  const to = html.indexOf(BAND_LINKS_END);
+  if (from === -1 || to === -1 || to < from) return null;
+  const links = bands.map((b) => `\n              <a href="/random-dance/${b.slug}">${esc(b.name)}</a>`).join('');
+  return html.slice(0, from + BAND_LINKS_START.length) + links + '\n              ' + html.slice(to);
+}
+
+// Every page that links the group pages: the home page, and the new mix
+// builder while it is being tried out next to it.
+const HOME_PAGES = ['index.html', 'studio.html'];
+
 /**
  * Rewrite the group links on the home page so the landing pages are reachable
  * from it. Crawlers need a path in from the site's strongest page, and a
  * hardcoded list would drift every time the pool changes which groups qualify.
  */
 function updateHomeLinks(entries: { band: BandDef }[]): void {
-  const path = join(process.cwd(), 'public', 'index.html');
-  const html = readFileSync(path, 'utf-8');
-  const start = '<!-- BAND_LINKS:START -->';
-  const end = '<!-- BAND_LINKS:END -->';
-  const from = html.indexOf(start);
-  const to = html.indexOf(end);
-  if (from === -1 || to === -1) {
-    console.warn('  ! BAND_LINKS markers missing from public/index.html; home page links not updated');
-    return;
+  const bands = entries.map((e) => e.band);
+  for (const name of HOME_PAGES) {
+    const path = join(process.cwd(), 'public', name);
+    if (!existsSync(path)) continue;
+    const html = replaceBandLinks(readFileSync(path, 'utf-8'), bands);
+    if (html === null) {
+      console.warn(`  ! BAND_LINKS markers missing from public/${name}; its group links were not updated`);
+      continue;
+    }
+    writeFileSync(path, html);
+    console.log(`  ${name}: linked ${entries.length} group pages`);
   }
-  const links = entries
-    .map((e) => `\n              <a href="/random-dance/${e.band.slug}">${esc(e.band.name)}</a>`)
-    .join('');
-  writeFileSync(path, html.slice(0, from + start.length) + links + '\n              ' + html.slice(to));
-  console.log(`  home page: linked ${entries.length} group pages`);
 }
 
 // ---------------------------------------------------------------------------

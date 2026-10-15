@@ -9,6 +9,16 @@
 
 const HANDOFF_KEY = "pendingMix";
 
+// While the new mix builder is being tried out, browsers that use it go there.
+function generatorUrl() {
+  try {
+    if (localStorage.getItem("kpopgen:ui") === "studio") return "/studio.html";
+  } catch (err) {
+    // Storage blocked: the classic page.
+  }
+  return "/";
+}
+
 function readMix(id) {
   const el = document.getElementById("data-" + id);
   if (!el) return null;
@@ -49,7 +59,7 @@ document.addEventListener("click", (event) => {
         song_count: mix.songs.length,
       });
     }
-    window.location.href = "/";
+    window.location.href = generatorUrl();
     return;
   }
 

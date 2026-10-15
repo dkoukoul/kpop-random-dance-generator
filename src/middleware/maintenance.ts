@@ -2,7 +2,7 @@ import type { MiddlewareHandler } from 'hono';
 import { getCookie, setCookie } from 'hono/cookie';
 
 const PAGE_PATH = './public/maintenance.html';
-const BYPASS_COOKIE = 'maintenance_bypass';
+export const BYPASS_COOKIE = 'maintenance_bypass';
 
 // Still reachable during maintenance: the admin page with its script, styles
 // and API, and files that crawlers and site verification expect.

@@ -5,6 +5,7 @@ import api from './routes/api';
 import { startYtdlpAutoUpdate } from './services/ytdlp-updater';
 import { startCacheCleanup } from './services/cache';
 import { maintenance } from './middleware/maintenance';
+import { studioGate } from './middleware/studio-gate';
 
 const app = new Hono();
 
@@ -43,6 +44,9 @@ startCacheCleanup();
 
 // Must run first: when MAINTENANCE_MODE=true it answers most requests itself.
 app.use('/*', maintenance());
+
+// The new mix builder is only served to the owner until it's switched on.
+app.use('/*', studioGate());
 
 // Cache headers for static assets.
 //
