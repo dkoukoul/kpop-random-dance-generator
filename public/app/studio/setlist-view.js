@@ -6,7 +6,7 @@
  * the song, Delete removes it, Enter opens it in the editor.
  */
 import { el, clock, pad2 } from "./util.js";
-import { cutLength, findDuplicates, generateProblem, runtime } from "./setlist.js";
+import { cutLength, findDuplicates, generateProblem, runtime, thumbUrl } from "./setlist.js";
 
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -42,6 +42,8 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
   function buildRow(song) {
     const pick = el("button", { type: "button", class: "row-pick" },
       el("span", { class: "row-num mono" }),
+      // A background image: a failed load leaves the plain box, no broken icon.
+      el("span", { class: "row-thumb", "aria-hidden": "true", style: `background-image: url("${thumbUrl(song.videoId)}")` }),
       el("span", { class: "row-text" }, el("span", { class: "row-title" }), el("span", { class: "row-meta mono" })),
     );
     const up = el("button", { type: "button", class: "row-btn", tabindex: "-1", text: "↑" });

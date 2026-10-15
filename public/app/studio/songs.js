@@ -4,7 +4,7 @@
  */
 import { el, clock } from "./util.js";
 import { request } from "./api.js";
-import { isPlaylistLink, looksLikeLink, watchUrl, youtubeVideoId } from "./setlist.js";
+import { isPlaylistLink, looksLikeLink, thumbUrl, watchUrl, youtubeVideoId } from "./setlist.js";
 
 const PAGE = 10; // results shown at a time; the server is asked for 20 once
 
@@ -91,8 +91,8 @@ export function initSongs({ onAdd, isAdded, onAlready }) {
     el(
       "li",
       { class: "result" },
-      // Phones show the thumbnail: it tells a music video from a dance practice.
-      item.thumbnail ? el("img", { class: "result-thumb", src: item.thumbnail, alt: "", loading: "lazy", decoding: "async" }) : null,
+      // The thumbnail tells a music video from a dance practice.
+      el("img", { class: "result-thumb", src: item.thumbnail || thumbUrl(item.videoId), alt: "", loading: "lazy", decoding: "async" }),
       el("div", { class: "result-text" }, el("div", { class: "result-title", text: item.title, title: item.title }), el("div", { class: "result-meta mono", text: meta })),
       addButton(item, list),
     );
@@ -219,7 +219,7 @@ export function initSongs({ onAdd, isAdded, onAlready }) {
             videoId,
             title: r.title || "Unknown title",
             channel: "",
-            thumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+            thumbnail: thumbUrl(videoId),
             duration: 0,
             cut: r.cut || null,
           };

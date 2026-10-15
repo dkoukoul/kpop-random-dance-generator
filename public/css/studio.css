@@ -678,6 +678,15 @@ html.theme-fade *::after {
   min-width: 0;
 }
 
+.result-thumb {
+  width: 48px;
+  aspect-ratio: 16 / 9;
+  flex: none;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--raised);
+}
+
 .result-text {
   flex: 1 1 auto;
   min-width: 0;
@@ -901,6 +910,18 @@ html.theme-fade *::after {
   color: var(--accentInk);
 }
 
+.row-thumb {
+  width: 48px;
+  aspect-ratio: 16 / 9;
+  flex: none;
+  border-radius: 4px;
+  background: var(--raised) center / cover no-repeat;
+}
+
+.row.is-error .row-thumb {
+  opacity: 0.4;
+}
+
 .row-text {
   flex: 1 1 auto;
   min-width: 0;
@@ -912,6 +933,20 @@ html.theme-fade *::after {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Desktop columns are narrow; next to a cover, a title gets two lines. */
+@media (min-width: 900px) {
+  .result-title,
+  .row-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    white-space: normal;
+    overflow-wrap: break-word;
+    line-height: 1.25;
+  }
 }
 
 .row-meta {
@@ -974,7 +1009,8 @@ html.theme-fade *::after {
 }
 
 .row-error {
-  padding: 0 8px 8px 38px;
+  /* lines up under the title, past the number and the cover */
+  padding: 0 8px 8px 96px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -994,6 +1030,18 @@ html.theme-fade *::after {
 .row-error .btn {
   border-color: var(--errLine);
   background: transparent;
+}
+
+/* Desktops under 1600px: the columns are too narrow to spare room for covers. */
+@media (min-width: 900px) and (max-width: 1599px) {
+  .result-thumb,
+  .row-thumb {
+    display: none;
+  }
+
+  .row-error {
+    padding-left: 38px;
+  }
 }
 
 .row.row-in {
@@ -2297,7 +2345,6 @@ textarea.field {
 .sheet-song-nav,
 .menu-btn,
 .mobile-only,
-.result-thumb,
 .add-label {
   display: none;
 }
@@ -2425,14 +2472,13 @@ textarea.field {
     gap: 10px;
   }
 
-  .result-thumb {
-    display: block;
+  .result-thumb,
+  .row-thumb {
     width: 64px;
-    height: 36px;
-    flex: none;
-    border-radius: 4px;
-    object-fit: cover;
-    background: var(--raised);
+  }
+
+  .row-error {
+    padding-left: 112px;
   }
 
   .result-title {

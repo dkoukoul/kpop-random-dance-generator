@@ -42,6 +42,8 @@ export function youtubeVideoId(input) {
 }
 
 export const watchUrl = (videoId) => `https://www.youtube.com/watch?v=${videoId}`;
+/** YouTube's 320x180 cover image; known before the video's info is looked up. */
+export const thumbUrl = (videoId) => `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
 
 /** Does this look like a link (as opposed to search words)? */
 export function looksLikeLink(text) {
