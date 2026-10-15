@@ -72,7 +72,9 @@ export function createPlayer(host, { onTime, onState, onError, onReady } = {}) {
       player = new YT.Player(host, {
         width: "100%",
         height: "100%",
-        playerVars: { playsinline: 1, rel: 0, modestbranding: 1, origin: location.origin },
+        // No YouTube controls: the page's timeline, Preview and keyboard keys cover
+        // play and seek, and YouTube's own buttons added 7 tab stops per song.
+        playerVars: { playsinline: 1, rel: 0, modestbranding: 1, controls: 0, disablekb: 1, iv_load_policy: 3, origin: location.origin },
         events: {
           onReady: () => {
             ready = true;
