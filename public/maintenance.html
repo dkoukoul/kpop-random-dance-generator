@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Back Soon | K-Pop Random Dance Generator</title>
+    <meta name="description" content="The K-Pop Random Dance Generator is getting a big update and will be back within a few days." />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" href="/assets/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --primary: #a855f7;
+        --secondary: #ec4899;
+        --bg-dark: #0f0f1a;
+        --bg-card: rgba(30, 30, 50, 0.8);
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --border-color: rgba(168, 85, 247, 0.3);
+        --gradient-primary: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+        --gradient-bg: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 16px;
+        font-family: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+        color: var(--text-primary);
+        background: var(--bg-dark);
+        background-image: var(--gradient-bg);
+        line-height: 1.5;
+      }
+
+      main {
+        width: 100%;
+        max-width: 480px;
+        padding: 40px 28px;
+        text-align: center;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+      }
+
+      .brand {
+        margin: 0 0 24px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: var(--text-secondary);
+      }
+
+      .icon {
+        font-size: 2.5rem;
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(1.5rem, 6vw, 2rem);
+        font-weight: 700;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      p {
+        margin: 0 0 12px;
+        color: var(--text-secondary);
+      }
+
+      .eta {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      .kofi {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        margin-top: 16px;
+        padding: 10px 20px;
+        border: 1px solid var(--border-color);
+        border-radius: 999px;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .kofi:hover {
+        border-color: var(--secondary);
+      }
+
+      .kofi:focus-visible {
+        outline: 3px solid var(--primary);
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="brand">K-Pop Random Dance Generator</p>
+      <div class="icon" aria-hidden="true">🛠️</div>
+      <h1>We're upgrading the stage</h1>
+      <p>The site is getting some big updates.</p>
+      <p class="eta">Back within a few days.</p>
+      <p>The mix generator will stay free, like always.</p>
+      <a class="kofi" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener">
+        <span aria-hidden="true">☕</span> Buy me a Coffee
+      </a>
+    </main>
+  </body>
+</html>

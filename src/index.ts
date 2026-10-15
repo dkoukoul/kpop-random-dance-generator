@@ -3,6 +3,7 @@ import { serveStatic } from 'hono/bun';
 import { execSync } from 'child_process';
 import api from './routes/api';
 import { startYtdlpAutoUpdate } from './services/ytdlp-updater';
+import { maintenance } from './middleware/maintenance';
 
 const app = new Hono();
 
@@ -35,6 +36,9 @@ checkDependencies();
 // Keep yt-dlp current. YouTube breaks older releases every few weeks, which
 // shows up as most downloads failing with 403s until the binary is updated.
 startYtdlpAutoUpdate();
+
+// Must run first: when MAINTENANCE_MODE=true it answers most requests itself.
+app.use('/*', maintenance());
 
 // Cache headers for static assets.
 //
