@@ -70,6 +70,9 @@ export function createPlayer(host, { onTime, onState, onError, onReady } = {}) {
   loadApi()
     .then((YT) => {
       player = new YT.Player(host, {
+        // The privacy-enhanced host sets no tracking cookies, so the console
+        // isn't flooded with Chrome's third-party cookie warnings.
+        host: "https://www.youtube-nocookie.com",
         width: "100%",
         height: "100%",
         // No YouTube controls: the page's timeline, Preview and keyboard keys cover
