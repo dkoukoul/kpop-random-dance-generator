@@ -102,18 +102,25 @@ function compareKeys(a: string, b: string): number {
 
 /**
  * Returns a lookup by URL that rebuilds the whole index at most once per
- * `ttlMs`, so a request is a Map lookup rather than a table scan.
+ * `ttlMs`, so a request is a Map lookup rather than a table scan. If a
+ * rebuild fails (e.g. the database is locked), the previous index is kept
+ * and the next attempt waits for the next `ttlMs` too, so a broken query
+ * can't turn every request into a failing full scan.
  */
 export function createPopularCutLookup(db: Database, ttlMs = 10 * 60 * 1000) {
-  let index: Map<string, PopularCut> | null = null;
-  let builtAt = 0;
+  let index = new Map<string, PopularCut>();
+  let builtAt = -Infinity;
 
   return (url: string): PopularCut | null => {
     const videoId = extractVideoId(url);
     if (!videoId) return null;
-    if (!index || Date.now() - builtAt > ttlMs) {
-      index = computePopularCuts(db);
+    if (Date.now() - builtAt > ttlMs) {
       builtAt = Date.now();
+      try {
+        index = computePopularCuts(db);
+      } catch (error) {
+        console.error('Failed to build the popular-cut index:', error);
+      }
     }
     return index.get(videoId) ?? null;
   };

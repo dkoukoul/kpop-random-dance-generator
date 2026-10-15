@@ -1776,6 +1776,7 @@ body {
 
 .draft-banner-text {
   flex: 1;
+  text-wrap: balance;
 }
 
 .draft-banner-fresh,
@@ -1808,7 +1809,11 @@ body {
 }
 
 .btn-reset-cut {
-  padding: 4px 2px;
+  /* 44px tall tap area without making the line taller */
+  display: inline-block;
+  padding: 11px 4px;
+  margin: -11px 0;
+  white-space: nowrap;
   background: none;
   border: none;
   color: var(--primary-light);

@@ -732,6 +732,19 @@ async function fetchVideoInfo(card, songData) {
     songData.info = info;
     songData.title = info.title;
 
+    // A popular cut belongs to the video it was found for. When the card now
+    // holds a different video, go back to the default (and ask again below).
+    const hadOtherPopularCut =
+      songData.cutSource === "popular" &&
+      songData.popularCutFor &&
+      extractYouTubeVideoId(songData.popularCutFor) !== extractYouTubeVideoId(url);
+    if (hadOtherPopularCut) {
+      songData.cutSource = undefined;
+      songData.popularUses = null;
+      songData.startTime = "0:00";
+      songData.endTime = "0:30";
+    }
+
     // Set default end time to 30 seconds or video duration if shorter, but
     // only while the song still has the untouched 0:00-0:30 cut. A cut from a
     // landing page, a pending mix or the user is kept.
@@ -751,6 +764,11 @@ async function fetchVideoInfo(card, songData) {
     }
     renderSongInfo(card, info);
     showSongError(card, "");
+    if (hadOtherPopularCut) {
+      card.querySelector(".start-time").value = songData.startTime;
+      renderCutSource(card, songData);
+      checkTimeValidity(card, songData);
+    }
     if (hasDefaultCut) card.querySelector(".end-time").value = songData.endTime;
     applyPopularCut(songData);
 
@@ -1502,15 +1520,32 @@ function startMix() {
   const mix = takePendingMix();
   const draft = readDraft();
 
-  if (mix && draft) {
-    restoreDraft(draft, { banner: false });
-    askToReplaceDraft(mix, draft.songs.length);
-  } else if (mix) {
-    loadMix(mix);
-  } else if (draft) {
-    restoreDraft(draft);
-  } else {
-    addSong();
+  try {
+    if (mix && draft) {
+      restoreDraft(draft, { banner: false });
+      askToReplaceDraft(mix, draft.songs.length);
+    } else if (mix) {
+      loadMix(mix);
+    } else if (draft) {
+      restoreDraft(draft);
+    } else {
+      addSong();
+    }
+  } catch (error) {
+    // A draft this version can't read must not break the page on every visit
+    console.error("Failed to restore the saved mix:", error);
+    try {
+      localStorage.removeItem(DRAFT_KEY);
+    } catch (e) {
+      // Blocked storage: nothing saved to remove
+    }
+    hideDraftBanner();
+    restoredDraftSignature = null;
+    state.songs = [];
+    rebuildSongList();
+    // A ready-made mix handed over at the same time is still opened
+    if (mix) loadMix(mix);
+    else addSong();
   }
   draftSavingEnabled = true;
 }
@@ -1614,6 +1649,8 @@ function restoreDraft(draft, { banner = true } = {}) {
       // A restored cut is the user's: never prefill over it
       cutSource: song.cutSource || "draft",
       popularUses: song.popularUses || null,
+      // So a popular cut is dropped if the card is switched to another video
+      popularCutFor: song.cutSource === "popular" ? song.youtubeUrl : undefined,
       info: song.info && song.info.duration ? song.info : null,
       isExpanded: !state.compactViewEnabled,
     }));

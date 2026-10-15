@@ -109,6 +109,12 @@ describe('createPopularCutLookup', () => {
     expect(lookup('not a url')).toBeNull();
   });
 
+  test('a failing rebuild returns null instead of throwing', () => {
+    const db = new Database(':memory:'); // no generation_songs table
+    const lookup = createPopularCutLookup(db);
+    expect(lookup(`https://www.youtube.com/watch?v=${ID}`)).toBeNull();
+  });
+
   test('looks up by any URL spelling and caches the index', () => {
     const db = makeDb(times(3, [`https://www.youtube.com/watch?v=${ID}`, '0:40', '1:12'] as [string, string, string]));
     const lookup = createPopularCutLookup(db);
