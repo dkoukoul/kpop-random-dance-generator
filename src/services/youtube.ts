@@ -6,11 +6,45 @@ import type { VideoInfo } from '../types';
 const YTDLP_PATH = process.env.YTDLP_PATH || 'yt-dlp';
 
 import { getCache, setCache } from './cache';
+import { youtubeVideoId } from './youtube-url';
+
+// Title, length and the replay curve hardly change, and a cold lookup takes
+// about 2 s, so remember them for a week.
+const INFO_TTL_SECONDS = 7 * 24 * 60 * 60;
+const HEATMAP_POINTS = 100;
 
 /**
- * Extract video information using yt-dlp --dump-json
+ * Resample yt-dlp's heatmap ({start_time, end_time, value}[]) to a fixed
+ * number of evenly spaced values, rounded to 2 decimals. Null when the
+ * video has none (new or rarely watched videos, Shorts, live streams).
+ */
+export function resampleHeatmap(raw: unknown, duration: number, points = HEATMAP_POINTS): number[] | null {
+  if (!Array.isArray(raw) || raw.length === 0 || !(duration > 0)) return null;
+  const marks = raw.filter(
+    (m): m is { start_time: number; end_time: number; value: number } =>
+      m && typeof m.start_time === 'number' && typeof m.end_time === 'number' && typeof m.value === 'number',
+  );
+  if (marks.length === 0) return null;
+  const out: number[] = [];
+  for (let k = 0; k < points; k++) {
+    const t = ((k + 0.5) / points) * duration;
+    const mark = marks.find((m) => t >= m.start_time && t < m.end_time) ?? (t < marks[0]!.start_time ? marks[0] : marks[marks.length - 1]);
+    const v = Math.min(1, Math.max(0, mark!.value));
+    out.push(Math.round(v * 100) / 100);
+  }
+  return out;
+}
+
+/**
+ * Video information via yt-dlp --dump-json, cached per video ID.
+ * Callers pass a validated YouTube watch URL (see youtube-url.ts).
  */
 export async function getVideoInfo(url: string): Promise<VideoInfo> {
+  const videoId = youtubeVideoId(url);
+  const cacheKey = videoId ? `info:${videoId}` : null;
+  const cached = cacheKey ? getCache<VideoInfo>(cacheKey) : null;
+  if (cached) return cached;
+
   console.log(`🔍 [Bun.spawn] Fetching info for: ${url}`);
   try {
     // Use minimal flags to avoid format selection issues
@@ -35,9 +69,6 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
     const exitCode = await proc.exited;
 
     console.log(`📥 yt-dlp info exited with code ${exitCode}`);
-    if (stdoutText.trim()) {
-      console.log(`📤 stdout: ${stdoutText.substring(0, 500)}${stdoutText.length > 500 ? '...' : ''}`);
-    }
     if (stderrText.trim()) {
       console.log(`⚠️ stderr: ${stderrText}`);
     }
@@ -69,12 +100,19 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
       thumbnailUrl = info.thumbnails[info.thumbnails.length - 1].url;
     }
 
-    return {
+    const duration = info.duration || 0;
+    const result: VideoInfo = {
       title: info.title || 'Unknown Title',
-      duration: info.duration || 0,
+      duration,
       thumbnail: thumbnailUrl,
       channel: info.channel || info.uploader || 'Unknown',
+      id: info.id || videoId || undefined,
+      heatmap: resampleHeatmap(info.heatmap, duration),
     };
+    // Only a clean, complete answer is kept for a week; a degraded one
+    // (YouTube half-broken, yt-dlp exiting non-zero) is tried again next time.
+    if (cacheKey && exitCode === 0 && duration > 0) setCache(cacheKey, result, INFO_TTL_SECONDS);
+    return result;
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : String(e);
     console.error('❌ Failed to fetch/parse video info:', errorMessage);
@@ -84,7 +122,8 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
 }
 
 export async function searchVideos(query: string, limit: number = 5): Promise<VideoInfo[]> {
-  const cacheKey = `search:${query}:${limit}`;
+  // "BTS " and "bts" are the same search.
+  const cacheKey = `search:${query.trim().toLowerCase()}:${limit}`;
   const cached = getCache<VideoInfo[]>(cacheKey);
   
   if (cached) {

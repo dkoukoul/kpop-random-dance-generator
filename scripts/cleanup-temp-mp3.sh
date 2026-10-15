@@ -6,7 +6,7 @@
 #   within the last hour are skipped: a generation job downloads its segments
 #   and concatenates them in temp/, and deleting those mid-job would corrupt
 #   the mix being built.
-# - _report.json files older than 7 days. They are only read back right after
+# - _report.json and _setlist.txt files older than 7 days. They are only read back right after
 #   a job finishes (GET /api/download-report/:jobId), and the job itself is
 #   forgotten on restart.
 # - Leftovers from interrupted downloads (.webm, .part, _filelist.txt) older
@@ -45,7 +45,7 @@ fi
 # mean nothing else in temp/ is ever a candidate.
 mapfile -d '' -t stale < <(
   find "$TEMP_DIR" -maxdepth 1 -type f -name '*.mp3' -mmin "+$MIN_AGE_MINUTES" -print0
-  find "$TEMP_DIR" -maxdepth 1 -type f -name '*_report.json' -mmin "+$REPORT_AGE_MINUTES" -print0
+  find "$TEMP_DIR" -maxdepth 1 -type f \( -name '*_report.json' -o -name '*_setlist.txt' \) -mmin "+$REPORT_AGE_MINUTES" -print0
   find "$TEMP_DIR" -maxdepth 1 -type f \( -name '*.webm' -o -name '*.part' -o -name '*_filelist.txt' \) \
     -mmin "+$LEFTOVER_AGE_MINUTES" -print0
 )

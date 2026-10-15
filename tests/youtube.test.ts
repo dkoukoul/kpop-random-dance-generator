@@ -9,6 +9,7 @@ import {
   isClientBlockedError,
   isTransientYoutubeError,
   parseTimeToSeconds,
+  resampleHeatmap,
   searchVideos,
 } from '../src/services/youtube';
 import { audioDuration, fakeYtdlpOutput, resetFakeYtdlp, ytdlpCalls } from './helpers';
@@ -194,7 +195,46 @@ describe('getVideoInfo', () => {
       duration: 199,
       thumbnail: 't.jpg',
       channel: 'HYBE LABELS',
+      heatmap: null,
     });
+  });
+
+  test('includes the video ID and the "Most replayed" curve', async () => {
+    const heatmap = [
+      { start_time: 0, end_time: 50, value: 1 },
+      { start_time: 50, end_time: 100, value: 0.25 },
+    ];
+    fakeYtdlpOutput(JSON.stringify({ id: 'heatMap0001', title: 'x', duration: 100, heatmap }));
+    const info = await getVideoInfo('https://www.youtube.com/watch?v=heatMap0001');
+    expect(info.id).toBe('heatMap0001');
+    expect(info.heatmap).toHaveLength(100);
+    expect(info.heatmap!.slice(48, 52)).toEqual([1, 1, 0.25, 0.25]);
+  });
+
+  test('serves a video it looked up before from the cache', async () => {
+    fakeYtdlpOutput(JSON.stringify({ id: 'cachedInfo1', title: 'Cached', duration: 60 }));
+    const url = 'https://www.youtube.com/watch?v=cachedInfo1';
+    const first = await getVideoInfo(url);
+    const second = await getVideoInfo(url);
+    expect(second).toEqual(first);
+    expect(ytdlpCalls()).toHaveLength(1);
+  });
+
+  test('does not cache a lookup without a length', async () => {
+    const url = 'https://www.youtube.com/watch?v=noLength001';
+    fakeYtdlpOutput(JSON.stringify({ id: 'noLength001', title: 'Half', duration: 0 }));
+    await getVideoInfo(url);
+    await getVideoInfo(url);
+    expect(ytdlpCalls()).toHaveLength(2);
+  });
+
+  test('does not cache a failed lookup', async () => {
+    const url = 'https://www.youtube.com/watch?v=failedInfo1';
+    fakeYtdlpOutput('', { stderr: 'ERROR: Video unavailable', exitCode: 1 });
+    await expect(getVideoInfo(url)).rejects.toThrow();
+    resetFakeYtdlp();
+    fakeYtdlpOutput(JSON.stringify({ id: 'failedInfo1', title: 'Back', duration: 60 }));
+    expect((await getVideoInfo(url)).title).toBe('Back');
   });
 
   test('passes the URL after `--` so it can never be read as a yt-dlp option', async () => {
@@ -211,5 +251,28 @@ describe('getVideoInfo', () => {
   test('throws on output that is not JSON', async () => {
     fakeYtdlpOutput('<html>oops</html>');
     await expect(getVideoInfo('https://www.youtube.com/watch?v=x')).rejects.toThrow(/Invalid JSON/);
+  });
+});
+
+describe('resampleHeatmap', () => {
+  test('is null when YouTube has no replay data', () => {
+    expect(resampleHeatmap(undefined, 200)).toBeNull();
+    expect(resampleHeatmap(null, 200)).toBeNull();
+    expect(resampleHeatmap([], 200)).toBeNull();
+    expect(resampleHeatmap([{ start_time: 0, end_time: 10, value: 1 }], 0)).toBeNull();
+    expect(resampleHeatmap([{ nonsense: true }], 200)).toBeNull();
+  });
+
+  test('gives evenly spaced values, clamped to 0..1 and rounded', () => {
+    const raw = [
+      { start_time: 0, end_time: 2, value: 0.123456 },
+      { start_time: 2, end_time: 4, value: 1.7 },
+    ];
+    expect(resampleHeatmap(raw, 4, 4)).toEqual([0.12, 0.12, 1, 1]);
+  });
+
+  test('uses the nearest end when marks do not cover the whole video', () => {
+    const raw = [{ start_time: 1, end_time: 2, value: 0.5 }];
+    expect(resampleHeatmap(raw, 4, 4)).toEqual([0.5, 0.5, 0.5, 0.5]);
   });
 });

@@ -2,7 +2,7 @@ import { afterAll, describe, expect, test } from 'bun:test';
 import { mkdtempSync, readFileSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { generateReport, saveReport } from '../src/services/report';
+import { buildSetlist, generateReport, saveReport, songStartTimes } from '../src/services/report';
 import type { SongSegment } from '../src/types';
 
 const seg = (title: string, artist?: string, startTime = '0:30', endTime = '1:00'): SongSegment => ({
@@ -85,5 +85,40 @@ describe('saveReport', () => {
     const path = await saveReport(report, 'job-123', dir);
     expect(path).toBe(join(dir, 'job-123_report.json'));
     expect(JSON.parse(readFileSync(path, 'utf-8'))).toEqual(JSON.parse(JSON.stringify(report)));
+  });
+});
+
+describe('setlist', () => {
+  test('each song starts after its countdown and the songs before it', () => {
+    expect(songStartTimes(5.04, [30, 34.5, 31])).toEqual([5.04, 40.08, 79.62]);
+    expect(songStartTimes(5, [])).toEqual([]);
+  });
+
+  test('scales the times to the real length of the joined mix', () => {
+    // Predicted 5 + 30 + 5 + 30 = 70 s; the MP3 came out 1% shorter.
+    const starts = songStartTimes(5, [30, 30], 69.3);
+    expect(starts[0]).toBeCloseTo(4.95, 5);
+    expect(starts[1]).toBeCloseTo(39.6, 5);
+  });
+
+  test('lists start times, cuts and skipped songs', () => {
+    const playlist = [
+      { order: 1, band: 'BTS', title: 'Dynamite', startTime: '0:52', endTime: '1:22' },
+      { order: 2, band: 'Unknown', title: 'Some video', startTime: '1:05', endTime: '1:40' },
+    ];
+    const text = buildSetlist(playlist, [5.04, 40.08], 75.1, [
+      { title: 'aespa - Supernova', youtubeUrl: 'https://youtu.be/x', reason: 'Video unavailable' },
+    ]);
+    expect(text).toContain('K-Pop random dance mix: 2 songs, 01:15');
+    expect(text).toContain('00:05  01  BTS - Dynamite (0:52-1:22)\n00:40  02  Some video (1:05-1:40)');
+    expect(text).toContain('Skipped (1):\n- aespa - Supernova: Video unavailable');
+  });
+
+  test('pads song numbers to the length of the list and shows hours', () => {
+    const playlist = Array.from({ length: 100 }, (_, i) => ({ order: i + 1, band: 'X', title: `S${i}`, startTime: '0:00', endTime: '0:30' }));
+    const starts = songStartTimes(5, playlist.map(() => 35));
+    const text = buildSetlist(playlist, starts, 4000);
+    expect(text).toContain('00:05  001  X - S0 (0:00-0:30)');
+    expect(text).toContain('1:06:05  100  X - S99');
   });
 });

@@ -125,3 +125,77 @@ export function createPopularCutLookup(db: Database, ttlMs = 10 * 60 * 1000) {
     return index.get(videoId) ?? null;
   };
 }
+
+export interface TopSong {
+  videoId: string;
+  youtube_url: string;
+  title: string;
+  count: number;
+  /** The cut to add it with: the most used one people chose, else the 0:00-0:30 default. */
+  start_time: string;
+  end_time: string;
+  /** The popular cut (3+ uses), as /api/popular-cut gives it; null when there's none. */
+  cut: PopularCut | null;
+}
+
+/**
+ * The most used videos in past mixes, one row per video however its URL was
+ * written, with the title it was most often saved under.
+ */
+export function computeTopSongs(db: Database, limit = 10): TopSong[] {
+  const rows = db
+    .query(
+      `SELECT youtube_url, title, COUNT(*) AS n
+       FROM generation_songs
+       GROUP BY youtube_url, title`,
+    )
+    .all() as { youtube_url: string; title: string | null; n: number }[];
+
+  const byVideo = new Map<string, { count: number; titles: Map<string, number> }>();
+  for (const row of rows) {
+    const videoId = extractVideoId(row.youtube_url);
+    if (!videoId) continue;
+    let v = byVideo.get(videoId);
+    if (!v) byVideo.set(videoId, (v = { count: 0, titles: new Map() }));
+    v.count += row.n;
+    const title = row.title?.trim();
+    if (title) v.titles.set(title, (v.titles.get(title) ?? 0) + row.n);
+  }
+
+  const top = [...byVideo.entries()]
+    .sort((a, b) => b[1].count - a[1].count || a[0].localeCompare(b[0]))
+    .slice(0, limit);
+  if (top.length === 0) return [];
+
+  const anyCut = computePopularCuts(db, 1);
+  return top.map(([videoId, v]) => {
+    const title = [...v.titles.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'Unknown Title';
+    const best = anyCut.get(videoId) ?? null;
+    return {
+      videoId,
+      youtube_url: `https://www.youtube.com/watch?v=${videoId}`,
+      title,
+      count: v.count,
+      start_time: best?.startTime ?? formatTime(DEFAULT_START),
+      end_time: best?.endTime ?? formatTime(DEFAULT_END),
+      cut: best && best.uses >= MIN_USES ? best : null,
+    };
+  });
+}
+
+/** computeTopSongs, rebuilt at most once per `ttlMs` (it runs on every page view). */
+export function createTopSongsLookup(db: Database, ttlMs = 10 * 60 * 1000) {
+  let cached: TopSong[] = [];
+  let builtAt = -Infinity;
+  return (): TopSong[] => {
+    if (Date.now() - builtAt > ttlMs) {
+      builtAt = Date.now();
+      try {
+        cached = computeTopSongs(db);
+      } catch (error) {
+        console.error('Failed to build the top songs list:', error);
+      }
+    }
+    return cached;
+  };
+}

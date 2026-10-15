@@ -17,6 +17,10 @@ export interface VideoInfo {
   duration: number; // seconds
   thumbnail: string;
   channel: string;
+  url?: string; // search results only
+  id?: string; // video info only
+  /** YouTube's "Most replayed" curve as 100 values 0..1, or null when YouTube has none. */
+  heatmap?: number[] | null;
 }
 
 export interface GenerateResult {
@@ -30,6 +34,7 @@ export interface FailedSegment {
   title: string;
   youtubeUrl: string;
   reason: string;
+  index?: number; // position in the request, from 0
 }
 
 export interface ReportItem {

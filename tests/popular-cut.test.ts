@@ -2,7 +2,9 @@ import { describe, expect, test } from 'bun:test';
 import { Database } from 'bun:sqlite';
 import {
   computePopularCuts,
+  computeTopSongs,
   createPopularCutLookup,
+  createTopSongsLookup,
   extractVideoId,
   parseTime,
 } from '../src/services/popular-cut';
@@ -125,5 +127,73 @@ describe('createPopularCutLookup', () => {
       `https://www.youtube.com/watch?v=${ID}`, '0:40', '1:12',
     ]);
     expect(lookup(`https://youtu.be/${ID}`)?.uses).toBe(3);
+  });
+});
+
+describe('computeTopSongs', () => {
+  function topDb(rows: [url: string, title: string, start: string, end: string][]) {
+    const db = new Database(':memory:');
+    db.run(`CREATE TABLE generation_songs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, generation_id INTEGER,
+      youtube_url TEXT, title TEXT, start_time TEXT, end_time TEXT)`);
+    const insert = db.prepare('INSERT INTO generation_songs (youtube_url, title, start_time, end_time) VALUES (?, ?, ?, ?)');
+    for (const row of rows) insert.run(...row);
+    return db;
+  }
+  const OTHER = 'otherVideo1';
+
+  test('counts every URL form of a video as one song, with its most used title', () => {
+    const db = topDb([
+      ...times(2, [`https://www.youtube.com/watch?v=${ID}`, 'BTS - Dynamite', '0:52', '1:22'] as [string, string, string, string]),
+      [`https://youtu.be/${ID}?si=x`, 'Dynamite (MV)', '0:52', '1:22'],
+      [`https://www.youtube.com/shorts/${ID}`, 'BTS - Dynamite', '0:00', '0:30'],
+      [`https://www.youtube.com/watch?v=${OTHER}`, 'Other', '0:10', '0:40'],
+      ['not a link', 'Typed title', '0:00', '0:30'],
+    ]);
+    expect(computeTopSongs(db)).toEqual([
+      {
+        videoId: ID,
+        youtube_url: `https://www.youtube.com/watch?v=${ID}`,
+        title: 'BTS - Dynamite',
+        count: 4,
+        start_time: '0:52',
+        end_time: '1:22',
+        cut: { startTime: '0:52', endTime: '1:22', uses: 3 },
+      },
+      {
+        videoId: OTHER,
+        youtube_url: `https://www.youtube.com/watch?v=${OTHER}`,
+        title: 'Other',
+        count: 1,
+        start_time: '0:10',
+        end_time: '0:40',
+        cut: null,
+      },
+    ]);
+  });
+
+  test('falls back to the default cut when nobody chose one', () => {
+    const db = topDb([[`https://youtu.be/${ID}`, 'X', '0:00', '0:30']]);
+    expect(computeTopSongs(db)[0]).toMatchObject({ start_time: '0:00', end_time: '0:30', cut: null });
+  });
+
+  test('keeps the 10 most used', () => {
+    const rows: [string, string, string, string][] = [];
+    for (let i = 0; i < 12; i++) {
+      const id = `vid${String(i).padStart(8, '0')}`;
+      for (let n = 0; n <= i; n++) rows.push([`https://youtu.be/${id}`, `Song ${i}`, '0:00', '0:30']);
+    }
+    const top = computeTopSongs(topDb(rows));
+    expect(top).toHaveLength(10);
+    expect(top[0]!.title).toBe('Song 11');
+    expect(top.map((t) => t.count)).toEqual([12, 11, 10, 9, 8, 7, 6, 5, 4, 3]);
+  });
+
+  test('the lookup caches the list', () => {
+    const db = topDb([[`https://youtu.be/${ID}`, 'X', '0:00', '0:30']]);
+    const lookup = createTopSongsLookup(db, 60_000);
+    expect(lookup()).toHaveLength(1);
+    db.run(`INSERT INTO generation_songs (youtube_url, title, start_time, end_time) VALUES ('https://youtu.be/${OTHER}', 'Y', '0:00', '0:30')`);
+    expect(lookup()).toHaveLength(1);
   });
 });

@@ -4,26 +4,61 @@ import { v4 as uuidv4 } from 'uuid';
 import { join } from 'path';
 import { mkdir, access, stat } from 'fs/promises';
 import type { GenerateRequest, SongSegment, FailedSegment } from '../types';
-import { getVideoInfo, downloadSegment, searchVideos } from '../services/youtube';
-import { generateReport, saveReport } from '../services/report';
-import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles } from '../services/audio';
-import { logVisit, logGeneration, getStats, getPopularCut } from '../services/analytics';
+import { getVideoInfo, downloadSegment, searchVideos, parseTimeToSeconds } from '../services/youtube';
+import { generateReport, saveReport, buildSetlist, songStartTimes } from '../services/report';
+import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles, audioDuration } from '../services/audio';
+import { logVisit, logGeneration, getStats, getPopularCut, getTopSongs } from '../services/analytics';
 import { getYtdlpStatus, updateYtdlp } from '../services/ytdlp-updater';
 import { toYoutubeWatchUrl } from '../services/youtube-url';
 
 const api = new Hono();
 
-// Store for tracking generation jobs
-const jobs = new Map<string, {
+type SongState = 'waiting' | 'working' | 'done' | 'skipped';
+
+interface Job {
   status: 'processing' | 'complete' | 'error';
   filename?: string;
   reportFilename?: string;
+  setlistFilename?: string;
   error?: string;
+  // Text and counts the classic page shows.
   progress?: string;
   progressCurrent?: number;
   progressTotal?: number;
   failedSegments?: FailedSegment[];
-}>();
+  // Per-song detail for the new page: one state per requested song, in order.
+  phase?: 'downloading' | 'combining';
+  startedAt: number;
+  songs: { state: SongState; reason?: string }[];
+}
+
+// Generation jobs, in memory: a restart forgets them.
+const jobs = new Map<string, Job>();
+
+function updateJob(jobId: string, patch: Partial<Job>): void {
+  const job = jobs.get(jobId);
+  if (job) jobs.set(jobId, { ...job, ...patch });
+}
+
+function setSongState(jobId: string, index: number, state: SongState, reason?: string): void {
+  const job = jobs.get(jobId);
+  if (!job || !job.songs[index]) return;
+  const songs = job.songs.slice();
+  songs[index] = reason ? { state, reason } : { state };
+  jobs.set(jobId, { ...job, songs });
+}
+
+const JOB_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+// No mix takes this long; a job still "processing" after it is stuck.
+const STUCK_JOB_MS = 6 * 60 * 60 * 1000;
+
+/** Forget jobs older than a day (their files are long gone) and stuck ones. */
+export function pruneJobs(now = Date.now()): void {
+  for (const [id, job] of jobs) {
+    const age = now - job.startedAt;
+    if (age > JOB_MAX_AGE_MS || (job.status === 'processing' && age > STUCK_JOB_MS)) jobs.delete(id);
+  }
+}
 
 // Pull out the actual yt-dlp/ffmpeg ERROR line so failure reasons shown to users
 // aren't buried in version-warning noise.
@@ -122,11 +157,11 @@ api.post('/ytdlp-update', basicAuth({
 
 /**
  * GET /api/top-songs
- * Get top 10 most used songs in generations (Public)
+ * Top 10 most used videos in past mixes, one row per video (Public).
+ * Shown on every page view, so it is cached (see createTopSongsLookup).
  */
-api.get('/top-songs', async (c) => {
-  const stats = getStats();
-  return c.json(stats.topSongs);
+api.get('/top-songs', (c) => {
+  return c.json(getTopSongs());
 });
 
 /**
@@ -197,9 +232,16 @@ api.get('/youtube/search', async (c) => {
     return c.json({ error: 'Query is required' }, 400);
   }
   
+  // 5 for the classic page; the new page asks for 20 once and shows 10 at a time.
+  const limitParam = c.req.query('limit');
+  const limit = limitParam === undefined ? 5 : Number(limitParam);
+  if (limit !== 5 && limit !== 20) {
+    return c.json({ error: 'limit must be 5 or 20' }, 400);
+  }
+
   try {
     console.log('🌐 Calling searchVideos...');
-    const results = await searchVideos(query);
+    const results = await searchVideos(query, limit);
     console.log(`✅ Search successful, returning ${results.length} results`);
     return c.json(results);
   } catch (error) {
@@ -234,8 +276,15 @@ api.post('/generate', async (c) => {
     return c.json({ error: 'None of the songs has a YouTube video link' }, 400);
   }
 
+  pruneJobs();
   const jobId = uuidv4();
-  jobs.set(jobId, { status: 'processing', progress: 'Starting...' });
+  jobs.set(jobId, {
+    status: 'processing',
+    progress: 'Starting...',
+    phase: 'downloading',
+    startedAt: Date.now(),
+    songs: body.segments.map(() => ({ state: 'waiting' as const })),
+  });
   
   // Log generation for analytics
   logGeneration(jobId, body.segments).catch(err => console.error('Logging generation error:', err));
@@ -243,7 +292,7 @@ api.post('/generate', async (c) => {
   // Process in background
   processGeneration(jobId, body.segments).catch((error) => {
     console.error('Generation error:', error);
-    jobs.set(jobId, { status: 'error', error: error.message });
+    updateJob(jobId, { status: 'error', error: error.message, progress: undefined, progressCurrent: undefined, progressTotal: undefined });
   });
   
   return c.json({ jobId });
@@ -277,6 +326,10 @@ api.get('/download/:jobId', async (c) => {
   }
   
   const filePath = join(TEMP_DIR, job.filename);
+  // temp/ is cleaned daily, so an old mix can be gone while the job is known.
+  if (!(await Bun.file(filePath).exists())) {
+    return c.json({ error: 'This mix has expired. Generate it again.' }, 410);
+  }
   
   try {
     const file = Bun.file(filePath);
@@ -318,6 +371,28 @@ api.get('/download-report/:jobId', async (c) => {
     console.error('Report download error:', error);
     return c.json({ error: 'Failed to download report' }, 500);
   }
+});
+
+/**
+ * GET /api/download-setlist/:jobId
+ * The setlist as plain text, with the time each song starts in the MP3
+ */
+api.get('/download-setlist/:jobId', async (c) => {
+  const jobId = c.req.param('jobId');
+  const job = jobs.get(jobId);
+
+  if (!job || job.status !== 'complete' || !job.setlistFilename) {
+    return c.json({ error: 'Setlist not ready or not found' }, 404);
+  }
+
+  const file = Bun.file(join(TEMP_DIR, job.setlistFilename));
+  if (!(await file.exists())) {
+    return c.json({ error: 'This setlist has expired. Generate the mix again.' }, 410);
+  }
+
+  c.header('Content-Type', 'text/plain; charset=utf-8');
+  c.header('Content-Disposition', `attachment; filename="random-dance-setlist-${jobId.slice(0, 8)}.txt"`);
+  return c.body(await file.text());
 });
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -391,8 +466,16 @@ api.post('/contact', async (c) => {
  */
 async function processGeneration(jobId: string, segments: SongSegment[]) {
   const segmentPaths: string[] = [];
+  const segmentSeconds: number[] = [];
   const successfulSegments: SongSegment[] = [];
   const failedSegments: FailedSegment[] = [];
+
+  const skip = (index: number, failed: FailedSegment) => {
+    failedSegments.push(failed);
+    setSongState(jobId, index, 'skipped', failed.reason);
+    // Shown as they happen, not only at the end.
+    updateJob(jobId, { failedSegments: failedSegments.slice() });
+  };
 
   try {
     await ensureCountdownAudio();
@@ -407,22 +490,23 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
       // The route already cleaned every valid link; anything else never
       // reaches yt-dlp.
       if (!toYoutubeWatchUrl(segment.youtubeUrl)) {
-        failedSegments.push({
+        skip(i, {
           title: String(segment.title ?? ''),
           youtubeUrl: String(segment.youtubeUrl ?? ''),
           reason: 'Not a YouTube video link',
+          index: i,
         });
         continue;
       }
 
       const segmentPath = join(TEMP_DIR, `${jobId}_segment_${i}.mp3`);
 
-      jobs.set(jobId, {
-        status: 'processing',
+      updateJob(jobId, {
         progress: `Downloading segment ${i + 1}/${segments.length}: ${segment.title}`,
         progressCurrent: i + 1,
         progressTotal: segments.length
       });
+      setSongState(jobId, i, 'working');
 
       // Space out requests to YouTube so large batches don't read as bot-like bursts
       if (i > 0) {
@@ -438,13 +522,18 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
         );
         segmentPaths.push(segmentPath);
         successfulSegments.push(segment);
+        // The real length, for the setlist's start times.
+        const cutSeconds = parseTimeToSeconds(segment.endTime) - parseTimeToSeconds(segment.startTime);
+        segmentSeconds.push(await audioDuration(segmentPath).catch(() => cutSeconds));
+        setSongState(jobId, i, 'done');
       } catch (error) {
         const reason = error instanceof Error ? error.message : String(error);
         console.error(`Skipping segment "${segment.title}" (${segment.youtubeUrl}):`, reason);
-        failedSegments.push({
+        skip(i, {
           title: segment.title,
           youtubeUrl: segment.youtubeUrl,
-          reason: extractErrorReason(reason)
+          reason: extractErrorReason(reason),
+          index: i,
         });
       }
     }
@@ -456,7 +545,7 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
     // Concatenate all successfully-downloaded segments with countdown.
     // Failed segments were never added to segmentPaths, so no orphan
     // countdown is mixed in for songs that didn't make it in.
-    jobs.set(jobId, { status: 'processing', progress: 'Combining audio...' });
+    updateJob(jobId, { phase: 'combining', progress: 'Combining audio...', progressCurrent: undefined, progressTotal: undefined });
 
     const outputFilename = `output_${jobId}.mp3`;
     const outputPath = join(TEMP_DIR, outputFilename);
@@ -472,10 +561,26 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
     const reportPath = await saveReport(report, jobId, TEMP_DIR);
     const reportFilename = reportPath.split('/').pop()!; // Extract filename
 
-    jobs.set(jobId, {
+    // The setlist is a bonus: if it can't be written, the mix still ships.
+    let setlistFilename: string | undefined;
+    try {
+      const countdownSeconds = await audioDuration(COUNTDOWN_PATH);
+      const mixSeconds = await audioDuration(outputPath).catch(() => undefined);
+      const starts = songStartTimes(countdownSeconds, segmentSeconds, mixSeconds);
+      const total = mixSeconds ?? segmentSeconds.reduce((t, s) => t + countdownSeconds + s, 0);
+      setlistFilename = `${jobId}_setlist.txt`;
+      await Bun.write(join(TEMP_DIR, setlistFilename), buildSetlist(report.playlist, starts, total, failedSegments));
+    } catch (error) {
+      console.error(`Could not write the setlist for job ${jobId}:`, error);
+      setlistFilename = undefined;
+    }
+
+    updateJob(jobId, {
       status: 'complete',
+      progress: undefined,
       filename: outputFilename,
       reportFilename: reportFilename,
+      setlistFilename,
       failedSegments: failedSegments.length > 0 ? failedSegments : undefined
     });
     console.log(`Generation complete: ${outputFilename}, Report: ${reportFilename}${failedSegments.length > 0 ? `, ${failedSegments.length} segment(s) skipped` : ''}`);

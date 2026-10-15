@@ -1,9 +1,9 @@
 import { afterAll, afterEach, beforeEach, describe, expect, mock, test } from 'bun:test';
 import { rmSync } from 'fs';
 import { join } from 'path';
-import api from '../src/routes/api';
+import api, { pruneJobs } from '../src/routes/api';
 import { getStats, logGeneration } from '../src/services/analytics';
-import { resetFakeYtdlp, ytdlpCalls } from './helpers';
+import { audioDuration, resetFakeYtdlp, ytdlpCalls } from './helpers';
 
 const TEMP_DIR = join(process.cwd(), 'temp');
 const createdJobs: string[] = [];
@@ -13,6 +13,7 @@ afterAll(() => {
   for (const id of createdJobs) {
     rmSync(join(TEMP_DIR, `output_${id}.mp3`), { force: true });
     rmSync(join(TEMP_DIR, `${id}_report.json`), { force: true });
+    rmSync(join(TEMP_DIR, `${id}_setlist.txt`), { force: true });
   }
 });
 beforeEach(resetFakeYtdlp);
@@ -85,6 +86,7 @@ describe('mix generation flow', () => {
         title: 'TWICE - Gone',
         youtubeUrl: 'https://www.youtube.com/watch?v=unavailable',
         reason: '[youtube] https://www.youtube.com/watch?v=unavailable: Video unavailable. This video has been removed by the uploader',
+        index: 1,
       },
     ]);
 
@@ -95,7 +97,11 @@ describe('mix generation flow', () => {
 
   test('reports an error when every song fails', async () => {
     const jobId = await startJob([segment('unavailable-all')]);
-    expect(await waitForJob(jobId)).toEqual({ status: 'error', error: 'All segments failed to download' });
+    expect(await waitForJob(jobId)).toMatchObject({
+      status: 'error',
+      error: 'All segments failed to download',
+      songs: [{ state: 'skipped' }],
+    });
     expect((await api.request(`/download/${jobId}`)).status).toBe(404);
   }, 30_000);
 
@@ -145,7 +151,7 @@ describe('POST /generate validation', () => {
     const job = await waitForJob(jobId);
     expect(job.status).toBe('complete');
     expect(job.failedSegments).toEqual([
-      { title: 'TWICE - Typo', youtubeUrl: 'http://localhost:3020/', reason: 'Not a YouTube video link' },
+      { title: 'TWICE - Typo', youtubeUrl: 'http://localhost:3020/', reason: 'Not a YouTube video link', index: 1 },
     ]);
     expect(ytdlpCalls().join('\n')).not.toContain('localhost');
   }, 30_000);
@@ -312,5 +318,107 @@ describe('POST /contact', () => {
       throw new Error('network down');
     });
     expect((await postJson('/contact', valid)).status).toBe(500);
+  });
+});
+
+describe('per-song progress', () => {
+  async function waitFor(jobId: string, check: (job: any) => boolean): Promise<any> {
+    for (let i = 0; i < 300; i++) {
+      const job = (await (await api.request(`/status/${jobId}`)).json()) as any;
+      if (check(job)) return job;
+      await Bun.sleep(20);
+    }
+    throw new Error('condition never met');
+  }
+
+  test('reports each song as it goes, and skips before the mix is done', async () => {
+    const jobId = await startJob([segment('unavailable'), segment('ok-progress')]);
+    // The second song waits 1.5 s before downloading, so this is mid-run.
+    const mid = await waitFor(jobId, (j) => j.songs[0].state === 'skipped');
+    expect(mid.status).toBe('processing');
+    expect(mid.phase).toBe('downloading');
+    expect(typeof mid.startedAt).toBe('number');
+    expect(mid.songs[1].state).toBe('working');
+    expect(mid.failedSegments).toHaveLength(1);
+    expect(mid.failedSegments[0].index).toBe(0);
+
+    const done = await waitForJob(jobId);
+    expect(done.status).toBe('complete');
+    expect(done.phase).toBe('combining');
+    expect(done.songs.map((s: any) => s.state)).toEqual(['skipped', 'done']);
+    expect(done.songs[0].reason).toContain('Video unavailable');
+    expect(done.progress).toBeUndefined();
+  }, 30_000);
+});
+
+describe('setlist download', () => {
+  test('lists when each song starts in the MP3', async () => {
+    const jobId = await startJob([segment('ok-set-a', 'TWICE - FANCY'), segment('ok-set-b', 'IVE - I AM')]);
+    expect((await waitForJob(jobId)).status).toBe('complete');
+
+    const res = await api.request(`/download-setlist/${jobId}`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toContain('text/plain');
+    expect(res.headers.get('Content-Disposition')).toContain(`random-dance-setlist-${jobId.slice(0, 8)}.txt`);
+    const text = await res.text();
+    expect(text).toContain('2 songs');
+    expect(text).toMatch(/^00:05  01  TWICE - FANCY \(0:00-0:05\)$/m);
+    // countdown + song 1 + countdown, from the real file lengths.
+    const second = text.match(/^(\d\d):(\d\d)  02  IVE - I AM/m);
+    expect(second).not.toBeNull();
+    const startsAt = Number(second![1]) * 60 + Number(second![2]);
+    const mp3 = join(TEMP_DIR, `output_${jobId}.mp3`);
+    const total = await audioDuration(mp3);
+    const last = total - 5; // the last song is 0:00-0:05
+    expect(Math.abs(startsAt - last)).toBeLessThanOrEqual(1);
+  }, 30_000);
+
+  test('is 404 for an unknown job', async () => {
+    expect((await api.request('/download-setlist/nope')).status).toBe(404);
+  });
+});
+
+describe('expired mixes', () => {
+  test('a mix whose file was cleaned up answers 410', async () => {
+    const jobId = await startJob([segment('ok-expired')]);
+    await waitForJob(jobId);
+    rmSync(join(TEMP_DIR, `output_${jobId}.mp3`));
+    rmSync(join(TEMP_DIR, `${jobId}_setlist.txt`));
+    const res = await api.request(`/download/${jobId}`);
+    expect(res.status).toBe(410);
+    expect(await res.json()).toEqual({ error: 'This mix has expired. Generate it again.' });
+    expect((await api.request(`/download-setlist/${jobId}`)).status).toBe(410);
+  }, 30_000);
+
+  test('a job stuck for 6 hours is forgotten', async () => {
+    const jobId = await startJob([segment('ok-stuck')]);
+    pruneJobs(Date.now() + 7 * 60 * 60 * 1000);
+    expect((await api.request(`/status/${jobId}`)).status).toBe(404);
+    // Let it finish so its files are cleaned up with the rest.
+    await Bun.sleep(1500);
+  }, 30_000);
+
+  test('jobs older than a day are forgotten', async () => {
+    const jobId = await startJob([segment('ok-pruned')]);
+    await waitForJob(jobId);
+    pruneJobs(Date.now() + 25 * 60 * 60 * 1000);
+    expect((await api.request(`/status/${jobId}`)).status).toBe(404);
+  }, 30_000);
+});
+
+describe('search limit', () => {
+  test('asks yt-dlp for 20 results when the page wants 20', async () => {
+    const res = await api.request(`/youtube/search?q=${encodeURIComponent(`limit test ${Date.now()}`)}&limit=20`);
+    expect(res.status).toBe(200);
+    expect(ytdlpCalls()[0]).toStartWith('ytsearch20:limit test');
+  });
+
+  test('defaults to 5', async () => {
+    await api.request(`/youtube/search?q=${encodeURIComponent(`default test ${Date.now()}`)}`);
+    expect(ytdlpCalls()[0]).toStartWith('ytsearch5:');
+  });
+
+  test.each(['7', 'abc', '1000'])('rejects limit=%p', async (limit) => {
+    expect((await api.request(`/youtube/search?q=x&limit=${limit}`)).status).toBe(400);
   });
 });

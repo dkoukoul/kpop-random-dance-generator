@@ -173,3 +173,63 @@ export async function saveReport(report: Report, jobId: string, tempDir: string)
   await Bun.write(filePath, JSON.stringify(report, null, 2));
   return filePath;
 }
+
+/** Seconds to "mm:ss" or "h:mm:ss" for the setlist. */
+function clock(seconds: number): string {
+  const total = Math.max(0, Math.round(seconds));
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const ss = String(total % 60).padStart(2, '0');
+  return h > 0 ? `${h}:${String(m).padStart(2, '0')}:${ss}` : `${String(m).padStart(2, '0')}:${ss}`;
+}
+
+/**
+ * When each song starts in the MP3. The mix is countdown, song, countdown,
+ * song..., so song i starts after i+1 countdowns and the songs before it.
+ * Uses the real file lengths, which can differ from the cut by a fraction of
+ * a second per song. Joining the files also loses ~30 ms per file to MP3
+ * padding, so when the finished mix's length is known the times are scaled
+ * to it; otherwise the last songs of a long mix would drift seconds late.
+ */
+export function songStartTimes(countdownSeconds: number, songSeconds: number[], mixSeconds?: number): number[] {
+  const starts: number[] = [];
+  let t = 0;
+  for (const length of songSeconds) {
+    t += countdownSeconds;
+    starts.push(t);
+    t += length;
+  }
+  if (mixSeconds && mixSeconds > 0 && t > 0) {
+    const k = mixSeconds / t;
+    return starts.map((s) => s * k);
+  }
+  return starts;
+}
+
+/**
+ * A plain-text setlist: when each song starts in the MP3, then what was
+ * skipped. The time lines also work as YouTube chapters.
+ */
+export function buildSetlist(
+  playlist: ReportItem[],
+  startsAt: number[],
+  totalSeconds: number,
+  failed: FailedSegment[] = [],
+): string {
+  const lines = [
+    `K-Pop random dance mix: ${playlist.length} song${playlist.length === 1 ? '' : 's'}, ${clock(totalSeconds)}`,
+    'A 5-second countdown plays before every song.',
+    '',
+  ];
+  const width = String(playlist.length).length < 2 ? 2 : String(playlist.length).length;
+  playlist.forEach((item, i) => {
+    const name = item.band && item.band !== 'Unknown' ? `${item.band} - ${item.title}` : item.title;
+    lines.push(`${clock(startsAt[i] ?? 0)}  ${String(i + 1).padStart(width, '0')}  ${name} (${item.startTime}-${item.endTime})`);
+  });
+  if (failed.length > 0) {
+    lines.push('', `Skipped (${failed.length}):`);
+    for (const f of failed) lines.push(`- ${f.title}: ${f.reason}`);
+  }
+  lines.push('', 'Made with https://kpopgenerator.cloud', '');
+  return lines.join('\n');
+}

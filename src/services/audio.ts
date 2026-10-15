@@ -2,6 +2,19 @@ import { spawn } from 'child_process';
 import { writeFile, unlink } from 'fs/promises';
 import { join } from 'path';
 
+/** Length of an audio file in seconds, via ffprobe. */
+export async function audioDuration(path: string): Promise<number> {
+  const proc = Bun.spawn(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path], {
+    stdout: 'pipe',
+    stderr: 'pipe',
+  });
+  const out = await new Response(proc.stdout).text();
+  if ((await proc.exited) !== 0) throw new Error(`ffprobe failed for ${path}`);
+  const seconds = parseFloat(out);
+  if (!Number.isFinite(seconds)) throw new Error(`ffprobe gave no duration for ${path}`);
+  return seconds;
+}
+
 /**
  * Concatenate multiple audio files with countdown audio between each segment
  * Uses ffmpeg's concat demuxer, then normalizes the output
