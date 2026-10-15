@@ -14,6 +14,7 @@ const OPEN_PATHS = new Set([
   '/api/ytdlp-status',
   '/api/ytdlp-update',
   '/robots.txt',
+  '/favicon.ico',
   '/BingSiteAuth.xml',
   '/f748f8158a874f20aaabddd755c915dd.txt',
 ]);

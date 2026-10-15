@@ -37,7 +37,7 @@ describe('maintenance mode', () => {
 
   test('keeps admin, assets, crawler files and running jobs reachable', async () => {
     process.env.MAINTENANCE_MODE = 'true';
-    for (const path of ['/admin', '/app/admin.js', '/css/styles.css', '/api/stats', '/robots.txt', '/assets/favicon.png', '/api/status/abc', '/api/download/abc']) {
+    for (const path of ['/admin', '/app/admin.js', '/css/styles.css', '/api/stats', '/robots.txt', '/favicon.ico', '/assets/favicon.svg', '/api/status/abc', '/api/download/abc']) {
       expect((await app.request(path)).status).toBe(200);
     }
   });
