@@ -117,7 +117,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/studio.css?v=1" />
+    <link rel="stylesheet" href="/css/studio.css?v=2" />
     <link rel="icon" type="image/png" href="/assets/favicon.png" />
     <meta name="theme-color" content="#15171d" />
 
@@ -128,12 +128,17 @@
     <script type="importmap">
       {
         "imports": {
-          "/app/studio/api.js": "/app/studio/api.js?v=1",
-          "/app/studio/main.js": "/app/studio/main.js?v=1",
-          "/app/studio/project.js": "/app/studio/project.js?v=1",
-          "/app/studio/setlist.js": "/app/studio/setlist.js?v=1",
-          "/app/studio/ui.js": "/app/studio/ui.js?v=1",
-          "/app/studio/util.js": "/app/studio/util.js?v=1"
+          "/app/studio/api.js": "/app/studio/api.js?v=2",
+          "/app/studio/builder.js": "/app/studio/builder.js?v=2",
+          "/app/studio/editor.js": "/app/studio/editor.js?v=2",
+          "/app/studio/main.js": "/app/studio/main.js?v=2",
+          "/app/studio/player.js": "/app/studio/player.js?v=2",
+          "/app/studio/project.js": "/app/studio/project.js?v=2",
+          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=2",
+          "/app/studio/setlist.js": "/app/studio/setlist.js?v=2",
+          "/app/studio/songs.js": "/app/studio/songs.js?v=2",
+          "/app/studio/ui.js": "/app/studio/ui.js?v=2",
+          "/app/studio/util.js": "/app/studio/util.js?v=2"
         }
       }
     </script>
@@ -198,6 +203,9 @@
             <button type="button" class="menu-item" data-contact>Contact us</button>
             <button type="button" class="menu-item" data-contact="problem">Report a problem</button>
             <div class="menu-sep" role="separator"></div>
+            <p class="menu-label">KEYBOARD</p>
+            <p class="menu-note">K (or Space away from buttons): play or pause · [ and ]: start or end at the playhead · Alt+↑ ↓: move a song in the setlist</p>
+            <div class="menu-sep" role="separator"></div>
             <a class="menu-item" href="/" id="classicLink">Use the classic version</a>
           </div>
         </div>
@@ -223,15 +231,21 @@
           </div>
           <div id="searchPane" role="tabpanel" aria-labelledby="tabSearch" class="pane">
             <form class="search-row" id="searchForm" role="search">
-              <label for="searchInput" class="sr-only">Search YouTube or paste a link</label>
-              <input id="searchInput" class="field" type="search" placeholder="Search or paste a YouTube link" enterkeyhint="search" autocomplete="off" disabled />
+              <label for="searchInput" class="sr-only">Search YouTube or paste a video link</label>
+              <input id="searchInput" class="field" type="search" placeholder="Search or paste a link" enterkeyhint="search" autocomplete="off" disabled />
               <button type="submit" class="btn square" aria-label="Search" disabled>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
               </button>
             </form>
             <p class="hint">Tip: paste a YouTube link to add it directly.</p>
+            <p class="result-count" id="resultCount" hidden></p>
+            <ul class="results" id="searchResults" aria-label="Search results"></ul>
+            <button type="button" class="btn show-more" id="showMore" hidden>Show more results</button>
           </div>
-          <div id="topPane" role="tabpanel" aria-labelledby="tabTop" class="pane" hidden></div>
+          <div id="topPane" role="tabpanel" aria-labelledby="tabTop" class="pane" hidden>
+            <p class="hint">Most used in mixes made here</p>
+            <ul class="results" id="topList" aria-label="Top 10 songs"></ul>
+          </div>
         </div>
       </section>
 
@@ -239,6 +253,10 @@
       <section class="panel" id="setlistPanel" aria-labelledby="setlist-title">
         <div class="panel-head">
           <h2 class="panel-label" id="setlist-title"><span class="status-dot" aria-hidden="true"></span>SETLIST</h2>
+          <button type="button" class="btn btn-small" id="shuffleBtn" disabled>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg>
+            Shuffle now
+          </button>
         </div>
         <div class="panel-body" id="setlistBody">
           <div class="empty" id="setlistEmpty">
@@ -426,6 +444,6 @@
         document.body.prepend(note);
       }
     </script>
-    <script type="module" src="/app/studio/main.js?v=1"></script>
+    <script type="module" src="/app/studio/main.js?v=2"></script>
   </body>
 </html>
