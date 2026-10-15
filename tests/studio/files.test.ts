@@ -8,16 +8,16 @@ import { join } from 'path';
 import { replaceBandLinks } from '../../scripts/build-landing-pages';
 
 const ROOT = join(import.meta.dir, '..', '..', 'public');
-const html = readFileSync(join(ROOT, 'studio.html'), 'utf-8');
+const html = readFileSync(join(ROOT, 'index.html'), 'utf-8');
 const modules = readdirSync(join(ROOT, 'app', 'studio')).filter((f) => f.endsWith('.js'));
 
 function importMap(): Record<string, string> {
   const m = html.match(/<script type="importmap">([\s\S]*?)<\/script>/);
-  if (!m) throw new Error('studio.html has no import map');
+  if (!m) throw new Error('index.html has no import map');
   return JSON.parse(m[1]!).imports;
 }
 
-describe('studio.html', () => {
+describe('the home page (the new builder)', () => {
   test('pins every module to the same version in the import map', () => {
     const map = importMap();
     const versions = new Set<string>();
@@ -53,9 +53,21 @@ describe('studio.html', () => {
     }
   });
 
-  test('stays out of search while it is a trial', () => {
-    expect(html).toContain('<meta name="robots" content="noindex" />');
-    expect(html).not.toContain('rel="canonical"');
+  test('is the indexed home page, and the classic page is not', () => {
+    expect(html).toContain('<meta name="robots" content="index, follow" />');
+    expect(html).toContain('<link rel="canonical" href="https://kpopgenerator.cloud/" />');
+    const classic = readFileSync(join(ROOT, 'classic.html'), 'utf-8');
+    expect(classic).toContain('<meta name="robots" content="noindex" />');
+    expect(classic).not.toContain('rel="canonical"');
+  });
+
+  test('keeps the home page SEO: title, description, Open Graph, structured data', () => {
+    expect(html).toContain('<title>K-Pop Random Dance Generator | Free Random Play Dance Mix Maker</title>');
+    expect(html).toContain('<meta name="description"');
+    expect(html).toContain('<meta property="og:url" content="https://kpopgenerator.cloud/" />');
+    expect(html.match(/<script type="application\/ld\+json">/g)).toHaveLength(2);
+    // The FAQ structured data is backed by visible text.
+    expect(html).toContain('What is a K-Pop Random Dance Generator?');
   });
 
   test('has one H1 and the group links between the build markers', () => {
@@ -93,7 +105,7 @@ describe('replaceBandLinks', () => {
   });
 
   test('works on both real pages', () => {
-    for (const name of ['index.html', 'studio.html']) {
+    for (const name of ['index.html', 'classic.html']) {
       const real = readFileSync(join(ROOT, name), 'utf-8');
       const out = replaceBandLinks(real, [{ slug: 'bts', name: 'BTS' }])!;
       expect(out).not.toBeNull();

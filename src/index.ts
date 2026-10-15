@@ -5,7 +5,6 @@ import api from './routes/api';
 import { startYtdlpAutoUpdate } from './services/ytdlp-updater';
 import { startCacheCleanup } from './services/cache';
 import { maintenance } from './middleware/maintenance';
-import { studioGate } from './middleware/studio-gate';
 
 const app = new Hono();
 
@@ -45,9 +44,6 @@ startCacheCleanup();
 // Must run first: when MAINTENANCE_MODE=true it answers most requests itself.
 app.use('/*', maintenance());
 
-// The new mix builder is only served to the owner until it's switched on.
-app.use('/*', studioGate());
-
 // Cache headers for static assets.
 //
 // This used to send `no-store` for JS/CSS, which re-downloaded ~110KB of app.js
@@ -71,6 +67,9 @@ app.use('/*', async (c, next) => {
 });
 
 app.use('/*', serveStatic({ root: './public' }));
+
+// The new builder was tried out at /studio.html before it became the home page.
+app.get('/studio.html', (c) => c.redirect('/', 301));
 
 // Serve package.json for version info
 app.get('/package.json', serveStatic({ path: './package.json' }));

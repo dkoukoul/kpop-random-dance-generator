@@ -1,9 +1,9 @@
 /*
- * Stage Console: the new mix builder (studio.html).
+ * Stage Console: the mix builder (index.html).
  *
  * Every colour comes from the tokens below, so a group-inspired theme only has
  * to redefine --accent* (never logos or official art). Dark is the default;
- * Light is [data-theme="light"] on <html>, set before paint by studio.html.
+ * Light is [data-theme="light"] on <html>, set before paint by index.html.
  *
  * PINK (--accent) = cutting and creating: scissors, the cut range, Generate.
  * CYAN (--cyan) = listening: the playhead, Preview.
@@ -1127,8 +1127,8 @@ button.generate-why {
   position: relative;
   width: 100%;
   /* The controls below need about 540px of the window; the video gets the rest. */
-  max-width: max(320px, calc((100vh - 540px) * 16 / 9));
-  max-width: max(320px, calc((100dvh - 540px) * 16 / 9));
+  max-width: max(320px, calc((100vh - 560px) * 16 / 9));
+  max-width: max(320px, calc((100dvh - 560px) * 16 / 9));
   aspect-ratio: 16 / 9;
   margin: 0 auto;
   flex: none;
@@ -1189,6 +1189,18 @@ button.generate-why {
 .video-msg p {
   margin: 0;
   max-width: 44ch;
+}
+
+.video-hint {
+  margin: -6px 0 0;
+  text-align: center;
+}
+
+/* Short desktop windows need the room for the cut controls. */
+@media (min-width: 900px) and (max-height: 799px) {
+  .video-hint {
+    display: none;
+  }
 }
 
 .tl-block {

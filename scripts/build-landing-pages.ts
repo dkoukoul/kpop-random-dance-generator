@@ -777,9 +777,8 @@ export function replaceBandLinks(html: string, bands: { slug: string; name: stri
   return html.slice(0, from + BAND_LINKS_START.length) + links + '\n              ' + html.slice(to);
 }
 
-// Every page that links the group pages: the home page, and the new mix
-// builder while it is being tried out next to it.
-const HOME_PAGES = ['index.html', 'studio.html'];
+// Every page that links the group pages (classic.html keeps the list it had).
+const HOME_PAGES = ['index.html'];
 
 /**
  * Rewrite the group links on the home page so the landing pages are reachable

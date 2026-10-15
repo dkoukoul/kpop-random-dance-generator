@@ -139,7 +139,10 @@ export function initEditor({ setlist, fullInfo, lookUp, onLoadError }) {
   // One line for "why": a typed time that isn't a time, or listening that can't work here.
   const cutMsg = el("p", { class: "cut-msg", id: "cutMsg", role: "status", hidden: true });
 
-  const editor = el("div", { class: "editor", hidden: true }, titleLine, video, timelineBlock, source, cuts, cutMsg, listen);
+  // The player has no controls of its own, so say how to use it.
+  const videoHint = el("p", { class: "hint video-hint", text: "Tap the video to play or pause · tap the timeline to jump" });
+
+  const editor = el("div", { class: "editor", hidden: true }, titleLine, video, videoHint, timelineBlock, source, cuts, cutMsg, listen);
   body.append(editor);
 
   /* ----- state ----- */
@@ -155,6 +158,9 @@ export function initEditor({ setlist, fullInfo, lookUp, onLoadError }) {
       drawPlayhead();
     },
     onState: (state) => {
+      // "unstarted" comes and goes while a range starts: only real play/stop events count.
+      if (state === "playing" || state === "buffering") syncListenLabels(true);
+      else if (state === "paused" || state === "ended" || state === "cued") syncListenLabels(false);
       if (state === "cued" || state === "playing") {
         videoShimmer.hidden = true;
         const d = player.duration();
@@ -441,8 +447,27 @@ export function initEditor({ setlist, fullInfo, lookUp, onLoadError }) {
 
   snipStart.addEventListener("click", () => setCut({ start: Math.round(time) }, { animate: { which: "start", kind: "snip" } }));
   snipEnd.addEventListener("click", () => setCut({ end: Math.round(time) }, { animate: { which: "end", kind: "snip" } }));
-  previewBtn.addEventListener("click", () => current && player.playRange(current.start, current.end));
-  endingBtn.addEventListener("click", () => current && player.playRange(Math.max(current.start, current.end - 3), current.end));
+  // While one of them plays, it reads "Stop" (the visible pause on touch screens).
+  let listening = null; // the listen button that started the playback
+  const listenTo = (btn, from, to) => {
+    if (!current) return;
+    if (listening === btn && player.isPlaying()) {
+      player.pause();
+      return;
+    }
+    listening = btn;
+    player.playRange(from, to);
+  };
+  const syncListenLabels = (playing) => {
+    for (const [btn, label] of [[previewBtn, "Preview cut"], [endingBtn, "Check the ending"]]) {
+      const stop = playing && listening === btn;
+      btn.querySelector(".listen-title").lastChild.textContent = stop ? "Stop" : label;
+      btn.setAttribute("aria-pressed", String(stop));
+    }
+    if (!playing) listening = null;
+  };
+  previewBtn.addEventListener("click", () => current && listenTo(previewBtn, current.start, current.end));
+  endingBtn.addEventListener("click", () => current && listenTo(endingBtn, Math.max(current.start, current.end - 3), current.end));
   prevBtn.addEventListener("click", () => step(-1));
   nextBtn.addEventListener("click", () => step(1));
 

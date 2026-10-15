@@ -44,4 +44,3 @@ delete process.env.CONTACT_TO_EMAIL;
 // Nor let the live site's maintenance switch leak into tests that expect it off.
 delete process.env.MAINTENANCE_MODE;
 delete process.env.MAINTENANCE_BYPASS_KEY;
-delete process.env.STUDIO_PUBLIC;
