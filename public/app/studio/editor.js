@@ -128,8 +128,8 @@ export function initEditor({ setlist, fullInfo, lookUp, onLoadError }) {
   const snipStart = el("button", { type: "button", class: "snip" }, icon.scissorsStart(), el("span", { class: "snip-text" }));
   const snipEnd = el("button", { type: "button", class: "snip" }, icon.scissorsEnd(), el("span", { class: "snip-text" }));
   const cuts = el("div", { class: "cuts" },
-    el("div", { class: "cut-col" }, startStep.box, snipStart),
-    el("div", { class: "cut-col" }, endStep.box, snipEnd));
+    el("div", { class: "cut-col" }, el("span", { class: "cut-cap mono", "aria-hidden": "true", text: "CUT START" }), startStep.box, snipStart),
+    el("div", { class: "cut-col" }, el("span", { class: "cut-cap mono", "aria-hidden": "true", text: "CUT END" }), endStep.box, snipEnd));
 
   const previewRange = el("span", { class: "listen-range mono" });
   const endingRange = el("span", { class: "listen-range mono" });

@@ -55,7 +55,14 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
     pick.addEventListener("click", () => setlist.select(song.id));
     up.addEventListener("click", () => move(song.id, -1));
     down.addEventListener("click", () => move(song.id, 1));
-    remove.addEventListener("click", () => onRemove(song.id));
+    remove.addEventListener("click", () => {
+      // The × goes away with its row; keep keyboard focus in the list.
+      const songs = setlist.songs;
+      const i = setlist.indexOf(song.id);
+      const next = songs[i + 1] || songs[i - 1];
+      onRemove(song.id);
+      if (next && row.contains(document.activeElement)) focusRow(next.id);
+    });
     row.addEventListener("keydown", (event) => onRowKey(event, song.id));
     row.addEventListener("focusin", () => {
       focusId = song.id;
@@ -71,13 +78,17 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
     const selected = song.id === setlist.selectedId;
     const range = `${clock(song.start)}→${clock(song.end)}`;
     const group = song.group ? song.group.toUpperCase() : song.info?.channel ? song.info.channel.toUpperCase() : "";
-    const meta = [isDup ? "DUPLICATE" : "", group, range].filter(Boolean).join(" · ");
+    const lead = [isDup ? "DUPLICATE" : "", group].filter(Boolean).join(" · ");
     const title = song.title || "Loading…";
 
     row.querySelector(".row-num").textContent = n;
     row.querySelector(".row-title").textContent = title;
     row.querySelector(".row-title").title = title;
-    row.querySelector(".row-meta").textContent = meta;
+    // Phones hide the group so the cut stays readable (see the CSS).
+    row.querySelector(".row-meta").replaceChildren(
+      lead ? el("span", { class: isDup ? "meta-lead" : "meta-lead meta-group", text: `${lead} · ` }) : "",
+      el("span", { class: "meta-range", text: range }),
+    );
     row.classList.toggle("is-selected", selected);
     row.classList.toggle("is-dup", isDup);
     row.classList.toggle("is-error", Boolean(song.loadError));
@@ -222,7 +233,7 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
     }
     const t0 = performance.now();
     const step = (now) => {
-      const p = Math.min(1, (now - t0) / 350);
+      const p = Math.min(1, (now - t0) / 300);
       const e = 1 - Math.pow(1 - p, 3);
       tileRuntime.textContent = clock(Math.round(from + (total - from) * e));
       if (p < 1) countFrame = requestAnimationFrame(step);
@@ -252,7 +263,8 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
       if (Math.abs(dy) < 1) continue;
       row.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], {
         duration: mode === "shuffle" ? 300 : 200,
-        delay: mode === "shuffle" ? n++ * 30 : 0,
+        // Staggered, but a long setlist still settles within half a second.
+        delay: mode === "shuffle" ? Math.min(n++, 8) * 30 : 0,
         easing: "cubic-bezier(.2,.8,.2,1)",
         fill: "backwards",
       });
@@ -279,6 +291,23 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
     }
   }
 
+  /** A removed row folds away (fades and slides out) before it goes. */
+  const folding = new Set();
+  function fold(id) {
+    const row = rows.get(id);
+    if (!row || reducedMotion()) return Promise.resolve(true);
+    if (folding.has(id)) return Promise.resolve(false);
+    folding.add(id);
+    row.inert = true; // on its way out: no more clicks
+    return row
+      .animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateX(-12px)" }], { duration: 160, easing: "ease-in", fill: "forwards" })
+      .finished.then(
+        () => true,
+        () => true,
+      )
+      .finally(() => folding.delete(id));
+  }
+
   /** A newly added row fades in. */
   function markNew(id) {
     const row = rows.get(id);
@@ -301,10 +330,13 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
       render();
       return;
     }
-    render({ flip: change.type === "move" ? "move" : change.type === "order" ? "shuffle" : null });
+    render({ flip: change.type === "move" || change.type === "remove" ? "move" : change.type === "order" ? "shuffle" : null });
   });
   window.addEventListener("resize", placeHighlight);
+  // The list can be measured while hidden (the phone's Search view); place
+  // the highlight again whenever the list's size changes, e.g. when shown.
+  if (typeof ResizeObserver === "function") new ResizeObserver(() => placeHighlight()).observe(list);
   render();
 
-  return { render, flashRow, markNew, focusRow, endPoint, setDone, generateProblem: () => generateProblem(setlist.songs), cutLength };
+  return { render, flashRow, markNew, focusRow, endPoint, setDone, fold, generateProblem: () => generateProblem(setlist.songs), cutLength };
 }

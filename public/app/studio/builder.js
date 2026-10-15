@@ -175,7 +175,8 @@ export function initBuilder() {
       .finished.finally(() => chip.remove());
   }
 
-  function removeSong(id) {
+  async function removeSong(id) {
+    if (!(await view.fold(id))) return; // already on its way out
     const removed = setlist.remove(id);
     if (!removed) return;
     const title = removed.song.title || "the song";

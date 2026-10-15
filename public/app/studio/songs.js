@@ -60,9 +60,17 @@ export function initSongs({ onAdd, isAdded, onAlready }) {
   /* ----- add buttons ----- */
   const addButton = (item, list) => {
     const button = el("button", { type: "button", class: "add-btn" });
+    let wasAdded = null;
     const sync = () => {
       const added = isAdded(item.videoId);
-      button.textContent = added ? "✓" : "+";
+      // "+ Add" pops into "✓ Added".
+      if (wasAdded === false && added) {
+        button.classList.remove("pop");
+        void button.offsetWidth;
+        button.classList.add("pop");
+      }
+      wasAdded = added;
+      button.replaceChildren(added ? "✓" : "+", el("span", { class: "add-label", text: added ? "Added" : "Add" }));
       button.classList.toggle("is-added", added);
       button.setAttribute("aria-label", `${added ? "Already added" : "Add"}: ${item.title}`);
       button.title = added ? "Already in your setlist" : "Add to setlist";
@@ -83,6 +91,8 @@ export function initSongs({ onAdd, isAdded, onAlready }) {
     el(
       "li",
       { class: "result" },
+      // Phones show the thumbnail: it tells a music video from a dance practice.
+      item.thumbnail ? el("img", { class: "result-thumb", src: item.thumbnail, alt: "", loading: "lazy", decoding: "async" }) : null,
       el("div", { class: "result-text" }, el("div", { class: "result-title", text: item.title, title: item.title }), el("div", { class: "result-meta mono", text: meta })),
       addButton(item, list),
     );

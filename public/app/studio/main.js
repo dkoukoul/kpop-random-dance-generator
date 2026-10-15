@@ -7,6 +7,7 @@ import { initContact, initHowItWorks, initMenus, initSupportTracking, initTheme 
 import { initBuilder } from "./builder.js";
 import { initEditor } from "./editor.js";
 import { initGenerate } from "./generate.js";
+import { initMobile } from "./mobile.js";
 
 // While both pages exist, remember that this browser uses the new one, so
 // "Open in generator" on the group pages comes back here (see landing.js).
@@ -28,7 +29,10 @@ initEditor({
   onLoadError: (id, message) => builder.setlist.update(id, { loadError: message }, { type: "info" }),
 });
 
-initGenerate({ setlist: builder.setlist, view: builder.view });
+// Phones: bottom bar, sheets. It follows the Generate state for its bar.
+const generateListeners = [];
+initMobile({ setlist: builder.setlist, onGenerateState: (fn) => generateListeners.push(fn) });
+initGenerate({ setlist: builder.setlist, view: builder.view, onState: (state) => generateListeners.forEach((fn) => fn(state)) });
 
 trackVisit();
 
