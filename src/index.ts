@@ -3,6 +3,7 @@ import { serveStatic } from 'hono/bun';
 import { execSync } from 'child_process';
 import api from './routes/api';
 import { startYtdlpAutoUpdate } from './services/ytdlp-updater';
+import { startCacheCleanup } from './services/cache';
 import { maintenance } from './middleware/maintenance';
 
 const app = new Hono();
@@ -36,6 +37,9 @@ checkDependencies();
 // Keep yt-dlp current. YouTube breaks older releases every few weeks, which
 // shows up as most downloads failing with 403s until the binary is updated.
 startYtdlpAutoUpdate();
+
+// Expired YouTube lookups were never deleted; purge them daily.
+startCacheCleanup();
 
 // Must run first: when MAINTENANCE_MODE=true it answers most requests itself.
 app.use('/*', maintenance());
@@ -90,11 +94,15 @@ app.get('/random-dance/:slug', async (c, next) => {
 app.get('/admin', serveStatic({ path: './public/admin.html' }));
 
 const port = process.env.PORT || 3000;
+// Only Caddy (on this machine) should reach the app; it adds HTTPS in front.
+// Listening on every interface let anyone skip it via http://<server-ip>:3000.
+const hostname = process.env.HOST || '127.0.0.1';
 
-console.log(`🎵 K-Pop Random Dance Generator running on http://localhost:${port}`);
+console.log(`🎵 K-Pop Random Dance Generator running on http://${hostname}:${port}`);
 
 export default {
   port,
+  hostname,
   fetch: app.fetch,
   idleTimeout: 60, // Increase timeout to 60s for long YouTube searches
 };

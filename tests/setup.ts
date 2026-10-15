@@ -41,3 +41,6 @@ process.env.ADMIN_PASSWORD = 'test-password';
 // Bun loads .env automatically; never let a test reach the real Resend account.
 delete process.env.RESEND_API_KEY;
 delete process.env.CONTACT_TO_EMAIL;
+// Nor let the live site's maintenance switch leak into tests that expect it off.
+delete process.env.MAINTENANCE_MODE;
+delete process.env.MAINTENANCE_BYPASS_KEY;

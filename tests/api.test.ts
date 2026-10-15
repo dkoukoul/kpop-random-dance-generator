@@ -3,7 +3,7 @@ import { rmSync } from 'fs';
 import { join } from 'path';
 import api from '../src/routes/api';
 import { getStats, logGeneration } from '../src/services/analytics';
-import { resetFakeYtdlp } from './helpers';
+import { resetFakeYtdlp, ytdlpCalls } from './helpers';
 
 const TEMP_DIR = join(process.cwd(), 'temp');
 const createdJobs: string[] = [];
@@ -27,8 +27,10 @@ const postJson = (path: string, body: unknown) =>
     body: typeof body === 'string' ? body : JSON.stringify(body),
   });
 
+// Video IDs are always 11 characters; the server rejects anything else.
+const videoId = (name: string) => name.padEnd(11, '0').slice(0, 11);
 const segment = (id: string, title = `BTS - Song ${id}`) => ({
-  youtubeUrl: `https://www.youtube.com/watch?v=${id}`,
+  youtubeUrl: `https://www.youtube.com/watch?v=${videoId(id)}`,
   title,
   startTime: '0:00',
   endTime: '0:05',
@@ -81,8 +83,8 @@ describe('mix generation flow', () => {
     expect(job.failedSegments).toEqual([
       {
         title: 'TWICE - Gone',
-        youtubeUrl: 'https://www.youtube.com/watch?v=unavailable-video',
-        reason: '[youtube] https://www.youtube.com/watch?v=unavailable-video: Video unavailable. This video has been removed by the uploader',
+        youtubeUrl: 'https://www.youtube.com/watch?v=unavailable',
+        reason: '[youtube] https://www.youtube.com/watch?v=unavailable: Video unavailable. This video has been removed by the uploader',
       },
     ]);
 
@@ -124,6 +126,35 @@ describe('POST /generate validation', () => {
   test('rejects a body that is not JSON', async () => {
     expect((await postJson('/generate', 'not json')).status).toBe(400);
   });
+
+  test.each([
+    'http://localhost:3020/admin',
+    'https://example.com/watch?v=abcdefghijk',
+    'file:///etc/passwd',
+    '',
+    123,
+  ])('rejects a mix with no YouTube video link: %p', async (youtubeUrl) => {
+    const res = await postJson('/generate', { segments: [{ ...segment('x'), youtubeUrl }] });
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: 'None of the songs has a YouTube video link' });
+    expect(ytdlpCalls()).toEqual([]);
+  });
+
+  test('skips a song that is not a YouTube video and still builds the rest', async () => {
+    const jobId = await startJob([segment('ok-good'), { ...segment('x', 'TWICE - Typo'), youtubeUrl: 'http://localhost:3020/' }]);
+    const job = await waitForJob(jobId);
+    expect(job.status).toBe('complete');
+    expect(job.failedSegments).toEqual([
+      { title: 'TWICE - Typo', youtubeUrl: 'http://localhost:3020/', reason: 'Not a YouTube video link' },
+    ]);
+    expect(ytdlpCalls().join('\n')).not.toContain('localhost');
+  }, 30_000);
+
+  test('sends yt-dlp a clean watch URL', async () => {
+    const jobId = await startJob([{ ...segment('x'), youtubeUrl: 'https://youtu.be/okClean0001?si=abc&t=30' }]);
+    await waitForJob(jobId);
+    expect(ytdlpCalls().join('\n')).toContain('-- https://www.youtube.com/watch?v=okClean0001');
+  }, 30_000);
 });
 
 describe('job lookups', () => {
@@ -153,7 +184,7 @@ describe('admin endpoints', () => {
 
   test('GET /ytdlp-status reports the version', async () => {
     const res = await api.request('/ytdlp-status', { headers: ADMIN });
-    expect(Object.keys((await res.json()) as object).sort()).toEqual(['lastUpdateCheck', 'lastUpdateError', 'version']);
+    expect(Object.keys((await res.json()) as object).sort()).toEqual(['activeJobs', 'lastUpdateCheck', 'lastUpdateError', 'version']);
   });
 });
 
@@ -176,6 +207,12 @@ describe('public endpoints', () => {
 
   test('GET /youtube/info needs a url', async () => {
     expect((await api.request('/youtube/info')).status).toBe(400);
+  });
+
+  test('GET /youtube/info only looks up YouTube videos', async () => {
+    const res = await api.request(`/youtube/info?url=${encodeURIComponent('http://localhost:3020/')}`);
+    expect(res.status).toBe(400);
+    expect(ytdlpCalls()).toEqual([]);
   });
 
   test('GET /youtube/search needs a query', async () => {

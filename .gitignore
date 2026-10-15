@@ -147,3 +147,8 @@ assets/*analytics.db
 cache.db
 
 *.db
+
+# Private: agent instructions, Claude settings and business notes (repo is public)
+CLAUDE.md
+.claude/
+docs/business/

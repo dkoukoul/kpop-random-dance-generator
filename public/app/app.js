@@ -1092,7 +1092,9 @@ async function startGeneration(segments) {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to start generation");
+      // The server says what's wrong (e.g. no song has a YouTube link).
+      const body = await response.json().catch(() => null);
+      throw new Error((body && body.error) || "Failed to start generation");
     }
 
     const { jobId } = await response.json();

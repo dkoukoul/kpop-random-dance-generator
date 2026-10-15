@@ -33,7 +33,7 @@ describe('cache', () => {
     const live = key('cleanup-live');
     setCache(expired, 1, -10);
     setCache(live, 2, 60);
-    cleanupCache();
+    expect(cleanupCache()).toBeGreaterThanOrEqual(1);
 
     const db = new Database(process.env.CACHE_DB_PATH!, { readonly: true });
     const keys = db.query('SELECT key FROM cache WHERE key IN (?, ?)').all(expired, live) as { key: string }[];

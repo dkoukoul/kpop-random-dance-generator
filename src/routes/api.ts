@@ -9,6 +9,7 @@ import { generateReport, saveReport } from '../services/report';
 import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles } from '../services/audio';
 import { logVisit, logGeneration, getStats, getPopularCut } from '../services/analytics';
 import { getYtdlpStatus, updateYtdlp } from '../services/ytdlp-updater';
+import { toYoutubeWatchUrl } from '../services/youtube-url';
 
 const api = new Hono();
 
@@ -97,8 +98,15 @@ api.get('/ytdlp-status', basicAuth({
   username: process.env.ADMIN_USERNAME || 'admin',
   password: process.env.ADMIN_PASSWORD || 'admin'
 }), async (c) => {
-  return c.json(getYtdlpStatus());
+  return c.json({ ...getYtdlpStatus(), activeJobs: activeJobCount() });
 });
+
+/** Mixes still being made. Jobs live in memory, so a restart kills these. */
+export function activeJobCount(): number {
+  let count = 0;
+  for (const job of jobs.values()) if (job.status === 'processing') count++;
+  return count;
+}
 
 /**
  * POST /api/ytdlp-update
@@ -144,9 +152,14 @@ api.get('/youtube/info', async (c) => {
   if (!url) {
     return c.json({ error: 'URL is required' }, 400);
   }
-  
+
+  const watchUrl = toYoutubeWatchUrl(url);
+  if (!watchUrl) {
+    return c.json({ error: 'That is not a YouTube video link' }, 400);
+  }
+
   try {
-    const info = await getVideoInfo(url);
+    const info = await getVideoInfo(watchUrl);
     return c.json(info);
   } catch (error) {
     console.error('Error fetching video info:', error);
@@ -205,7 +218,22 @@ api.post('/generate', async (c) => {
   if (!body || !Array.isArray(body.segments) || body.segments.length === 0) {
     return c.json({ error: 'No segments provided' }, 400);
   }
-  
+
+  // Only YouTube videos reach yt-dlp, as clean watch URLs (see youtube-url.ts).
+  // A song with any other link is skipped like an unavailable video, so one
+  // typo doesn't cost the host the whole mix.
+  let validSongs = 0;
+  for (const segment of body.segments) {
+    const watchUrl = segment ? toYoutubeWatchUrl(segment.youtubeUrl) : null;
+    if (segment && watchUrl) {
+      segment.youtubeUrl = watchUrl;
+      validSongs++;
+    }
+  }
+  if (validSongs === 0) {
+    return c.json({ error: 'None of the songs has a YouTube video link' }, 400);
+  }
+
   const jobId = uuidv4();
   jobs.set(jobId, { status: 'processing', progress: 'Starting...' });
   
@@ -375,6 +403,17 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
     for (let i = 0; i < segments.length; i++) {
       const segment = segments[i];
       if (!segment) continue;
+
+      // The route already cleaned every valid link; anything else never
+      // reaches yt-dlp.
+      if (!toYoutubeWatchUrl(segment.youtubeUrl)) {
+        failedSegments.push({
+          title: String(segment.title ?? ''),
+          youtubeUrl: String(segment.youtubeUrl ?? ''),
+          reason: 'Not a YouTube video link',
+        });
+        continue;
+      }
 
       const segmentPath = join(TEMP_DIR, `${jobId}_segment_${i}.mp3`);
 
