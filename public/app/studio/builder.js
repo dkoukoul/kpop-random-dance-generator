@@ -315,7 +315,8 @@ export function initBuilder() {
   function syncGenerate() {
     const problem = view.generateProblem();
     generateBtn.disabled = Boolean(problem);
-    generateWhy.hidden = !problem;
+    // While a mix is being made (or one is ready), the Generate area shows that instead.
+    generateWhy.hidden = !problem || generateBtn.hidden;
     generateWhy.classList.toggle("is-problem", Boolean(problem && problem.id));
     if (!problem) generateWhy.replaceChildren();
     else if (problem.id) {

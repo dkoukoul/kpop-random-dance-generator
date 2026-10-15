@@ -3,9 +3,10 @@
  */
 import { store } from "./util.js";
 import { loadVersion, trackVisit } from "./api.js";
-import { initContact, initHowItWorks, initMenus, initSupportTracking, initTheme, toast } from "./ui.js";
+import { initContact, initHowItWorks, initMenus, initSupportTracking, initTheme } from "./ui.js";
 import { initBuilder } from "./builder.js";
 import { initEditor } from "./editor.js";
+import { initGenerate } from "./generate.js";
 
 // While both pages exist, remember that this browser uses the new one, so
 // "Open in generator" on the group pages comes back here (see landing.js).
@@ -27,8 +28,7 @@ initEditor({
   onLoadError: (id, message) => builder.setlist.update(id, { loadError: message }, { type: "info" }),
 });
 
-// Making the MP3 is the next step of the new page; until then, say so.
-builder.generateBtn.addEventListener("click", () => toast("Generating from this page comes in the next update."));
+initGenerate({ setlist: builder.setlist, view: builder.view });
 
 trackVisit();
 

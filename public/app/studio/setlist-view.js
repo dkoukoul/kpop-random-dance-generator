@@ -269,6 +269,16 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
     row.classList.add(kind === "info" ? "flash-info" : "flash");
   }
 
+  /** ✓ on the rows already in the mix being made ([] clears them). */
+  function setDone(ids) {
+    const done = new Set(ids);
+    for (const [id, row] of rows) {
+      const mark = row.querySelector(".row-done");
+      const on = done.has(id);
+      if (mark.hidden === on) mark.hidden = !on;
+    }
+  }
+
   /** A newly added row fades in. */
   function markNew(id) {
     const row = rows.get(id);
@@ -296,5 +306,5 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
   window.addEventListener("resize", placeHighlight);
   render();
 
-  return { render, flashRow, markNew, focusRow, endPoint, generateProblem: () => generateProblem(setlist.songs), cutLength };
+  return { render, flashRow, markNew, focusRow, endPoint, setDone, generateProblem: () => generateProblem(setlist.songs), cutLength };
 }
