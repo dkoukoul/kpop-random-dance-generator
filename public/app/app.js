@@ -34,6 +34,7 @@ const elements = {
   progressContainer: document.getElementById("progressContainer"),
   progressFill: document.getElementById("progressFill"),
   progressText: document.getElementById("progressText"),
+  progressEta: document.getElementById("progressEta"),
   downloadSection: document.getElementById("downloadSection"),
   downloadLink: document.getElementById("downloadLink"),
   downloadReportLink: document.getElementById("downloadReportLink"),
@@ -163,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // empty card
   applySavedSettings();
   startMix();
+  resumeActiveJob();
 
   elements.draftBanner
     .querySelector(".draft-banner-fresh")
@@ -1077,19 +1079,8 @@ async function startGeneration(segments) {
     return;
   }
 
-  state.isGenerating = true;
-
-  // Update UI
-  elements.generateBtn.disabled = true;
-  elements.generateBtn.classList.add("loading");
-  elements.generateBtn.innerHTML =
-    '<span class="btn-icon">⏳</span> Generating...';
-  elements.progressContainer.classList.remove("hidden");
-  elements.downloadSection.classList.add("hidden");
-  elements.failedSongsSection.classList.add("hidden");
-  elements.generateErrorSection.classList.add("hidden");
-  elements.progressFill.style.width = "10%";
-  elements.progressText.textContent = "Starting generation...";
+  const job = { jobId: null, songCount: segments.length, startedAt: Date.now() };
+  showGenerating(job);
 
   try {
     // Start generation
@@ -1104,10 +1095,12 @@ async function startGeneration(segments) {
     }
 
     const { jobId } = await response.json();
+    job.jobId = jobId;
     state.currentJobId = jobId;
+    rememberJob(job);
 
     // Poll for status
-    await pollJobStatus(jobId);
+    pollJobStatus(job);
   } catch (error) {
     console.error("Generation error:", error);
     showGenerateError("Couldn't start generating: " + error.message);
@@ -1148,57 +1141,187 @@ async function generateRandomDance() {
 }
 
 /**
- * Poll job status until complete
+ * Switch the Generate area into "working on it" mode
  */
-async function pollJobStatus(jobId) {
+function showGenerating(job) {
+  state.isGenerating = true;
+
+  elements.generateBtn.disabled = true;
+  elements.generateBtn.classList.add("loading");
+  elements.generateBtn.innerHTML =
+    '<span class="btn-icon">⏳</span> Generating...';
+  updateGenerateButton(); // hides the "why disabled" hint
+  elements.progressContainer.classList.remove("hidden");
+  elements.downloadSection.classList.add("hidden");
+  elements.failedSongsSection.classList.add("hidden");
+  elements.generateErrorSection.classList.add("hidden");
+  elements.progressFill.style.width = "10%";
+  elements.progressText.textContent = "Starting generation...";
+  updateEta(job, null);
+}
+
+/**
+ * A running job is kept in sessionStorage so a refresh picks it up again
+ * (the server keeps working on it either way)
+ */
+const ACTIVE_JOB_KEY = "kpopgen:activeJob";
+
+function rememberJob(job) {
+  try {
+    sessionStorage.setItem(ACTIVE_JOB_KEY, JSON.stringify(job));
+  } catch (error) {
+    // Blocked storage: a refresh just won't resume
+  }
+}
+
+function forgetJob() {
+  try {
+    sessionStorage.removeItem(ACTIVE_JOB_KEY);
+  } catch (error) {
+    // Blocked storage: nothing was saved
+  }
+}
+
+/**
+ * After a refresh: carry on showing the progress of a mix that was being made
+ */
+function resumeActiveJob() {
+  let job = null;
+  try {
+    job = JSON.parse(sessionStorage.getItem(ACTIVE_JOB_KEY));
+  } catch (error) {
+    return;
+  }
+  if (!job || typeof job.jobId !== "string") return;
+
+  state.currentJobId = job.jobId;
+  showGenerating(job);
+  elements.progressText.textContent = "Checking on your mix...";
+  pollJobStatus(job);
+}
+
+/**
+ * "About 3 min left · keep this tab open". Starts from a measured average
+ * per song (download, the server's 1.5s pause between downloads, and the
+ * final combine), then follows the actual pace once a few songs are done.
+ */
+const SECONDS_PER_SONG = 7.5;
+
+function updateEta(job, status) {
+  const total = (status && status.progressTotal) || job.songCount;
+  let done = 0;
+  if (status && status.progressTotal) {
+    done = status.progressCurrent - 1; // progressCurrent is the song in progress
+  } else if (status) {
+    done = total; // past the downloads: combining
+  }
+
+  const elapsed = (Date.now() - job.startedAt) / 1000;
+  const perSong = done >= 3 ? elapsed / done : SECONDS_PER_SONG;
+  const secondsLeft = Math.max(0, (total - done) * perSong);
+
+  let left;
+  if (done >= total && status) left = "Almost done";
+  else if (secondsLeft < 50) left = "Less than a minute left";
+  else left = `About ${Math.round(secondsLeft / 60)} min left`;
+  elements.progressEta.textContent = `${left} · keep this tab open`;
+}
+
+/**
+ * Poll job status until complete. A failed check is retried with growing
+ * waits (2, 4, 8, 16s) before giving up; coming back to the tab checks
+ * straight away (phones pause timers in background tabs).
+ */
+function pollJobStatus(job) {
   const pollInterval = 2000; // 2 seconds
+  const maxRetries = 4;
   let progress = 10;
+  let failures = 0;
+  let timer = null;
+  let stopped = false;
+
+  const schedule = (ms) => {
+    clearTimeout(timer);
+    timer = setTimeout(poll, ms);
+  };
+  const onVisible = () => {
+    if (document.visibilityState === "visible" && !stopped) schedule(0);
+  };
+  const stop = () => {
+    stopped = true;
+    clearTimeout(timer);
+    document.removeEventListener("visibilitychange", onVisible);
+    forgetJob();
+  };
+  const fail = (message) => {
+    stop();
+    showGenerateError(message);
+    resetGenerateButton();
+  };
+  document.addEventListener("visibilitychange", onVisible);
 
   const poll = async () => {
+    if (stopped) return;
+    let status;
     try {
-      const response = await fetch(`/api/status/${jobId}`);
-      const status = await response.json();
-
-      if (status.status === "processing") {
-        // Update progress. While downloading segments, scale linearly with
-        // actual song count (status.progressCurrent/progressTotal) so a
-        // 150-song mix doesn't look nearly done after song 4. Reserve the
-        // top of the bar for the final combine-audio step, which has no
-        // song count of its own.
-        if (status.progressTotal) {
-          progress = Math.max(
-            progress,
-            5 + Math.round((status.progressCurrent / status.progressTotal) * 85)
-          );
-        } else {
-          progress = Math.max(progress, 95);
-        }
-        elements.progressFill.style.width = `${progress}%`;
-        elements.progressText.textContent = status.progress || "Processing...";
-
-        // Continue polling
-        setTimeout(poll, pollInterval);
-      } else if (status.status === "complete") {
-        // Success!
-        elements.progressFill.style.width = "100%";
-        elements.progressText.textContent = "Complete!";
-
-        setTimeout(() => {
-          elements.progressContainer.classList.add("hidden");
-          elements.downloadSection.classList.remove("hidden");
-          elements.downloadLink.href = `/api/download/${jobId}`;
-          elements.downloadReportLink.href = `/api/download-report/${jobId}`;
-          showFailedSongs(status.failedSegments);
-          resetGenerateButton();
-        }, 500);
-      } else if (status.status === "error") {
-        showGenerateError(status.error || "Unknown error");
-        resetGenerateButton();
+      const response = await fetch(`/api/status/${job.jobId}`);
+      if (response.status === 404) {
+        fail("The server lost track of this mix (it may have restarted). Please press Generate again.");
+        return;
       }
+      if (!response.ok) throw new Error(`Status check failed (${response.status})`);
+      status = await response.json();
+      failures = 0;
     } catch (error) {
       console.error("Poll error:", error);
-      showGenerateError(error.message || "Lost connection while checking generation status");
-      resetGenerateButton();
+      failures++;
+      if (failures > maxRetries) {
+        fail("Lost connection while checking on your mix. Check your connection and press Generate again.");
+        return;
+      }
+      elements.progressEta.textContent = "Connection problem, trying again…";
+      schedule(pollInterval * 2 ** (failures - 1));
+      return;
+    }
+    if (stopped) return;
+
+    if (status.status === "processing") {
+      // Update progress. While downloading segments, scale linearly with
+      // actual song count (status.progressCurrent/progressTotal) so a
+      // 150-song mix doesn't look nearly done after song 4. Reserve the
+      // top of the bar for the final combine-audio step, which has no
+      // song count of its own.
+      if (status.progressTotal) {
+        progress = Math.max(
+          progress,
+          5 + Math.round((status.progressCurrent / status.progressTotal) * 85)
+        );
+      } else {
+        progress = Math.max(progress, 95);
+      }
+      elements.progressFill.style.width = `${progress}%`;
+      elements.progressText.textContent = status.progress || "Processing...";
+      updateEta(job, status);
+
+      schedule(pollInterval);
+    } else if (status.status === "complete") {
+      stop();
+      elements.progressFill.style.width = "100%";
+      elements.progressText.textContent = "Complete!";
+      elements.progressEta.textContent = "";
+
+      setTimeout(() => {
+        elements.progressContainer.classList.add("hidden");
+        elements.downloadSection.classList.remove("hidden");
+        elements.downloadLink.href = `/api/download/${job.jobId}`;
+        elements.downloadReportLink.href = `/api/download-report/${job.jobId}`;
+        showFailedSongs(status.failedSegments);
+        resetGenerateButton();
+        elements.downloadSection.scrollIntoView({ block: "center", behavior: smoothScroll() });
+        showToast("Your mix is ready to download");
+      }, 500);
+    } else if (status.status === "error") {
+      fail(status.error || "Unknown error");
     }
   };
 
