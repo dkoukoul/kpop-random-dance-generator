@@ -2622,3 +2622,27 @@ input[type="checkbox"]:focus-visible + .toggle-slider {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Phones: Options, Shuffle and Add Song share one row (they wrap on very
+   narrow screens) instead of Add Song dropping to a line of its own */
+@media (max-width: 640px) {
+  .header-controls {
+    gap: var(--spacing-xs);
+  }
+
+  .header-controls > .btn,
+  .header-controls > .menu-container {
+    flex: 1 1 auto;
+  }
+
+  .header-controls .btn {
+    justify-content: center;
+    min-height: 44px;
+    padding-left: var(--spacing-xs);
+    padding-right: var(--spacing-xs);
+  }
+
+  .header-controls > .menu-container > .btn {
+    width: 100%;
+  }
+}

@@ -559,7 +559,8 @@ function renumberCards() {
   });
 
   elements.emptyState.classList.toggle("hidden", cards.length > 0);
-  elements.shuffleBtn.disabled = cards.length < 2;
+  // No reshuffling while a mix is being made: the MP3 keeps the order it was sent in
+  elements.shuffleBtn.disabled = cards.length < 2 || state.isGenerating;
   updateDragHint();
 }
 
@@ -1151,6 +1152,8 @@ function showGenerating(job) {
   elements.generateBtn.innerHTML =
     '<span class="btn-icon">⏳</span> Generating...';
   updateGenerateButton(); // hides the "why disabled" hint
+  elements.shuffleBtn.disabled = true;
+  hideToast(); // a Shuffle "Undo" would no longer match the MP3, and it covers the bar
   elements.progressContainer.classList.remove("hidden");
   elements.downloadSection.classList.add("hidden");
   elements.failedSongsSection.classList.add("hidden");
@@ -1200,6 +1203,11 @@ function resumeActiveJob() {
   pollJobStatus(job);
 }
 
+/** The server's last step, after all downloads (it has no song count) */
+function isCombining(status) {
+  return /combining/i.test(status.progress || "");
+}
+
 /**
  * "About 3 min left · keep this tab open". Starts from a measured average
  * per song (download, the server's 1.5s pause between downloads, and the
@@ -1212,8 +1220,8 @@ function updateEta(job, status) {
   let done = 0;
   if (status && status.progressTotal) {
     done = status.progressCurrent - 1; // progressCurrent is the song in progress
-  } else if (status) {
-    done = total; // past the downloads: combining
+  } else if (status && isCombining(status)) {
+    done = total; // past the downloads
   }
 
   const elapsed = (Date.now() - job.startedAt) / 1000;
@@ -1239,13 +1247,14 @@ function pollJobStatus(job) {
   let failures = 0;
   let timer = null;
   let stopped = false;
+  let inFlight = false; // one check at a time, even when the tab comes back mid-check
 
   const schedule = (ms) => {
     clearTimeout(timer);
     timer = setTimeout(poll, ms);
   };
   const onVisible = () => {
-    if (document.visibilityState === "visible" && !stopped) schedule(0);
+    if (document.visibilityState === "visible" && !stopped && !inFlight) schedule(0);
   };
   const stop = () => {
     stopped = true;
@@ -1261,10 +1270,14 @@ function pollJobStatus(job) {
   document.addEventListener("visibilitychange", onVisible);
 
   const poll = async () => {
-    if (stopped) return;
+    if (stopped || inFlight) return;
+    inFlight = true;
+    // A check that hangs (phone switching networks) counts as a failed one
+    const controller = new AbortController();
+    const abortTimer = setTimeout(() => controller.abort(), 15000);
     let status;
     try {
-      const response = await fetch(`/api/status/${job.jobId}`);
+      const response = await fetch(`/api/status/${job.jobId}`, { signal: controller.signal });
       if (response.status === 404) {
         fail("The server lost track of this mix (it may have restarted). Please press Generate again.");
         return;
@@ -1275,6 +1288,7 @@ function pollJobStatus(job) {
     } catch (error) {
       console.error("Poll error:", error);
       failures++;
+      if (stopped) return;
       if (failures > maxRetries) {
         fail("Lost connection while checking on your mix. Check your connection and press Generate again.");
         return;
@@ -1282,6 +1296,9 @@ function pollJobStatus(job) {
       elements.progressEta.textContent = "Connection problem, trying again…";
       schedule(pollInterval * 2 ** (failures - 1));
       return;
+    } finally {
+      clearTimeout(abortTimer);
+      inFlight = false;
     }
     if (stopped) return;
 
@@ -1296,7 +1313,7 @@ function pollJobStatus(job) {
           progress,
           5 + Math.round((status.progressCurrent / status.progressTotal) * 85)
         );
-      } else {
+      } else if (isCombining(status)) {
         progress = Math.max(progress, 95);
       }
       elements.progressFill.style.width = `${progress}%`;
@@ -1376,6 +1393,7 @@ function resetGenerateButton() {
   elements.generateBtn.innerHTML =
     '<span class="btn-icon">✨</span> Generate Random Dance';
   updateGenerateButton();
+  elements.shuffleBtn.disabled = state.songs.length < 2;
 }
 
 /**
@@ -1960,12 +1978,16 @@ function loadMix(mix) {
     info: null,
     isExpanded: !state.compactViewEnabled,
   }));
+  // Most landing-page sets are listed in a fixed order (most popular,
+  // shortest...) and are meant to play shuffled. Shuffle once, on screen,
+  // so the numbers match the MP3.
+  const shuffled = mix.shuffleEnabled !== false && state.songs.length > 1;
+  if (shuffled) state.songs = spreadOutGroups(shuffleArray(state.songs));
+
   rebuildSongList();
   lookUpMissingInfo();
 
-  // The mix plays in the order shown (the landing pages already shuffled
-  // it); point out the button for a fresh order
-  showToast("Tip: press Shuffle for a new random order");
+  if (shuffled) showToast("Shuffled for you. Press Shuffle for a new order.");
 }
 
 /**
