@@ -16,8 +16,9 @@ const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)"
  * @param {(id: string) => void} opts.onRemove     remove with Undo
  * @param {(id: string) => void} opts.onRetry      look a song that wouldn't load up again
  * @param {() => void} opts.onShuffle
+ * @param {() => void} opts.onClear       empty the setlist, with Undo
  */
-export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemovedExtra }) {
+export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onClear, onRemovedExtra }) {
   const body = document.getElementById("setlistBody");
   const empty = document.getElementById("setlistEmpty");
   const list = el("ol", { class: "rows", id: "setlistRows", "aria-label": "Songs in play order", "aria-describedby": "rowsHelp" });
@@ -32,6 +33,8 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
   const statusLine = document.getElementById("statusLine");
   const shuffleBtn = document.getElementById("shuffleBtn");
   shuffleBtn.addEventListener("click", onShuffle);
+  const clearBtn = document.getElementById("clearBtn");
+  clearBtn.addEventListener("click", onClear);
 
   const rows = new Map(); // song id -> row element
   let focusId = null; // the row that holds the tab stop
@@ -213,6 +216,7 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onRemov
     empty.hidden = songs.length > 0;
     listWrap.hidden = songs.length === 0;
     shuffleBtn.disabled = songs.length < 2;
+    clearBtn.disabled = songs.length === 0;
 
     // Tiles and status bar
     tileSongs.textContent = pad2(songs.length);

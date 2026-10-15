@@ -5,9 +5,11 @@ import {
   fromDraft,
   fromPendingMix,
   fromProjectFile,
+  isFirstVisit,
   projectFileName,
   signature,
   songFromSaved,
+  starterSongs,
   toDraft,
   toProjectFile,
 } from '../../public/app/studio/project.js';
@@ -108,5 +110,34 @@ describe('ready-made mixes', () => {
 
   test.each([null, '', '{', '{"songs": []}'])('nothing to open: %p', (raw) => {
     expect(fromPendingMix(raw as any)).toBeNull();
+  });
+});
+
+describe('starter mix (first visit)', () => {
+  test('is five different YouTube songs with valid cuts nobody chose yet', () => {
+    const songs = starterSongs().map((s) => {
+      if (!s) throw new Error('a starter song has no YouTube video');
+      return s;
+    });
+    expect(songs).toHaveLength(5);
+    expect(new Set(songs.map((s) => s.videoId)).size).toBe(5);
+    for (const s of songs) {
+      expect(s.videoId).toMatch(/^[\w-]{11}$/);
+      expect(s.title).not.toBe('');
+      expect(s.end).toBeGreaterThan(s.start);
+      // Null, so the live popular cut can still fill in.
+      expect(s.cutSource).toBeNull();
+    }
+  });
+
+  test('a fresh copy every time', () => {
+    expect(starterSongs()[0]).not.toBe(starterSongs()[0]);
+  });
+
+  test('shows only with no draft, no ready-made mix and no earlier visit', () => {
+    expect(isFirstVisit({ draft: null, mix: null, visited: null })).toBe(true);
+    expect(isFirstVisit({ draft: [{}], mix: null, visited: null })).toBe(false);
+    expect(isFirstVisit({ draft: null, mix: { songs: [{}] }, visited: null })).toBe(false);
+    expect(isFirstVisit({ draft: null, mix: null, visited: '1' })).toBe(false);
   });
 });

@@ -115,7 +115,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/studio.css?v=11" />
+    <link rel="stylesheet" href="/css/studio.css?v=12" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
@@ -129,20 +129,20 @@
     <script type="importmap">
       {
         "imports": {
-          "/app/studio/api.js": "/app/studio/api.js?v=10",
-          "/app/studio/builder.js": "/app/studio/builder.js?v=10",
-          "/app/studio/editor.js": "/app/studio/editor.js?v=10",
-          "/app/studio/generate.js": "/app/studio/generate.js?v=10",
-          "/app/studio/main.js": "/app/studio/main.js?v=10",
-          "/app/studio/mobile.js": "/app/studio/mobile.js?v=10",
-          "/app/studio/player.js": "/app/studio/player.js?v=10",
-          "/app/studio/progress.js": "/app/studio/progress.js?v=10",
-          "/app/studio/project.js": "/app/studio/project.js?v=10",
-          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=10",
-          "/app/studio/setlist.js": "/app/studio/setlist.js?v=10",
-          "/app/studio/songs.js": "/app/studio/songs.js?v=10",
-          "/app/studio/ui.js": "/app/studio/ui.js?v=10",
-          "/app/studio/util.js": "/app/studio/util.js?v=10"
+          "/app/studio/api.js": "/app/studio/api.js?v=11",
+          "/app/studio/builder.js": "/app/studio/builder.js?v=11",
+          "/app/studio/editor.js": "/app/studio/editor.js?v=11",
+          "/app/studio/generate.js": "/app/studio/generate.js?v=11",
+          "/app/studio/main.js": "/app/studio/main.js?v=11",
+          "/app/studio/mobile.js": "/app/studio/mobile.js?v=11",
+          "/app/studio/player.js": "/app/studio/player.js?v=11",
+          "/app/studio/progress.js": "/app/studio/progress.js?v=11",
+          "/app/studio/project.js": "/app/studio/project.js?v=11",
+          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=11",
+          "/app/studio/setlist.js": "/app/studio/setlist.js?v=11",
+          "/app/studio/songs.js": "/app/studio/songs.js?v=11",
+          "/app/studio/ui.js": "/app/studio/ui.js?v=11",
+          "/app/studio/util.js": "/app/studio/util.js?v=11"
         }
       }
     </script>
@@ -257,10 +257,16 @@
       <section class="panel" id="setlistPanel" aria-labelledby="setlist-title">
         <div class="panel-head">
           <h2 class="panel-label" id="setlist-title"><span class="status-dot" aria-hidden="true"></span>SETLIST</h2>
-          <button type="button" class="btn btn-small" id="shuffleBtn" disabled>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg>
-            Shuffle now
-          </button>
+          <div class="head-actions">
+            <button type="button" class="btn btn-small" id="shuffleBtn" disabled>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg>
+              Shuffle now
+            </button>
+            <button type="button" class="btn btn-small btn-quiet" id="clearBtn" aria-label="Clear setlist" disabled>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M6 7l1 13h10l1-13"></path><path d="M9 7V4h6v3"></path></svg>
+              Clear
+            </button>
+          </div>
         </div>
         <div class="panel-body" id="setlistBody">
           <div class="empty" id="setlistEmpty">
@@ -448,6 +454,6 @@
         document.body.prepend(note);
       }
     </script>
-    <script type="module" src="/app/studio/main.js?v=10"></script>
+    <script type="module" src="/app/studio/main.js?v=11"></script>
   </body>
 </html>

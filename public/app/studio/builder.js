@@ -9,11 +9,14 @@ import { createSetlist, DEFAULT_CUT, identifyGroup, newId, watchUrl } from "./se
 import {
   DRAFT_KEY,
   PENDING_MIX_KEY,
+  VISITED_KEY,
   fromDraft,
   fromPendingMix,
   fromProjectFile,
+  isFirstVisit,
   projectFileName,
   signature,
+  starterSongs,
   toDraft,
   toProjectFile,
 } from "./project.js";
@@ -231,6 +234,14 @@ export function initBuilder() {
     }
   }
 
+  /** Empty the setlist, with a long Undo instead of a question first. */
+  function clearAll(source) {
+    if (setlist.songs.length === 0) return;
+    replaceAll([], "Cleared the setlist", 15000);
+    announce("Cleared the setlist");
+    trackEvent("clear_setlist", { source });
+  }
+
   const songs = initSongs({
     onAdd: addSong,
     isAdded: (videoId) => setlist.songs.some((s) => s.videoId === videoId),
@@ -247,6 +258,7 @@ export function initBuilder() {
     onRemove: removeSong,
     onRetry: (id) => fillInfo(id),
     onShuffle: shuffle,
+    onClear: () => clearAll("button"),
     onRemovedExtra: (title, removed) => {
       toast(`Removed the extra ${title || "copy"}`, {
         actionLabel: "Undo",
@@ -309,6 +321,7 @@ export function initBuilder() {
     const target = document.querySelector(skipLink.getAttribute("href"));
     if (!target) return;
     event.preventDefault();
+    if (target.id === "searchInput") songs.showTab("search");
     target.focus();
     target.scrollIntoView({ block: "nearest" });
   });
@@ -408,6 +421,20 @@ export function initBuilder() {
 
   const mix = takePendingMix();
   const draft = fromDraft(store.get(DRAFT_KEY));
+  const firstVisit = isFirstVisit({ draft, mix, visited: store.get(VISITED_KEY) });
+  if (firstVisit) {
+    // Not an empty page on a first visit: a starter mix, the first song in the
+    // editor, and the Top 10 to add more from.
+    setlist.replace(starterSongs().map((s) => ({ ...s, id: newId() })));
+    songs.showTab("top");
+    toast("Here's a starter mix to try. Change anything, or clear it.", {
+      actionLabel: "Clear",
+      onAction: () => clearAll("starter_toast"),
+      duration: 10000,
+    });
+    trackEvent("starter_mix_shown");
+  }
+  store.set(VISITED_KEY, "1");
   if (draft) {
     setlist.replace(draft.map((s) => ({ ...s, id: newId() })));
   }

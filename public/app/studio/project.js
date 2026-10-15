@@ -158,6 +158,32 @@ export function signature(songs) {
   return JSON.stringify(songs.map((s) => [s.videoId, s.start, s.end]));
 }
 
+/* ===== Starter mix for a first visit ===== */
+
+export const VISITED_KEY = "kpopgen:visited";
+
+/**
+ * Five well-known songs so a first visit doesn't open on an empty page. The
+ * cuts are the community's popular cuts; cutSource stays null, so the live
+ * popular cut (with its number of uses) still fills in.
+ */
+const STARTER = [
+  { youtubeUrl: "https://www.youtube.com/watch?v=gdZLi9oWNZg", title: "BTS (방탄소년단) 'Dynamite' Official MV", startTime: "1:05", endTime: "1:23" },
+  { youtubeUrl: "https://www.youtube.com/watch?v=IHNzOHi8sJs", title: "BLACKPINK - '뚜두뚜두 (DDU-DU DDU-DU)' M/V", startTime: "0:53", endTime: "1:35" },
+  { youtubeUrl: "https://www.youtube.com/watch?v=TQTlCHxyuu8", title: "Stray Kids \"神메뉴(God's Menu)\" M/V", startTime: "0:47", endTime: "1:29" },
+  { youtubeUrl: "https://www.youtube.com/watch?v=i0p1bmr0EmE", title: "TWICE(트와이스) \"What is Love?\" M/V", startTime: "1:37", endTime: "2:08" },
+  { youtubeUrl: "https://www.youtube.com/watch?v=Vk5-c_v4gMU", title: "ILLIT (아일릿) 'Magnetic' Official MV", startTime: "0:42", endTime: "1:24" },
+];
+
+export function starterSongs() {
+  return STARTER.map((saved) => songFromSaved(saved, null));
+}
+
+/** First visit: nothing saved, no ready-made mix coming in, never been here. */
+export function isFirstVisit({ draft, mix, visited }) {
+  return !draft && !mix && !visited;
+}
+
 /* ===== Ready-made mixes from the group pages ===== */
 
 /**

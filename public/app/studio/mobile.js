@@ -343,9 +343,9 @@ export function initMobile({ setlist, onGenerateState }) {
   apply();
   syncCounts();
 
-  // An empty My mix offers a way back to Search.
+  // An empty My mix offers a way back to Search (the Search tab, not Top 10).
   const empty = document.getElementById("setlistEmpty");
-  empty.append(el("button", { type: "button", class: "btn mobile-only search-songs", text: "Search songs", onclick: () => { setView("search"); document.getElementById("searchInput").focus(); } }));
+  empty.append(el("button", { type: "button", class: "btn mobile-only search-songs", text: "Search songs", onclick: () => { setView("search"); document.getElementById("tabSearch").click(); document.getElementById("searchInput").focus(); } }));
 
   return { setView, openSheet, closeSheet };
 }

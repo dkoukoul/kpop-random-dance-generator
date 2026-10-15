@@ -508,6 +508,7 @@ html.theme-fade *::after {
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .status-dot {
@@ -810,6 +811,13 @@ html.theme-fade *::after {
 }
 
 /* ===== Setlist rows ===== */
+.head-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .panel-head .btn-small,
 .btn-small {
   height: 28px;

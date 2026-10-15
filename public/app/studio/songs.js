@@ -241,5 +241,8 @@ export function initSongs({ onAdd, isAdded, onAlready }) {
     }
   }
 
-  return { refreshAdded, search };
+  /** Open a tab by name ("search" | "top"). */
+  const showTab = (name) => selectTab(name === "top" ? tabs[1] : tabs[0]);
+
+  return { refreshAdded, search, showTab };
 }
