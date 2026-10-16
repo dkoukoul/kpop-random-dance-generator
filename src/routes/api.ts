@@ -5,7 +5,7 @@ import { join } from 'path';
 import { mkdir, access, stat } from 'fs/promises';
 import type { GenerateRequest, SongSegment, FailedSegment } from '../types';
 import { getVideoInfo, downloadSegment, searchVideos, parseTimeToSeconds } from '../services/youtube';
-import { generateReport, saveReport, buildSetlist, songStartTimes } from '../services/report';
+import { generateReport, buildSetlist, songStartTimes } from '../services/report';
 import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles, audioDuration } from '../services/audio';
 import { logVisit, logGeneration, getStats, getPopularCut, getTopSongs } from '../services/analytics';
 import { getYtdlpStatus, updateYtdlp } from '../services/ytdlp-updater';
@@ -18,15 +18,10 @@ type SongState = 'waiting' | 'working' | 'done' | 'skipped';
 interface Job {
   status: 'processing' | 'complete' | 'error';
   filename?: string;
-  reportFilename?: string;
   setlistFilename?: string;
   error?: string;
-  // Text and counts the classic page shows.
-  progress?: string;
-  progressCurrent?: number;
-  progressTotal?: number;
   failedSegments?: FailedSegment[];
-  // Per-song detail for the new page: one state per requested song, in order.
+  // One state per requested song, in order.
   phase?: 'downloading' | 'combining';
   startedAt: number;
   songs: { state: SongState; reason?: string }[];
@@ -232,16 +227,9 @@ api.get('/youtube/search', async (c) => {
     return c.json({ error: 'Query is required' }, 400);
   }
   
-  // 5 for the classic page; the new page asks for 20 once and shows 10 at a time.
-  const limitParam = c.req.query('limit');
-  const limit = limitParam === undefined ? 5 : Number(limitParam);
-  if (limit !== 5 && limit !== 20) {
-    return c.json({ error: 'limit must be 5 or 20' }, 400);
-  }
-
   try {
     console.log('🌐 Calling searchVideos...');
-    const results = await searchVideos(query, limit);
+    const results = await searchVideos(query);
     console.log(`✅ Search successful, returning ${results.length} results`);
     return c.json(results);
   } catch (error) {
@@ -280,7 +268,6 @@ api.post('/generate', async (c) => {
   const jobId = uuidv4();
   jobs.set(jobId, {
     status: 'processing',
-    progress: 'Starting...',
     phase: 'downloading',
     startedAt: Date.now(),
     songs: body.segments.map(() => ({ state: 'waiting' as const })),
@@ -292,7 +279,7 @@ api.post('/generate', async (c) => {
   // Process in background
   processGeneration(jobId, body.segments).catch((error) => {
     console.error('Generation error:', error);
-    updateJob(jobId, { status: 'error', error: error.message, progress: undefined, progressCurrent: undefined, progressTotal: undefined });
+    updateJob(jobId, { status: 'error', error: error.message });
   });
   
   return c.json({ jobId });
@@ -343,33 +330,6 @@ api.get('/download/:jobId', async (c) => {
   } catch (error) {
     console.error('Download error:', error);
     return c.json({ error: 'Failed to download file' }, 500);
-  }
-});
-
-/**
- * GET /api/download-report/:jobId
- * Download the generated report JSON file
- */
-api.get('/download-report/:jobId', async (c) => {
-  const jobId = c.req.param('jobId');
-  const job = jobs.get(jobId);
-  
-  if (!job || job.status !== 'complete' || !job.reportFilename) {
-    return c.json({ error: 'Report not ready or not found' }, 404);
-  }
-  
-  const filePath = join(TEMP_DIR, job.reportFilename);
-  
-  try {
-    const file = Bun.file(filePath);
-    
-    c.header('Content-Type', 'application/json');
-    c.header('Content-Disposition', `attachment; filename="random-dance-report-${jobId.slice(0, 8)}.json"`);
-    
-    return c.body(await file.text());
-  } catch (error) {
-    console.error('Report download error:', error);
-    return c.json({ error: 'Failed to download report' }, 500);
   }
 });
 
@@ -501,11 +461,6 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
 
       const segmentPath = join(TEMP_DIR, `${jobId}_segment_${i}.mp3`);
 
-      updateJob(jobId, {
-        progress: `Downloading segment ${i + 1}/${segments.length}: ${segment.title}`,
-        progressCurrent: i + 1,
-        progressTotal: segments.length
-      });
       setSongState(jobId, i, 'working');
 
       // Space out requests to YouTube so large batches don't read as bot-like bursts
@@ -545,7 +500,7 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
     // Concatenate all successfully-downloaded segments with countdown.
     // Failed segments were never added to segmentPaths, so no orphan
     // countdown is mixed in for songs that didn't make it in.
-    updateJob(jobId, { phase: 'combining', progress: 'Combining audio...', progressCurrent: undefined, progressTotal: undefined });
+    updateJob(jobId, { phase: 'combining' });
 
     const outputFilename = `output_${jobId}.mp3`;
     const outputPath = join(TEMP_DIR, outputFilename);
@@ -555,11 +510,8 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
     // Clean up segment files
     await cleanupTempFiles(segmentPaths);
 
-    // Generate Report (only reflects songs actually included in the mix)
-    console.log(`Generating report for job ${jobId}...`);
-    const report = await generateReport(successfulSegments, failedSegments);
-    const reportPath = await saveReport(report, jobId, TEMP_DIR);
-    const reportFilename = reportPath.split('/').pop()!; // Extract filename
+    // Band and title of each song actually in the mix, for the setlist.
+    const report = await generateReport(successfulSegments);
 
     // The setlist is a bonus: if it can't be written, the mix still ships.
     let setlistFilename: string | undefined;
@@ -577,13 +529,11 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
 
     updateJob(jobId, {
       status: 'complete',
-      progress: undefined,
       filename: outputFilename,
-      reportFilename: reportFilename,
       setlistFilename,
       failedSegments: failedSegments.length > 0 ? failedSegments : undefined
     });
-    console.log(`Generation complete: ${outputFilename}, Report: ${reportFilename}${failedSegments.length > 0 ? `, ${failedSegments.length} segment(s) skipped` : ''}`);
+    console.log(`Generation complete: ${outputFilename}${failedSegments.length > 0 ? `, ${failedSegments.length} segment(s) skipped` : ''}`);
 
   } catch (error) {
     // Clean up on error

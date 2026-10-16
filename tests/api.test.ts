@@ -12,7 +12,6 @@ const createdJobs: string[] = [];
 afterAll(() => {
   for (const id of createdJobs) {
     rmSync(join(TEMP_DIR, `output_${id}.mp3`), { force: true });
-    rmSync(join(TEMP_DIR, `${id}_report.json`), { force: true });
     rmSync(join(TEMP_DIR, `${id}_setlist.txt`), { force: true });
   }
 });
@@ -55,7 +54,7 @@ async function waitForJob(jobId: string): Promise<any> {
 }
 
 describe('mix generation flow', () => {
-  test('generates a downloadable MP3 and report', async () => {
+  test('generates a downloadable MP3 and setlist', async () => {
     const jobId = await startJob([segment('ok-one', 'TWICE - FANCY')]);
 
     const job = await waitForJob(jobId);
@@ -71,8 +70,9 @@ describe('mix generation flow', () => {
     // MP3 files start with an ID3 tag or an MPEG frame sync.
     expect(bytes[0] === 0x49 || bytes[0] === 0xff).toBe(true);
 
-    const report = (await (await api.request(`/download-report/${jobId}`)).json()) as any;
-    expect(report.playlist).toEqual([{ order: 1, band: 'TWICE', title: 'FANCY', startTime: '0:00', endTime: '0:05' }]);
+    const setlist = await (await api.request(`/download-setlist/${jobId}`)).text();
+    expect(setlist).toContain('TWICE');
+    expect(setlist).toContain('FANCY');
   }, 30_000);
 
   test('skips a song that fails and still builds the rest', async () => {
@@ -90,9 +90,9 @@ describe('mix generation flow', () => {
       },
     ]);
 
-    const report = (await (await api.request(`/download-report/${jobId}`)).json()) as any;
-    expect(report.playlist).toHaveLength(1);
-    expect(report.failedSongs).toHaveLength(1);
+    const setlist = await (await api.request(`/download-setlist/${jobId}`)).text();
+    expect(setlist).toContain('TWICE');
+    expect(setlist).toContain('Gone');
   }, 30_000);
 
   test('reports an error when every song fails', async () => {
@@ -115,7 +115,7 @@ describe('mix generation flow', () => {
   test('a download is not offered while the mix is still being made', async () => {
     const jobId = await startJob([segment('ok-pending')]);
     expect((await api.request(`/download/${jobId}`)).status).toBe(404);
-    expect((await api.request(`/download-report/${jobId}`)).status).toBe(404);
+    expect((await api.request(`/download-setlist/${jobId}`)).status).toBe(404);
     await waitForJob(jobId);
   }, 30_000);
 });
@@ -164,7 +164,7 @@ describe('POST /generate validation', () => {
 });
 
 describe('job lookups', () => {
-  test.each(['/status/nope', '/download/nope', '/download-report/nope'])('%s is 404 for an unknown job', async (path) => {
+  test.each(['/status/nope', '/download/nope', '/download-setlist/nope'])('%s is 404 for an unknown job', async (path) => {
     expect((await api.request(path)).status).toBe(404);
   });
 });
@@ -407,18 +407,9 @@ describe('expired mixes', () => {
 });
 
 describe('search limit', () => {
-  test('asks yt-dlp for 20 results when the page wants 20', async () => {
-    const res = await api.request(`/youtube/search?q=${encodeURIComponent(`limit test ${Date.now()}`)}&limit=20`);
+  test('asks yt-dlp for 20 results', async () => {
+    const res = await api.request(`/youtube/search?q=${encodeURIComponent(`limit test ${Date.now()}`)}`);
     expect(res.status).toBe(200);
     expect(ytdlpCalls()[0]).toStartWith('ytsearch20:limit test');
-  });
-
-  test('defaults to 5', async () => {
-    await api.request(`/youtube/search?q=${encodeURIComponent(`default test ${Date.now()}`)}`);
-    expect(ytdlpCalls()[0]).toStartWith('ytsearch5:');
-  });
-
-  test.each(['7', 'abc', '1000'])('rejects limit=%p', async (limit) => {
-    expect((await api.request(`/youtube/search?q=x&limit=${limit}`)).status).toBe(400);
   });
 });

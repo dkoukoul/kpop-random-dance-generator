@@ -2,13 +2,13 @@
  * Moving a setlist in and out of the page: project files, the autosaved
  * draft, and ready-made mixes handed over by the group pages.
  *
- * The formats are the classic page's, so files and drafts work in both:
+ * The formats are the ones the old builder used, so its files and drafts still open:
  * - project file: { version: "1.0", timestamp, songs: [{ youtubeUrl, title,
  *   startTime, endTime, cutSource?, popularUses?, info? }] }
  * - draft (localStorage "kpopgen:draft"): { version: 1, savedAt, songs: [same] }
  * - ready-made mix (sessionStorage "pendingMix"): { name?, songs: [{ youtubeUrl,
  *   title, startTime, endTime }] }
- * Studio adds `popularCut` to each song; the classic page ignores it.
+ * Studio adds `popularCut` to each song.
  *
  * No DOM here, so `bun test` covers it.
  */
@@ -56,7 +56,7 @@ export function songFromSaved(saved, source) {
   const info = cleanInfo(saved.info);
   const cutSource = source === "mix" ? "mix" : CUT_SOURCES.has(saved.cutSource) ? saved.cutSource : source;
   let popularCut = cleanPopularCut(saved.popularCut);
-  // A classic draft keeps only the number of uses of a popular cut it applied.
+  // An old builder's draft keeps only the number of uses of a popular cut it applied.
   if (!popularCut && saved.cutSource === "popular" && saved.popularUses) {
     popularCut = { start, end, uses: Number(saved.popularUses) || 0 };
   }
@@ -109,8 +109,6 @@ export function toProjectFile(songs, now = new Date()) {
     version: "1.0",
     timestamp: now.toISOString(),
     songs: songs.map(songToSaved),
-    // The order on screen is the order of the mix; the classic page must not reshuffle it.
-    shuffleEnabled: false,
   };
 }
 

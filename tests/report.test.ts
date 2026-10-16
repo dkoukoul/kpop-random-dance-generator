@@ -1,8 +1,5 @@
-import { afterAll, describe, expect, test } from 'bun:test';
-import { mkdtempSync, readFileSync, rmSync } from 'fs';
-import { tmpdir } from 'os';
-import { join } from 'path';
-import { buildSetlist, generateReport, saveReport, songStartTimes } from '../src/services/report';
+import { describe, expect, test } from 'bun:test';
+import { buildSetlist, generateReport, songStartTimes } from '../src/services/report';
 import type { SongSegment } from '../src/types';
 
 const seg = (title: string, artist?: string, startTime = '0:30', endTime = '1:00'): SongSegment => ({
@@ -52,7 +49,7 @@ describe('generateReport: band detection', () => {
   test.todo('extracts a clean song title from "BTS \'Dynamite\' Official MV"', () => {});
 });
 
-describe('generateReport: playlist and statistics', () => {
+describe('generateReport: playlist', () => {
   test('numbers songs in order and keeps their cut points', async () => {
     const { playlist } = await generateReport([
       seg('TWICE - FANCY', undefined, '0:45', '1:20'),
@@ -62,29 +59,6 @@ describe('generateReport: playlist and statistics', () => {
       [1, '0:45', '1:20'],
       [2, '1:00', '1:30'],
     ]);
-  });
-
-  test('reports each band as a rounded percentage of the mix', async () => {
-    const { statistics } = await generateReport([seg('BTS - Dope'), seg('BTS - Fire'), seg('TWICE - FANCY')]);
-    expect(statistics).toEqual({ BTS: '67%', TWICE: '33%' });
-  });
-
-  test('lists failed songs only when there are some', async () => {
-    expect((await generateReport([seg('BTS - Dope')])).failedSongs).toBeUndefined();
-    const failed = [{ title: 'Gone', youtubeUrl: 'https://youtu.be/x', reason: 'Video unavailable' }];
-    expect((await generateReport([seg('BTS - Dope')], failed)).failedSongs).toEqual(failed);
-  });
-});
-
-describe('saveReport', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'kpop-report-'));
-  afterAll(() => rmSync(dir, { recursive: true, force: true }));
-
-  test('writes the report as JSON named after the job', async () => {
-    const report = await generateReport([seg('BTS - Dope')]);
-    const path = await saveReport(report, 'job-123', dir);
-    expect(path).toBe(join(dir, 'job-123_report.json'));
-    expect(JSON.parse(readFileSync(path, 'utf-8'))).toEqual(JSON.parse(JSON.stringify(report)));
   });
 });
 

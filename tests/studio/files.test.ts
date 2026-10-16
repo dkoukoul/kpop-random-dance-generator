@@ -53,12 +53,9 @@ describe('the home page (the new builder)', () => {
     }
   });
 
-  test('is the indexed home page, and the classic page is not', () => {
+  test('is the indexed home page', () => {
     expect(html).toContain('<meta name="robots" content="index, follow" />');
     expect(html).toContain('<link rel="canonical" href="https://kpopgenerator.cloud/" />');
-    const classic = readFileSync(join(ROOT, 'classic.html'), 'utf-8');
-    expect(classic).toContain('<meta name="robots" content="noindex" />');
-    expect(classic).not.toContain('rel="canonical"');
   });
 
   test('keeps the home page SEO: title, description, Open Graph, structured data', () => {
@@ -104,13 +101,11 @@ describe('replaceBandLinks', () => {
     expect(replaceBandLinks('no markers here', [])).toBeNull();
   });
 
-  test('works on both real pages', () => {
-    for (const name of ['index.html', 'classic.html']) {
-      const real = readFileSync(join(ROOT, name), 'utf-8');
-      const out = replaceBandLinks(real, [{ slug: 'bts', name: 'BTS' }])!;
-      expect(out).not.toBeNull();
-      const cut = (s: string) => [s.slice(0, s.indexOf('<!-- BAND_LINKS:START -->')), s.slice(s.indexOf('<!-- BAND_LINKS:END -->'))];
-      expect(cut(out)).toEqual(cut(real));
-    }
+  test('works on the real home page', () => {
+    const real = readFileSync(join(ROOT, 'index.html'), 'utf-8');
+    const out = replaceBandLinks(real, [{ slug: 'bts', name: 'BTS' }])!;
+    expect(out).not.toBeNull();
+    const cut = (s: string) => [s.slice(0, s.indexOf('<!-- BAND_LINKS:START -->')), s.slice(s.indexOf('<!-- BAND_LINKS:END -->'))];
+    expect(cut(out)).toEqual(cut(real));
   });
 });

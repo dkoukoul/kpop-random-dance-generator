@@ -306,7 +306,6 @@ export function initMobile({ setlist, onGenerateState }) {
     }),
     el("button", { type: "button", class: "menu-item", text: "Contact us", onclick: () => { closeSheet({ silent: true }); document.querySelector('#helpMenu [data-contact=""]')?.click(); } }),
     el("button", { type: "button", class: "menu-item", text: "Report a problem", onclick: () => { closeSheet({ silent: true }); document.querySelector('#helpMenu [data-contact="problem"]')?.click(); } }),
-    el("a", { class: "menu-item", href: "/classic.html", text: "Use the classic version" }),
     el("a", { class: "menu-item menu-kofi", href: "https://ko-fi.com/dimitrisk80", target: "_blank", rel: "noopener", "data-support": "menu" }, "♥ Support on Ko-fi", el("span", { class: "sr-only", text: " (opens in a new tab)" })),
   );
 

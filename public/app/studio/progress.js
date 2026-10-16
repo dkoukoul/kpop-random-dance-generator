@@ -26,7 +26,7 @@ export function formatLeft(seconds) {
  */
 export function readProgress(status, now = Date.now()) {
   const states = Array.isArray(status.songs) ? status.songs.map((s) => s.state) : [];
-  const total = states.length || status.progressTotal || 0;
+  const total = states.length;
   const finished = states.filter((s) => s === "done" || s === "skipped").length;
   const combining = status.phase === "combining" || status.status === "complete";
   const working = states.indexOf("working");

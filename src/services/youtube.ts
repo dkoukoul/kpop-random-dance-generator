@@ -121,7 +121,7 @@ export async function getVideoInfo(url: string): Promise<VideoInfo> {
   }
 }
 
-export async function searchVideos(query: string, limit: number = 5): Promise<VideoInfo[]> {
+export async function searchVideos(query: string, limit: number = 20): Promise<VideoInfo[]> {
   // "BTS " and "bts" are the same search.
   const cacheKey = `search:${query.trim().toLowerCase()}:${limit}`;
   const cached = getCache<VideoInfo[]>(cacheKey);

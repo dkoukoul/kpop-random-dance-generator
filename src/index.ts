@@ -68,8 +68,10 @@ app.use('/*', async (c, next) => {
 
 app.use('/*', serveStatic({ root: './public' }));
 
-// The new builder was tried out at /studio.html before it became the home page.
+// The new builder was tried out at /studio.html before it became the home page,
+// and the old builder stayed at /classic.html for a while after.
 app.get('/studio.html', (c) => c.redirect('/', 301));
+app.get('/classic.html', (c) => c.redirect('/', 301));
 
 // Serve package.json for version info
 app.get('/package.json', serveStatic({ path: './package.json' }));

@@ -9,7 +9,7 @@ export const BYPASS_COOKIE = 'maintenance_bypass';
 const OPEN_PATHS = new Set([
   '/admin',
   '/app/admin.js',
-  '/css/styles.css',
+  '/css/admin.css',
   '/api/stats',
   '/api/ytdlp-status',
   '/api/ytdlp-update',
@@ -21,7 +21,7 @@ const OPEN_PATHS = new Set([
 
 // Images the page uses (favicon, og-image), and mixes that started before
 // maintenance was switched on, which can still finish and be downloaded.
-const OPEN_PREFIXES = ['/assets/', '/api/status/', '/api/download/', '/api/download-report/'];
+const OPEN_PREFIXES = ['/assets/', '/api/status/', '/api/download/', '/api/download-setlist/'];
 
 /**
  * When MAINTENANCE_MODE=true, answer every other request with the maintenance

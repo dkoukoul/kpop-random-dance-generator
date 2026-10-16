@@ -16,8 +16,8 @@ import {
 
 const ID = 'gdZLi9oWNZg';
 
-// A file saved by the classic page (its exportProject writes state.songs as is).
-const classicFile = {
+// A file saved by the old builder (its exportProject wrote state.songs as is).
+const oldFile = {
   version: '1.0',
   timestamp: '2026-10-01T10:00:00.000Z',
   songs: [
@@ -36,8 +36,8 @@ const classicFile = {
 };
 
 describe('project files', () => {
-  test('opens a file saved by the classic page', () => {
-    const { songs, skipped } = fromProjectFile(JSON.stringify(classicFile));
+  test('opens a file saved by the old builder', () => {
+    const { songs, skipped } = fromProjectFile(JSON.stringify(oldFile));
     expect(skipped).toBe(1);
     expect(songs).toHaveLength(2);
     expect(songs[0]).toMatchObject({ videoId: ID, start: 52, end: 82, cutSource: 'user', info: { duration: 223 } });
@@ -46,10 +46,9 @@ describe('project files', () => {
   });
 
   test('round-trips through a saved file', () => {
-    const { songs } = fromProjectFile(JSON.stringify(classicFile));
+    const { songs } = fromProjectFile(JSON.stringify(oldFile));
     const file = toProjectFile(songs, new Date('2026-10-15T12:00:00Z'));
     expect(file.version).toBe('1.0');
-    expect(file.shuffleEnabled).toBe(false);
     expect(file.songs[0]).toMatchObject({ youtubeUrl: `https://www.youtube.com/watch?v=${ID}`, startTime: '0:52', endTime: '1:22' });
     const again = fromProjectFile(JSON.stringify(file)).songs;
     expect(signature(again)).toBe(signature(songs));
@@ -75,7 +74,7 @@ describe('project files', () => {
 });
 
 describe('draft', () => {
-  test('reads a draft saved by the classic page, including its popular-cut note', () => {
+  test('reads a draft saved by the old builder, including its popular-cut note', () => {
     const draft = {
       version: 1,
       savedAt: 1,
@@ -84,7 +83,7 @@ describe('draft', () => {
     expect(fromDraft(JSON.stringify(draft))![0]).toMatchObject({ cutSource: 'popular', popularCut: { start: 52, end: 82, uses: 12 } });
   });
 
-  test('a draft Studio writes is one the classic page can read', () => {
+  test('a draft round-trips', () => {
     const songs = fromDraft(JSON.stringify(toDraft([{ ...songFromSaved({ youtubeUrl: ID, title: 'x', startTime: '0:10', endTime: '0:40' }, 'draft')!, id: 'a' }])))!;
     const saved = toDraft(songs.map((s, i) => ({ ...s, id: String(i) })));
     expect(saved.version).toBe(1);

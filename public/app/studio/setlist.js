@@ -113,7 +113,7 @@ export function shuffleArray(array, random = Math.random) {
 
 /**
  * Reorder an already shuffled list so no group plays twice in a row where
- * that's possible (same rule as the classic page). Songs whose group isn't
+ * that's possible. Songs whose group isn't
  * known never count as a repeat.
  */
 export function spreadOutGroups(songs, groupOf) {

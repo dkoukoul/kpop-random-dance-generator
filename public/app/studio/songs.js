@@ -164,7 +164,7 @@ export function initSongs({ onAdd, isAdded, onAlready }) {
         return;
       }
 
-      const list = await request(`/api/youtube/search?q=${encodeURIComponent(query)}&limit=20`, { timeoutMs: 45000 });
+      const list = await request(`/api/youtube/search?q=${encodeURIComponent(query)}`, { timeoutMs: 45000 });
       if (!current()) return;
       all = (Array.isArray(list) ? list : [])
         .map((r) => ({ videoId: youtubeVideoId(r.url), title: r.title, channel: r.channel, thumbnail: r.thumbnail, duration: r.duration }))

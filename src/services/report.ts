@@ -1,4 +1,4 @@
-import type { SongSegment, Report, ReportItem, ReportStats, FailedSegment } from "../types";
+import type { SongSegment, Report, ReportItem, FailedSegment } from "../types";
 import { join } from "path";
 
 // Cache for band list
@@ -133,10 +133,9 @@ async function parseTitle(videoTitle: string, videoChannel?: string): Promise<{ 
   return { band: "Unknown", title: videoTitle.trim() };
 }
 
-export async function generateReport(segments: SongSegment[], failedSegments: FailedSegment[] = []): Promise<Report> {
+export async function generateReport(segments: SongSegment[]): Promise<Report> {
   const playlist: ReportItem[] = [];
-  const bandCounts: Record<string, number> = {};
-  
+
   for (const segment of segments) {
     const { band, title } = await parseTitle(segment.title, segment.artist);
     
@@ -147,31 +146,9 @@ export async function generateReport(segments: SongSegment[], failedSegments: Fa
       startTime: segment.startTime,
       endTime: segment.endTime
     });
-    
-    // Stats
-    bandCounts[band] = (bandCounts[band] || 0) + 1;
   }
-  
-  // Calculate percentages
-  const total = segments.length;
-  const statistics: ReportStats = {};
-  
-  Object.entries(bandCounts).forEach(([band, count]) => {
-    const percentage = Math.round((count / total) * 100);
-    statistics[band] = `${percentage}%`;
-  });
-  
-  return {
-    playlist,
-    statistics,
-    failedSongs: failedSegments.length > 0 ? failedSegments : undefined
-  };
-}
 
-export async function saveReport(report: Report, jobId: string, tempDir: string): Promise<string> {
-  const filePath = join(tempDir, `${jobId}_report.json`);
-  await Bun.write(filePath, JSON.stringify(report, null, 2));
-  return filePath;
+  return { playlist };
 }
 
 /** Seconds to "mm:ss" or "h:mm:ss" for the setlist. */

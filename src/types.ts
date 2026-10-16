@@ -45,12 +45,6 @@ export interface ReportItem {
   endTime: string;
 }
 
-export interface ReportStats {
-  [band: string]: string; // "XX%"
-}
-
 export interface Report {
   playlist: ReportItem[];
-  statistics: ReportStats;
-  failedSongs?: FailedSegment[];
 }

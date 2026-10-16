@@ -1061,7 +1061,7 @@ export function replaceBandLinks(
   return html.slice(0, from + markers.start.length) + links + '\n' + markers.indent + html.slice(to);
 }
 
-// Every page that links the group pages (classic.html keeps the list it had).
+// Every page that links the group pages.
 const HOME_PAGES = ['index.html'];
 
 /**

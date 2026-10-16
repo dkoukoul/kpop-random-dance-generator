@@ -15,7 +15,7 @@ You can check it live at (kpopgenerator.cloud)
   - **Shuffle**: Randomized song order for a true challenge.
   - **Reordering**: Intuitive drag-and-drop to organize your playlist.
 - **Compact & Expanded Views**: Toggle between a dense list view for long playlists and a detailed view with video thumbnails.
-- **Detailed Reports**: Generates a `report.json` with your playlist order and **Artist Statistics** (e.g., "Somi 20%, NewJeans 40%").
+- **Setlist**: Download a text setlist with each song's start time in the mix.
 - **Automatic Audio Processing**: Seamlessly mixes audio segments with 5-second countdowns between them using high-performance backend processing.
 
 ## 🛠️ Technology Stack
@@ -90,12 +90,12 @@ The application uses environment variables for configuration. You can set these 
 │   ├── services/
 │   │   ├── audio.ts    # FFmpeg processing logic
 │   │   ├── youtube.ts  # yt-dlp integration
-│   │   └── report.ts   # JSON report & statistics generation
+│   │   └── report.ts   # Setlist generation
 │   └── types.ts        # TypeScript interfaces
 ├── public/
 │   ├── index.html      # Main application UI
-│   ├── styles.css      # Design & Theme
-│   └── app.js          # Frontend logic & State management
+│   ├── css/studio.css  # Design & Theme
+│   └── app/studio/     # Frontend modules
 ├── assets/             # Static assets (countdown sounds, etc.)
 └── temp/               # Temporary workspace for audio generation
 ```

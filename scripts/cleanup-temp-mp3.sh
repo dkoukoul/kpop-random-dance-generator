@@ -6,9 +6,9 @@
 #   within the last hour are skipped: a generation job downloads its segments
 #   and concatenates them in temp/, and deleting those mid-job would corrupt
 #   the mix being built.
-# - _report.json and _setlist.txt files older than 7 days. They are only read back right after
-#   a job finishes (GET /api/download-report/:jobId), and the job itself is
-#   forgotten on restart.
+# - _setlist.txt files (and _report.json files from before Oct 2026) older
+#   than 7 days. They are only read back right after a job finishes
+#   (GET /api/download-setlist/:jobId), and the job itself is forgotten on restart.
 # - Leftovers from interrupted downloads (.webm, .part, _filelist.txt) older
 #   than a day.
 #
