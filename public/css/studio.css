@@ -39,6 +39,10 @@
   --errBg: #2a1416;
   --errLine: #6b2a30;
   --errText: #ff8a8a;
+  --footerBg: #07080b;
+  --footerLine: #1a1d24;
+  --footerText: #7d8594; /* body text: ~5:1, quieter than --muted */
+  --footerHead: #b3b9c4; /* headings: softer than --text */
   --overlay: rgba(5, 6, 10, 0.7);
   --shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   --glow: 0 0 24px rgba(255, 61, 139, 0.35);
@@ -83,6 +87,10 @@
   --errBg: #fdecec;
   --errLine: #e8a0a0;
   --errText: #b42318;
+  --footerBg: #e2e5eb;
+  --footerLine: #d0d5de;
+  --footerText: #565f6d;
+  --footerHead: #3a404b;
   --overlay: rgba(20, 22, 28, 0.45);
   --shadow: 0 12px 32px rgba(20, 22, 28, 0.18);
   --glow: none;
@@ -1904,6 +1912,12 @@ button.generate-why {
   background: var(--inset);
 }
 
+.site-footer .chips a {
+  color: var(--footerHead);
+  border-color: var(--footerLine);
+  background: transparent;
+}
+
 .chips a:hover {
   border-color: var(--accent);
 }
@@ -1945,18 +1959,25 @@ button.generate-why {
 
 /* ===== Footer ===== */
 .site-footer {
-  max-width: 1760px;
-  margin: 0 auto;
-  padding: 20px;
+  /* Full-width band; content stays within the 1760px layout. */
+  padding: 28px max(20px, calc((100% - 1720px) / 2));
+  background: var(--footerBg);
+  border-top: 1px solid var(--footerLine);
+  color: var(--footerText);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   align-items: start;
 }
 
+/* The status bar above already draws the dividing line. */
+.statusbar + .site-footer {
+  border-top: 0;
+}
+
 .fcol {
-  background: var(--panel);
-  border: 1px solid var(--line);
+  background: transparent;
+  border: 1px solid var(--footerLine);
   border-radius: var(--radius);
   padding: 0 14px;
 }
@@ -1965,12 +1986,13 @@ button.generate-why {
   margin: 0;
   font-size: 15px;
   font-weight: 700;
+  color: var(--footerHead);
 }
 
 .fcol .sub {
   display: block;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--footerText);
   font-weight: 400;
 }
 
@@ -1980,7 +2002,7 @@ button.generate-why {
 
 .fcol details + details,
 .fcol-head + details {
-  border-top: 1px solid var(--line2);
+  border-top: 1px solid var(--footerLine);
 }
 
 .fcol summary {
@@ -1993,6 +2015,7 @@ button.generate-why {
   padding: 10px 0;
   font-size: 13px;
   font-weight: 700;
+  color: var(--footerHead);
 }
 
 .fcol summary::-webkit-details-marker {
@@ -2033,7 +2056,7 @@ details[open] > summary ~ * {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color: var(--muted);
+  color: var(--footerText);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -2050,7 +2073,7 @@ details[open] > summary ~ * {
 }
 
 .fcol-body strong {
-  color: var(--text);
+  color: var(--footerHead);
   font-weight: 500;
 }
 
@@ -2069,7 +2092,7 @@ details[open] > summary ~ * {
 
 .fcol-support .thanks {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--footerText);
 }
 
 /* ===== Contact dialog ===== */
