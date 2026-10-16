@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NCT Random Dance Mixes | 6 Ready-Made Sets</title>
-    <meta name="description" content="6 ready-made NCT random dance mixes with real cut points, from 52 songs. Open one in the generator or edit the timings yourself." />
+    <meta name="description" content="6 ready-made NCT random dance mixes with real cut points, from 52 songs. Open one in the builder or edit the timings yourself." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://kpopgenerator.cloud/random-dance/nct" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kpopgenerator.cloud/random-dance/nct" />
     <meta property="og:title" content="NCT Random Dance Mixes | 6 Ready-Made Sets" />
-    <meta property="og:description" content="6 ready-made NCT random dance mixes with real cut points, from 52 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="og:description" content="6 ready-made NCT random dance mixes with real cut points, from 52 songs. Open one in the builder or edit the timings yourself." />
     <meta property="og:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -19,17 +19,24 @@
     <meta property="og:locale" content="en_US" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="NCT Random Dance Mixes | 6 Ready-Made Sets" />
-    <meta property="twitter:description" content="6 ready-made NCT random dance mixes with real cut points, from 52 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="twitter:description" content="6 ready-made NCT random dance mixes with real cut points, from 52 songs. Open one in the builder or edit the timings yourself." />
     <meta property="twitter:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
 
-    <meta name="theme-color" content="#8b5cf6" />
+    <!-- The theme chosen in the builder, before anything paints (Dark is the default). -->
+    <script>
+      try {
+        if (localStorage.getItem("kpopgen:theme") === "light") document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    </script>
+
+    <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/landing.css?v=3" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -61,7 +68,7 @@
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "NCT random dance mixes",
-  "description": "6 ready-made NCT random dance mixes with real cut points, from 52 songs. Open one in the generator or edit the timings yourself.",
+  "description": "6 ready-made NCT random dance mixes with real cut points, from 52 songs. Open one in the builder or edit the timings yourself.",
   "numberOfItems": 6,
   "itemListElement": [
     {
@@ -118,635 +125,623 @@
       gtag('config', 'G-Q93H8H3JP4');
     </script>
   </head>
-  <body class="">
-    <div class="page">
-      <header class="site-head">
-        <a class="brand" href="/"><span class="brand-icon">🎵</span> K-Pop Random Dance Generator</a>
-      </header>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="brand" href="/">
+          <svg class="brand-mark" width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="var(--accent)"></rect><g transform="translate(32 32) scale(0.6) translate(-52.5 -46)" fill="var(--accentText)" stroke="var(--accentText)" stroke-linecap="round" stroke-linejoin="round"><circle cx="43.8" cy="10.5" r="5.2" stroke="none"></circle><circle cx="56.2" cy="10.5" r="5.2" stroke="none"></circle><ellipse cx="50" cy="20.5" rx="7.6" ry="8.6" stroke="none"></ellipse><path d="M46.5 26 L53.5 26 L54 34 L46 34 Z" stroke="none"></path><path d="M39 35 Q50 32 61 35 L59 46 Q57 51 57 56 L44 56 Q44 51 41 46 Z" stroke-width="2"></path><path d="M43.5 55 L57.5 55 L69 74 Q50 79 31 76 Z" stroke-width="2"></path><path d="M58 37 L66 23 L74 7" fill="none" stroke-width="7.5"></path><path d="M42 37 L30 46 L44 54" fill="none" stroke-width="7"></path><path d="M45 72 L44 90" fill="none" stroke-width="9"></path><path d="M56 72 L64 88" fill="none" stroke-width="8.5"></path></g></svg>
+          <span class="brand-name">K-Pop Random Dance Generator</span>
+        </a>
+        <nav class="mainnav" aria-label="Main">
+          <a href="/">Builder</a>
+          <a href="/random-dance/" aria-current="true">Ready-made mixes</a>
+          <a class="nav-how" href="/#how-it-works">How it works</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="menu-wrap" data-menu>
+          <button type="button" class="btn" aria-expanded="false" aria-controls="themeMenu">
+            <span class="theme-swatch" aria-hidden="true"></span>
+            <span class="theme-prefix">Theme: </span><span id="themeName">Dark</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <div class="menu" id="themeMenu" hidden>
+            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true">Dark <span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false">Light <span class="check" aria-hidden="true">✓</span></button>
+          </div>
+        </div>
+        <a class="btn btn-outline support-btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-header">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg>
+          <span class="support-label">Support</span><span class="sr-only"> on Ko-fi (opens in a new tab)</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main" class="page" tabindex="-1">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span>/</span>
-        <a href="/random-dance/">Random Dance Mixes</a> <span>/</span>
-        <span aria-current="page">NCT</span>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="/random-dance/">Random dance mixes</a></li>
+          <li><span aria-current="page">NCT</span></li>
+        </ol>
       </nav>
 
-      <main>
+      <header class="hero">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>READY-MADE MIXES</p>
         <h1>NCT Random Dance Mixes</h1>
         <p class="lede">
-          6 ready-made NCT random dance sets you can open in the generator
-          in one click. NCT (엔시티) appears in
+          6 ready-made NCT random dance sets you can open in the builder
+          in one click. NCT (<span lang="ko">엔시티</span>) appears in
           52 distinct songs across the mixes people have built on this site, and every
-          start and end time below is the cut point those people actually used &mdash; not a guess.
+          start and end time below is the cut point those people actually used, not a guess.
         </p>
-
-        <ul class="stat-row">
-          <li><strong>52</strong><span>songs in the pool</span></li>
-          <li><strong>6</strong><span>ready-made mixes</span></li>
-          <li><strong>34s</strong><span>average clip length</span></li>
-          <li><strong>17</strong><span>dance practice videos</span></li>
-        </ul>
-
-        <p class="note">
-          Most-mixed NCT track right now: <strong>poppop</strong>,
-          usually cut from 1:06 to 1:30.
+        <dl class="tiles">
+          <div class="tile"><dt class="tile-k">SONGS</dt><dd class="tile-v">52</dd></div>
+          <div class="tile"><dt class="tile-k">MIXES</dt><dd class="tile-v">6</dd></div>
+          <div class="tile"><dt class="tile-k">AVG CLIP</dt><dd class="tile-v">33s</dd></div>
+          <div class="tile"><dt class="tile-k">PRACTICE VIDEOS</dt><dd class="tile-v">10</dd></div>
+        </dl>
+        <p class="top-song">
+          <span class="top-song-k">MOST MIXED NOW</span>
+          <strong>poppop</strong>
+          <span class="top-song-time">usually 1:06&ndash;1:30</span>
         </p>
+        <nav class="jump" aria-label="Mixes on this page">
+          <a href="#nct-essentials">NCT Essentials</a>
+          <a href="#nct-quick-warmup">Quick Warm-Up</a>
+          <a href="#nct-full-sections">Long Sections</a>
+          <a href="#nct-deep-cuts">Deep Cuts</a>
+          <a href="#nct-dance-practice">Dance Practice Edition</a>
+          <a href="#nct-marathon">Marathon Set</a>
+        </nav>
+      </header>
 
-        <section class="mixes">
-        <article class="mix-card" id="nct-essentials">
-          <header class="mix-head">
-            <h3>NCT Essentials</h3>
-            <p class="mix-blurb">The NCT songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
-            <p class="mix-meta">
-              <span>10 songs</span>
-              <span>~6:35 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=LNETckymbzk&t=66" target="_blank" rel="noopener nofollow">poppop</a>
-              </span>
-              <span class="mix-song-time">1:06&ndash;1:30</span>
-              <span class="mix-song-len">24s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=gvXsmI3Gdq8&t=40" target="_blank" rel="noopener nofollow">Baggy Jeans</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:14</span>
-              <span class="mix-song-len">34s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=PkKnp4SdE-w&t=42" target="_blank" rel="noopener nofollow">Hot Sauce</a>
-              </span>
-              <span class="mix-song-time">0:42&ndash;1:13</span>
-              <span class="mix-song-len">31s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=QPUjV7epJqE&t=39" target="_blank" rel="noopener nofollow">Hello Future</a>
-              </span>
-              <span class="mix-song-time">0:39&ndash;1:13</span>
-              <span class="mix-song-len">34s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=QmiqckXg8GE&t=65" target="_blank" rel="noopener nofollow">Surf</a>
-              </span>
-              <span class="mix-song-time">1:05&ndash;1:44</span>
-              <span class="mix-song-len">39s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=h3aP1cxwCyk&t=56" target="_blank" rel="noopener nofollow">We Young</a>
-              </span>
-              <span class="mix-song-time">0:56&ndash;1:35</span>
-              <span class="mix-song-len">39s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=mJkzQG6cfdU&t=96" target="_blank" rel="noopener nofollow">Walk (삐그덕)</a>
-              </span>
-              <span class="mix-song-time">1:36&ndash;2:13</span>
-              <span class="mix-song-len">37s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">8</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=rWnxyqxetGk&t=37" target="_blank" rel="noopener nofollow">Smoothie</a>
-              </span>
-              <span class="mix-song-time">0:37&ndash;1:05</span>
-              <span class="mix-song-len">28s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">9</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Hkl169yvvLI&t=58" target="_blank" rel="noopener nofollow">WayV 威神V &#39;无翼而飞 (Take Off) Mirror</a>
-              </span>
-              <span class="mix-song-time">0:58&ndash;1:39</span>
-              <span class="mix-song-len">41s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">10</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=2OvyA2__Eas&t=50" target="_blank" rel="noopener nofollow">英雄; Kick It</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:33</span>
-              <span class="mix-song-len">43s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="nct-essentials">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="nct-essentials">Download .json</button>
+      <div class="mixes">
+        <article class="panel mix" id="nct-essentials" aria-labelledby="nct-essentials-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="nct-essentials-title"><span class="status-dot" aria-hidden="true"></span>NCT Essentials</h2>
+            <p class="mix-stats">10 SONGS · ~6:24 · 5S COUNTDOWN</p>
           </div>
-          <script type="application/json" id="data-nct-essentials">{"version":"1.0","name":"NCT - NCT Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=LNETckymbzk","title":"NCT WISH 엔시티 위시 'poppop' MV","startTime":"1:06","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=gvXsmI3Gdq8","title":"NCT U 엔시티 유 'Baggy Jeans' MV","startTime":"0:40","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=PkKnp4SdE-w","title":"NCT DREAM 엔시티 드림 '맛 (Hot Sauce)' MV","startTime":"0:42","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QPUjV7epJqE","title":"NCT DREAM 엔시티 드림 'Hello Future' MV","startTime":"0:39","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QmiqckXg8GE","title":"NCT WISH 엔시티 위시 'Surf' Dance Practice","startTime":"1:05","endTime":"1:44","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=h3aP1cxwCyk","title":"NCT DREAM 엔시티 드림 'We Young' MV","startTime":"0:56","endTime":"1:35","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=mJkzQG6cfdU","title":"NCT 127 - 'Walk (삐그덕)' Dance Practice Mirrored [4K]","startTime":"1:36","endTime":"2:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=rWnxyqxetGk","title":"NCT DREAM - 'Smoothie' Dance Practice Mirrored","startTime":"0:37","endTime":"1:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Hkl169yvvLI","title":"WayV 威神V '无翼而飞 (Take Off) Dance Practice Mirror","startTime":"0:58","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=2OvyA2__Eas","title":"NCT 127 엔시티 127 '영웅 (英雄; Kick It)' MV","startTime":"0:50","endTime":"1:33","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="nct-quick-warmup">
-          <header class="mix-head">
-            <h3>Quick Warm-Up</h3>
-            <p class="mix-blurb">Short segments to loosen up with before a longer run — the tightest cuts in the NCT pool.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~2:16 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=LV1Es22E0RI&t=46" target="_blank" rel="noopener nofollow">We Go Up</a>
-              </span>
-              <span class="mix-song-time">0:46&ndash;1:08</span>
-              <span class="mix-song-len">22s</span>
+          <p class="mix-blurb">The NCT songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/LNETckymbzk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=LNETckymbzk&amp;t=66" target="_blank" rel="noopener nofollow">poppop<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:06&ndash;1:30</span>
+              <span class="row-len">24s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=NS2QUnI2-90&t=41" target="_blank" rel="noopener nofollow">Zoo</a>
-              </span>
-              <span class="mix-song-time">0:41&ndash;1:03</span>
-              <span class="mix-song-len">22s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/gvXsmI3Gdq8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=gvXsmI3Gdq8&amp;t=40" target="_blank" rel="noopener nofollow">Baggy Jeans<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:40&ndash;1:14</span>
+              <span class="row-len">34s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=LNETckymbzk&t=66" target="_blank" rel="noopener nofollow">poppop</a>
-              </span>
-              <span class="mix-song-time">1:06&ndash;1:30</span>
-              <span class="mix-song-len">24s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/PkKnp4SdE-w/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=PkKnp4SdE-w&amp;t=42" target="_blank" rel="noopener nofollow">Hot Sauce<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:42&ndash;1:13</span>
+              <span class="row-len">31s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=zuoSn3ObMz4&t=91" target="_blank" rel="noopener nofollow">Candy</a>
-              </span>
-              <span class="mix-song-time">1:31&ndash;1:55</span>
-              <span class="mix-song-len">24s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/QPUjV7epJqE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=QPUjV7epJqE&amp;t=39" target="_blank" rel="noopener nofollow">Hello Future<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:39&ndash;1:13</span>
+              <span class="row-len">34s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=3UGMDJ9kZCA&t=48" target="_blank" rel="noopener nofollow">The 7th Sense</a>
-              </span>
-              <span class="mix-song-time">0:48&ndash;1:12</span>
-              <span class="mix-song-len">24s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/h3aP1cxwCyk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=h3aP1cxwCyk&amp;t=56" target="_blank" rel="noopener nofollow">We Young<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:56&ndash;1:35</span>
+              <span class="row-len">39s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/mJkzQG6cfdU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=mJkzQG6cfdU&amp;t=96" target="_blank" rel="noopener nofollow">Walk (삐그덕)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:36&ndash;2:13</span>
+              <span class="row-len">37s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/rWnxyqxetGk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=rWnxyqxetGk&amp;t=37" target="_blank" rel="noopener nofollow">Smoothie<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:05</span>
+              <span class="row-len">28s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">08</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Hkl169yvvLI/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Hkl169yvvLI&amp;t=58" target="_blank" rel="noopener nofollow">无翼而飞 (Take Off)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:58&ndash;1:39</span>
+              <span class="row-len">41s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">09</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/2OvyA2__Eas/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=2OvyA2__Eas&amp;t=50" target="_blank" rel="noopener nofollow">英雄; Kick It<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:33</span>
+              <span class="row-len">43s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">10</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/vGuJuW0bDWA/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=vGuJuW0bDWA&amp;t=33" target="_blank" rel="noopener nofollow">Fact Check (불가사의; 不可思議)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:33&ndash;1:01</span>
+              <span class="row-len">28s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="nct-quick-warmup">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="nct-quick-warmup">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="nct-essentials"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="nct-essentials">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-nct-essentials">{"version":"1.0","name":"NCT - NCT Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=LNETckymbzk","title":"NCT WISH 엔시티 위시 'poppop' MV","startTime":"1:06","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=gvXsmI3Gdq8","title":"NCT U 엔시티 유 'Baggy Jeans' MV","startTime":"0:40","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=PkKnp4SdE-w","title":"NCT DREAM 엔시티 드림 '맛 (Hot Sauce)' MV","startTime":"0:42","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QPUjV7epJqE","title":"NCT DREAM 엔시티 드림 'Hello Future' MV","startTime":"0:39","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=h3aP1cxwCyk","title":"NCT DREAM 엔시티 드림 'We Young' MV","startTime":"0:56","endTime":"1:35","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=mJkzQG6cfdU","title":"NCT 127 - 'Walk (삐그덕)' Dance Practice Mirrored [4K]","startTime":"1:36","endTime":"2:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=rWnxyqxetGk","title":"NCT DREAM - 'Smoothie' Dance Practice Mirrored","startTime":"0:37","endTime":"1:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Hkl169yvvLI","title":"WayV 威神V '无翼而飞 (Take Off) Dance Practice Mirror","startTime":"0:58","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=2OvyA2__Eas","title":"NCT 127 엔시티 127 '영웅 (英雄; Kick It)' MV","startTime":"0:50","endTime":"1:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=vGuJuW0bDWA","title":"NCT 127 엔시티 127 'Fact Check (불가사의; 不可思議)' MV","startTime":"0:33","endTime":"1:01","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="nct-quick-warmup" aria-labelledby="nct-quick-warmup-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="nct-quick-warmup-title"><span class="status-dot" aria-hidden="true"></span>Quick Warm-Up</h2>
+            <p class="mix-stats">5 SONGS · ~2:16 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">Short segments to loosen up with before a longer run — the tightest cuts in the NCT pool.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/LV1Es22E0RI/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=LV1Es22E0RI&amp;t=46" target="_blank" rel="noopener nofollow">We Go Up<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:46&ndash;1:08</span>
+              <span class="row-len">22s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/NS2QUnI2-90/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=NS2QUnI2-90&amp;t=41" target="_blank" rel="noopener nofollow">Zoo<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:41&ndash;1:03</span>
+              <span class="row-len">22s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/LNETckymbzk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=LNETckymbzk&amp;t=66" target="_blank" rel="noopener nofollow">poppop<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:06&ndash;1:30</span>
+              <span class="row-len">24s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/zuoSn3ObMz4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=zuoSn3ObMz4&amp;t=91" target="_blank" rel="noopener nofollow">Candy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:31&ndash;1:55</span>
+              <span class="row-len">24s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/3UGMDJ9kZCA/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=3UGMDJ9kZCA&amp;t=48" target="_blank" rel="noopener nofollow">The 7th Sense<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:48&ndash;1:12</span>
+              <span class="row-len">24s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="nct-quick-warmup"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="nct-quick-warmup">Save as project file (.json)</button>
           </div>
           <script type="application/json" id="data-nct-quick-warmup">{"version":"1.0","name":"NCT - Quick Warm-Up","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=LV1Es22E0RI","title":"NCT DREAM 엔시티 드림 'We Go Up' MV","startTime":"0:46","endTime":"1:08","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=NS2QUnI2-90","title":"NCT x aespa 'Zoo' Dance Practice [Mirrored]","startTime":"0:41","endTime":"1:03","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=LNETckymbzk","title":"NCT WISH 엔시티 위시 'poppop' MV","startTime":"1:06","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=zuoSn3ObMz4","title":"NCT DREAM 엔시티 드림 'Candy' MV","startTime":"1:31","endTime":"1:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=3UGMDJ9kZCA","title":"NCT U 엔시티 유 '일곱 번째 감각 (The 7th Sense)' MV","startTime":"0:48","endTime":"1:12","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="nct-full-sections">
-          <header class="mix-head">
-            <h3>Long Sections</h3>
-            <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
-            <p class="mix-meta">
-              <span>8 songs</span>
-              <span>~7:12 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=tyrVtwE8Gv0&t=155" target="_blank" rel="noopener nofollow">Make A Wish (Birthday Song)</a>
-              </span>
-              <span class="mix-song-time">2:35&ndash;3:51</span>
-              <span class="mix-song-len">76s</span>
+        <article class="panel mix" id="nct-full-sections" aria-labelledby="nct-full-sections-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="nct-full-sections-title"><span class="status-dot" aria-hidden="true"></span>Long Sections</h2>
+            <p class="mix-stats">8 SONGS · ~6:53 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/tyrVtwE8Gv0/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=tyrVtwE8Gv0&amp;t=155" target="_blank" rel="noopener nofollow">Make A Wish (Birthday Song)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>2:35&ndash;3:51</span>
+              <span class="row-len">76s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=-GcXYImOZA4&t=44" target="_blank" rel="noopener nofollow">DREAM - BOOM</a>
-              </span>
-              <span class="mix-song-time">0:44&ndash;1:35</span>
-              <span class="mix-song-len">51s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/0aC0p6R4hQY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=0aC0p6R4hQY&amp;t=76" target="_blank" rel="noopener nofollow">Perfume<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:16&ndash;2:04</span>
+              <span class="row-len">48s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=9uHOscHlXRQ&t=47" target="_blank" rel="noopener nofollow">U - 90&#39;s Love</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:38</span>
-              <span class="mix-song-len">51s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/6mqW6KHHQ6U/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=6mqW6KHHQ6U&amp;t=42" target="_blank" rel="noopener nofollow">BTTF<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:42&ndash;1:26</span>
+              <span class="row-len">44s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=0aC0p6R4hQY&t=76" target="_blank" rel="noopener nofollow">Perfume</a>
-              </span>
-              <span class="mix-song-time">1:16&ndash;2:04</span>
-              <span class="mix-song-len">48s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/2OvyA2__Eas/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=2OvyA2__Eas&amp;t=50" target="_blank" rel="noopener nofollow">英雄; Kick It<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:33</span>
+              <span class="row-len">43s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=6mqW6KHHQ6U&t=42" target="_blank" rel="noopener nofollow">BTTF</a>
-              </span>
-              <span class="mix-song-time">0:42&ndash;1:26</span>
-              <span class="mix-song-len">44s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/2XqVNFBtVo4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=2XqVNFBtVo4&amp;t=47" target="_blank" rel="noopener nofollow">Songbird (Korean Ver.)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:29</span>
+              <span class="row-len">42s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=2OvyA2__Eas&t=50" target="_blank" rel="noopener nofollow">英雄; Kick It</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:33</span>
-              <span class="mix-song-len">43s</span>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/hvQZs3k6Ytk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=hvQZs3k6Ytk&amp;t=48" target="_blank" rel="noopener nofollow">WISH (Korean Ver.)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:48&ndash;1:30</span>
+              <span class="row-len">42s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=2XqVNFBtVo4&t=47" target="_blank" rel="noopener nofollow">Songbird (Korean Ver.)</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:29</span>
-              <span class="mix-song-len">42s</span>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/bTu86Ll8eqk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=bTu86Ll8eqk&amp;t=224" target="_blank" rel="noopener nofollow">BOMB<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>3:44&ndash;4:26</span>
+              <span class="row-len">42s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">8</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=hvQZs3k6Ytk&t=48" target="_blank" rel="noopener nofollow">WISH (Korean Ver.)</a>
-              </span>
-              <span class="mix-song-time">0:48&ndash;1:30</span>
-              <span class="mix-song-len">42s</span>
+            <li class="row">
+              <span class="row-num">08</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Hkl169yvvLI/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Hkl169yvvLI&amp;t=58" target="_blank" rel="noopener nofollow">无翼而飞 (Take Off)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:58&ndash;1:39</span>
+              <span class="row-len">41s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="nct-full-sections">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="nct-full-sections">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="nct-full-sections"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="nct-full-sections">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-nct-full-sections">{"version":"1.0","name":"NCT - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=tyrVtwE8Gv0","title":"NCT U 엔시티 유 'Make A Wish (Birthday Song)' MV","startTime":"2:35","endTime":"3:51","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=-GcXYImOZA4","title":"[NCT DREAM - BOOM] dance practice mirrored","startTime":"0:44","endTime":"1:35","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=9uHOscHlXRQ","title":"[NCT U - 90's Love] dance practice mirrored","startTime":"0:47","endTime":"1:38","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0aC0p6R4hQY","title":"NCT DOJAEJUNG - 'Perfume' Dance Practice Mirrored [4K]","startTime":"1:16","endTime":"2:04","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6mqW6KHHQ6U","title":"NCT DREAM 'BTTF' Dance Practice [MIRRORED]","startTime":"0:42","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=2OvyA2__Eas","title":"NCT 127 엔시티 127 '영웅 (英雄; Kick It)' MV","startTime":"0:50","endTime":"1:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=2XqVNFBtVo4","title":"NCT WISH 엔시티 위시 'Songbird (Korean Ver.)' MV","startTime":"0:47","endTime":"1:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=hvQZs3k6Ytk","title":"NCT WISH 엔시티 위시 'WISH (Korean Ver.)' MV","startTime":"0:48","endTime":"1:30","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-nct-full-sections">{"version":"1.0","name":"NCT - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=tyrVtwE8Gv0","title":"NCT U 엔시티 유 'Make A Wish (Birthday Song)' MV","startTime":"2:35","endTime":"3:51","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0aC0p6R4hQY","title":"NCT DOJAEJUNG - 'Perfume' Dance Practice Mirrored [4K]","startTime":"1:16","endTime":"2:04","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6mqW6KHHQ6U","title":"NCT DREAM 'BTTF' Dance Practice [MIRRORED]","startTime":"0:42","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=2OvyA2__Eas","title":"NCT 127 엔시티 127 '영웅 (英雄; Kick It)' MV","startTime":"0:50","endTime":"1:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=2XqVNFBtVo4","title":"NCT WISH 엔시티 위시 'Songbird (Korean Ver.)' MV","startTime":"0:47","endTime":"1:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=hvQZs3k6Ytk","title":"NCT WISH 엔시티 위시 'WISH (Korean Ver.)' MV","startTime":"0:48","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=bTu86Ll8eqk","title":"NCT 127 DANCE PRACTICE VIDEO #BOMB ver.","startTime":"3:44","endTime":"4:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Hkl169yvvLI","title":"WayV 威神V '无翼而飞 (Take Off) Dance Practice Mirror","startTime":"0:58","endTime":"1:39","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="nct-deep-cuts">
-          <header class="mix-head">
-            <h3>Deep Cuts</h3>
-            <p class="mix-blurb">NCT tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
-            <p class="mix-meta">
-              <span>10 songs</span>
-              <span>~5:39 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=zuoSn3ObMz4&t=91" target="_blank" rel="noopener nofollow">Candy</a>
-              </span>
-              <span class="mix-song-time">1:31&ndash;1:55</span>
-              <span class="mix-song-len">24s</span>
+        <article class="panel mix" id="nct-deep-cuts" aria-labelledby="nct-deep-cuts-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="nct-deep-cuts-title"><span class="status-dot" aria-hidden="true"></span>Deep Cuts</h2>
+            <p class="mix-stats">10 SONGS · ~5:38 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">NCT tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/hvQZs3k6Ytk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=hvQZs3k6Ytk&amp;t=48" target="_blank" rel="noopener nofollow">WISH (Korean Ver.)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:48&ndash;1:30</span>
+              <span class="row-len">42s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=0AUFyFEt35g&t=40" target="_blank" rel="noopener nofollow">BOSS</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:09</span>
-              <span class="mix-song-len">29s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/X-iJZ0gfKPo/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=X-iJZ0gfKPo&amp;t=55" target="_blank" rel="noopener nofollow">BOOM<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:20</span>
+              <span class="row-len">25s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=28dAfmIAlCo&t=40" target="_blank" rel="noopener nofollow">COLOR</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:11</span>
-              <span class="mix-song-len">31s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/0AUFyFEt35g/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=0AUFyFEt35g&amp;t=40" target="_blank" rel="noopener nofollow">BOSS<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:40&ndash;1:09</span>
+              <span class="row-len">29s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=X-iJZ0gfKPo&t=55" target="_blank" rel="noopener nofollow">BOOM</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:20</span>
-              <span class="mix-song-len">25s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/28dAfmIAlCo/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=28dAfmIAlCo&amp;t=40" target="_blank" rel="noopener nofollow">COLOR<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:40&ndash;1:11</span>
+              <span class="row-len">31s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=1o5O2YvV3HU&t=49" target="_blank" rel="noopener nofollow">Ode to Love</a>
-              </span>
-              <span class="mix-song-time">0:49&ndash;1:22</span>
-              <span class="mix-song-len">33s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/1o5O2YvV3HU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=1o5O2YvV3HU&amp;t=49" target="_blank" rel="noopener nofollow">Ode to Love<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:49&ndash;1:22</span>
+              <span class="row-len">33s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=OFqTPPZZ--8&t=31" target="_blank" rel="noopener nofollow">Fact Check</a>
-              </span>
-              <span class="mix-song-time">0:31&ndash;1:07</span>
-              <span class="mix-song-len">36s</span>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/OFqTPPZZ--8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=OFqTPPZZ--8&amp;t=31" target="_blank" rel="noopener nofollow">Fact Check<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:31&ndash;1:07</span>
+              <span class="row-len">36s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=6GpLkm9s7kk&t=47" target="_blank" rel="noopener nofollow">DREAM - Hot Sauce</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:17</span>
-              <span class="mix-song-len">30s</span>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/A5H8zBb3iao/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=A5H8zBb3iao&amp;t=58" target="_blank" rel="noopener nofollow">90&#39;s Love<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:58&ndash;1:27</span>
+              <span class="row-len">29s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">8</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=B1qq8IvzSz4&t=70" target="_blank" rel="noopener nofollow">When I</a>
-              </span>
-              <span class="mix-song-time">1:10&ndash;1:45</span>
-              <span class="mix-song-len">35s</span>
+            <li class="row">
+              <span class="row-num">08</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/B1qq8IvzSz4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=B1qq8IvzSz4&amp;t=70" target="_blank" rel="noopener nofollow">When I’m With You<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:10&ndash;1:45</span>
+              <span class="row-len">35s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">9</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=LV1Es22E0RI&t=46" target="_blank" rel="noopener nofollow">We Go Up</a>
-              </span>
-              <span class="mix-song-time">0:46&ndash;1:08</span>
-              <span class="mix-song-len">22s</span>
+            <li class="row">
+              <span class="row-num">09</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/LV1Es22E0RI/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=LV1Es22E0RI&amp;t=46" target="_blank" rel="noopener nofollow">We Go Up<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:46&ndash;1:08</span>
+              <span class="row-len">22s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">10</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=A5H8zBb3iao&t=58" target="_blank" rel="noopener nofollow">90</a>
-              </span>
-              <span class="mix-song-time">0:58&ndash;1:27</span>
-              <span class="mix-song-len">29s</span>
+            <li class="row">
+              <span class="row-num">10</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/_psXn_VJ_AE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=_psXn_VJ_AE&amp;t=49" target="_blank" rel="noopener nofollow">Fire Truck<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:49&ndash;1:00</span>
+              <span class="row-len">11s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="nct-deep-cuts">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="nct-deep-cuts">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="nct-deep-cuts"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="nct-deep-cuts">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-nct-deep-cuts">{"version":"1.0","name":"NCT - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=zuoSn3ObMz4","title":"NCT DREAM 엔시티 드림 'Candy' MV","startTime":"1:31","endTime":"1:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0AUFyFEt35g","title":"NCT U 엔시티 유 'BOSS' MV","startTime":"0:40","endTime":"1:09","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=28dAfmIAlCo","title":"NCT WISH 엔시티 위시 'COLOR' MV","startTime":"0:40","endTime":"1:11","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=X-iJZ0gfKPo","title":"NCT DREAM 엔시티 드림 'BOOM' MV","startTime":"0:55","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=1o5O2YvV3HU","title":"NCT WISH 엔시티 위시 'Ode to Love' MV","startTime":"0:49","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=OFqTPPZZ--8","title":"NCT 127 - 'Fact Check' Dance Practice Mirrored [4K]","startTime":"0:31","endTime":"1:07","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6GpLkm9s7kk","title":"[NCT DREAM - Hot Sauce] dance practice mirrored","startTime":"0:47","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=B1qq8IvzSz4","title":"NCT DREAM 엔시티 드림 'When I’m With You' MV","startTime":"1:10","endTime":"1:45","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=LV1Es22E0RI","title":"NCT DREAM 엔시티 드림 'We Go Up' MV","startTime":"0:46","endTime":"1:08","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=A5H8zBb3iao","title":"NCT U 엔시티 유 '90's Love' MV","startTime":"0:58","endTime":"1:27","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-nct-deep-cuts">{"version":"1.0","name":"NCT - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=hvQZs3k6Ytk","title":"NCT WISH 엔시티 위시 'WISH (Korean Ver.)' MV","startTime":"0:48","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=X-iJZ0gfKPo","title":"NCT DREAM 엔시티 드림 'BOOM' MV","startTime":"0:55","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0AUFyFEt35g","title":"NCT U 엔시티 유 'BOSS' MV","startTime":"0:40","endTime":"1:09","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=28dAfmIAlCo","title":"NCT WISH 엔시티 위시 'COLOR' MV","startTime":"0:40","endTime":"1:11","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=1o5O2YvV3HU","title":"NCT WISH 엔시티 위시 'Ode to Love' MV","startTime":"0:49","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=OFqTPPZZ--8","title":"NCT 127 - 'Fact Check' Dance Practice Mirrored [4K]","startTime":"0:31","endTime":"1:07","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=A5H8zBb3iao","title":"NCT U 엔시티 유 '90's Love' MV","startTime":"0:58","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=B1qq8IvzSz4","title":"NCT DREAM 엔시티 드림 'When I’m With You' MV","startTime":"1:10","endTime":"1:45","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=LV1Es22E0RI","title":"NCT DREAM 엔시티 드림 'We Go Up' MV","startTime":"0:46","endTime":"1:08","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=_psXn_VJ_AE","title":"NCT 127 엔시티 127 '소방차 (Fire Truck)' MV","startTime":"0:49","endTime":"1:00","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="nct-dance-practice">
-          <header class="mix-head">
-            <h3>Dance Practice Edition</h3>
-            <p class="mix-blurb">Built only from dance practice, choreography and performance uploads, so the audio matches the versions most covers learn from.</p>
-            <p class="mix-meta">
-              <span>10 songs</span>
-              <span>~6:51 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=QmiqckXg8GE&t=65" target="_blank" rel="noopener nofollow">Surf</a>
-              </span>
-              <span class="mix-song-time">1:05&ndash;1:44</span>
-              <span class="mix-song-len">39s</span>
+        <article class="panel mix" id="nct-dance-practice" aria-labelledby="nct-dance-practice-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="nct-dance-practice-title"><span class="status-dot" aria-hidden="true"></span>Dance Practice Edition</h2>
+            <p class="mix-stats">10 SONGS · ~6:38 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">Built only from dance practice, choreography and performance uploads, so the audio matches the versions most covers learn from.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/mJkzQG6cfdU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=mJkzQG6cfdU&amp;t=96" target="_blank" rel="noopener nofollow">Walk (삐그덕)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:36&ndash;2:13</span>
+              <span class="row-len">37s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=mJkzQG6cfdU&t=96" target="_blank" rel="noopener nofollow">Walk (삐그덕)</a>
-              </span>
-              <span class="mix-song-time">1:36&ndash;2:13</span>
-              <span class="mix-song-len">37s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/rWnxyqxetGk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=rWnxyqxetGk&amp;t=37" target="_blank" rel="noopener nofollow">Smoothie<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:05</span>
+              <span class="row-len">28s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=rWnxyqxetGk&t=37" target="_blank" rel="noopener nofollow">Smoothie</a>
-              </span>
-              <span class="mix-song-time">0:37&ndash;1:05</span>
-              <span class="mix-song-len">28s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Hkl169yvvLI/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Hkl169yvvLI&amp;t=58" target="_blank" rel="noopener nofollow">无翼而飞 (Take Off)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:58&ndash;1:39</span>
+              <span class="row-len">41s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Hkl169yvvLI&t=58" target="_blank" rel="noopener nofollow">WayV 威神V &#39;无翼而飞 (Take Off) Mirror</a>
-              </span>
-              <span class="mix-song-time">0:58&ndash;1:39</span>
-              <span class="mix-song-len">41s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/OFqTPPZZ--8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=OFqTPPZZ--8&amp;t=31" target="_blank" rel="noopener nofollow">Fact Check<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:31&ndash;1:07</span>
+              <span class="row-len">36s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=OFqTPPZZ--8&t=31" target="_blank" rel="noopener nofollow">Fact Check</a>
-              </span>
-              <span class="mix-song-time">0:31&ndash;1:07</span>
-              <span class="mix-song-len">36s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/ejrvb7Pc5VU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=ejrvb7Pc5VU&amp;t=62" target="_blank" rel="noopener nofollow">WISH<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:02&ndash;1:27</span>
+              <span class="row-len">25s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=6GpLkm9s7kk&t=47" target="_blank" rel="noopener nofollow">DREAM - Hot Sauce</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:17</span>
-              <span class="mix-song-len">30s</span>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/bTu86Ll8eqk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=bTu86Ll8eqk&amp;t=224" target="_blank" rel="noopener nofollow">BOMB<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>3:44&ndash;4:26</span>
+              <span class="row-len">42s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=-GcXYImOZA4&t=44" target="_blank" rel="noopener nofollow">DREAM - BOOM</a>
-              </span>
-              <span class="mix-song-time">0:44&ndash;1:35</span>
-              <span class="mix-song-len">51s</span>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/0aC0p6R4hQY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=0aC0p6R4hQY&amp;t=76" target="_blank" rel="noopener nofollow">Perfume<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:16&ndash;2:04</span>
+              <span class="row-len">48s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">8</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ejrvb7Pc5VU&t=62" target="_blank" rel="noopener nofollow">WISH</a>
-              </span>
-              <span class="mix-song-time">1:02&ndash;1:27</span>
-              <span class="mix-song-len">25s</span>
+            <li class="row">
+              <span class="row-num">08</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/6mqW6KHHQ6U/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=6mqW6KHHQ6U&amp;t=42" target="_blank" rel="noopener nofollow">BTTF<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:42&ndash;1:26</span>
+              <span class="row-len">44s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">9</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=bTu86Ll8eqk&t=224" target="_blank" rel="noopener nofollow">127 #BOMB</a>
-              </span>
-              <span class="mix-song-time">3:44&ndash;4:26</span>
-              <span class="mix-song-len">42s</span>
+            <li class="row">
+              <span class="row-num">09</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/NS2QUnI2-90/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=NS2QUnI2-90&amp;t=41" target="_blank" rel="noopener nofollow">Zoo<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:41&ndash;1:03</span>
+              <span class="row-len">22s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">10</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=eKFaDO4DHxE&t=41" target="_blank" rel="noopener nofollow">U - Make A Wish (Birthday Song)</a>
-              </span>
-              <span class="mix-song-time">0:41&ndash;1:18</span>
-              <span class="mix-song-len">37s</span>
+            <li class="row">
+              <span class="row-num">10</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/rJJp3EVl_y8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=rJJp3EVl_y8&amp;t=0" target="_blank" rel="noopener nofollow">Surf<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:00&ndash;0:30</span>
+              <span class="row-len">30s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="nct-dance-practice">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="nct-dance-practice">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="nct-dance-practice"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="nct-dance-practice">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-nct-dance-practice">{"version":"1.0","name":"NCT - Dance Practice Edition","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=QmiqckXg8GE","title":"NCT WISH 엔시티 위시 'Surf' Dance Practice","startTime":"1:05","endTime":"1:44","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=mJkzQG6cfdU","title":"NCT 127 - 'Walk (삐그덕)' Dance Practice Mirrored [4K]","startTime":"1:36","endTime":"2:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=rWnxyqxetGk","title":"NCT DREAM - 'Smoothie' Dance Practice Mirrored","startTime":"0:37","endTime":"1:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Hkl169yvvLI","title":"WayV 威神V '无翼而飞 (Take Off) Dance Practice Mirror","startTime":"0:58","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=OFqTPPZZ--8","title":"NCT 127 - 'Fact Check' Dance Practice Mirrored [4K]","startTime":"0:31","endTime":"1:07","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6GpLkm9s7kk","title":"[NCT DREAM - Hot Sauce] dance practice mirrored","startTime":"0:47","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=-GcXYImOZA4","title":"[NCT DREAM - BOOM] dance practice mirrored","startTime":"0:44","endTime":"1:35","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ejrvb7Pc5VU","title":"NCT WISH - 'WISH' Dance Practice Mirrored [4K]","startTime":"1:02","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=bTu86Ll8eqk","title":"NCT 127 DANCE PRACTICE VIDEO #BOMB ver.","startTime":"3:44","endTime":"4:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=eKFaDO4DHxE","title":"[NCT U - Make A Wish (Birthday Song)] dance practice mirrored","startTime":"0:41","endTime":"1:18","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-nct-dance-practice">{"version":"1.0","name":"NCT - Dance Practice Edition","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=mJkzQG6cfdU","title":"NCT 127 - 'Walk (삐그덕)' Dance Practice Mirrored [4K]","startTime":"1:36","endTime":"2:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=rWnxyqxetGk","title":"NCT DREAM - 'Smoothie' Dance Practice Mirrored","startTime":"0:37","endTime":"1:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Hkl169yvvLI","title":"WayV 威神V '无翼而飞 (Take Off) Dance Practice Mirror","startTime":"0:58","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=OFqTPPZZ--8","title":"NCT 127 - 'Fact Check' Dance Practice Mirrored [4K]","startTime":"0:31","endTime":"1:07","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ejrvb7Pc5VU","title":"NCT WISH - 'WISH' Dance Practice Mirrored [4K]","startTime":"1:02","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=bTu86Ll8eqk","title":"NCT 127 DANCE PRACTICE VIDEO #BOMB ver.","startTime":"3:44","endTime":"4:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0aC0p6R4hQY","title":"NCT DOJAEJUNG - 'Perfume' Dance Practice Mirrored [4K]","startTime":"1:16","endTime":"2:04","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6mqW6KHHQ6U","title":"NCT DREAM 'BTTF' Dance Practice [MIRRORED]","startTime":"0:42","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=NS2QUnI2-90","title":"NCT x aespa 'Zoo' Dance Practice [Mirrored]","startTime":"0:41","endTime":"1:03","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=rJJp3EVl_y8","title":"[ MIRROR ] NCT WISH - 'Surf' Dance Practice","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="nct-marathon">
-          <header class="mix-head">
-            <h3>Marathon Set</h3>
-            <p class="mix-blurb">The long one: songs drawn across the whole NCT pool, popular and obscure mixed together.</p>
-            <p class="mix-meta">
-              <span>10 songs</span>
-              <span>~7:29 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=gvXsmI3Gdq8&t=40" target="_blank" rel="noopener nofollow">Baggy Jeans</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:14</span>
-              <span class="mix-song-len">34s</span>
+        <article class="panel mix" id="nct-marathon" aria-labelledby="nct-marathon-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="nct-marathon-title"><span class="status-dot" aria-hidden="true"></span>Marathon Set</h2>
+            <p class="mix-stats">10 SONGS · ~6:00 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The long one: songs drawn across the whole NCT pool, popular and obscure mixed together.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/gvXsmI3Gdq8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=gvXsmI3Gdq8&amp;t=40" target="_blank" rel="noopener nofollow">Baggy Jeans<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:40&ndash;1:14</span>
+              <span class="row-len">34s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=vofjeJvRT9c&t=53" target="_blank" rel="noopener nofollow">Ridin</a>
-              </span>
-              <span class="mix-song-time">0:53&ndash;1:29</span>
-              <span class="mix-song-len">36s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/QWFIz75ad6I/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=QWFIz75ad6I&amp;t=61" target="_blank" rel="noopener nofollow">BOTH SIDES<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:01&ndash;1:25</span>
+              <span class="row-len">24s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=IKlkZZv76Ho&t=81" target="_blank" rel="noopener nofollow">Steady</a>
-              </span>
-              <span class="mix-song-time">1:21&ndash;2:02</span>
-              <span class="mix-song-len">41s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Q120WlxVxdk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Q120WlxVxdk&amp;t=60" target="_blank" rel="noopener nofollow">Sticky<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:00&ndash;1:39</span>
+              <span class="row-len">39s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=jy6lZGYWsQA&t=0" target="_blank" rel="noopener nofollow">127 - Kick It</a>
-              </span>
-              <span class="mix-song-time">0:00&ndash;0:35</span>
-              <span class="mix-song-len">35s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/R9XpA_zXDDI/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=R9XpA_zXDDI&amp;t=42" target="_blank" rel="noopener nofollow">Ay-Yo<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:42&ndash;1:19</span>
+              <span class="row-len">37s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=QPUjV7epJqE&t=39" target="_blank" rel="noopener nofollow">Hello Future</a>
-              </span>
-              <span class="mix-song-time">0:39&ndash;1:13</span>
-              <span class="mix-song-len">34s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/QPUjV7epJqE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=QPUjV7epJqE&amp;t=39" target="_blank" rel="noopener nofollow">Hello Future<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:39&ndash;1:13</span>
+              <span class="row-len">34s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=MA_B8RU9BsQ&t=39" target="_blank" rel="noopener nofollow">Walk</a>
-              </span>
-              <span class="mix-song-time">0:39&ndash;1:04</span>
-              <span class="mix-song-len">25s</span>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/arjy2v7zEI0/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=arjy2v7zEI0&amp;t=60" target="_blank" rel="noopener nofollow">Simon Says<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:00&ndash;1:39</span>
+              <span class="row-len">39s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=6GpLkm9s7kk&t=47" target="_blank" rel="noopener nofollow">DREAM - Hot Sauce</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:17</span>
-              <span class="mix-song-len">30s</span>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/A5H8zBb3iao/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=A5H8zBb3iao&amp;t=58" target="_blank" rel="noopener nofollow">90&#39;s Love<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:58&ndash;1:27</span>
+              <span class="row-len">29s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">8</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=-GcXYImOZA4&t=44" target="_blank" rel="noopener nofollow">DREAM - BOOM</a>
-              </span>
-              <span class="mix-song-time">0:44&ndash;1:35</span>
-              <span class="mix-song-len">51s</span>
+            <li class="row">
+              <span class="row-num">08</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/WkuHLzMMTZM/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=WkuHLzMMTZM&amp;t=46" target="_blank" rel="noopener nofollow">Cherry Bomb<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:46&ndash;1:17</span>
+              <span class="row-len">31s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">9</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=bTu86Ll8eqk&t=224" target="_blank" rel="noopener nofollow">127 #BOMB</a>
-              </span>
-              <span class="mix-song-time">3:44&ndash;4:26</span>
-              <span class="mix-song-len">42s</span>
+            <li class="row">
+              <span class="row-num">09</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/3UGMDJ9kZCA/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=3UGMDJ9kZCA&amp;t=48" target="_blank" rel="noopener nofollow">The 7th Sense<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:48&ndash;1:12</span>
+              <span class="row-len">24s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">10</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=tyrVtwE8Gv0&t=155" target="_blank" rel="noopener nofollow">Make A Wish (Birthday Song)</a>
-              </span>
-              <span class="mix-song-time">2:35&ndash;3:51</span>
-              <span class="mix-song-len">76s</span>
+            <li class="row">
+              <span class="row-num">10</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/zuoSn3ObMz4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=zuoSn3ObMz4&amp;t=91" target="_blank" rel="noopener nofollow">Candy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:31&ndash;1:55</span>
+              <span class="row-len">24s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="nct-marathon">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="nct-marathon">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="nct-marathon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="nct-marathon">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-nct-marathon">{"version":"1.0","name":"NCT - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=gvXsmI3Gdq8","title":"NCT U 엔시티 유 'Baggy Jeans' MV","startTime":"0:40","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=vofjeJvRT9c","title":"NCT DREAM 엔시티 드림 'Ridin'' MV","startTime":"0:53","endTime":"1:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=IKlkZZv76Ho","title":"NCT WISH 엔시티 위시 'Steady' MV","startTime":"1:21","endTime":"2:02","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jy6lZGYWsQA","title":"[NCT 127 - Kick It] dance practice mirrored","startTime":"0:00","endTime":"0:35","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QPUjV7epJqE","title":"NCT DREAM 엔시티 드림 'Hello Future' MV","startTime":"0:39","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=MA_B8RU9BsQ","title":"NCT 127 엔시티 127 '삐그덕 (Walk)' MV","startTime":"0:39","endTime":"1:04","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6GpLkm9s7kk","title":"[NCT DREAM - Hot Sauce] dance practice mirrored","startTime":"0:47","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=-GcXYImOZA4","title":"[NCT DREAM - BOOM] dance practice mirrored","startTime":"0:44","endTime":"1:35","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=bTu86Ll8eqk","title":"NCT 127 DANCE PRACTICE VIDEO #BOMB ver.","startTime":"3:44","endTime":"4:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=tyrVtwE8Gv0","title":"NCT U 엔시티 유 'Make A Wish (Birthday Song)' MV","startTime":"2:35","endTime":"3:51","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-nct-marathon">{"version":"1.0","name":"NCT - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=gvXsmI3Gdq8","title":"NCT U 엔시티 유 'Baggy Jeans' MV","startTime":"0:40","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QWFIz75ad6I","title":"NCT JNJM 엔시티 제노재민 'BOTH SIDES' MV","startTime":"1:01","endTime":"1:25","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Q120WlxVxdk","title":"NCT WISH 엔시티 위시 'Sticky' MV","startTime":"1:00","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=R9XpA_zXDDI","title":"NCT 127 엔시티 127 'Ay-Yo' MV","startTime":"0:42","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QPUjV7epJqE","title":"NCT DREAM 엔시티 드림 'Hello Future' MV","startTime":"0:39","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=arjy2v7zEI0","title":"NCT 127 엔시티 127 'Simon Says' MV","startTime":"1:00","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=A5H8zBb3iao","title":"NCT U 엔시티 유 '90's Love' MV","startTime":"0:58","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=WkuHLzMMTZM","title":"NCT 127 엔시티 127 'Cherry Bomb' MV","startTime":"0:46","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=3UGMDJ9kZCA","title":"NCT U 엔시티 유 '일곱 번째 감각 (The 7th Sense)' MV","startTime":"0:48","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=zuoSn3ObMz4","title":"NCT DREAM 엔시티 드림 'Candy' MV","startTime":"1:31","endTime":"1:55","info":null,"isExpanded":false}]}</script>
         </article>
+      </div>
+
+      <section class="prose" aria-labelledby="how-title">
+        <h2 id="how-title">How to use these NCT mixes</h2>
+        <p>
+          Press <b>Open in builder</b> on any mix. The songs and their cut points load into the
+          builder on the home page in the order shown here. Drop songs you don't know, move songs up
+          or down, or nudge a start or end time in the editor. Press <b>Shuffle now</b> for a random
+          order (that is the point of a random play dance), then <b>Generate mix</b> to get one MP3
+          with a 5-second countdown before every song.
+        </p>
+        <p>
+          Want to keep a set? <b>Save as project file</b> saves it as a .json file. Open it later in
+          the builder from <b>Project &rarr; Open a saved file</b>, or send it to whoever is running
+          your RPD event.
+        </p>
+
+        <h2>Where these cut points come from</h2>
+        <p>
+          Each clip is the segment most commonly chosen for that video by people using this
+          generator. In practice that lands on the chorus or the dance break, because that is the
+          part of a NCT song a random play dance crowd knows and can actually follow.
+          The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
+          frozen at whatever was popular when the page was written.
+        </p>
+        <p>
+          Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
+          only once even when several uploads of it exist, so a mix never plays you the same
+          choreography twice.
+        </p>
+      </section>
+
+      <section class="others" aria-labelledby="others-title">
+        <h2 id="others-title">Mixes for other groups</h2>
+        <div class="chips">
+          <a href="/random-dance/illit">ILLIT</a>
+          <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
+          <a href="/random-dance/aespa">aespa</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/katseye">KATSEYE</a>
+          <a href="/random-dance/twice">TWICE</a>
+          <a href="/random-dance/stray-kids">Stray Kids</a>
+          <a href="/random-dance/ateez">ATEEZ</a>
+          <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/enhypen">ENHYPEN</a>
+          <a href="/random-dance/babymonster">BABYMONSTER</a>
+          <a href="/random-dance/newjeans">NewJeans</a>
+          <a href="/random-dance/ive">IVE</a>
+          <a href="/random-dance/seventeen">SEVENTEEN</a>
+          <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
+          <a href="/random-dance/itzy">ITZY</a>
+          <a href="/random-dance/g-i-dle">i-dle</a>
+          <a href="/random-dance/red-velvet">Red Velvet</a>
+          <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
+          <a href="/random-dance/xg">XG</a>
+          <a href="/random-dance/nmixx">NMIXX</a>
+        </div>
+        <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <section class="foot-col" aria-labelledby="foot-build">
+          <h2 id="foot-build">Make your own mix</h2>
+          <p>Search YouTube, pick the part of each song, and get one MP3 with a 5-second countdown before every song. Free, no sign-up.</p>
+          <p><a class="btn btn-primary" href="/">Open the builder</a></p>
         </section>
-
-        <section class="prose">
-          <h2>How to use these NCT mixes</h2>
-          <p>
-            Press <em>Open in generator</em> on any mix. The songs and their timings load straight
-            into the generator on the home page, in the order shown here, where you can drop tracks
-            you don't know, move songs up or down, or nudge a start time before generating the audio
-            file. Press <em>Shuffle now</em> for a random order whenever you like &mdash; which is the
-            point of a random play dance.
-          </p>
-          <p>
-            Prefer to keep a set? <em>Download .json</em> saves it as a project file you can open
-            later from the generator's <em>Project</em> menu, or send to whoever is running your RPD event.
-          </p>
-
-          <h2>Where these cut points come from</h2>
-          <p>
-            Each clip below is the segment most commonly chosen for that video by people using this
-            generator. In practice that lands on the chorus or the dance break, because that is the
-            part of a NCT song a random play dance crowd knows and can actually follow.
-            The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
-            frozen at whatever was popular when the page was written.
-          </p>
-          <p>
-            Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
-            only once even when several uploads of it exist, so a mix never plays you the same
-            choreography twice.
+        <section class="foot-col" aria-labelledby="foot-support">
+          <h2 id="foot-support">Enjoying the tool?</h2>
+          <p>It's free and always will be. Support on Ko-fi helps pay for the servers.</p>
+          <p class="foot-row">
+            <a class="btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-footer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg> Support on Ko-fi<span class="sr-only"> (opens in a new tab)</span></a>
+            <a class="foot-link" href="/#how-it-works">How it works</a>
+            <a class="foot-link" href="/#contact">Contact us</a>
           </p>
         </section>
+      </div>
+      <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
+    </footer>
 
-        <section class="other-bands">
-          <h2>Mixes for other groups</h2>
-          <div class="band-links">
-        <a href="/random-dance/bts">BTS</a>
-        <a href="/random-dance/twice">TWICE</a>
-        <a href="/random-dance/stray-kids">Stray Kids</a>
-        <a href="/random-dance/itzy">ITZY</a>
-        <a href="/random-dance/enhypen">ENHYPEN</a>
-        <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-        <a href="/random-dance/blackpink">BLACKPINK</a>
-        <a href="/random-dance/ateez">ATEEZ</a>
-        <a href="/random-dance/seventeen">SEVENTEEN</a>
-        <a href="/random-dance/aespa">aespa</a>
-        <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
-        <a href="/random-dance/babymonster">BABYMONSTER</a>
-        <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-        <a href="/random-dance/g-i-dle">(G)I-DLE</a>
-        <a href="/random-dance/illit">ILLIT</a>
-        <a href="/random-dance/nmixx">NMIXX</a>
-        <a href="/random-dance/newjeans">NewJeans</a>
-        <a href="/random-dance/red-velvet">Red Velvet</a>
-        <a href="/random-dance/xg">XG</a>
-        <a href="/random-dance/ive">IVE</a>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-foot">
-        <p><a class="btn btn-primary" href="/">Build your own mix &rarr;</a></p>
-        <p class="fine">Made with 💜 for K-Pop dance lovers.</p>
-      </footer>
-    </div>
-    <script src="/app/landing.js"></script>
+    <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
+    <script src="/app/landing.js?v=3"></script>
   </body>
 </html>

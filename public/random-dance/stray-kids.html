@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stray Kids Random Dance Mixes | 5 Ready-Made Sets</title>
-    <meta name="description" content="5 ready-made Stray Kids random dance mixes with real cut points, from 26 songs. Open one in the generator or edit the timings yourself." />
+    <meta name="description" content="5 ready-made Stray Kids random dance mixes with real cut points, from 25 songs. Open one in the builder or edit the timings yourself." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://kpopgenerator.cloud/random-dance/stray-kids" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kpopgenerator.cloud/random-dance/stray-kids" />
     <meta property="og:title" content="Stray Kids Random Dance Mixes | 5 Ready-Made Sets" />
-    <meta property="og:description" content="5 ready-made Stray Kids random dance mixes with real cut points, from 26 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="og:description" content="5 ready-made Stray Kids random dance mixes with real cut points, from 25 songs. Open one in the builder or edit the timings yourself." />
     <meta property="og:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -19,17 +19,24 @@
     <meta property="og:locale" content="en_US" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="Stray Kids Random Dance Mixes | 5 Ready-Made Sets" />
-    <meta property="twitter:description" content="5 ready-made Stray Kids random dance mixes with real cut points, from 26 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="twitter:description" content="5 ready-made Stray Kids random dance mixes with real cut points, from 25 songs. Open one in the builder or edit the timings yourself." />
     <meta property="twitter:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
 
-    <meta name="theme-color" content="#8b5cf6" />
+    <!-- The theme chosen in the builder, before anything paints (Dark is the default). -->
+    <script>
+      try {
+        if (localStorage.getItem("kpopgen:theme") === "light") document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    </script>
+
+    <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/landing.css?v=3" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -61,7 +68,7 @@
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Stray Kids random dance mixes",
-  "description": "5 ready-made Stray Kids random dance mixes with real cut points, from 26 songs. Open one in the generator or edit the timings yourself.",
+  "description": "5 ready-made Stray Kids random dance mixes with real cut points, from 25 songs. Open one in the builder or edit the timings yourself.",
   "numberOfItems": 5,
   "itemListElement": [
     {
@@ -111,505 +118,502 @@
       gtag('config', 'G-Q93H8H3JP4');
     </script>
   </head>
-  <body class="">
-    <div class="page">
-      <header class="site-head">
-        <a class="brand" href="/"><span class="brand-icon">🎵</span> K-Pop Random Dance Generator</a>
-      </header>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="brand" href="/">
+          <svg class="brand-mark" width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="var(--accent)"></rect><g transform="translate(32 32) scale(0.6) translate(-52.5 -46)" fill="var(--accentText)" stroke="var(--accentText)" stroke-linecap="round" stroke-linejoin="round"><circle cx="43.8" cy="10.5" r="5.2" stroke="none"></circle><circle cx="56.2" cy="10.5" r="5.2" stroke="none"></circle><ellipse cx="50" cy="20.5" rx="7.6" ry="8.6" stroke="none"></ellipse><path d="M46.5 26 L53.5 26 L54 34 L46 34 Z" stroke="none"></path><path d="M39 35 Q50 32 61 35 L59 46 Q57 51 57 56 L44 56 Q44 51 41 46 Z" stroke-width="2"></path><path d="M43.5 55 L57.5 55 L69 74 Q50 79 31 76 Z" stroke-width="2"></path><path d="M58 37 L66 23 L74 7" fill="none" stroke-width="7.5"></path><path d="M42 37 L30 46 L44 54" fill="none" stroke-width="7"></path><path d="M45 72 L44 90" fill="none" stroke-width="9"></path><path d="M56 72 L64 88" fill="none" stroke-width="8.5"></path></g></svg>
+          <span class="brand-name">K-Pop Random Dance Generator</span>
+        </a>
+        <nav class="mainnav" aria-label="Main">
+          <a href="/">Builder</a>
+          <a href="/random-dance/" aria-current="true">Ready-made mixes</a>
+          <a class="nav-how" href="/#how-it-works">How it works</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="menu-wrap" data-menu>
+          <button type="button" class="btn" aria-expanded="false" aria-controls="themeMenu">
+            <span class="theme-swatch" aria-hidden="true"></span>
+            <span class="theme-prefix">Theme: </span><span id="themeName">Dark</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <div class="menu" id="themeMenu" hidden>
+            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true">Dark <span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false">Light <span class="check" aria-hidden="true">✓</span></button>
+          </div>
+        </div>
+        <a class="btn btn-outline support-btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-header">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg>
+          <span class="support-label">Support</span><span class="sr-only"> on Ko-fi (opens in a new tab)</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main" class="page" tabindex="-1">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span>/</span>
-        <a href="/random-dance/">Random Dance Mixes</a> <span>/</span>
-        <span aria-current="page">Stray Kids</span>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="/random-dance/">Random dance mixes</a></li>
+          <li><span aria-current="page">Stray Kids</span></li>
+        </ol>
       </nav>
 
-      <main>
+      <header class="hero">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>READY-MADE MIXES</p>
         <h1>Stray Kids Random Dance Mixes</h1>
         <p class="lede">
-          5 ready-made Stray Kids random dance sets you can open in the generator
-          in one click. Stray Kids (스트레이 키즈) appears in
-          26 distinct songs across the mixes people have built on this site, and every
-          start and end time below is the cut point those people actually used &mdash; not a guess.
+          5 ready-made Stray Kids random dance sets you can open in the builder
+          in one click. Stray Kids (<span lang="ko">스트레이 키즈</span>) appears in
+          25 distinct songs across the mixes people have built on this site, and every
+          start and end time below is the cut point those people actually used, not a guess.
+        </p>
+        <dl class="tiles">
+          <div class="tile"><dt class="tile-k">SONGS</dt><dd class="tile-v">25</dd></div>
+          <div class="tile"><dt class="tile-k">MIXES</dt><dd class="tile-v">5</dd></div>
+          <div class="tile"><dt class="tile-k">AVG CLIP</dt><dd class="tile-v">37s</dd></div>
+          <div class="tile"><dt class="tile-k">PRACTICE VIDEOS</dt><dd class="tile-v">6</dd></div>
+        </dl>
+        <p class="top-song">
+          <span class="top-song-k">MOST MIXED NOW</span>
+          <strong>Do It</strong>
+          <span class="top-song-time">usually 0:45&ndash;1:13</span>
+        </p>
+        <nav class="jump" aria-label="Mixes on this page">
+          <a href="#stray-kids-essentials">Stray Kids Essentials</a>
+          <a href="#stray-kids-full-sections">Long Sections</a>
+          <a href="#stray-kids-deep-cuts">Deep Cuts</a>
+          <a href="#stray-kids-dance-practice">Dance Practice Edition</a>
+          <a href="#stray-kids-marathon">Marathon Set</a>
+        </nav>
+      </header>
+
+      <div class="mixes">
+        <article class="panel mix" id="stray-kids-essentials" aria-labelledby="stray-kids-essentials-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="stray-kids-essentials-title"><span class="status-dot" aria-hidden="true"></span>Stray Kids Essentials</h2>
+            <p class="mix-stats">8 SONGS · ~4:48 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The Stray Kids songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/NED7nev2ywQ/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=NED7nev2ywQ&amp;t=45" target="_blank" rel="noopener nofollow">Do It<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:45&ndash;1:13</span>
+              <span class="row-len">28s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/0P0aQreFs8w/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=0P0aQreFs8w&amp;t=60" target="_blank" rel="noopener nofollow">Chk Chk Boom<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:00&ndash;1:26</span>
+              <span class="row-len">26s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/BZ4UzthYTss/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=BZ4UzthYTss&amp;t=54" target="_blank" rel="noopener nofollow">This &amp; That<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:24</span>
+              <span class="row-len">30s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/TQTlCHxyuu8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=TQTlCHxyuu8&amp;t=47" target="_blank" rel="noopener nofollow">God&#39;s Menu<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:29</span>
+              <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/dBDkYofMUs4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=dBDkYofMUs4&amp;t=52" target="_blank" rel="noopener nofollow">LALALALA<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:52&ndash;1:20</span>
+              <span class="row-len">28s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/6Vq3kCd9QG8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=6Vq3kCd9QG8&amp;t=64" target="_blank" rel="noopener nofollow">MIROH<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:04&ndash;1:41</span>
+              <span class="row-len">37s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/JsOOis4bBFg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=JsOOis4bBFg&amp;t=50" target="_blank" rel="noopener nofollow">S-Class<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:18</span>
+              <span class="row-len">28s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">08</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Q7IFjVUUb_E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Q7IFjVUUb_E&amp;t=35" target="_blank" rel="noopener nofollow">RUN IT<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:35&ndash;1:09</span>
+              <span class="row-len">34s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="stray-kids-essentials"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="stray-kids-essentials">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-stray-kids-essentials">{"version":"1.0","name":"Stray Kids - Stray Kids Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=NED7nev2ywQ","title":"Stray Kids \"Do It\" M/V","startTime":"0:45","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0P0aQreFs8w","title":"Stray Kids \"Chk Chk Boom\" M/V","startTime":"1:00","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=BZ4UzthYTss","title":"Stray Kids \"This & That\" M/V","startTime":"0:54","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TQTlCHxyuu8","title":"Stray Kids \"神메뉴(God's Menu)\" M/V","startTime":"0:47","endTime":"1:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=dBDkYofMUs4","title":"Stray Kids \"락 (樂) (LALALALA)\" M/V","startTime":"0:52","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6Vq3kCd9QG8","title":"[Stray Kids - MIROH] dance practice mirrored","startTime":"1:04","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=JsOOis4bBFg","title":"Stray Kids \"특(S-Class)\" M/V","startTime":"0:50","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Q7IFjVUUb_E","title":"Stray Kids \"RUN IT\" M/V","startTime":"0:35","endTime":"1:09","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="stray-kids-full-sections" aria-labelledby="stray-kids-full-sections-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="stray-kids-full-sections-title"><span class="status-dot" aria-hidden="true"></span>Long Sections</h2>
+            <p class="mix-stats">6 SONGS · ~6:12 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/aN0Mn9JXoX4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=aN0Mn9JXoX4&amp;t=93" target="_blank" rel="noopener nofollow">Awkward Silence<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:33&ndash;3:11</span>
+              <span class="row-len">98s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/u6unJQownW4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=u6unJQownW4&amp;t=34" target="_blank" rel="noopener nofollow">District 9<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:34&ndash;1:37</span>
+              <span class="row-len">63s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/P7vBoGWoReg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=P7vBoGWoReg&amp;t=106" target="_blank" rel="noopener nofollow">CEREMONY<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:46&ndash;2:41</span>
+              <span class="row-len">55s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Fpgd3ac3_nM/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Fpgd3ac3_nM&amp;t=37" target="_blank" rel="noopener nofollow">Levanter<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:24</span>
+              <span class="row-len">47s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/TQTlCHxyuu8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=TQTlCHxyuu8&amp;t=47" target="_blank" rel="noopener nofollow">God&#39;s Menu<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:29</span>
+              <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/ovHoY8UBIu8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=ovHoY8UBIu8&amp;t=45" target="_blank" rel="noopener nofollow">Walkin On Water<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:45&ndash;1:27</span>
+              <span class="row-len">42s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="stray-kids-full-sections"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="stray-kids-full-sections">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-stray-kids-full-sections">{"version":"1.0","name":"Stray Kids - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=aN0Mn9JXoX4","title":"Stray Kids 'Awkward Silence' - Dance Practice Mirrored","startTime":"1:33","endTime":"3:11","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=u6unJQownW4","title":"Stray Kids \"District 9\" M/V","startTime":"0:34","endTime":"1:37","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=P7vBoGWoReg","title":"Stray Kids \"CEREMONY\" M/V","startTime":"1:46","endTime":"2:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Fpgd3ac3_nM","title":"Stray Kids \"바람 (Levanter)\" M/V","startTime":"0:37","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TQTlCHxyuu8","title":"Stray Kids \"神메뉴(God's Menu)\" M/V","startTime":"0:47","endTime":"1:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ovHoY8UBIu8","title":"Stray Kids \"Walkin On Water\" M/V","startTime":"0:45","endTime":"1:27","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="stray-kids-deep-cuts" aria-labelledby="stray-kids-deep-cuts-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="stray-kids-deep-cuts-title"><span class="status-dot" aria-hidden="true"></span>Deep Cuts</h2>
+            <p class="mix-stats">8 SONGS · ~5:05 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">Stray Kids tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/OvioeS1ZZ7o/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=OvioeS1ZZ7o&amp;t=46" target="_blank" rel="noopener nofollow">MANIAC<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:46&ndash;1:19</span>
+              <span class="row-len">33s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/P7vBoGWoReg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=P7vBoGWoReg&amp;t=106" target="_blank" rel="noopener nofollow">CEREMONY<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:46&ndash;2:41</span>
+              <span class="row-len">55s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/7ytGFxD-FcI/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=7ytGFxD-FcI&amp;t=57" target="_blank" rel="noopener nofollow">JJAM<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:57&ndash;1:10</span>
+              <span class="row-len">13s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/ovHoY8UBIu8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=ovHoY8UBIu8&amp;t=45" target="_blank" rel="noopener nofollow">Walkin On Water<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:45&ndash;1:27</span>
+              <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/X-uJtV8ScYk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=X-uJtV8ScYk&amp;t=50" target="_blank" rel="noopener nofollow">Back Door<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:20</span>
+              <span class="row-len">30s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/jYSlpC6Ud2A/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=jYSlpC6Ud2A&amp;t=45" target="_blank" rel="noopener nofollow">CASE 143<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:45&ndash;1:15</span>
+              <span class="row-len">30s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/EaswWiwMVs8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=EaswWiwMVs8&amp;t=0" target="_blank" rel="noopener nofollow">Thunderous<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:00&ndash;0:30</span>
+              <span class="row-len">30s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">08</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/n2exCNzcxzE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=n2exCNzcxzE&amp;t=49" target="_blank" rel="noopener nofollow">My Pace<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:49&ndash;1:26</span>
+              <span class="row-len">37s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="stray-kids-deep-cuts"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="stray-kids-deep-cuts">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-stray-kids-deep-cuts">{"version":"1.0","name":"Stray Kids - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=OvioeS1ZZ7o","title":"Stray Kids \"MANIAC\" M/V","startTime":"0:46","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=P7vBoGWoReg","title":"Stray Kids \"CEREMONY\" M/V","startTime":"1:46","endTime":"2:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7ytGFxD-FcI","title":"Stray Kids \"JJAM\" M/V","startTime":"0:57","endTime":"1:10","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ovHoY8UBIu8","title":"Stray Kids \"Walkin On Water\" M/V","startTime":"0:45","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=X-uJtV8ScYk","title":"Stray Kids \"Back Door\" M/V","startTime":"0:50","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jYSlpC6Ud2A","title":"Stray Kids \"CASE 143\" M/V","startTime":"0:45","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=EaswWiwMVs8","title":"Stray Kids \"소리꾼(Thunderous)\" M/V","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=n2exCNzcxzE","title":"Stray Kids \"My Pace\" Performance Video","startTime":"0:49","endTime":"1:26","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="stray-kids-dance-practice" aria-labelledby="stray-kids-dance-practice-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="stray-kids-dance-practice-title"><span class="status-dot" aria-hidden="true"></span>Dance Practice Edition</h2>
+            <p class="mix-stats">6 SONGS · ~4:43 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">Built only from dance practice, choreography and performance uploads, so the audio matches the versions most covers learn from.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/6Vq3kCd9QG8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=6Vq3kCd9QG8&amp;t=64" target="_blank" rel="noopener nofollow">MIROH<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:04&ndash;1:41</span>
+              <span class="row-len">37s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/n2exCNzcxzE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=n2exCNzcxzE&amp;t=49" target="_blank" rel="noopener nofollow">My Pace<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:49&ndash;1:26</span>
+              <span class="row-len">37s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/VWSGvuUYYqw/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=VWSGvuUYYqw&amp;t=54" target="_blank" rel="noopener nofollow">ALL IN<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:17</span>
+              <span class="row-len">23s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/aN0Mn9JXoX4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=aN0Mn9JXoX4&amp;t=93" target="_blank" rel="noopener nofollow">Awkward Silence<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:33&ndash;3:11</span>
+              <span class="row-len">98s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/msM450QVuEc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=msM450QVuEc&amp;t=47" target="_blank" rel="noopener nofollow">get cool<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:19</span>
+              <span class="row-len">32s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Uo15XCE8RY4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Uo15XCE8RY4&amp;t=45" target="_blank" rel="noopener nofollow">DOMINO<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:45&ndash;1:16</span>
+              <span class="row-len">31s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="stray-kids-dance-practice"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="stray-kids-dance-practice">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-stray-kids-dance-practice">{"version":"1.0","name":"Stray Kids - Dance Practice Edition","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=6Vq3kCd9QG8","title":"[Stray Kids - MIROH] dance practice mirrored","startTime":"1:04","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=n2exCNzcxzE","title":"Stray Kids \"My Pace\" Performance Video","startTime":"0:49","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=VWSGvuUYYqw","title":"[Stray Kids - ALL IN] dance practice mirrored","startTime":"0:54","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=aN0Mn9JXoX4","title":"Stray Kids 'Awkward Silence' - Dance Practice Mirrored","startTime":"1:33","endTime":"3:11","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=msM450QVuEc","title":"[MIRRORED] Stray Kids \"get cool\" Dance practice mirror.","startTime":"0:47","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Uo15XCE8RY4","title":"Stray Kids \"DOMINO\" Dance Practice Video","startTime":"0:45","endTime":"1:16","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="stray-kids-marathon" aria-labelledby="stray-kids-marathon-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="stray-kids-marathon-title"><span class="status-dot" aria-hidden="true"></span>Marathon Set</h2>
+            <p class="mix-stats">10 SONGS · ~6:52 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The long one: songs drawn across the whole Stray Kids pool, popular and obscure mixed together.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/0P0aQreFs8w/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=0P0aQreFs8w&amp;t=60" target="_blank" rel="noopener nofollow">Chk Chk Boom<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:00&ndash;1:26</span>
+              <span class="row-len">26s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/BZ4UzthYTss/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=BZ4UzthYTss&amp;t=54" target="_blank" rel="noopener nofollow">This &amp; That<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:24</span>
+              <span class="row-len">30s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/P7vBoGWoReg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=P7vBoGWoReg&amp;t=106" target="_blank" rel="noopener nofollow">CEREMONY<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:46&ndash;2:41</span>
+              <span class="row-len">55s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/6Vq3kCd9QG8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=6Vq3kCd9QG8&amp;t=64" target="_blank" rel="noopener nofollow">MIROH<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:04&ndash;1:41</span>
+              <span class="row-len">37s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/TQTlCHxyuu8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=TQTlCHxyuu8&amp;t=47" target="_blank" rel="noopener nofollow">God&#39;s Menu<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:29</span>
+              <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Uo15XCE8RY4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Uo15XCE8RY4&amp;t=45" target="_blank" rel="noopener nofollow">DOMINO<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:45&ndash;1:16</span>
+              <span class="row-len">31s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Fpgd3ac3_nM/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Fpgd3ac3_nM&amp;t=37" target="_blank" rel="noopener nofollow">Levanter<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:24</span>
+              <span class="row-len">47s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">08</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/n2exCNzcxzE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=n2exCNzcxzE&amp;t=49" target="_blank" rel="noopener nofollow">My Pace<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:49&ndash;1:26</span>
+              <span class="row-len">37s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">09</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/EaswWiwMVs8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=EaswWiwMVs8&amp;t=0" target="_blank" rel="noopener nofollow">Thunderous<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:00&ndash;0:30</span>
+              <span class="row-len">30s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">10</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/57n4dZAPxNY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=57n4dZAPxNY&amp;t=62" target="_blank" rel="noopener nofollow">Christmas EveL<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:02&ndash;1:34</span>
+              <span class="row-len">32s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="stray-kids-marathon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="stray-kids-marathon">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-stray-kids-marathon">{"version":"1.0","name":"Stray Kids - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=0P0aQreFs8w","title":"Stray Kids \"Chk Chk Boom\" M/V","startTime":"1:00","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=BZ4UzthYTss","title":"Stray Kids \"This & That\" M/V","startTime":"0:54","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=P7vBoGWoReg","title":"Stray Kids \"CEREMONY\" M/V","startTime":"1:46","endTime":"2:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6Vq3kCd9QG8","title":"[Stray Kids - MIROH] dance practice mirrored","startTime":"1:04","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TQTlCHxyuu8","title":"Stray Kids \"神메뉴(God's Menu)\" M/V","startTime":"0:47","endTime":"1:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Uo15XCE8RY4","title":"Stray Kids \"DOMINO\" Dance Practice Video","startTime":"0:45","endTime":"1:16","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Fpgd3ac3_nM","title":"Stray Kids \"바람 (Levanter)\" M/V","startTime":"0:37","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=n2exCNzcxzE","title":"Stray Kids \"My Pace\" Performance Video","startTime":"0:49","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=EaswWiwMVs8","title":"Stray Kids \"소리꾼(Thunderous)\" M/V","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=57n4dZAPxNY","title":"Stray Kids \"Christmas EveL\" M/V","startTime":"1:02","endTime":"1:34","info":null,"isExpanded":false}]}</script>
+        </article>
+      </div>
+
+      <section class="prose" aria-labelledby="how-title">
+        <h2 id="how-title">How to use these Stray Kids mixes</h2>
+        <p>
+          Press <b>Open in builder</b> on any mix. The songs and their cut points load into the
+          builder on the home page in the order shown here. Drop songs you don't know, move songs up
+          or down, or nudge a start or end time in the editor. Press <b>Shuffle now</b> for a random
+          order (that is the point of a random play dance), then <b>Generate mix</b> to get one MP3
+          with a 5-second countdown before every song.
+        </p>
+        <p>
+          Want to keep a set? <b>Save as project file</b> saves it as a .json file. Open it later in
+          the builder from <b>Project &rarr; Open a saved file</b>, or send it to whoever is running
+          your RPD event.
         </p>
 
-        <ul class="stat-row">
-          <li><strong>26</strong><span>songs in the pool</span></li>
-          <li><strong>5</strong><span>ready-made mixes</span></li>
-          <li><strong>38s</strong><span>average clip length</span></li>
-          <li><strong>7</strong><span>dance practice videos</span></li>
-        </ul>
-
-        <p class="note">
-          Most-mixed Stray Kids track right now: <strong>Do It</strong>,
-          usually cut from 0:45 to 1:13.
+        <h2>Where these cut points come from</h2>
+        <p>
+          Each clip is the segment most commonly chosen for that video by people using this
+          generator. In practice that lands on the chorus or the dance break, because that is the
+          part of a Stray Kids song a random play dance crowd knows and can actually follow.
+          The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
+          frozen at whatever was popular when the page was written.
         </p>
+        <p>
+          Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
+          only once even when several uploads of it exist, so a mix never plays you the same
+          choreography twice.
+        </p>
+      </section>
 
-        <section class="mixes">
-        <article class="mix-card" id="stray-kids-essentials">
-          <header class="mix-head">
-            <h3>Stray Kids Essentials</h3>
-            <p class="mix-blurb">The Stray Kids songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
-            <p class="mix-meta">
-              <span>8 songs</span>
-              <span>~4:48 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=NED7nev2ywQ&t=45" target="_blank" rel="noopener nofollow">Do It</a>
-              </span>
-              <span class="mix-song-time">0:45&ndash;1:13</span>
-              <span class="mix-song-len">28s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=0P0aQreFs8w&t=60" target="_blank" rel="noopener nofollow">Chk Chk Boom</a>
-              </span>
-              <span class="mix-song-time">1:00&ndash;1:26</span>
-              <span class="mix-song-len">26s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=TQTlCHxyuu8&t=47" target="_blank" rel="noopener nofollow">神메뉴(God</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:29</span>
-              <span class="mix-song-len">42s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=6Vq3kCd9QG8&t=64" target="_blank" rel="noopener nofollow">MIROH</a>
-              </span>
-              <span class="mix-song-time">1:04&ndash;1:41</span>
-              <span class="mix-song-len">37s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=dBDkYofMUs4&t=52" target="_blank" rel="noopener nofollow">LALALALA</a>
-              </span>
-              <span class="mix-song-time">0:52&ndash;1:20</span>
-              <span class="mix-song-len">28s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=JsOOis4bBFg&t=50" target="_blank" rel="noopener nofollow">S-Class</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:18</span>
-              <span class="mix-song-len">28s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=BZ4UzthYTss&t=54" target="_blank" rel="noopener nofollow">This &amp; That</a>
-              </span>
-              <span class="mix-song-time">0:54&ndash;1:24</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">8</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Q7IFjVUUb_E&t=35" target="_blank" rel="noopener nofollow">RUN IT</a>
-              </span>
-              <span class="mix-song-time">0:35&ndash;1:09</span>
-              <span class="mix-song-len">34s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="stray-kids-essentials">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="stray-kids-essentials">Download .json</button>
-          </div>
-          <script type="application/json" id="data-stray-kids-essentials">{"version":"1.0","name":"Stray Kids - Stray Kids Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=NED7nev2ywQ","title":"Stray Kids \"Do It\" M/V","startTime":"0:45","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0P0aQreFs8w","title":"Stray Kids \"Chk Chk Boom\" M/V","startTime":"1:00","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TQTlCHxyuu8","title":"Stray Kids \"神메뉴(God's Menu)\" M/V","startTime":"0:47","endTime":"1:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6Vq3kCd9QG8","title":"[Stray Kids - MIROH] dance practice mirrored","startTime":"1:04","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=dBDkYofMUs4","title":"Stray Kids \"락 (樂) (LALALALA)\" M/V","startTime":"0:52","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=JsOOis4bBFg","title":"Stray Kids \"특(S-Class)\" M/V","startTime":"0:50","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=BZ4UzthYTss","title":"Stray Kids \"This & That\" M/V","startTime":"0:54","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Q7IFjVUUb_E","title":"Stray Kids \"RUN IT\" M/V","startTime":"0:35","endTime":"1:09","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="stray-kids-full-sections">
-          <header class="mix-head">
-            <h3>Long Sections</h3>
-            <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
-            <p class="mix-meta">
-              <span>6 songs</span>
-              <span>~6:22 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=aN0Mn9JXoX4&t=93" target="_blank" rel="noopener nofollow">Awkward Silence</a>
-              </span>
-              <span class="mix-song-time">1:33&ndash;3:11</span>
-              <span class="mix-song-len">98s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=u6unJQownW4&t=34" target="_blank" rel="noopener nofollow">District 9</a>
-              </span>
-              <span class="mix-song-time">0:34&ndash;1:37</span>
-              <span class="mix-song-len">63s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=P7vBoGWoReg&t=106" target="_blank" rel="noopener nofollow">CEREMONY</a>
-              </span>
-              <span class="mix-song-time">1:46&ndash;2:41</span>
-              <span class="mix-song-len">55s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=LhwQ5_NO2v0&t=40" target="_blank" rel="noopener nofollow">God&#39;s Menu</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:32</span>
-              <span class="mix-song-len">52s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Fpgd3ac3_nM&t=37" target="_blank" rel="noopener nofollow">Levanter</a>
-              </span>
-              <span class="mix-song-time">0:37&ndash;1:24</span>
-              <span class="mix-song-len">47s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=TQTlCHxyuu8&t=47" target="_blank" rel="noopener nofollow">神메뉴(God</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:29</span>
-              <span class="mix-song-len">42s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="stray-kids-full-sections">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="stray-kids-full-sections">Download .json</button>
-          </div>
-          <script type="application/json" id="data-stray-kids-full-sections">{"version":"1.0","name":"Stray Kids - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=aN0Mn9JXoX4","title":"Stray Kids 'Awkward Silence' - Dance Practice Mirrored","startTime":"1:33","endTime":"3:11","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=u6unJQownW4","title":"Stray Kids \"District 9\" M/V","startTime":"0:34","endTime":"1:37","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=P7vBoGWoReg","title":"Stray Kids \"CEREMONY\" M/V","startTime":"1:46","endTime":"2:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=LhwQ5_NO2v0","title":"[Stray Kids - God's Menu] dance practice mirrored","startTime":"0:40","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Fpgd3ac3_nM","title":"Stray Kids \"바람 (Levanter)\" M/V","startTime":"0:37","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TQTlCHxyuu8","title":"Stray Kids \"神메뉴(God's Menu)\" M/V","startTime":"0:47","endTime":"1:29","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="stray-kids-deep-cuts">
-          <header class="mix-head">
-            <h3>Deep Cuts</h3>
-            <p class="mix-blurb">Stray Kids tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
-            <p class="mix-meta">
-              <span>8 songs</span>
-              <span>~5:05 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=OvioeS1ZZ7o&t=46" target="_blank" rel="noopener nofollow">MANIAC</a>
-              </span>
-              <span class="mix-song-time">0:46&ndash;1:19</span>
-              <span class="mix-song-len">33s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=P7vBoGWoReg&t=106" target="_blank" rel="noopener nofollow">CEREMONY</a>
-              </span>
-              <span class="mix-song-time">1:46&ndash;2:41</span>
-              <span class="mix-song-len">55s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=7ytGFxD-FcI&t=57" target="_blank" rel="noopener nofollow">JJAM</a>
-              </span>
-              <span class="mix-song-time">0:57&ndash;1:10</span>
-              <span class="mix-song-len">13s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=X-uJtV8ScYk&t=50" target="_blank" rel="noopener nofollow">Back Door</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:20</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ovHoY8UBIu8&t=45" target="_blank" rel="noopener nofollow">Walkin On Water</a>
-              </span>
-              <span class="mix-song-time">0:45&ndash;1:27</span>
-              <span class="mix-song-len">42s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=jYSlpC6Ud2A&t=45" target="_blank" rel="noopener nofollow">CASE 143</a>
-              </span>
-              <span class="mix-song-time">0:45&ndash;1:15</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=EaswWiwMVs8&t=0" target="_blank" rel="noopener nofollow">Thunderous</a>
-              </span>
-              <span class="mix-song-time">0:00&ndash;0:30</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">8</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=n2exCNzcxzE&t=49" target="_blank" rel="noopener nofollow">My Pace</a>
-              </span>
-              <span class="mix-song-time">0:49&ndash;1:26</span>
-              <span class="mix-song-len">37s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="stray-kids-deep-cuts">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="stray-kids-deep-cuts">Download .json</button>
-          </div>
-          <script type="application/json" id="data-stray-kids-deep-cuts">{"version":"1.0","name":"Stray Kids - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=OvioeS1ZZ7o","title":"Stray Kids \"MANIAC\" M/V","startTime":"0:46","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=P7vBoGWoReg","title":"Stray Kids \"CEREMONY\" M/V","startTime":"1:46","endTime":"2:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7ytGFxD-FcI","title":"Stray Kids \"JJAM\" M/V","startTime":"0:57","endTime":"1:10","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=X-uJtV8ScYk","title":"Stray Kids \"Back Door\" M/V","startTime":"0:50","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ovHoY8UBIu8","title":"Stray Kids \"Walkin On Water\" M/V","startTime":"0:45","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jYSlpC6Ud2A","title":"Stray Kids \"CASE 143\" M/V","startTime":"0:45","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=EaswWiwMVs8","title":"Stray Kids \"소리꾼(Thunderous)\" M/V","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=n2exCNzcxzE","title":"Stray Kids \"My Pace\" Performance Video","startTime":"0:49","endTime":"1:26","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="stray-kids-dance-practice">
-          <header class="mix-head">
-            <h3>Dance Practice Edition</h3>
-            <p class="mix-blurb">Built only from dance practice, choreography and performance uploads, so the audio matches the versions most covers learn from.</p>
-            <p class="mix-meta">
-              <span>7 songs</span>
-              <span>~5:40 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=6Vq3kCd9QG8&t=64" target="_blank" rel="noopener nofollow">MIROH</a>
-              </span>
-              <span class="mix-song-time">1:04&ndash;1:41</span>
-              <span class="mix-song-len">37s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=n2exCNzcxzE&t=49" target="_blank" rel="noopener nofollow">My Pace</a>
-              </span>
-              <span class="mix-song-time">0:49&ndash;1:26</span>
-              <span class="mix-song-len">37s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=LhwQ5_NO2v0&t=40" target="_blank" rel="noopener nofollow">God&#39;s Menu</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:32</span>
-              <span class="mix-song-len">52s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=VWSGvuUYYqw&t=54" target="_blank" rel="noopener nofollow">ALL IN</a>
-              </span>
-              <span class="mix-song-time">0:54&ndash;1:17</span>
-              <span class="mix-song-len">23s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=aN0Mn9JXoX4&t=93" target="_blank" rel="noopener nofollow">Awkward Silence</a>
-              </span>
-              <span class="mix-song-time">1:33&ndash;3:11</span>
-              <span class="mix-song-len">98s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=msM450QVuEc&t=47" target="_blank" rel="noopener nofollow">get cool</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:19</span>
-              <span class="mix-song-len">32s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Uo15XCE8RY4&t=45" target="_blank" rel="noopener nofollow">DOMINO</a>
-              </span>
-              <span class="mix-song-time">0:45&ndash;1:16</span>
-              <span class="mix-song-len">31s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="stray-kids-dance-practice">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="stray-kids-dance-practice">Download .json</button>
-          </div>
-          <script type="application/json" id="data-stray-kids-dance-practice">{"version":"1.0","name":"Stray Kids - Dance Practice Edition","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=6Vq3kCd9QG8","title":"[Stray Kids - MIROH] dance practice mirrored","startTime":"1:04","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=n2exCNzcxzE","title":"Stray Kids \"My Pace\" Performance Video","startTime":"0:49","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=LhwQ5_NO2v0","title":"[Stray Kids - God's Menu] dance practice mirrored","startTime":"0:40","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=VWSGvuUYYqw","title":"[Stray Kids - ALL IN] dance practice mirrored","startTime":"0:54","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=aN0Mn9JXoX4","title":"Stray Kids 'Awkward Silence' - Dance Practice Mirrored","startTime":"1:33","endTime":"3:11","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=msM450QVuEc","title":"[MIRRORED] Stray Kids \"get cool\" Dance practice mirror.","startTime":"0:47","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Uo15XCE8RY4","title":"Stray Kids \"DOMINO\" Dance Practice Video","startTime":"0:45","endTime":"1:16","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="stray-kids-marathon">
-          <header class="mix-head">
-            <h3>Marathon Set</h3>
-            <p class="mix-blurb">The long one: songs drawn across the whole Stray Kids pool, popular and obscure mixed together.</p>
-            <p class="mix-meta">
-              <span>10 songs</span>
-              <span>~6:17 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=jYSlpC6Ud2A&t=45" target="_blank" rel="noopener nofollow">CASE 143</a>
-              </span>
-              <span class="mix-song-time">0:45&ndash;1:15</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=AdfIfFGCqgo&t=60" target="_blank" rel="noopener nofollow">Hellevator</a>
-              </span>
-              <span class="mix-song-time">1:00&ndash;1:38</span>
-              <span class="mix-song-len">38s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=EaswWiwMVs8&t=0" target="_blank" rel="noopener nofollow">Thunderous</a>
-              </span>
-              <span class="mix-song-time">0:00&ndash;0:30</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=57n4dZAPxNY&t=62" target="_blank" rel="noopener nofollow">Christmas EveL</a>
-              </span>
-              <span class="mix-song-time">1:02&ndash;1:34</span>
-              <span class="mix-song-len">32s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=7ytGFxD-FcI&t=57" target="_blank" rel="noopener nofollow">JJAM</a>
-              </span>
-              <span class="mix-song-time">0:57&ndash;1:10</span>
-              <span class="mix-song-len">13s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=BZ4UzthYTss&t=54" target="_blank" rel="noopener nofollow">This &amp; That</a>
-              </span>
-              <span class="mix-song-time">0:54&ndash;1:24</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Q7IFjVUUb_E&t=35" target="_blank" rel="noopener nofollow">RUN IT</a>
-              </span>
-              <span class="mix-song-time">0:35&ndash;1:09</span>
-              <span class="mix-song-len">34s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">8</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=VWSGvuUYYqw&t=54" target="_blank" rel="noopener nofollow">ALL IN</a>
-              </span>
-              <span class="mix-song-time">0:54&ndash;1:17</span>
-              <span class="mix-song-len">23s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">9</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=P7vBoGWoReg&t=106" target="_blank" rel="noopener nofollow">CEREMONY</a>
-              </span>
-              <span class="mix-song-time">1:46&ndash;2:41</span>
-              <span class="mix-song-len">55s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">10</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Fpgd3ac3_nM&t=37" target="_blank" rel="noopener nofollow">Levanter</a>
-              </span>
-              <span class="mix-song-time">0:37&ndash;1:24</span>
-              <span class="mix-song-len">47s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="stray-kids-marathon">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="stray-kids-marathon">Download .json</button>
-          </div>
-          <script type="application/json" id="data-stray-kids-marathon">{"version":"1.0","name":"Stray Kids - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=jYSlpC6Ud2A","title":"Stray Kids \"CASE 143\" M/V","startTime":"0:45","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=AdfIfFGCqgo","title":"Stray Kids \"Hellevator\" M/V","startTime":"1:00","endTime":"1:38","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=EaswWiwMVs8","title":"Stray Kids \"소리꾼(Thunderous)\" M/V","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=57n4dZAPxNY","title":"Stray Kids \"Christmas EveL\" M/V","startTime":"1:02","endTime":"1:34","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7ytGFxD-FcI","title":"Stray Kids \"JJAM\" M/V","startTime":"0:57","endTime":"1:10","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=BZ4UzthYTss","title":"Stray Kids \"This & That\" M/V","startTime":"0:54","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Q7IFjVUUb_E","title":"Stray Kids \"RUN IT\" M/V","startTime":"0:35","endTime":"1:09","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=VWSGvuUYYqw","title":"[Stray Kids - ALL IN] dance practice mirrored","startTime":"0:54","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=P7vBoGWoReg","title":"Stray Kids \"CEREMONY\" M/V","startTime":"1:46","endTime":"2:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Fpgd3ac3_nM","title":"Stray Kids \"바람 (Levanter)\" M/V","startTime":"0:37","endTime":"1:24","info":null,"isExpanded":false}]}</script>
-        </article>
+      <section class="others" aria-labelledby="others-title">
+        <h2 id="others-title">Mixes for other groups</h2>
+        <div class="chips">
+          <a href="/random-dance/illit">ILLIT</a>
+          <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
+          <a href="/random-dance/aespa">aespa</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/katseye">KATSEYE</a>
+          <a href="/random-dance/twice">TWICE</a>
+          <a href="/random-dance/ateez">ATEEZ</a>
+          <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/enhypen">ENHYPEN</a>
+          <a href="/random-dance/babymonster">BABYMONSTER</a>
+          <a href="/random-dance/newjeans">NewJeans</a>
+          <a href="/random-dance/ive">IVE</a>
+          <a href="/random-dance/seventeen">SEVENTEEN</a>
+          <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
+          <a href="/random-dance/itzy">ITZY</a>
+          <a href="/random-dance/g-i-dle">i-dle</a>
+          <a href="/random-dance/nct">NCT</a>
+          <a href="/random-dance/red-velvet">Red Velvet</a>
+          <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
+          <a href="/random-dance/xg">XG</a>
+          <a href="/random-dance/nmixx">NMIXX</a>
+        </div>
+        <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <section class="foot-col" aria-labelledby="foot-build">
+          <h2 id="foot-build">Make your own mix</h2>
+          <p>Search YouTube, pick the part of each song, and get one MP3 with a 5-second countdown before every song. Free, no sign-up.</p>
+          <p><a class="btn btn-primary" href="/">Open the builder</a></p>
         </section>
-
-        <section class="prose">
-          <h2>How to use these Stray Kids mixes</h2>
-          <p>
-            Press <em>Open in generator</em> on any mix. The songs and their timings load straight
-            into the generator on the home page, in the order shown here, where you can drop tracks
-            you don't know, move songs up or down, or nudge a start time before generating the audio
-            file. Press <em>Shuffle now</em> for a random order whenever you like &mdash; which is the
-            point of a random play dance.
-          </p>
-          <p>
-            Prefer to keep a set? <em>Download .json</em> saves it as a project file you can open
-            later from the generator's <em>Project</em> menu, or send to whoever is running your RPD event.
-          </p>
-
-          <h2>Where these cut points come from</h2>
-          <p>
-            Each clip below is the segment most commonly chosen for that video by people using this
-            generator. In practice that lands on the chorus or the dance break, because that is the
-            part of a Stray Kids song a random play dance crowd knows and can actually follow.
-            The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
-            frozen at whatever was popular when the page was written.
-          </p>
-          <p>
-            Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
-            only once even when several uploads of it exist, so a mix never plays you the same
-            choreography twice.
+        <section class="foot-col" aria-labelledby="foot-support">
+          <h2 id="foot-support">Enjoying the tool?</h2>
+          <p>It's free and always will be. Support on Ko-fi helps pay for the servers.</p>
+          <p class="foot-row">
+            <a class="btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-footer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg> Support on Ko-fi<span class="sr-only"> (opens in a new tab)</span></a>
+            <a class="foot-link" href="/#how-it-works">How it works</a>
+            <a class="foot-link" href="/#contact">Contact us</a>
           </p>
         </section>
+      </div>
+      <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
+    </footer>
 
-        <section class="other-bands">
-          <h2>Mixes for other groups</h2>
-          <div class="band-links">
-        <a href="/random-dance/nct">NCT</a>
-        <a href="/random-dance/bts">BTS</a>
-        <a href="/random-dance/twice">TWICE</a>
-        <a href="/random-dance/itzy">ITZY</a>
-        <a href="/random-dance/enhypen">ENHYPEN</a>
-        <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-        <a href="/random-dance/blackpink">BLACKPINK</a>
-        <a href="/random-dance/ateez">ATEEZ</a>
-        <a href="/random-dance/seventeen">SEVENTEEN</a>
-        <a href="/random-dance/aespa">aespa</a>
-        <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
-        <a href="/random-dance/babymonster">BABYMONSTER</a>
-        <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-        <a href="/random-dance/g-i-dle">(G)I-DLE</a>
-        <a href="/random-dance/illit">ILLIT</a>
-        <a href="/random-dance/nmixx">NMIXX</a>
-        <a href="/random-dance/newjeans">NewJeans</a>
-        <a href="/random-dance/red-velvet">Red Velvet</a>
-        <a href="/random-dance/xg">XG</a>
-        <a href="/random-dance/ive">IVE</a>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-foot">
-        <p><a class="btn btn-primary" href="/">Build your own mix &rarr;</a></p>
-        <p class="fine">Made with 💜 for K-Pop dance lovers.</p>
-      </footer>
-    </div>
-    <script src="/app/landing.js"></script>
+    <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
+    <script src="/app/landing.js?v=3"></script>
   </body>
 </html>

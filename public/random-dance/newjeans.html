@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NewJeans Random Dance Mixes | 5 Ready-Made Sets</title>
-    <meta name="description" content="5 ready-made NewJeans random dance mixes with real cut points, from 11 songs. Open one in the generator or edit the timings yourself." />
+    <meta name="description" content="5 ready-made NewJeans random dance mixes with real cut points, from 11 songs. Open one in the builder or edit the timings yourself." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://kpopgenerator.cloud/random-dance/newjeans" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kpopgenerator.cloud/random-dance/newjeans" />
     <meta property="og:title" content="NewJeans Random Dance Mixes | 5 Ready-Made Sets" />
-    <meta property="og:description" content="5 ready-made NewJeans random dance mixes with real cut points, from 11 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="og:description" content="5 ready-made NewJeans random dance mixes with real cut points, from 11 songs. Open one in the builder or edit the timings yourself." />
     <meta property="og:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -19,17 +19,24 @@
     <meta property="og:locale" content="en_US" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="NewJeans Random Dance Mixes | 5 Ready-Made Sets" />
-    <meta property="twitter:description" content="5 ready-made NewJeans random dance mixes with real cut points, from 11 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="twitter:description" content="5 ready-made NewJeans random dance mixes with real cut points, from 11 songs. Open one in the builder or edit the timings yourself." />
     <meta property="twitter:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
 
-    <meta name="theme-color" content="#8b5cf6" />
+    <!-- The theme chosen in the builder, before anything paints (Dark is the default). -->
+    <script>
+      try {
+        if (localStorage.getItem("kpopgen:theme") === "light") document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    </script>
+
+    <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/landing.css?v=3" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -61,7 +68,7 @@
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "NewJeans random dance mixes",
-  "description": "5 ready-made NewJeans random dance mixes with real cut points, from 11 songs. Open one in the generator or edit the timings yourself.",
+  "description": "5 ready-made NewJeans random dance mixes with real cut points, from 11 songs. Open one in the builder or edit the timings yourself.",
   "numberOfItems": 5,
   "itemListElement": [
     {
@@ -81,16 +88,16 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "NewJeans - Long Sections",
-      "description": "The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.",
-      "url": "https://kpopgenerator.cloud/random-dance/newjeans#newjeans-full-sections"
+      "name": "NewJeans - Chorus Rush",
+      "description": "Every clip under 40 seconds. Fast switches, no time to catch your breath between hooks.",
+      "url": "https://kpopgenerator.cloud/random-dance/newjeans#newjeans-chorus-rush"
     },
     {
       "@type": "ListItem",
       "position": 4,
-      "name": "NewJeans - Deep Cuts",
-      "description": "NewJeans tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.",
-      "url": "https://kpopgenerator.cloud/random-dance/newjeans#newjeans-deep-cuts"
+      "name": "NewJeans - Long Sections",
+      "description": "The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.",
+      "url": "https://kpopgenerator.cloud/random-dance/newjeans#newjeans-full-sections"
     },
     {
       "@type": "ListItem",
@@ -111,393 +118,411 @@
       gtag('config', 'G-Q93H8H3JP4');
     </script>
   </head>
-  <body class="">
-    <div class="page">
-      <header class="site-head">
-        <a class="brand" href="/"><span class="brand-icon">🎵</span> K-Pop Random Dance Generator</a>
-      </header>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="brand" href="/">
+          <svg class="brand-mark" width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="var(--accent)"></rect><g transform="translate(32 32) scale(0.6) translate(-52.5 -46)" fill="var(--accentText)" stroke="var(--accentText)" stroke-linecap="round" stroke-linejoin="round"><circle cx="43.8" cy="10.5" r="5.2" stroke="none"></circle><circle cx="56.2" cy="10.5" r="5.2" stroke="none"></circle><ellipse cx="50" cy="20.5" rx="7.6" ry="8.6" stroke="none"></ellipse><path d="M46.5 26 L53.5 26 L54 34 L46 34 Z" stroke="none"></path><path d="M39 35 Q50 32 61 35 L59 46 Q57 51 57 56 L44 56 Q44 51 41 46 Z" stroke-width="2"></path><path d="M43.5 55 L57.5 55 L69 74 Q50 79 31 76 Z" stroke-width="2"></path><path d="M58 37 L66 23 L74 7" fill="none" stroke-width="7.5"></path><path d="M42 37 L30 46 L44 54" fill="none" stroke-width="7"></path><path d="M45 72 L44 90" fill="none" stroke-width="9"></path><path d="M56 72 L64 88" fill="none" stroke-width="8.5"></path></g></svg>
+          <span class="brand-name">K-Pop Random Dance Generator</span>
+        </a>
+        <nav class="mainnav" aria-label="Main">
+          <a href="/">Builder</a>
+          <a href="/random-dance/" aria-current="true">Ready-made mixes</a>
+          <a class="nav-how" href="/#how-it-works">How it works</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="menu-wrap" data-menu>
+          <button type="button" class="btn" aria-expanded="false" aria-controls="themeMenu">
+            <span class="theme-swatch" aria-hidden="true"></span>
+            <span class="theme-prefix">Theme: </span><span id="themeName">Dark</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <div class="menu" id="themeMenu" hidden>
+            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true">Dark <span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false">Light <span class="check" aria-hidden="true">✓</span></button>
+          </div>
+        </div>
+        <a class="btn btn-outline support-btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-header">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg>
+          <span class="support-label">Support</span><span class="sr-only"> on Ko-fi (opens in a new tab)</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main" class="page" tabindex="-1">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span>/</span>
-        <a href="/random-dance/">Random Dance Mixes</a> <span>/</span>
-        <span aria-current="page">NewJeans</span>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="/random-dance/">Random dance mixes</a></li>
+          <li><span aria-current="page">NewJeans</span></li>
+        </ol>
       </nav>
 
-      <main>
+      <header class="hero">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>READY-MADE MIXES</p>
         <h1>NewJeans Random Dance Mixes</h1>
         <p class="lede">
-          5 ready-made NewJeans random dance sets you can open in the generator
-          in one click. NewJeans (뉴진스) appears in
+          5 ready-made NewJeans random dance sets you can open in the builder
+          in one click. NewJeans (<span lang="ko">뉴진스</span>) appears in
           11 distinct songs across the mixes people have built on this site, and every
-          start and end time below is the cut point those people actually used &mdash; not a guess.
+          start and end time below is the cut point those people actually used, not a guess.
+        </p>
+        <dl class="tiles">
+          <div class="tile"><dt class="tile-k">SONGS</dt><dd class="tile-v">11</dd></div>
+          <div class="tile"><dt class="tile-k">MIXES</dt><dd class="tile-v">5</dd></div>
+          <div class="tile"><dt class="tile-k">AVG CLIP</dt><dd class="tile-v">38s</dd></div>
+          <div class="tile"><dt class="tile-k">PRACTICE VIDEOS</dt><dd class="tile-v">2</dd></div>
+        </dl>
+        <p class="top-song">
+          <span class="top-song-k">MOST MIXED NOW</span>
+          <strong>ETA</strong>
+          <span class="top-song-time">usually 0:57&ndash;1:40</span>
+        </p>
+        <nav class="jump" aria-label="Mixes on this page">
+          <a href="#newjeans-essentials">NewJeans Essentials</a>
+          <a href="#newjeans-quick-warmup">Quick Warm-Up</a>
+          <a href="#newjeans-chorus-rush">Chorus Rush</a>
+          <a href="#newjeans-full-sections">Long Sections</a>
+          <a href="#newjeans-shuffle-a">Shuffle Set A</a>
+        </nav>
+      </header>
+
+      <div class="mixes">
+        <article class="panel mix" id="newjeans-essentials" aria-labelledby="newjeans-essentials-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="newjeans-essentials-title"><span class="status-dot" aria-hidden="true"></span>NewJeans Essentials</h2>
+            <p class="mix-stats">5 SONGS · ~3:40 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The NewJeans songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/jOTfBlKSQYY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=jOTfBlKSQYY&amp;t=57" target="_blank" rel="noopener nofollow">ETA<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:57&ndash;1:40</span>
+              <span class="row-len">43s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/x8RIixqumUc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=x8RIixqumUc&amp;t=55" target="_blank" rel="noopener nofollow">Attention<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:22</span>
+              <span class="row-len">27s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/11cta61wi0g/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=11cta61wi0g&amp;t=40" target="_blank" rel="noopener nofollow">Hype Boy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:40&ndash;1:32</span>
+              <span class="row-len">52s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Zal7oQX9v3E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Zal7oQX9v3E&amp;t=50" target="_blank" rel="noopener nofollow">Super Shy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:30</span>
+              <span class="row-len">40s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/sVTy_wmn5SU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=sVTy_wmn5SU&amp;t=38" target="_blank" rel="noopener nofollow">OMG<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:38&ndash;1:16</span>
+              <span class="row-len">38s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="newjeans-essentials"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="newjeans-essentials">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-newjeans-essentials">{"version":"1.0","name":"NewJeans - NewJeans Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=jOTfBlKSQYY","title":"NewJeans (뉴진스) 'ETA' Official MV","startTime":"0:57","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=x8RIixqumUc","title":"NewJeans (뉴진스) 'Attention' Official MV (Performance ver.)","startTime":"0:55","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=11cta61wi0g","title":"NewJeans (뉴진스) 'Hype Boy' Official MV (Performance ver.1)","startTime":"0:40","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Zal7oQX9v3E","title":"NewJeans - 'Super Shy' Dance Practice [MIRRORED]","startTime":"0:50","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=sVTy_wmn5SU","title":"NewJeans (뉴진스) 'OMG' Official MV (Performance ver.1)","startTime":"0:38","endTime":"1:16","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="newjeans-quick-warmup" aria-labelledby="newjeans-quick-warmup-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="newjeans-quick-warmup-title"><span class="status-dot" aria-hidden="true"></span>Quick Warm-Up</h2>
+            <p class="mix-stats">5 SONGS · ~2:52 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">Short segments to loosen up with before a longer run — the tightest cuts in the NewJeans pool.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/ZncbtRo7RXs/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=ZncbtRo7RXs&amp;t=54" target="_blank" rel="noopener nofollow">Supernatural<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:19</span>
+              <span class="row-len">25s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/o7DnBq7Fn74/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=o7DnBq7Fn74&amp;t=30" target="_blank" rel="noopener nofollow">New Jeans<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:30&ndash;0:55</span>
+              <span class="row-len">25s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/x8RIixqumUc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=x8RIixqumUc&amp;t=55" target="_blank" rel="noopener nofollow">Attention<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:22</span>
+              <span class="row-len">27s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/VOmIplFAGeg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=VOmIplFAGeg&amp;t=35" target="_blank" rel="noopener nofollow">Cookie<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:35&ndash;1:12</span>
+              <span class="row-len">37s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/sVTy_wmn5SU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=sVTy_wmn5SU&amp;t=38" target="_blank" rel="noopener nofollow">OMG<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:38&ndash;1:16</span>
+              <span class="row-len">38s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="newjeans-quick-warmup"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="newjeans-quick-warmup">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-newjeans-quick-warmup">{"version":"1.0","name":"NewJeans - Quick Warm-Up","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=ZncbtRo7RXs","title":"NewJeans (뉴진스) ‘Supernatural’ Official MV (Part.1)","startTime":"0:54","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=o7DnBq7Fn74","title":"NewJeans (뉴진스) 'New Jeans' MV (Only PowerpuffGirls Ver)","startTime":"0:30","endTime":"0:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=x8RIixqumUc","title":"NewJeans (뉴진스) 'Attention' Official MV (Performance ver.)","startTime":"0:55","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=VOmIplFAGeg","title":"NewJeans (뉴진스) 'Cookie' Official MV","startTime":"0:35","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=sVTy_wmn5SU","title":"NewJeans (뉴진스) 'OMG' Official MV (Performance ver.1)","startTime":"0:38","endTime":"1:16","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="newjeans-chorus-rush" aria-labelledby="newjeans-chorus-rush-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="newjeans-chorus-rush-title"><span class="status-dot" aria-hidden="true"></span>Chorus Rush</h2>
+            <p class="mix-stats">5 SONGS · ~3:09 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">Every clip under 40 seconds. Fast switches, no time to catch your breath between hooks.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/x8RIixqumUc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=x8RIixqumUc&amp;t=55" target="_blank" rel="noopener nofollow">Attention<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:22</span>
+              <span class="row-len">27s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Zal7oQX9v3E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Zal7oQX9v3E&amp;t=50" target="_blank" rel="noopener nofollow">Super Shy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:30</span>
+              <span class="row-len">40s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/sVTy_wmn5SU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=sVTy_wmn5SU&amp;t=38" target="_blank" rel="noopener nofollow">OMG<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:38&ndash;1:16</span>
+              <span class="row-len">38s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/ZncbtRo7RXs/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=ZncbtRo7RXs&amp;t=54" target="_blank" rel="noopener nofollow">Supernatural<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:19</span>
+              <span class="row-len">25s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Q3K0TOvTOno/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Q3K0TOvTOno&amp;t=50" target="_blank" rel="noopener nofollow">How Sweet<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:29</span>
+              <span class="row-len">39s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="newjeans-chorus-rush"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="newjeans-chorus-rush">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-newjeans-chorus-rush">{"version":"1.0","name":"NewJeans - Chorus Rush","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=x8RIixqumUc","title":"NewJeans (뉴진스) 'Attention' Official MV (Performance ver.)","startTime":"0:55","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Zal7oQX9v3E","title":"NewJeans - 'Super Shy' Dance Practice [MIRRORED]","startTime":"0:50","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=sVTy_wmn5SU","title":"NewJeans (뉴진스) 'OMG' Official MV (Performance ver.1)","startTime":"0:38","endTime":"1:16","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ZncbtRo7RXs","title":"NewJeans (뉴진스) ‘Supernatural’ Official MV (Part.1)","startTime":"0:54","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Q3K0TOvTOno","title":"NewJeans (뉴진스) 'How Sweet' Official MV","startTime":"0:50","endTime":"1:29","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="newjeans-full-sections" aria-labelledby="newjeans-full-sections-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="newjeans-full-sections-title"><span class="status-dot" aria-hidden="true"></span>Long Sections</h2>
+            <p class="mix-stats">5 SONGS · ~4:07 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/11cta61wi0g/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=11cta61wi0g&amp;t=40" target="_blank" rel="noopener nofollow">Hype Boy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:40&ndash;1:32</span>
+              <span class="row-len">52s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Km71Rr9K-Bw/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Km71Rr9K-Bw&amp;t=50" target="_blank" rel="noopener nofollow">Ditto<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:40</span>
+              <span class="row-len">50s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/jOTfBlKSQYY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=jOTfBlKSQYY&amp;t=57" target="_blank" rel="noopener nofollow">ETA<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:57&ndash;1:40</span>
+              <span class="row-len">43s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/C3GouGa0noM/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=C3GouGa0noM&amp;t=77" target="_blank" rel="noopener nofollow">GODS<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:17&ndash;1:59</span>
+              <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Zal7oQX9v3E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Zal7oQX9v3E&amp;t=50" target="_blank" rel="noopener nofollow">Super Shy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:30</span>
+              <span class="row-len">40s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="newjeans-full-sections"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="newjeans-full-sections">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-newjeans-full-sections">{"version":"1.0","name":"NewJeans - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=11cta61wi0g","title":"NewJeans (뉴진스) 'Hype Boy' Official MV (Performance ver.1)","startTime":"0:40","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Km71Rr9K-Bw","title":"NewJeans (뉴진스) 'Ditto' Performance Video","startTime":"0:50","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jOTfBlKSQYY","title":"NewJeans (뉴진스) 'ETA' Official MV","startTime":"0:57","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=C3GouGa0noM","title":"GODS ft. NewJeans (뉴진스) (Official Music Video) | Worlds 2023 Anthem - League of Legends","startTime":"1:17","endTime":"1:59","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Zal7oQX9v3E","title":"NewJeans - 'Super Shy' Dance Practice [MIRRORED]","startTime":"0:50","endTime":"1:30","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="newjeans-shuffle-a" aria-labelledby="newjeans-shuffle-a-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="newjeans-shuffle-a-title"><span class="status-dot" aria-hidden="true"></span>Shuffle Set A</h2>
+            <p class="mix-stats">5 SONGS · ~3:07 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">A randomised draw from the NewJeans pool. Different songs from the sets above, same real cut points.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/o7DnBq7Fn74/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=o7DnBq7Fn74&amp;t=30" target="_blank" rel="noopener nofollow">New Jeans<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:30&ndash;0:55</span>
+              <span class="row-len">25s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Zal7oQX9v3E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Zal7oQX9v3E&amp;t=50" target="_blank" rel="noopener nofollow">Super Shy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:30</span>
+              <span class="row-len">40s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/x8RIixqumUc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=x8RIixqumUc&amp;t=55" target="_blank" rel="noopener nofollow">Attention<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:22</span>
+              <span class="row-len">27s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Km71Rr9K-Bw/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Km71Rr9K-Bw&amp;t=50" target="_blank" rel="noopener nofollow">Ditto<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:40</span>
+              <span class="row-len">50s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/ZncbtRo7RXs/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=ZncbtRo7RXs&amp;t=54" target="_blank" rel="noopener nofollow">Supernatural<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:19</span>
+              <span class="row-len">25s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="newjeans-shuffle-a"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="newjeans-shuffle-a">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-newjeans-shuffle-a">{"version":"1.0","name":"NewJeans - Shuffle Set A","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=o7DnBq7Fn74","title":"NewJeans (뉴진스) 'New Jeans' MV (Only PowerpuffGirls Ver)","startTime":"0:30","endTime":"0:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Zal7oQX9v3E","title":"NewJeans - 'Super Shy' Dance Practice [MIRRORED]","startTime":"0:50","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=x8RIixqumUc","title":"NewJeans (뉴진스) 'Attention' Official MV (Performance ver.)","startTime":"0:55","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Km71Rr9K-Bw","title":"NewJeans (뉴진스) 'Ditto' Performance Video","startTime":"0:50","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ZncbtRo7RXs","title":"NewJeans (뉴진스) ‘Supernatural’ Official MV (Part.1)","startTime":"0:54","endTime":"1:19","info":null,"isExpanded":false}]}</script>
+        </article>
+      </div>
+
+      <section class="prose" aria-labelledby="how-title">
+        <h2 id="how-title">How to use these NewJeans mixes</h2>
+        <p>
+          Press <b>Open in builder</b> on any mix. The songs and their cut points load into the
+          builder on the home page in the order shown here. Drop songs you don't know, move songs up
+          or down, or nudge a start or end time in the editor. Press <b>Shuffle now</b> for a random
+          order (that is the point of a random play dance), then <b>Generate mix</b> to get one MP3
+          with a 5-second countdown before every song.
+        </p>
+        <p>
+          Want to keep a set? <b>Save as project file</b> saves it as a .json file. Open it later in
+          the builder from <b>Project &rarr; Open a saved file</b>, or send it to whoever is running
+          your RPD event.
         </p>
 
-        <ul class="stat-row">
-          <li><strong>11</strong><span>songs in the pool</span></li>
-          <li><strong>5</strong><span>ready-made mixes</span></li>
-          <li><strong>36s</strong><span>average clip length</span></li>
-          <li><strong>1</strong><span>dance practice video</span></li>
-        </ul>
-
-        <p class="note">
-          Most-mixed NewJeans track right now: <strong>ETA</strong>,
-          usually cut from 0:57 to 1:40.
+        <h2>Where these cut points come from</h2>
+        <p>
+          Each clip is the segment most commonly chosen for that video by people using this
+          generator. In practice that lands on the chorus or the dance break, because that is the
+          part of a NewJeans song a random play dance crowd knows and can actually follow.
+          The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
+          frozen at whatever was popular when the page was written.
         </p>
+        <p>
+          Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
+          only once even when several uploads of it exist, so a mix never plays you the same
+          choreography twice.
+        </p>
+      </section>
 
-        <section class="mixes">
-        <article class="mix-card" id="newjeans-essentials">
-          <header class="mix-head">
-            <h3>NewJeans Essentials</h3>
-            <p class="mix-blurb">The NewJeans songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~3:42 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=jOTfBlKSQYY&t=57" target="_blank" rel="noopener nofollow">ETA</a>
-              </span>
-              <span class="mix-song-time">0:57&ndash;1:40</span>
-              <span class="mix-song-len">43s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=x8RIixqumUc&t=55" target="_blank" rel="noopener nofollow">Attention</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:22</span>
-              <span class="mix-song-len">27s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ArmDp-zijuc&t=50" target="_blank" rel="noopener nofollow">Super Shy</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:20</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=11cta61wi0g&t=40" target="_blank" rel="noopener nofollow">Hype Boy</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:32</span>
-              <span class="mix-song-len">52s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Km71Rr9K-Bw&t=50" target="_blank" rel="noopener nofollow">Ditto</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:40</span>
-              <span class="mix-song-len">50s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="newjeans-essentials">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="newjeans-essentials">Download .json</button>
-          </div>
-          <script type="application/json" id="data-newjeans-essentials">{"version":"1.0","name":"NewJeans - NewJeans Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=jOTfBlKSQYY","title":"NewJeans (뉴진스) 'ETA' Official MV","startTime":"0:57","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=x8RIixqumUc","title":"NewJeans (뉴진스) 'Attention' Official MV (Performance ver.)","startTime":"0:55","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ArmDp-zijuc","title":"NewJeans (뉴진스) 'Super Shy' Official MV","startTime":"0:50","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=11cta61wi0g","title":"NewJeans (뉴진스) 'Hype Boy' Official MV (Performance ver.1)","startTime":"0:40","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Km71Rr9K-Bw","title":"NewJeans (뉴진스) 'Ditto' Performance Video","startTime":"0:50","endTime":"1:40","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="newjeans-quick-warmup">
-          <header class="mix-head">
-            <h3>Quick Warm-Up</h3>
-            <p class="mix-blurb">Short segments to loosen up with before a longer run — the tightest cuts in the NewJeans pool.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~2:37 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ZncbtRo7RXs&t=54" target="_blank" rel="noopener nofollow">Supernatural</a>
-              </span>
-              <span class="mix-song-time">0:54&ndash;1:19</span>
-              <span class="mix-song-len">25s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=o7DnBq7Fn74&t=30" target="_blank" rel="noopener nofollow">New Jeans</a>
-              </span>
-              <span class="mix-song-time">0:30&ndash;0:55</span>
-              <span class="mix-song-len">25s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=x8RIixqumUc&t=55" target="_blank" rel="noopener nofollow">Attention</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:22</span>
-              <span class="mix-song-len">27s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ArmDp-zijuc&t=50" target="_blank" rel="noopener nofollow">Super Shy</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:20</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Q3K0TOvTOno&t=0" target="_blank" rel="noopener nofollow">How Sweet</a>
-              </span>
-              <span class="mix-song-time">0:00&ndash;0:30</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="newjeans-quick-warmup">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="newjeans-quick-warmup">Download .json</button>
-          </div>
-          <script type="application/json" id="data-newjeans-quick-warmup">{"version":"1.0","name":"NewJeans - Quick Warm-Up","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=ZncbtRo7RXs","title":"NewJeans (뉴진스) ‘Supernatural’ Official MV (Part.1)","startTime":"0:54","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=o7DnBq7Fn74","title":"NewJeans (뉴진스) 'New Jeans' MV (Only PowerpuffGirls Ver)","startTime":"0:30","endTime":"0:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=x8RIixqumUc","title":"NewJeans (뉴진스) 'Attention' Official MV (Performance ver.)","startTime":"0:55","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ArmDp-zijuc","title":"NewJeans (뉴진스) 'Super Shy' Official MV","startTime":"0:50","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Q3K0TOvTOno","title":"NewJeans (뉴진스) 'How Sweet' Official MV","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="newjeans-full-sections">
-          <header class="mix-head">
-            <h3>Long Sections</h3>
-            <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~4:05 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=11cta61wi0g&t=40" target="_blank" rel="noopener nofollow">Hype Boy</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:32</span>
-              <span class="mix-song-len">52s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Km71Rr9K-Bw&t=50" target="_blank" rel="noopener nofollow">Ditto</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:40</span>
-              <span class="mix-song-len">50s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=jOTfBlKSQYY&t=57" target="_blank" rel="noopener nofollow">ETA</a>
-              </span>
-              <span class="mix-song-time">0:57&ndash;1:40</span>
-              <span class="mix-song-len">43s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=C3GouGa0noM&t=77" target="_blank" rel="noopener nofollow">GODS ft</a>
-              </span>
-              <span class="mix-song-time">1:17&ndash;1:59</span>
-              <span class="mix-song-len">42s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=sVTy_wmn5SU&t=38" target="_blank" rel="noopener nofollow">OMG</a>
-              </span>
-              <span class="mix-song-time">0:38&ndash;1:16</span>
-              <span class="mix-song-len">38s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="newjeans-full-sections">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="newjeans-full-sections">Download .json</button>
-          </div>
-          <script type="application/json" id="data-newjeans-full-sections">{"version":"1.0","name":"NewJeans - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=11cta61wi0g","title":"NewJeans (뉴진스) 'Hype Boy' Official MV (Performance ver.1)","startTime":"0:40","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Km71Rr9K-Bw","title":"NewJeans (뉴진스) 'Ditto' Performance Video","startTime":"0:50","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jOTfBlKSQYY","title":"NewJeans (뉴진스) 'ETA' Official MV","startTime":"0:57","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=C3GouGa0noM","title":"GODS ft. NewJeans (뉴진스) (Official Music Video) | Worlds 2023 Anthem - League of Legends","startTime":"1:17","endTime":"1:59","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=sVTy_wmn5SU","title":"NewJeans (뉴진스) 'OMG' Official MV (Performance ver.1)","startTime":"0:38","endTime":"1:16","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="newjeans-deep-cuts">
-          <header class="mix-head">
-            <h3>Deep Cuts</h3>
-            <p class="mix-blurb">NewJeans tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~3:35 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=11cta61wi0g&t=40" target="_blank" rel="noopener nofollow">Hype Boy</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:32</span>
-              <span class="mix-song-len">52s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Km71Rr9K-Bw&t=50" target="_blank" rel="noopener nofollow">Ditto</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:40</span>
-              <span class="mix-song-len">50s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=sVTy_wmn5SU&t=38" target="_blank" rel="noopener nofollow">OMG</a>
-              </span>
-              <span class="mix-song-time">0:38&ndash;1:16</span>
-              <span class="mix-song-len">38s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ZncbtRo7RXs&t=54" target="_blank" rel="noopener nofollow">Supernatural</a>
-              </span>
-              <span class="mix-song-time">0:54&ndash;1:19</span>
-              <span class="mix-song-len">25s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Q3K0TOvTOno&t=0" target="_blank" rel="noopener nofollow">How Sweet</a>
-              </span>
-              <span class="mix-song-time">0:00&ndash;0:30</span>
-              <span class="mix-song-len">30s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="newjeans-deep-cuts">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="newjeans-deep-cuts">Download .json</button>
-          </div>
-          <script type="application/json" id="data-newjeans-deep-cuts">{"version":"1.0","name":"NewJeans - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=11cta61wi0g","title":"NewJeans (뉴진스) 'Hype Boy' Official MV (Performance ver.1)","startTime":"0:40","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Km71Rr9K-Bw","title":"NewJeans (뉴진스) 'Ditto' Performance Video","startTime":"0:50","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=sVTy_wmn5SU","title":"NewJeans (뉴진스) 'OMG' Official MV (Performance ver.1)","startTime":"0:38","endTime":"1:16","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ZncbtRo7RXs","title":"NewJeans (뉴진스) ‘Supernatural’ Official MV (Part.1)","startTime":"0:54","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Q3K0TOvTOno","title":"NewJeans (뉴진스) 'How Sweet' Official MV","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="newjeans-shuffle-a">
-          <header class="mix-head">
-            <h3>Shuffle Set A</h3>
-            <p class="mix-blurb">A randomised draw from the NewJeans pool. Different songs from the sets above, same real cut points.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~3:07 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=o7DnBq7Fn74&t=30" target="_blank" rel="noopener nofollow">New Jeans</a>
-              </span>
-              <span class="mix-song-time">0:30&ndash;0:55</span>
-              <span class="mix-song-len">25s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=11cta61wi0g&t=40" target="_blank" rel="noopener nofollow">Hype Boy</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:32</span>
-              <span class="mix-song-len">52s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=x8RIixqumUc&t=55" target="_blank" rel="noopener nofollow">Attention</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:22</span>
-              <span class="mix-song-len">27s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=sVTy_wmn5SU&t=38" target="_blank" rel="noopener nofollow">OMG</a>
-              </span>
-              <span class="mix-song-time">0:38&ndash;1:16</span>
-              <span class="mix-song-len">38s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ZncbtRo7RXs&t=54" target="_blank" rel="noopener nofollow">Supernatural</a>
-              </span>
-              <span class="mix-song-time">0:54&ndash;1:19</span>
-              <span class="mix-song-len">25s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="newjeans-shuffle-a">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="newjeans-shuffle-a">Download .json</button>
-          </div>
-          <script type="application/json" id="data-newjeans-shuffle-a">{"version":"1.0","name":"NewJeans - Shuffle Set A","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=o7DnBq7Fn74","title":"NewJeans (뉴진스) 'New Jeans' MV (Only PowerpuffGirls Ver)","startTime":"0:30","endTime":"0:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=11cta61wi0g","title":"NewJeans (뉴진스) 'Hype Boy' Official MV (Performance ver.1)","startTime":"0:40","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=x8RIixqumUc","title":"NewJeans (뉴진스) 'Attention' Official MV (Performance ver.)","startTime":"0:55","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=sVTy_wmn5SU","title":"NewJeans (뉴진스) 'OMG' Official MV (Performance ver.1)","startTime":"0:38","endTime":"1:16","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ZncbtRo7RXs","title":"NewJeans (뉴진스) ‘Supernatural’ Official MV (Part.1)","startTime":"0:54","endTime":"1:19","info":null,"isExpanded":false}]}</script>
-        </article>
+      <section class="others" aria-labelledby="others-title">
+        <h2 id="others-title">Mixes for other groups</h2>
+        <div class="chips">
+          <a href="/random-dance/illit">ILLIT</a>
+          <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
+          <a href="/random-dance/aespa">aespa</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/katseye">KATSEYE</a>
+          <a href="/random-dance/twice">TWICE</a>
+          <a href="/random-dance/stray-kids">Stray Kids</a>
+          <a href="/random-dance/ateez">ATEEZ</a>
+          <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/enhypen">ENHYPEN</a>
+          <a href="/random-dance/babymonster">BABYMONSTER</a>
+          <a href="/random-dance/ive">IVE</a>
+          <a href="/random-dance/seventeen">SEVENTEEN</a>
+          <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
+          <a href="/random-dance/itzy">ITZY</a>
+          <a href="/random-dance/g-i-dle">i-dle</a>
+          <a href="/random-dance/nct">NCT</a>
+          <a href="/random-dance/red-velvet">Red Velvet</a>
+          <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
+          <a href="/random-dance/xg">XG</a>
+          <a href="/random-dance/nmixx">NMIXX</a>
+        </div>
+        <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <section class="foot-col" aria-labelledby="foot-build">
+          <h2 id="foot-build">Make your own mix</h2>
+          <p>Search YouTube, pick the part of each song, and get one MP3 with a 5-second countdown before every song. Free, no sign-up.</p>
+          <p><a class="btn btn-primary" href="/">Open the builder</a></p>
         </section>
-
-        <section class="prose">
-          <h2>How to use these NewJeans mixes</h2>
-          <p>
-            Press <em>Open in generator</em> on any mix. The songs and their timings load straight
-            into the generator on the home page, in the order shown here, where you can drop tracks
-            you don't know, move songs up or down, or nudge a start time before generating the audio
-            file. Press <em>Shuffle now</em> for a random order whenever you like &mdash; which is the
-            point of a random play dance.
-          </p>
-          <p>
-            Prefer to keep a set? <em>Download .json</em> saves it as a project file you can open
-            later from the generator's <em>Project</em> menu, or send to whoever is running your RPD event.
-          </p>
-
-          <h2>Where these cut points come from</h2>
-          <p>
-            Each clip below is the segment most commonly chosen for that video by people using this
-            generator. In practice that lands on the chorus or the dance break, because that is the
-            part of a NewJeans song a random play dance crowd knows and can actually follow.
-            The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
-            frozen at whatever was popular when the page was written.
-          </p>
-          <p>
-            Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
-            only once even when several uploads of it exist, so a mix never plays you the same
-            choreography twice.
+        <section class="foot-col" aria-labelledby="foot-support">
+          <h2 id="foot-support">Enjoying the tool?</h2>
+          <p>It's free and always will be. Support on Ko-fi helps pay for the servers.</p>
+          <p class="foot-row">
+            <a class="btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-footer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg> Support on Ko-fi<span class="sr-only"> (opens in a new tab)</span></a>
+            <a class="foot-link" href="/#how-it-works">How it works</a>
+            <a class="foot-link" href="/#contact">Contact us</a>
           </p>
         </section>
+      </div>
+      <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
+    </footer>
 
-        <section class="other-bands">
-          <h2>Mixes for other groups</h2>
-          <div class="band-links">
-        <a href="/random-dance/nct">NCT</a>
-        <a href="/random-dance/bts">BTS</a>
-        <a href="/random-dance/twice">TWICE</a>
-        <a href="/random-dance/stray-kids">Stray Kids</a>
-        <a href="/random-dance/itzy">ITZY</a>
-        <a href="/random-dance/enhypen">ENHYPEN</a>
-        <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-        <a href="/random-dance/blackpink">BLACKPINK</a>
-        <a href="/random-dance/ateez">ATEEZ</a>
-        <a href="/random-dance/seventeen">SEVENTEEN</a>
-        <a href="/random-dance/aespa">aespa</a>
-        <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
-        <a href="/random-dance/babymonster">BABYMONSTER</a>
-        <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-        <a href="/random-dance/g-i-dle">(G)I-DLE</a>
-        <a href="/random-dance/illit">ILLIT</a>
-        <a href="/random-dance/nmixx">NMIXX</a>
-        <a href="/random-dance/red-velvet">Red Velvet</a>
-        <a href="/random-dance/xg">XG</a>
-        <a href="/random-dance/ive">IVE</a>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-foot">
-        <p><a class="btn btn-primary" href="/">Build your own mix &rarr;</a></p>
-        <p class="fine">Made with 💜 for K-Pop dance lovers.</p>
-      </footer>
-    </div>
-    <script src="/app/landing.js"></script>
+    <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
+    <script src="/app/landing.js?v=3"></script>
   </body>
 </html>

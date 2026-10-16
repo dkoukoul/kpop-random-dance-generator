@@ -210,6 +210,11 @@ export function initContact() {
   for (const trigger of document.querySelectorAll("[data-contact]")) {
     trigger.addEventListener("click", () => open(trigger.dataset.contact));
   }
+  // The group pages link here as /#contact.
+  if (location.hash === "#contact") {
+    history.replaceState(null, "", location.pathname + location.search);
+    open("");
+  }
   for (const closer of dialog.querySelectorAll("[data-close]")) {
     closer.addEventListener("click", () => dialog.close());
   }

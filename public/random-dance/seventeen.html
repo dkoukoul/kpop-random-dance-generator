@@ -3,33 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SEVENTEEN Random Dance Mixes | 6 Ready-Made Sets</title>
-    <meta name="description" content="6 ready-made SEVENTEEN random dance mixes with real cut points, from 24 songs. Open one in the generator or edit the timings yourself." />
+    <title>SEVENTEEN Random Dance Mixes | 5 Ready-Made Sets</title>
+    <meta name="description" content="5 ready-made SEVENTEEN random dance mixes with real cut points, from 24 songs. Open one in the builder or edit the timings yourself." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://kpopgenerator.cloud/random-dance/seventeen" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kpopgenerator.cloud/random-dance/seventeen" />
-    <meta property="og:title" content="SEVENTEEN Random Dance Mixes | 6 Ready-Made Sets" />
-    <meta property="og:description" content="6 ready-made SEVENTEEN random dance mixes with real cut points, from 24 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="og:title" content="SEVENTEEN Random Dance Mixes | 5 Ready-Made Sets" />
+    <meta property="og:description" content="5 ready-made SEVENTEEN random dance mixes with real cut points, from 24 songs. Open one in the builder or edit the timings yourself." />
     <meta property="og:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="K-Pop Random Dance Generator" />
     <meta property="og:locale" content="en_US" />
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="SEVENTEEN Random Dance Mixes | 6 Ready-Made Sets" />
-    <meta property="twitter:description" content="6 ready-made SEVENTEEN random dance mixes with real cut points, from 24 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="twitter:title" content="SEVENTEEN Random Dance Mixes | 5 Ready-Made Sets" />
+    <meta property="twitter:description" content="5 ready-made SEVENTEEN random dance mixes with real cut points, from 24 songs. Open one in the builder or edit the timings yourself." />
     <meta property="twitter:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
 
-    <meta name="theme-color" content="#8b5cf6" />
+    <!-- The theme chosen in the builder, before anything paints (Dark is the default). -->
+    <script>
+      try {
+        if (localStorage.getItem("kpopgen:theme") === "light") document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    </script>
+
+    <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/landing.css?v=3" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -61,8 +68,8 @@
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "SEVENTEEN random dance mixes",
-  "description": "6 ready-made SEVENTEEN random dance mixes with real cut points, from 24 songs. Open one in the generator or edit the timings yourself.",
-  "numberOfItems": 6,
+  "description": "5 ready-made SEVENTEEN random dance mixes with real cut points, from 24 songs. Open one in the builder or edit the timings yourself.",
+  "numberOfItems": 5,
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -81,27 +88,20 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "SEVENTEEN - Chorus Rush",
-      "description": "Every clip under 40 seconds. Fast switches, no time to catch your breath between hooks.",
-      "url": "https://kpopgenerator.cloud/random-dance/seventeen#seventeen-chorus-rush"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
       "name": "SEVENTEEN - Long Sections",
       "description": "The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.",
       "url": "https://kpopgenerator.cloud/random-dance/seventeen#seventeen-full-sections"
     },
     {
       "@type": "ListItem",
-      "position": 5,
+      "position": 4,
       "name": "SEVENTEEN - Deep Cuts",
       "description": "SEVENTEEN tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.",
       "url": "https://kpopgenerator.cloud/random-dance/seventeen#seventeen-deep-cuts"
     },
     {
       "@type": "ListItem",
-      "position": 6,
+      "position": 5,
       "name": "SEVENTEEN - Dance Practice Edition",
       "description": "Built only from dance practice, choreography and performance uploads, so the audio matches the versions most covers learn from.",
       "url": "https://kpopgenerator.cloud/random-dance/seventeen#seventeen-dance-practice"
@@ -118,523 +118,460 @@
       gtag('config', 'G-Q93H8H3JP4');
     </script>
   </head>
-  <body class="">
-    <div class="page">
-      <header class="site-head">
-        <a class="brand" href="/"><span class="brand-icon">🎵</span> K-Pop Random Dance Generator</a>
-      </header>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="brand" href="/">
+          <svg class="brand-mark" width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="var(--accent)"></rect><g transform="translate(32 32) scale(0.6) translate(-52.5 -46)" fill="var(--accentText)" stroke="var(--accentText)" stroke-linecap="round" stroke-linejoin="round"><circle cx="43.8" cy="10.5" r="5.2" stroke="none"></circle><circle cx="56.2" cy="10.5" r="5.2" stroke="none"></circle><ellipse cx="50" cy="20.5" rx="7.6" ry="8.6" stroke="none"></ellipse><path d="M46.5 26 L53.5 26 L54 34 L46 34 Z" stroke="none"></path><path d="M39 35 Q50 32 61 35 L59 46 Q57 51 57 56 L44 56 Q44 51 41 46 Z" stroke-width="2"></path><path d="M43.5 55 L57.5 55 L69 74 Q50 79 31 76 Z" stroke-width="2"></path><path d="M58 37 L66 23 L74 7" fill="none" stroke-width="7.5"></path><path d="M42 37 L30 46 L44 54" fill="none" stroke-width="7"></path><path d="M45 72 L44 90" fill="none" stroke-width="9"></path><path d="M56 72 L64 88" fill="none" stroke-width="8.5"></path></g></svg>
+          <span class="brand-name">K-Pop Random Dance Generator</span>
+        </a>
+        <nav class="mainnav" aria-label="Main">
+          <a href="/">Builder</a>
+          <a href="/random-dance/" aria-current="true">Ready-made mixes</a>
+          <a class="nav-how" href="/#how-it-works">How it works</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="menu-wrap" data-menu>
+          <button type="button" class="btn" aria-expanded="false" aria-controls="themeMenu">
+            <span class="theme-swatch" aria-hidden="true"></span>
+            <span class="theme-prefix">Theme: </span><span id="themeName">Dark</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <div class="menu" id="themeMenu" hidden>
+            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true">Dark <span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false">Light <span class="check" aria-hidden="true">✓</span></button>
+          </div>
+        </div>
+        <a class="btn btn-outline support-btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-header">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg>
+          <span class="support-label">Support</span><span class="sr-only"> on Ko-fi (opens in a new tab)</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main" class="page" tabindex="-1">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span>/</span>
-        <a href="/random-dance/">Random Dance Mixes</a> <span>/</span>
-        <span aria-current="page">SEVENTEEN</span>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="/random-dance/">Random dance mixes</a></li>
+          <li><span aria-current="page">SEVENTEEN</span></li>
+        </ol>
       </nav>
 
-      <main>
+      <header class="hero">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>READY-MADE MIXES</p>
         <h1>SEVENTEEN Random Dance Mixes</h1>
         <p class="lede">
-          6 ready-made SEVENTEEN random dance sets you can open in the generator
-          in one click. SEVENTEEN (세븐틴) appears in
+          5 ready-made SEVENTEEN random dance sets you can open in the builder
+          in one click. SEVENTEEN (<span lang="ko">세븐틴</span>) appears in
           24 distinct songs across the mixes people have built on this site, and every
-          start and end time below is the cut point those people actually used &mdash; not a guess.
+          start and end time below is the cut point those people actually used, not a guess.
         </p>
-
-        <ul class="stat-row">
-          <li><strong>24</strong><span>songs in the pool</span></li>
-          <li><strong>6</strong><span>ready-made mixes</span></li>
-          <li><strong>33s</strong><span>average clip length</span></li>
-          <li><strong>8</strong><span>dance practice videos</span></li>
-        </ul>
-
-        <p class="note">
-          Most-mixed SEVENTEEN track right now: <strong>아주 NICE</strong>,
-          usually cut from 0:27 to 0:54.
+        <dl class="tiles">
+          <div class="tile"><dt class="tile-k">SONGS</dt><dd class="tile-v">24</dd></div>
+          <div class="tile"><dt class="tile-k">MIXES</dt><dd class="tile-v">5</dd></div>
+          <div class="tile"><dt class="tile-k">AVG CLIP</dt><dd class="tile-v">34s</dd></div>
+          <div class="tile"><dt class="tile-k">PRACTICE VIDEOS</dt><dd class="tile-v">7</dd></div>
+        </dl>
+        <p class="top-song">
+          <span class="top-song-k">MOST MIXED NOW</span>
+          <strong>HOT</strong>
+          <span class="top-song-time">usually 0:45&ndash;1:33</span>
         </p>
+        <nav class="jump" aria-label="Mixes on this page">
+          <a href="#seventeen-essentials">SEVENTEEN Essentials</a>
+          <a href="#seventeen-quick-warmup">Quick Warm-Up</a>
+          <a href="#seventeen-full-sections">Long Sections</a>
+          <a href="#seventeen-deep-cuts">Deep Cuts</a>
+          <a href="#seventeen-dance-practice">Dance Practice Edition</a>
+        </nav>
+      </header>
 
-        <section class="mixes">
-        <article class="mix-card" id="seventeen-essentials">
-          <header class="mix-head">
-            <h3>SEVENTEEN Essentials</h3>
-            <p class="mix-blurb">The SEVENTEEN songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
-            <p class="mix-meta">
-              <span>7 songs</span>
-              <span>~4:46 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=J-wFp43XOrA&t=27" target="_blank" rel="noopener nofollow">아주 NICE</a>
-              </span>
-              <span class="mix-song-time">0:27&ndash;0:54</span>
-              <span class="mix-song-len">27s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=gRnuFC4Ualw&t=45" target="_blank" rel="noopener nofollow">HOT</a>
-              </span>
-              <span class="mix-song-time">0:45&ndash;1:33</span>
-              <span class="mix-song-len">48s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=HdZdxocqzq4&t=40" target="_blank" rel="noopener nofollow">Left &amp; Right</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:12</span>
-              <span class="mix-song-len">32s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=_5PELxP8Udg&t=58" target="_blank" rel="noopener nofollow">Oh My!</a>
-              </span>
-              <span class="mix-song-time">0:58&ndash;1:30</span>
-              <span class="mix-song-len">32s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=pS57UX6s-xw&t=52" target="_blank" rel="noopener nofollow">THUNDER</a>
-              </span>
-              <span class="mix-song-time">0:52&ndash;1:24</span>
-              <span class="mix-song-len">32s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=-GQg25oP0S4&t=48" target="_blank" rel="noopener nofollow">손오공</a>
-              </span>
-              <span class="mix-song-time">0:48&ndash;1:30</span>
-              <span class="mix-song-len">42s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=zSQ48zyWZrY&t=49" target="_blank" rel="noopener nofollow">음악의 신</a>
-              </span>
-              <span class="mix-song-time">0:49&ndash;1:32</span>
-              <span class="mix-song-len">43s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="seventeen-essentials">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="seventeen-essentials">Download .json</button>
+      <div class="mixes">
+        <article class="panel mix" id="seventeen-essentials" aria-labelledby="seventeen-essentials-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="seventeen-essentials-title"><span class="status-dot" aria-hidden="true"></span>SEVENTEEN Essentials</h2>
+            <p class="mix-stats">7 SONGS · ~4:37 · 5S COUNTDOWN</p>
           </div>
-          <script type="application/json" id="data-seventeen-essentials">{"version":"1.0","name":"SEVENTEEN - SEVENTEEN Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=J-wFp43XOrA","title":"[MV] SEVENTEEN(세븐틴) _ VERY NICE(아주 NICE)","startTime":"0:27","endTime":"0:54","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=gRnuFC4Ualw","title":"SEVENTEEN (세븐틴) 'HOT' Official MV","startTime":"0:45","endTime":"1:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=HdZdxocqzq4","title":"SEVENTEEN (세븐틴) 'Left & Right' Official MV","startTime":"0:40","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=_5PELxP8Udg","title":"[M/V] SEVENTEEN(세븐틴) - 어쩌나 (Oh My!)","startTime":"0:58","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=pS57UX6s-xw","title":"SEVENTEEN (세븐틴) 'THUNDER' Official MV","startTime":"0:52","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=-GQg25oP0S4","title":"SEVENTEEN (세븐틴) '손오공' Official MV","startTime":"0:48","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=zSQ48zyWZrY","title":"SEVENTEEN (세븐틴) '음악의 신' Official MV","startTime":"0:49","endTime":"1:32","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="seventeen-quick-warmup">
-          <header class="mix-head">
-            <h3>Quick Warm-Up</h3>
-            <p class="mix-blurb">Short segments to loosen up with before a longer run — the tightest cuts in the SEVENTEEN pool.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~2:04 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ThI0pBAbFnk&t=200" target="_blank" rel="noopener nofollow">MAESTRO</a>
-              </span>
-              <span class="mix-song-time">3:20&ndash;3:36</span>
-              <span class="mix-song-len">16s</span>
+          <p class="mix-blurb">The SEVENTEEN songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/gRnuFC4Ualw/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=gRnuFC4Ualw&amp;t=45" target="_blank" rel="noopener nofollow">HOT<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:45&ndash;1:33</span>
+              <span class="row-len">48s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=oeClPI0Q0lI&t=35" target="_blank" rel="noopener nofollow">VERY NICE</a>
-              </span>
-              <span class="mix-song-time">0:35&ndash;0:55</span>
-              <span class="mix-song-len">20s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/J-wFp43XOrA/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=J-wFp43XOrA&amp;t=27" target="_blank" rel="noopener nofollow">아주 NICE<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:27&ndash;0:54</span>
+              <span class="row-len">27s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=BPwThQeJ1ao&t=50" target="_blank" rel="noopener nofollow">HOME;RUN</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:12</span>
-              <span class="mix-song-len">22s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/HdZdxocqzq4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=HdZdxocqzq4&amp;t=40" target="_blank" rel="noopener nofollow">Left &amp; Right<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:40&ndash;1:12</span>
+              <span class="row-len">32s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=TcWx_xvcPzg&t=51" target="_blank" rel="noopener nofollow">HOSHI X WOOZI - STUPID IDIOT</a>
-              </span>
-              <span class="mix-song-time">0:51&ndash;1:14</span>
-              <span class="mix-song-len">23s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/_5PELxP8Udg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=_5PELxP8Udg&amp;t=58" target="_blank" rel="noopener nofollow">Oh My!<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:58&ndash;1:30</span>
+              <span class="row-len">32s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=dEHwMDxvpok&t=47" target="_blank" rel="noopener nofollow">STUPID IDIOT</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:10</span>
-              <span class="mix-song-len">23s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/pS57UX6s-xw/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=pS57UX6s-xw&amp;t=52" target="_blank" rel="noopener nofollow">THUNDER<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:52&ndash;1:24</span>
+              <span class="row-len">32s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/-GQg25oP0S4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=-GQg25oP0S4&amp;t=48" target="_blank" rel="noopener nofollow">손오공<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:48&ndash;1:30</span>
+              <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/mBXBOLG06Wc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=mBXBOLG06Wc&amp;t=41" target="_blank" rel="noopener nofollow">파이팅 해야지<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:41&ndash;1:15</span>
+              <span class="row-len">34s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="seventeen-quick-warmup">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="seventeen-quick-warmup">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="seventeen-essentials"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="seventeen-essentials">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-seventeen-quick-warmup">{"version":"1.0","name":"SEVENTEEN - Quick Warm-Up","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=ThI0pBAbFnk","title":"SEVENTEEN (세븐틴) 'MAESTRO' Official MV","startTime":"3:20","endTime":"3:36","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=oeClPI0Q0lI","title":"SEVENTEEN (세븐틴) - 아주 NICE (VERY NICE) Dance Practice (Mirrored)","startTime":"0:35","endTime":"0:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=BPwThQeJ1ao","title":"[SEVENTEEN - HOME;RUN] dance practice mirrored","startTime":"0:50","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TcWx_xvcPzg","title":"[Choreography Video] HOSHI X WOOZI (SEVENTEEN) - STUPID IDIOT","startTime":"0:51","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=dEHwMDxvpok","title":"HOSHI X WOOZI (SEVENTEEN) - 'STUPID IDIOT' Dance Practice Mirrored","startTime":"0:47","endTime":"1:10","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-seventeen-essentials">{"version":"1.0","name":"SEVENTEEN - SEVENTEEN Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=gRnuFC4Ualw","title":"SEVENTEEN (세븐틴) 'HOT' Official MV","startTime":"0:45","endTime":"1:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=J-wFp43XOrA","title":"[MV] SEVENTEEN(세븐틴) _ VERY NICE(아주 NICE)","startTime":"0:27","endTime":"0:54","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=HdZdxocqzq4","title":"SEVENTEEN (세븐틴) 'Left & Right' Official MV","startTime":"0:40","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=_5PELxP8Udg","title":"[M/V] SEVENTEEN(세븐틴) - 어쩌나 (Oh My!)","startTime":"0:58","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=pS57UX6s-xw","title":"SEVENTEEN (세븐틴) 'THUNDER' Official MV","startTime":"0:52","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=-GQg25oP0S4","title":"SEVENTEEN (세븐틴) '손오공' Official MV","startTime":"0:48","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=mBXBOLG06Wc","title":"부석순 (SEVENTEEN) '파이팅 해야지 (Feat. 이영지)' Official MV","startTime":"0:41","endTime":"1:15","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="seventeen-chorus-rush">
-          <header class="mix-head">
-            <h3>Chorus Rush</h3>
-            <p class="mix-blurb">Every clip under 40 seconds. Fast switches, no time to catch your breath between hooks.</p>
-            <p class="mix-meta">
-              <span>7 songs</span>
-              <span>~3:46 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=J-wFp43XOrA&t=27" target="_blank" rel="noopener nofollow">아주 NICE</a>
-              </span>
-              <span class="mix-song-time">0:27&ndash;0:54</span>
-              <span class="mix-song-len">27s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=HdZdxocqzq4&t=40" target="_blank" rel="noopener nofollow">Left &amp; Right</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:12</span>
-              <span class="mix-song-len">32s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=_5PELxP8Udg&t=58" target="_blank" rel="noopener nofollow">Oh My!</a>
-              </span>
-              <span class="mix-song-time">0:58&ndash;1:30</span>
-              <span class="mix-song-len">32s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=pS57UX6s-xw&t=52" target="_blank" rel="noopener nofollow">THUNDER</a>
-              </span>
-              <span class="mix-song-time">0:52&ndash;1:24</span>
-              <span class="mix-song-len">32s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ThI0pBAbFnk&t=200" target="_blank" rel="noopener nofollow">MAESTRO</a>
-              </span>
-              <span class="mix-song-time">3:20&ndash;3:36</span>
-              <span class="mix-song-len">16s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=mBXBOLG06Wc&t=41" target="_blank" rel="noopener nofollow">파이팅 해야지</a>
-              </span>
-              <span class="mix-song-time">0:41&ndash;1:15</span>
-              <span class="mix-song-len">34s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=TcWx_xvcPzg&t=51" target="_blank" rel="noopener nofollow">HOSHI X WOOZI - STUPID IDIOT</a>
-              </span>
-              <span class="mix-song-time">0:51&ndash;1:14</span>
-              <span class="mix-song-len">23s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="seventeen-chorus-rush">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="seventeen-chorus-rush">Download .json</button>
+        <article class="panel mix" id="seventeen-quick-warmup" aria-labelledby="seventeen-quick-warmup-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="seventeen-quick-warmup-title"><span class="status-dot" aria-hidden="true"></span>Quick Warm-Up</h2>
+            <p class="mix-stats">5 SONGS · ~2:12 · 5S COUNTDOWN</p>
           </div>
-          <script type="application/json" id="data-seventeen-chorus-rush">{"version":"1.0","name":"SEVENTEEN - Chorus Rush","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=J-wFp43XOrA","title":"[MV] SEVENTEEN(세븐틴) _ VERY NICE(아주 NICE)","startTime":"0:27","endTime":"0:54","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=HdZdxocqzq4","title":"SEVENTEEN (세븐틴) 'Left & Right' Official MV","startTime":"0:40","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=_5PELxP8Udg","title":"[M/V] SEVENTEEN(세븐틴) - 어쩌나 (Oh My!)","startTime":"0:58","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=pS57UX6s-xw","title":"SEVENTEEN (세븐틴) 'THUNDER' Official MV","startTime":"0:52","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ThI0pBAbFnk","title":"SEVENTEEN (세븐틴) 'MAESTRO' Official MV","startTime":"3:20","endTime":"3:36","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=mBXBOLG06Wc","title":"부석순 (SEVENTEEN) '파이팅 해야지 (Feat. 이영지)' Official MV","startTime":"0:41","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TcWx_xvcPzg","title":"[Choreography Video] HOSHI X WOOZI (SEVENTEEN) - STUPID IDIOT","startTime":"0:51","endTime":"1:14","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="seventeen-full-sections">
-          <header class="mix-head">
-            <h3>Long Sections</h3>
-            <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
-            <p class="mix-meta">
-              <span>6 songs</span>
-              <span>~4:48 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=gRnuFC4Ualw&t=45" target="_blank" rel="noopener nofollow">HOT</a>
-              </span>
-              <span class="mix-song-time">0:45&ndash;1:33</span>
-              <span class="mix-song-len">48s</span>
+          <p class="mix-blurb">Short segments to loosen up with before a longer run — the tightest cuts in the SEVENTEEN pool.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/ThI0pBAbFnk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=ThI0pBAbFnk&amp;t=200" target="_blank" rel="noopener nofollow">MAESTRO<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>3:20&ndash;3:36</span>
+              <span class="row-len">16s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Fhy9K3n-uaM&t=51" target="_blank" rel="noopener nofollow">MANSAE</a>
-              </span>
-              <span class="mix-song-time">0:51&ndash;1:39</span>
-              <span class="mix-song-len">48s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/oeClPI0Q0lI/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=oeClPI0Q0lI&amp;t=35" target="_blank" rel="noopener nofollow">VERY NICE<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:35&ndash;0:55</span>
+              <span class="row-len">20s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=zSQ48zyWZrY&t=49" target="_blank" rel="noopener nofollow">음악의 신</a>
-              </span>
-              <span class="mix-song-time">0:49&ndash;1:32</span>
-              <span class="mix-song-len">43s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/TcWx_xvcPzg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=TcWx_xvcPzg&amp;t=51" target="_blank" rel="noopener nofollow">STUPID IDIOT<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:51&ndash;1:14</span>
+              <span class="row-len">23s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=-GQg25oP0S4&t=48" target="_blank" rel="noopener nofollow">손오공</a>
-              </span>
-              <span class="mix-song-time">0:48&ndash;1:30</span>
-              <span class="mix-song-len">42s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/zEkg4GBQumc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=zEkg4GBQumc&amp;t=55" target="_blank" rel="noopener nofollow">Don&#39;t Wanna Cry<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:21</span>
+              <span class="row-len">26s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=zpvwrNtFZbs&t=37" target="_blank" rel="noopener nofollow">FIGHTING</a>
-              </span>
-              <span class="mix-song-time">0:37&ndash;1:18</span>
-              <span class="mix-song-len">41s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ap14O5-G7UA&t=94" target="_blank" rel="noopener nofollow">독 : Fear</a>
-              </span>
-              <span class="mix-song-time">1:34&ndash;2:15</span>
-              <span class="mix-song-len">41s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/J-wFp43XOrA/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=J-wFp43XOrA&amp;t=27" target="_blank" rel="noopener nofollow">아주 NICE<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:27&ndash;0:54</span>
+              <span class="row-len">27s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="seventeen-full-sections">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="seventeen-full-sections">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="seventeen-quick-warmup"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="seventeen-quick-warmup">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-seventeen-quick-warmup">{"version":"1.0","name":"SEVENTEEN - Quick Warm-Up","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=ThI0pBAbFnk","title":"SEVENTEEN (세븐틴) 'MAESTRO' Official MV","startTime":"3:20","endTime":"3:36","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=oeClPI0Q0lI","title":"SEVENTEEN (세븐틴) - 아주 NICE (VERY NICE) Dance Practice (Mirrored)","startTime":"0:35","endTime":"0:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TcWx_xvcPzg","title":"[Choreography Video] HOSHI X WOOZI (SEVENTEEN) - STUPID IDIOT","startTime":"0:51","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=zEkg4GBQumc","title":"[M/V] SEVENTEEN(세븐틴) - 울고 싶지 않아 (Don't Wanna Cry)","startTime":"0:55","endTime":"1:21","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=J-wFp43XOrA","title":"[MV] SEVENTEEN(세븐틴) _ VERY NICE(아주 NICE)","startTime":"0:27","endTime":"0:54","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="seventeen-full-sections" aria-labelledby="seventeen-full-sections-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="seventeen-full-sections-title"><span class="status-dot" aria-hidden="true"></span>Long Sections</h2>
+            <p class="mix-stats">6 SONGS · ~4:48 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/gRnuFC4Ualw/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=gRnuFC4Ualw&amp;t=45" target="_blank" rel="noopener nofollow">HOT<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:45&ndash;1:33</span>
+              <span class="row-len">48s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Fhy9K3n-uaM/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Fhy9K3n-uaM&amp;t=51" target="_blank" rel="noopener nofollow">MANSAE<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:51&ndash;1:39</span>
+              <span class="row-len">48s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/zSQ48zyWZrY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=zSQ48zyWZrY&amp;t=49" target="_blank" rel="noopener nofollow">음악의 신<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:49&ndash;1:32</span>
+              <span class="row-len">43s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/-GQg25oP0S4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=-GQg25oP0S4&amp;t=48" target="_blank" rel="noopener nofollow">손오공<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:48&ndash;1:30</span>
+              <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/zpvwrNtFZbs/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=zpvwrNtFZbs&amp;t=37" target="_blank" rel="noopener nofollow">FIGHTING<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:18</span>
+              <span class="row-len">41s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/ap14O5-G7UA/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=ap14O5-G7UA&amp;t=94" target="_blank" rel="noopener nofollow">독 : Fear<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:34&ndash;2:15</span>
+              <span class="row-len">41s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="seventeen-full-sections"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="seventeen-full-sections">Save as project file (.json)</button>
           </div>
           <script type="application/json" id="data-seventeen-full-sections">{"version":"1.0","name":"SEVENTEEN - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=gRnuFC4Ualw","title":"SEVENTEEN (세븐틴) 'HOT' Official MV","startTime":"0:45","endTime":"1:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Fhy9K3n-uaM","title":"SEVENTEEN (세븐틴) -  만세 (MANSAE) Dance Practice Ver. (Mirrored)","startTime":"0:51","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=zSQ48zyWZrY","title":"SEVENTEEN (세븐틴) '음악의 신' Official MV","startTime":"0:49","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=-GQg25oP0S4","title":"SEVENTEEN (세븐틴) '손오공' Official MV","startTime":"0:48","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=zpvwrNtFZbs","title":"BSS (SEVENTEEN) - 'FIGHTING' Dance Practice Mirrored","startTime":"0:37","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ap14O5-G7UA","title":"[M/V] SEVENTEEN(세븐틴) - 독 : Fear","startTime":"1:34","endTime":"2:15","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="seventeen-deep-cuts">
-          <header class="mix-head">
-            <h3>Deep Cuts</h3>
-            <p class="mix-blurb">SEVENTEEN tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
-            <p class="mix-meta">
-              <span>7 songs</span>
-              <span>~3:41 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ThI0pBAbFnk&t=200" target="_blank" rel="noopener nofollow">MAESTRO</a>
-              </span>
-              <span class="mix-song-time">3:20&ndash;3:36</span>
-              <span class="mix-song-len">16s</span>
+        <article class="panel mix" id="seventeen-deep-cuts" aria-labelledby="seventeen-deep-cuts-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="seventeen-deep-cuts-title"><span class="status-dot" aria-hidden="true"></span>Deep Cuts</h2>
+            <p class="mix-stats">7 SONGS · ~4:02 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">SEVENTEEN tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/zSQ48zyWZrY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=zSQ48zyWZrY&amp;t=49" target="_blank" rel="noopener nofollow">음악의 신<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:49&ndash;1:32</span>
+              <span class="row-len">43s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=mBXBOLG06Wc&t=41" target="_blank" rel="noopener nofollow">파이팅 해야지</a>
-              </span>
-              <span class="mix-song-time">0:41&ndash;1:15</span>
-              <span class="mix-song-len">34s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/ThI0pBAbFnk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=ThI0pBAbFnk&amp;t=200" target="_blank" rel="noopener nofollow">MAESTRO<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>3:20&ndash;3:36</span>
+              <span class="row-len">16s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=TcWx_xvcPzg&t=51" target="_blank" rel="noopener nofollow">HOSHI X WOOZI - STUPID IDIOT</a>
-              </span>
-              <span class="mix-song-time">0:51&ndash;1:14</span>
-              <span class="mix-song-len">23s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/TcWx_xvcPzg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=TcWx_xvcPzg&amp;t=51" target="_blank" rel="noopener nofollow">STUPID IDIOT<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:51&ndash;1:14</span>
+              <span class="row-len">23s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=F9CrRG6j2SM&t=51" target="_blank" rel="noopener nofollow">HIT</a>
-              </span>
-              <span class="mix-song-time">0:51&ndash;1:30</span>
-              <span class="mix-song-len">39s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/J5juKw-mnGw/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=J5juKw-mnGw&amp;t=117" target="_blank" rel="noopener nofollow">Pretty U<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:57&ndash;2:29</span>
+              <span class="row-len">32s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=GNzX3AV3S0A&t=134" target="_blank" rel="noopener nofollow">부석순 - 청바지</a>
-              </span>
-              <span class="mix-song-time">2:14&ndash;2:44</span>
-              <span class="mix-song-len">30s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/WpuatuzSDK4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=WpuatuzSDK4&amp;t=43" target="_blank" rel="noopener nofollow">Rock with you<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:43&ndash;1:12</span>
+              <span class="row-len">29s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=WpuatuzSDK4&t=43" target="_blank" rel="noopener nofollow">Rock with you</a>
-              </span>
-              <span class="mix-song-time">0:43&ndash;1:12</span>
-              <span class="mix-song-len">29s</span>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/F9CrRG6j2SM/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=F9CrRG6j2SM&amp;t=51" target="_blank" rel="noopener nofollow">HIT<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:51&ndash;1:30</span>
+              <span class="row-len">39s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=oeClPI0Q0lI&t=35" target="_blank" rel="noopener nofollow">VERY NICE</a>
-              </span>
-              <span class="mix-song-time">0:35&ndash;0:55</span>
-              <span class="mix-song-len">20s</span>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/GNzX3AV3S0A/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=GNzX3AV3S0A&amp;t=134" target="_blank" rel="noopener nofollow">청바지<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>2:14&ndash;2:44</span>
+              <span class="row-len">30s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="seventeen-deep-cuts">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="seventeen-deep-cuts">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="seventeen-deep-cuts"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="seventeen-deep-cuts">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-seventeen-deep-cuts">{"version":"1.0","name":"SEVENTEEN - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=ThI0pBAbFnk","title":"SEVENTEEN (세븐틴) 'MAESTRO' Official MV","startTime":"3:20","endTime":"3:36","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=mBXBOLG06Wc","title":"부석순 (SEVENTEEN) '파이팅 해야지 (Feat. 이영지)' Official MV","startTime":"0:41","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TcWx_xvcPzg","title":"[Choreography Video] HOSHI X WOOZI (SEVENTEEN) - STUPID IDIOT","startTime":"0:51","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=F9CrRG6j2SM","title":"[M/V] SEVENTEEN(세븐틴) - HIT","startTime":"0:51","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=GNzX3AV3S0A","title":"[Choreography Video] 부석순 (SEVENTEEN) - 청바지","startTime":"2:14","endTime":"2:44","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=WpuatuzSDK4","title":"SEVENTEEN (세븐틴) 'Rock with you' Official MV","startTime":"0:43","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=oeClPI0Q0lI","title":"SEVENTEEN (세븐틴) - 아주 NICE (VERY NICE) Dance Practice (Mirrored)","startTime":"0:35","endTime":"0:55","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-seventeen-deep-cuts">{"version":"1.0","name":"SEVENTEEN - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=zSQ48zyWZrY","title":"SEVENTEEN (세븐틴) '음악의 신' Official MV","startTime":"0:49","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ThI0pBAbFnk","title":"SEVENTEEN (세븐틴) 'MAESTRO' Official MV","startTime":"3:20","endTime":"3:36","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TcWx_xvcPzg","title":"[Choreography Video] HOSHI X WOOZI (SEVENTEEN) - STUPID IDIOT","startTime":"0:51","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=J5juKw-mnGw","title":"[M/V] SEVENTEEN(세븐틴) - 예쁘다 (Pretty U)","startTime":"1:57","endTime":"2:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=WpuatuzSDK4","title":"SEVENTEEN (세븐틴) 'Rock with you' Official MV","startTime":"0:43","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=F9CrRG6j2SM","title":"[M/V] SEVENTEEN(세븐틴) - HIT","startTime":"0:51","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=GNzX3AV3S0A","title":"[Choreography Video] 부석순 (SEVENTEEN) - 청바지","startTime":"2:14","endTime":"2:44","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="seventeen-dance-practice">
-          <header class="mix-head">
-            <h3>Dance Practice Edition</h3>
-            <p class="mix-blurb">Built only from dance practice, choreography and performance uploads, so the audio matches the versions most covers learn from.</p>
-            <p class="mix-meta">
-              <span>7 songs</span>
-              <span>~4:12 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=TcWx_xvcPzg&t=51" target="_blank" rel="noopener nofollow">HOSHI X WOOZI - STUPID IDIOT</a>
-              </span>
-              <span class="mix-song-time">0:51&ndash;1:14</span>
-              <span class="mix-song-len">23s</span>
+        <article class="panel mix" id="seventeen-dance-practice" aria-labelledby="seventeen-dance-practice-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="seventeen-dance-practice-title"><span class="status-dot" aria-hidden="true"></span>Dance Practice Edition</h2>
+            <p class="mix-stats">7 SONGS · ~4:26 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">Built only from dance practice, choreography and performance uploads, so the audio matches the versions most covers learn from.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/TcWx_xvcPzg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=TcWx_xvcPzg&amp;t=51" target="_blank" rel="noopener nofollow">STUPID IDIOT<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:51&ndash;1:14</span>
+              <span class="row-len">23s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=GNzX3AV3S0A&t=134" target="_blank" rel="noopener nofollow">부석순 - 청바지</a>
-              </span>
-              <span class="mix-song-time">2:14&ndash;2:44</span>
-              <span class="mix-song-len">30s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/GNzX3AV3S0A/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=GNzX3AV3S0A&amp;t=134" target="_blank" rel="noopener nofollow">청바지<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>2:14&ndash;2:44</span>
+              <span class="row-len">30s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=oeClPI0Q0lI&t=35" target="_blank" rel="noopener nofollow">VERY NICE</a>
-              </span>
-              <span class="mix-song-time">0:35&ndash;0:55</span>
-              <span class="mix-song-len">20s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/oeClPI0Q0lI/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=oeClPI0Q0lI&amp;t=35" target="_blank" rel="noopener nofollow">VERY NICE<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:35&ndash;0:55</span>
+              <span class="row-len">20s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=zpvwrNtFZbs&t=37" target="_blank" rel="noopener nofollow">FIGHTING</a>
-              </span>
-              <span class="mix-song-time">0:37&ndash;1:18</span>
-              <span class="mix-song-len">41s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/zpvwrNtFZbs/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=zpvwrNtFZbs&amp;t=37" target="_blank" rel="noopener nofollow">FIGHTING<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:18</span>
+              <span class="row-len">41s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=7cBmSsE160o&t=27" target="_blank" rel="noopener nofollow">WORLD</a>
-              </span>
-              <span class="mix-song-time">0:27&ndash;1:05</span>
-              <span class="mix-song-len">38s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/7cBmSsE160o/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=7cBmSsE160o&amp;t=27" target="_blank" rel="noopener nofollow">WORLD<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:27&ndash;1:05</span>
+              <span class="row-len">38s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Fhy9K3n-uaM&t=51" target="_blank" rel="noopener nofollow">MANSAE</a>
-              </span>
-              <span class="mix-song-time">0:51&ndash;1:39</span>
-              <span class="mix-song-len">48s</span>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Fhy9K3n-uaM/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Fhy9K3n-uaM&amp;t=51" target="_blank" rel="noopener nofollow">MANSAE<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:51&ndash;1:39</span>
+              <span class="row-len">48s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=BPwThQeJ1ao&t=50" target="_blank" rel="noopener nofollow">HOME;RUN</a>
-              </span>
-              <span class="mix-song-time">0:50&ndash;1:12</span>
-              <span class="mix-song-len">22s</span>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/WhTuHIzzmlc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=WhTuHIzzmlc&amp;t=49" target="_blank" rel="noopener nofollow">Super<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:49&ndash;1:25</span>
+              <span class="row-len">36s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="seventeen-dance-practice">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="seventeen-dance-practice">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="seventeen-dance-practice"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="seventeen-dance-practice">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-seventeen-dance-practice">{"version":"1.0","name":"SEVENTEEN - Dance Practice Edition","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=TcWx_xvcPzg","title":"[Choreography Video] HOSHI X WOOZI (SEVENTEEN) - STUPID IDIOT","startTime":"0:51","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=GNzX3AV3S0A","title":"[Choreography Video] 부석순 (SEVENTEEN) - 청바지","startTime":"2:14","endTime":"2:44","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=oeClPI0Q0lI","title":"SEVENTEEN (세븐틴) - 아주 NICE (VERY NICE) Dance Practice (Mirrored)","startTime":"0:35","endTime":"0:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=zpvwrNtFZbs","title":"BSS (SEVENTEEN) - 'FIGHTING' Dance Practice Mirrored","startTime":"0:37","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7cBmSsE160o","title":"SEVENTEEN - '_WORLD' Dance Practice Mirrored [4K]","startTime":"0:27","endTime":"1:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Fhy9K3n-uaM","title":"SEVENTEEN (세븐틴) -  만세 (MANSAE) Dance Practice Ver. (Mirrored)","startTime":"0:51","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=BPwThQeJ1ao","title":"[SEVENTEEN - HOME;RUN] dance practice mirrored","startTime":"0:50","endTime":"1:12","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-seventeen-dance-practice">{"version":"1.0","name":"SEVENTEEN - Dance Practice Edition","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=TcWx_xvcPzg","title":"[Choreography Video] HOSHI X WOOZI (SEVENTEEN) - STUPID IDIOT","startTime":"0:51","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=GNzX3AV3S0A","title":"[Choreography Video] 부석순 (SEVENTEEN) - 청바지","startTime":"2:14","endTime":"2:44","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=oeClPI0Q0lI","title":"SEVENTEEN (세븐틴) - 아주 NICE (VERY NICE) Dance Practice (Mirrored)","startTime":"0:35","endTime":"0:55","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=zpvwrNtFZbs","title":"BSS (SEVENTEEN) - 'FIGHTING' Dance Practice Mirrored","startTime":"0:37","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7cBmSsE160o","title":"SEVENTEEN - '_WORLD' Dance Practice Mirrored [4K]","startTime":"0:27","endTime":"1:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Fhy9K3n-uaM","title":"SEVENTEEN (세븐틴) -  만세 (MANSAE) Dance Practice Ver. (Mirrored)","startTime":"0:51","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=WhTuHIzzmlc","title":"SEVENTEEN - 'Super' (손오공) Dance Practice Mirrored","startTime":"0:49","endTime":"1:25","info":null,"isExpanded":false}]}</script>
         </article>
+      </div>
+
+      <section class="prose" aria-labelledby="how-title">
+        <h2 id="how-title">How to use these SEVENTEEN mixes</h2>
+        <p>
+          Press <b>Open in builder</b> on any mix. The songs and their cut points load into the
+          builder on the home page in the order shown here. Drop songs you don't know, move songs up
+          or down, or nudge a start or end time in the editor. Press <b>Shuffle now</b> for a random
+          order (that is the point of a random play dance), then <b>Generate mix</b> to get one MP3
+          with a 5-second countdown before every song.
+        </p>
+        <p>
+          Want to keep a set? <b>Save as project file</b> saves it as a .json file. Open it later in
+          the builder from <b>Project &rarr; Open a saved file</b>, or send it to whoever is running
+          your RPD event.
+        </p>
+
+        <h2>Where these cut points come from</h2>
+        <p>
+          Each clip is the segment most commonly chosen for that video by people using this
+          generator. In practice that lands on the chorus or the dance break, because that is the
+          part of a SEVENTEEN song a random play dance crowd knows and can actually follow.
+          The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
+          frozen at whatever was popular when the page was written.
+        </p>
+        <p>
+          Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
+          only once even when several uploads of it exist, so a mix never plays you the same
+          choreography twice.
+        </p>
+      </section>
+
+      <section class="others" aria-labelledby="others-title">
+        <h2 id="others-title">Mixes for other groups</h2>
+        <div class="chips">
+          <a href="/random-dance/illit">ILLIT</a>
+          <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
+          <a href="/random-dance/aespa">aespa</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/katseye">KATSEYE</a>
+          <a href="/random-dance/twice">TWICE</a>
+          <a href="/random-dance/stray-kids">Stray Kids</a>
+          <a href="/random-dance/ateez">ATEEZ</a>
+          <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/enhypen">ENHYPEN</a>
+          <a href="/random-dance/babymonster">BABYMONSTER</a>
+          <a href="/random-dance/newjeans">NewJeans</a>
+          <a href="/random-dance/ive">IVE</a>
+          <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
+          <a href="/random-dance/itzy">ITZY</a>
+          <a href="/random-dance/g-i-dle">i-dle</a>
+          <a href="/random-dance/nct">NCT</a>
+          <a href="/random-dance/red-velvet">Red Velvet</a>
+          <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
+          <a href="/random-dance/xg">XG</a>
+          <a href="/random-dance/nmixx">NMIXX</a>
+        </div>
+        <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <section class="foot-col" aria-labelledby="foot-build">
+          <h2 id="foot-build">Make your own mix</h2>
+          <p>Search YouTube, pick the part of each song, and get one MP3 with a 5-second countdown before every song. Free, no sign-up.</p>
+          <p><a class="btn btn-primary" href="/">Open the builder</a></p>
         </section>
-
-        <section class="prose">
-          <h2>How to use these SEVENTEEN mixes</h2>
-          <p>
-            Press <em>Open in generator</em> on any mix. The songs and their timings load straight
-            into the generator on the home page, in the order shown here, where you can drop tracks
-            you don't know, move songs up or down, or nudge a start time before generating the audio
-            file. Press <em>Shuffle now</em> for a random order whenever you like &mdash; which is the
-            point of a random play dance.
-          </p>
-          <p>
-            Prefer to keep a set? <em>Download .json</em> saves it as a project file you can open
-            later from the generator's <em>Project</em> menu, or send to whoever is running your RPD event.
-          </p>
-
-          <h2>Where these cut points come from</h2>
-          <p>
-            Each clip below is the segment most commonly chosen for that video by people using this
-            generator. In practice that lands on the chorus or the dance break, because that is the
-            part of a SEVENTEEN song a random play dance crowd knows and can actually follow.
-            The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
-            frozen at whatever was popular when the page was written.
-          </p>
-          <p>
-            Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
-            only once even when several uploads of it exist, so a mix never plays you the same
-            choreography twice.
+        <section class="foot-col" aria-labelledby="foot-support">
+          <h2 id="foot-support">Enjoying the tool?</h2>
+          <p>It's free and always will be. Support on Ko-fi helps pay for the servers.</p>
+          <p class="foot-row">
+            <a class="btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-footer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg> Support on Ko-fi<span class="sr-only"> (opens in a new tab)</span></a>
+            <a class="foot-link" href="/#how-it-works">How it works</a>
+            <a class="foot-link" href="/#contact">Contact us</a>
           </p>
         </section>
+      </div>
+      <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
+    </footer>
 
-        <section class="other-bands">
-          <h2>Mixes for other groups</h2>
-          <div class="band-links">
-        <a href="/random-dance/nct">NCT</a>
-        <a href="/random-dance/bts">BTS</a>
-        <a href="/random-dance/twice">TWICE</a>
-        <a href="/random-dance/stray-kids">Stray Kids</a>
-        <a href="/random-dance/itzy">ITZY</a>
-        <a href="/random-dance/enhypen">ENHYPEN</a>
-        <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-        <a href="/random-dance/blackpink">BLACKPINK</a>
-        <a href="/random-dance/ateez">ATEEZ</a>
-        <a href="/random-dance/aespa">aespa</a>
-        <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
-        <a href="/random-dance/babymonster">BABYMONSTER</a>
-        <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-        <a href="/random-dance/g-i-dle">(G)I-DLE</a>
-        <a href="/random-dance/illit">ILLIT</a>
-        <a href="/random-dance/nmixx">NMIXX</a>
-        <a href="/random-dance/newjeans">NewJeans</a>
-        <a href="/random-dance/red-velvet">Red Velvet</a>
-        <a href="/random-dance/xg">XG</a>
-        <a href="/random-dance/ive">IVE</a>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-foot">
-        <p><a class="btn btn-primary" href="/">Build your own mix &rarr;</a></p>
-        <p class="fine">Made with 💜 for K-Pop dance lovers.</p>
-      </footer>
-    </div>
-    <script src="/app/landing.js"></script>
+    <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
+    <script src="/app/landing.js?v=3"></script>
   </body>
 </html>

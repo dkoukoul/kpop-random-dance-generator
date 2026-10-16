@@ -129,20 +129,20 @@
     <script type="importmap">
       {
         "imports": {
-          "/app/studio/api.js": "/app/studio/api.js?v=12",
-          "/app/studio/builder.js": "/app/studio/builder.js?v=12",
-          "/app/studio/editor.js": "/app/studio/editor.js?v=12",
-          "/app/studio/generate.js": "/app/studio/generate.js?v=12",
-          "/app/studio/main.js": "/app/studio/main.js?v=12",
-          "/app/studio/mobile.js": "/app/studio/mobile.js?v=12",
-          "/app/studio/player.js": "/app/studio/player.js?v=12",
-          "/app/studio/progress.js": "/app/studio/progress.js?v=12",
-          "/app/studio/project.js": "/app/studio/project.js?v=12",
-          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=12",
-          "/app/studio/setlist.js": "/app/studio/setlist.js?v=12",
-          "/app/studio/songs.js": "/app/studio/songs.js?v=12",
-          "/app/studio/ui.js": "/app/studio/ui.js?v=12",
-          "/app/studio/util.js": "/app/studio/util.js?v=12"
+          "/app/studio/api.js": "/app/studio/api.js?v=13",
+          "/app/studio/builder.js": "/app/studio/builder.js?v=13",
+          "/app/studio/editor.js": "/app/studio/editor.js?v=13",
+          "/app/studio/generate.js": "/app/studio/generate.js?v=13",
+          "/app/studio/main.js": "/app/studio/main.js?v=13",
+          "/app/studio/mobile.js": "/app/studio/mobile.js?v=13",
+          "/app/studio/player.js": "/app/studio/player.js?v=13",
+          "/app/studio/progress.js": "/app/studio/progress.js?v=13",
+          "/app/studio/project.js": "/app/studio/project.js?v=13",
+          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=13",
+          "/app/studio/setlist.js": "/app/studio/setlist.js?v=13",
+          "/app/studio/songs.js": "/app/studio/songs.js?v=13",
+          "/app/studio/ui.js": "/app/studio/ui.js?v=13",
+          "/app/studio/util.js": "/app/studio/util.js?v=13"
         }
       }
     </script>
@@ -273,11 +273,13 @@
             <h3 class="empty-title">Your setlist is empty</h3>
             <p class="empty-text">Search for a song or paste a YouTube link. Or start from a ready-made set and change anything:</p>
             <div class="chips">
+              <!-- TOP_GROUPS:START -->
+              <a href="/random-dance/illit">ILLIT</a>
+              <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
+              <a href="/random-dance/aespa">aespa</a>
               <a href="/random-dance/bts">BTS</a>
-              <a href="/random-dance/blackpink">BLACKPINK</a>
-              <a href="/random-dance/stray-kids">Stray Kids</a>
-              <a href="/random-dance/twice">TWICE</a>
-              <a href="/random-dance/seventeen">SEVENTEEN</a>
+              <a href="/random-dance/katseye">KATSEYE</a>
+              <!-- TOP_GROUPS:END -->
             </div>
             <a class="arrow-link" href="/random-dance/">All ready-made mixes →</a>
           </div>
@@ -326,27 +328,28 @@
             <p>Don't want to start from an empty list? Each group page has complete sets built from the songs and cuts people actually use here. Open one and change anything.</p>
             <div class="chips band-links">
               <!-- BAND_LINKS:START -->
-              <a href="/random-dance/nct">NCT</a>
+              <a href="/random-dance/illit">ILLIT</a>
+              <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
+              <a href="/random-dance/aespa">aespa</a>
               <a href="/random-dance/bts">BTS</a>
+              <a href="/random-dance/katseye">KATSEYE</a>
               <a href="/random-dance/twice">TWICE</a>
               <a href="/random-dance/stray-kids">Stray Kids</a>
-              <a href="/random-dance/itzy">ITZY</a>
-              <a href="/random-dance/enhypen">ENHYPEN</a>
-              <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-              <a href="/random-dance/blackpink">BLACKPINK</a>
               <a href="/random-dance/ateez">ATEEZ</a>
-              <a href="/random-dance/seventeen">SEVENTEEN</a>
-              <a href="/random-dance/aespa">aespa</a>
-              <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
+              <a href="/random-dance/blackpink">BLACKPINK</a>
+              <a href="/random-dance/enhypen">ENHYPEN</a>
               <a href="/random-dance/babymonster">BABYMONSTER</a>
-              <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-              <a href="/random-dance/g-i-dle">(G)I-DLE</a>
-              <a href="/random-dance/illit">ILLIT</a>
-              <a href="/random-dance/nmixx">NMIXX</a>
               <a href="/random-dance/newjeans">NewJeans</a>
-              <a href="/random-dance/red-velvet">Red Velvet</a>
-              <a href="/random-dance/xg">XG</a>
               <a href="/random-dance/ive">IVE</a>
+              <a href="/random-dance/seventeen">SEVENTEEN</a>
+              <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
+              <a href="/random-dance/itzy">ITZY</a>
+              <a href="/random-dance/g-i-dle">i-dle</a>
+              <a href="/random-dance/nct">NCT</a>
+              <a href="/random-dance/red-velvet">Red Velvet</a>
+              <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
+              <a href="/random-dance/xg">XG</a>
+              <a href="/random-dance/nmixx">NMIXX</a>
               <!-- BAND_LINKS:END -->
             </div>
             <a class="arrow-link" href="/random-dance/">Browse all ready-made mixes →</a>
@@ -454,6 +457,6 @@
         document.body.prepend(note);
       }
     </script>
-    <script type="module" src="/app/studio/main.js?v=12"></script>
+    <script type="module" src="/app/studio/main.js?v=13"></script>
   </body>
 </html>

@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>aespa Random Dance Mixes | 5 Ready-Made Sets</title>
-    <meta name="description" content="5 ready-made aespa random dance mixes with real cut points, from 17 songs. Open one in the generator or edit the timings yourself." />
+    <meta name="description" content="5 ready-made aespa random dance mixes with real cut points, from 19 songs. Open one in the builder or edit the timings yourself." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://kpopgenerator.cloud/random-dance/aespa" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kpopgenerator.cloud/random-dance/aespa" />
     <meta property="og:title" content="aespa Random Dance Mixes | 5 Ready-Made Sets" />
-    <meta property="og:description" content="5 ready-made aespa random dance mixes with real cut points, from 17 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="og:description" content="5 ready-made aespa random dance mixes with real cut points, from 19 songs. Open one in the builder or edit the timings yourself." />
     <meta property="og:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -19,17 +19,24 @@
     <meta property="og:locale" content="en_US" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="aespa Random Dance Mixes | 5 Ready-Made Sets" />
-    <meta property="twitter:description" content="5 ready-made aespa random dance mixes with real cut points, from 17 songs. Open one in the generator or edit the timings yourself." />
+    <meta property="twitter:description" content="5 ready-made aespa random dance mixes with real cut points, from 19 songs. Open one in the builder or edit the timings yourself." />
     <meta property="twitter:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
 
-    <meta name="theme-color" content="#8b5cf6" />
+    <!-- The theme chosen in the builder, before anything paints (Dark is the default). -->
+    <script>
+      try {
+        if (localStorage.getItem("kpopgen:theme") === "light") document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    </script>
+
+    <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/landing.css?v=3" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -61,7 +68,7 @@
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "aespa random dance mixes",
-  "description": "5 ready-made aespa random dance mixes with real cut points, from 17 songs. Open one in the generator or edit the timings yourself.",
+  "description": "5 ready-made aespa random dance mixes with real cut points, from 19 songs. Open one in the builder or edit the timings yourself.",
   "numberOfItems": 5,
   "itemListElement": [
     {
@@ -111,409 +118,446 @@
       gtag('config', 'G-Q93H8H3JP4');
     </script>
   </head>
-  <body class="">
-    <div class="page">
-      <header class="site-head">
-        <a class="brand" href="/"><span class="brand-icon">🎵</span> K-Pop Random Dance Generator</a>
-      </header>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="brand" href="/">
+          <svg class="brand-mark" width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="var(--accent)"></rect><g transform="translate(32 32) scale(0.6) translate(-52.5 -46)" fill="var(--accentText)" stroke="var(--accentText)" stroke-linecap="round" stroke-linejoin="round"><circle cx="43.8" cy="10.5" r="5.2" stroke="none"></circle><circle cx="56.2" cy="10.5" r="5.2" stroke="none"></circle><ellipse cx="50" cy="20.5" rx="7.6" ry="8.6" stroke="none"></ellipse><path d="M46.5 26 L53.5 26 L54 34 L46 34 Z" stroke="none"></path><path d="M39 35 Q50 32 61 35 L59 46 Q57 51 57 56 L44 56 Q44 51 41 46 Z" stroke-width="2"></path><path d="M43.5 55 L57.5 55 L69 74 Q50 79 31 76 Z" stroke-width="2"></path><path d="M58 37 L66 23 L74 7" fill="none" stroke-width="7.5"></path><path d="M42 37 L30 46 L44 54" fill="none" stroke-width="7"></path><path d="M45 72 L44 90" fill="none" stroke-width="9"></path><path d="M56 72 L64 88" fill="none" stroke-width="8.5"></path></g></svg>
+          <span class="brand-name">K-Pop Random Dance Generator</span>
+        </a>
+        <nav class="mainnav" aria-label="Main">
+          <a href="/">Builder</a>
+          <a href="/random-dance/" aria-current="true">Ready-made mixes</a>
+          <a class="nav-how" href="/#how-it-works">How it works</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="menu-wrap" data-menu>
+          <button type="button" class="btn" aria-expanded="false" aria-controls="themeMenu">
+            <span class="theme-swatch" aria-hidden="true"></span>
+            <span class="theme-prefix">Theme: </span><span id="themeName">Dark</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <div class="menu" id="themeMenu" hidden>
+            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true">Dark <span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false">Light <span class="check" aria-hidden="true">✓</span></button>
+          </div>
+        </div>
+        <a class="btn btn-outline support-btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-header">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg>
+          <span class="support-label">Support</span><span class="sr-only"> on Ko-fi (opens in a new tab)</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main" class="page" tabindex="-1">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span>/</span>
-        <a href="/random-dance/">Random Dance Mixes</a> <span>/</span>
-        <span aria-current="page">aespa</span>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="/random-dance/">Random dance mixes</a></li>
+          <li><span aria-current="page">aespa</span></li>
+        </ol>
       </nav>
 
-      <main>
+      <header class="hero">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>READY-MADE MIXES</p>
         <h1>aespa Random Dance Mixes</h1>
         <p class="lede">
-          5 ready-made aespa random dance sets you can open in the generator
-          in one click. aespa (에스파) appears in
-          17 distinct songs across the mixes people have built on this site, and every
-          start and end time below is the cut point those people actually used &mdash; not a guess.
+          5 ready-made aespa random dance sets you can open in the builder
+          in one click. aespa (<span lang="ko">에스파</span>) appears in
+          19 distinct songs across the mixes people have built on this site, and every
+          start and end time below is the cut point those people actually used, not a guess.
         </p>
-
-        <ul class="stat-row">
-          <li><strong>17</strong><span>songs in the pool</span></li>
-          <li><strong>5</strong><span>ready-made mixes</span></li>
-          <li><strong>38s</strong><span>average clip length</span></li>
-          <li><strong>1</strong><span>dance practice video</span></li>
-        </ul>
-
-        <p class="note">
-          Most-mixed aespa track right now: <strong>LEMONADE</strong>,
-          usually cut from 0:48 to 1:25.
+        <dl class="tiles">
+          <div class="tile"><dt class="tile-k">SONGS</dt><dd class="tile-v">19</dd></div>
+          <div class="tile"><dt class="tile-k">MIXES</dt><dd class="tile-v">5</dd></div>
+          <div class="tile"><dt class="tile-k">AVG CLIP</dt><dd class="tile-v">38s</dd></div>
+          <div class="tile"><dt class="tile-k">PRACTICE VIDEOS</dt><dd class="tile-v">2</dd></div>
+        </dl>
+        <p class="top-song">
+          <span class="top-song-k">MOST MIXED NOW</span>
+          <strong>LEMONADE</strong>
+          <span class="top-song-time">usually 0:48&ndash;1:25</span>
         </p>
+        <nav class="jump" aria-label="Mixes on this page">
+          <a href="#aespa-essentials">aespa Essentials</a>
+          <a href="#aespa-quick-warmup">Quick Warm-Up</a>
+          <a href="#aespa-full-sections">Long Sections</a>
+          <a href="#aespa-deep-cuts">Deep Cuts</a>
+          <a href="#aespa-marathon">Marathon Set</a>
+        </nav>
+      </header>
 
-        <section class="mixes">
-        <article class="mix-card" id="aespa-essentials">
-          <header class="mix-head">
-            <h3>aespa Essentials</h3>
-            <p class="mix-blurb">The aespa songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~3:12 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=83C3TZ4Zm_o&t=48" target="_blank" rel="noopener nofollow">LEMONADE</a>
-              </span>
-              <span class="mix-song-time">0:48&ndash;1:25</span>
-              <span class="mix-song-len">37s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=iTJSbJtS8MU&t=55" target="_blank" rel="noopener nofollow">WDA (Whole Different Animal)</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:28</span>
-              <span class="mix-song-len">33s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=gfk3QLU1x0E&t=54" target="_blank" rel="noopener nofollow">Better Things</a>
-              </span>
-              <span class="mix-song-time">0:54&ndash;1:27</span>
-              <span class="mix-song-len">33s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=jWQx2f-CErU&t=33" target="_blank" rel="noopener nofollow">Whiplash</a>
-              </span>
-              <span class="mix-song-time">0:33&ndash;1:10</span>
-              <span class="mix-song-len">37s</span>
-            </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=DuIhnZICrfE&t=55" target="_blank" rel="noopener nofollow">WDA</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:27</span>
-              <span class="mix-song-len">32s</span>
-            </li>
-          </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="aespa-essentials">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="aespa-essentials">Download .json</button>
+      <div class="mixes">
+        <article class="panel mix" id="aespa-essentials" aria-labelledby="aespa-essentials-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="aespa-essentials-title"><span class="status-dot" aria-hidden="true"></span>aespa Essentials</h2>
+            <p class="mix-stats">6 SONGS · ~4:13 · 5S COUNTDOWN</p>
           </div>
-          <script type="application/json" id="data-aespa-essentials">{"version":"1.0","name":"aespa - aespa Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=83C3TZ4Zm_o","title":"aespa 에스파 'LEMONADE' MV","startTime":"0:48","endTime":"1:25","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=iTJSbJtS8MU","title":"aespa 에스파 'WDA (Whole Different Animal) (Feat. G-DRAGON)' MV","startTime":"0:55","endTime":"1:28","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=gfk3QLU1x0E","title":"aespa 에스파 'Better Things' MV","startTime":"0:54","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jWQx2f-CErU","title":"aespa 에스파 'Whiplash' MV","startTime":"0:33","endTime":"1:10","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=DuIhnZICrfE","title":"aespa - 'WDA' Dance Practice [MIRRORED]","startTime":"0:55","endTime":"1:27","info":null,"isExpanded":false}]}</script>
-        </article>
-        <article class="mix-card" id="aespa-quick-warmup">
-          <header class="mix-head">
-            <h3>Quick Warm-Up</h3>
-            <p class="mix-blurb">Short segments to loosen up with before a longer run — the tightest cuts in the aespa pool.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~2:49 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=phuiiNCxRMg&t=37" target="_blank" rel="noopener nofollow">Supernova</a>
-              </span>
-              <span class="mix-song-time">0:37&ndash;1:00</span>
-              <span class="mix-song-len">23s</span>
+          <p class="mix-blurb">The aespa songs our users put into random dance mixes more than any others, each cut at the point they most often chose.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/83C3TZ4Zm_o/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=83C3TZ4Zm_o&amp;t=48" target="_blank" rel="noopener nofollow">LEMONADE<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:48&ndash;1:25</span>
+              <span class="row-len">37s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=nFYwcndNuOY&t=43" target="_blank" rel="noopener nofollow">Armageddon</a>
-              </span>
-              <span class="mix-song-time">0:43&ndash;1:11</span>
-              <span class="mix-song-len">28s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/iTJSbJtS8MU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=iTJSbJtS8MU&amp;t=55" target="_blank" rel="noopener nofollow">WDA (Whole Different Animal)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:28</span>
+              <span class="row-len">33s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=DuIhnZICrfE&t=55" target="_blank" rel="noopener nofollow">WDA</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:27</span>
-              <span class="mix-song-len">32s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/gfk3QLU1x0E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=gfk3QLU1x0E&amp;t=54" target="_blank" rel="noopener nofollow">Better Things<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:27</span>
+              <span class="row-len">33s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=iTJSbJtS8MU&t=55" target="_blank" rel="noopener nofollow">WDA (Whole Different Animal)</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:28</span>
-              <span class="mix-song-len">33s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/jWQx2f-CErU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=jWQx2f-CErU&amp;t=33" target="_blank" rel="noopener nofollow">Whiplash<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:33&ndash;1:10</span>
+              <span class="row-len">37s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=gfk3QLU1x0E&t=54" target="_blank" rel="noopener nofollow">Better Things</a>
-              </span>
-              <span class="mix-song-time">0:54&ndash;1:27</span>
-              <span class="mix-song-len">33s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/DuIhnZICrfE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=DuIhnZICrfE&amp;t=55" target="_blank" rel="noopener nofollow">WDA<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:27</span>
+              <span class="row-len">32s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/D8VEhcPeSlc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=D8VEhcPeSlc&amp;t=40" target="_blank" rel="noopener nofollow">Drama<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:40&ndash;1:36</span>
+              <span class="row-len">56s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="aespa-quick-warmup">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="aespa-quick-warmup">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="aespa-essentials"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="aespa-essentials">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-aespa-quick-warmup">{"version":"1.0","name":"aespa - Quick Warm-Up","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=phuiiNCxRMg","title":"aespa 에스파 'Supernova' MV","startTime":"0:37","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=nFYwcndNuOY","title":"aespa 에스파 'Armageddon' MV","startTime":"0:43","endTime":"1:11","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=DuIhnZICrfE","title":"aespa - 'WDA' Dance Practice [MIRRORED]","startTime":"0:55","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=iTJSbJtS8MU","title":"aespa 에스파 'WDA (Whole Different Animal) (Feat. G-DRAGON)' MV","startTime":"0:55","endTime":"1:28","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=gfk3QLU1x0E","title":"aespa 에스파 'Better Things' MV","startTime":"0:54","endTime":"1:27","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-aespa-essentials">{"version":"1.0","name":"aespa - aespa Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=83C3TZ4Zm_o","title":"aespa 에스파 'LEMONADE' MV","startTime":"0:48","endTime":"1:25","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=iTJSbJtS8MU","title":"aespa 에스파 'WDA (Whole Different Animal) (Feat. G-DRAGON)' MV","startTime":"0:55","endTime":"1:28","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=gfk3QLU1x0E","title":"aespa 에스파 'Better Things' MV","startTime":"0:54","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jWQx2f-CErU","title":"aespa 에스파 'Whiplash' MV","startTime":"0:33","endTime":"1:10","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=DuIhnZICrfE","title":"aespa - 'WDA' Dance Practice [MIRRORED]","startTime":"0:55","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=D8VEhcPeSlc","title":"aespa 에스파 'Drama' MV","startTime":"0:40","endTime":"1:36","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="aespa-full-sections">
-          <header class="mix-head">
-            <h3>Long Sections</h3>
-            <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~4:19 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=D8VEhcPeSlc&t=40" target="_blank" rel="noopener nofollow">Drama</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:36</span>
-              <span class="mix-song-len">56s</span>
+        <article class="panel mix" id="aespa-quick-warmup" aria-labelledby="aespa-quick-warmup-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="aespa-quick-warmup-title"><span class="status-dot" aria-hidden="true"></span>Quick Warm-Up</h2>
+            <p class="mix-stats">5 SONGS · ~2:47 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">Short segments to loosen up with before a longer run — the tightest cuts in the aespa pool.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/phuiiNCxRMg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=phuiiNCxRMg&amp;t=37" target="_blank" rel="noopener nofollow">Supernova<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:00</span>
+              <span class="row-len">23s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=H69tJmsgd9I&t=37" target="_blank" rel="noopener nofollow">Dreams Come True</a>
-              </span>
-              <span class="mix-song-time">0:37&ndash;1:31</span>
-              <span class="mix-song-len">54s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/xcFbyuzd9S8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=xcFbyuzd9S8&amp;t=30" target="_blank" rel="noopener nofollow">Switchblade<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:30&ndash;0:56</span>
+              <span class="row-len">26s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=5oQVTnq-UKk&t=47" target="_blank" rel="noopener nofollow">Rich Man</a>
-              </span>
-              <span class="mix-song-time">0:47&ndash;1:32</span>
-              <span class="mix-song-len">45s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/DuIhnZICrfE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=DuIhnZICrfE&amp;t=55" target="_blank" rel="noopener nofollow">WDA<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:27</span>
+              <span class="row-len">32s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=4TWR90KJl84&t=59" target="_blank" rel="noopener nofollow">Next Level</a>
-              </span>
-              <span class="mix-song-time">0:59&ndash;1:41</span>
-              <span class="mix-song-len">42s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/iTJSbJtS8MU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=iTJSbJtS8MU&amp;t=55" target="_blank" rel="noopener nofollow">WDA (Whole Different Animal)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:55&ndash;1:28</span>
+              <span class="row-len">33s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Os_heh8vPfs&t=35" target="_blank" rel="noopener nofollow">Spicy</a>
-              </span>
-              <span class="mix-song-time">0:35&ndash;1:17</span>
-              <span class="mix-song-len">42s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/gfk3QLU1x0E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=gfk3QLU1x0E&amp;t=54" target="_blank" rel="noopener nofollow">Better Things<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:27</span>
+              <span class="row-len">33s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="aespa-full-sections">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="aespa-full-sections">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="aespa-quick-warmup"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="aespa-quick-warmup">Save as project file (.json)</button>
+          </div>
+          <script type="application/json" id="data-aespa-quick-warmup">{"version":"1.0","name":"aespa - Quick Warm-Up","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=phuiiNCxRMg","title":"aespa 에스파 'Supernova' MV","startTime":"0:37","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=xcFbyuzd9S8","title":"aespa 에스파 'Switchblade (Feat. Ty Dolla $ign)' MV","startTime":"0:30","endTime":"0:56","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=DuIhnZICrfE","title":"aespa - 'WDA' Dance Practice [MIRRORED]","startTime":"0:55","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=iTJSbJtS8MU","title":"aespa 에스파 'WDA (Whole Different Animal) (Feat. G-DRAGON)' MV","startTime":"0:55","endTime":"1:28","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=gfk3QLU1x0E","title":"aespa 에스파 'Better Things' MV","startTime":"0:54","endTime":"1:27","info":null,"isExpanded":false}]}</script>
+        </article>
+        <article class="panel mix" id="aespa-full-sections" aria-labelledby="aespa-full-sections-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="aespa-full-sections-title"><span class="status-dot" aria-hidden="true"></span>Long Sections</h2>
+            <p class="mix-stats">5 SONGS · ~4:19 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/D8VEhcPeSlc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=D8VEhcPeSlc&amp;t=40" target="_blank" rel="noopener nofollow">Drama<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:40&ndash;1:36</span>
+              <span class="row-len">56s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/H69tJmsgd9I/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=H69tJmsgd9I&amp;t=37" target="_blank" rel="noopener nofollow">Dreams Come True<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:31</span>
+              <span class="row-len">54s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/5oQVTnq-UKk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=5oQVTnq-UKk&amp;t=47" target="_blank" rel="noopener nofollow">Rich Man<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:32</span>
+              <span class="row-len">45s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/4TWR90KJl84/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=4TWR90KJl84&amp;t=59" target="_blank" rel="noopener nofollow">Next Level<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:59&ndash;1:41</span>
+              <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Os_heh8vPfs/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Os_heh8vPfs&amp;t=35" target="_blank" rel="noopener nofollow">Spicy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:35&ndash;1:17</span>
+              <span class="row-len">42s</span>
+            </li>
+          </ol>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="aespa-full-sections"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="aespa-full-sections">Save as project file (.json)</button>
           </div>
           <script type="application/json" id="data-aespa-full-sections">{"version":"1.0","name":"aespa - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=D8VEhcPeSlc","title":"aespa 에스파 'Drama' MV","startTime":"0:40","endTime":"1:36","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=H69tJmsgd9I","title":"[STATION] aespa 에스파 'Dreams Come True' MV","startTime":"0:37","endTime":"1:31","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=5oQVTnq-UKk","title":"aespa 에스파 'Rich Man' MV","startTime":"0:47","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=4TWR90KJl84","title":"aespa 에스파 'Next Level' MV","startTime":"0:59","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Os_heh8vPfs","title":"aespa 에스파 'Spicy' MV","startTime":"0:35","endTime":"1:17","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="aespa-deep-cuts">
-          <header class="mix-head">
-            <h3>Deep Cuts</h3>
-            <p class="mix-blurb">aespa tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
-            <p class="mix-meta">
-              <span>5 songs</span>
-              <span>~3:16 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=D8VEhcPeSlc&t=40" target="_blank" rel="noopener nofollow">Drama</a>
-              </span>
-              <span class="mix-song-time">0:40&ndash;1:36</span>
-              <span class="mix-song-len">56s</span>
+        <article class="panel mix" id="aespa-deep-cuts" aria-labelledby="aespa-deep-cuts-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="aespa-deep-cuts-title"><span class="status-dot" aria-hidden="true"></span>Deep Cuts</h2>
+            <p class="mix-stats">6 SONGS · ~4:00 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">aespa tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/M2WTUoy4y6E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=M2WTUoy4y6E&amp;t=25" target="_blank" rel="noopener nofollow">Dirty Work<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:25&ndash;1:00</span>
+              <span class="row-len">35s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=M2WTUoy4y6E&t=25" target="_blank" rel="noopener nofollow">Dirty Work</a>
-              </span>
-              <span class="mix-song-time">0:25&ndash;1:00</span>
-              <span class="mix-song-len">35s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/inxzQt78lOk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=inxzQt78lOk&amp;t=66" target="_blank" rel="noopener nofollow">KISS N TELL<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:06&ndash;1:40</span>
+              <span class="row-len">34s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=phuiiNCxRMg&t=37" target="_blank" rel="noopener nofollow">Supernova</a>
-              </span>
-              <span class="mix-song-time">0:37&ndash;1:00</span>
-              <span class="mix-song-len">23s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/phuiiNCxRMg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=phuiiNCxRMg&amp;t=37" target="_blank" rel="noopener nofollow">Supernova<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:00</span>
+              <span class="row-len">23s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=inxzQt78lOk&t=66" target="_blank" rel="noopener nofollow">KISS N TELL</a>
-              </span>
-              <span class="mix-song-time">1:06&ndash;1:40</span>
-              <span class="mix-song-len">34s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/nFYwcndNuOY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=nFYwcndNuOY&amp;t=44" target="_blank" rel="noopener nofollow">Armageddon<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:44&ndash;1:20</span>
+              <span class="row-len">36s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=nFYwcndNuOY&t=43" target="_blank" rel="noopener nofollow">Armageddon</a>
-              </span>
-              <span class="mix-song-time">0:43&ndash;1:11</span>
-              <span class="mix-song-len">28s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/4TWR90KJl84/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=4TWR90KJl84&amp;t=59" target="_blank" rel="noopener nofollow">Next Level<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:59&ndash;1:41</span>
+              <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/5oQVTnq-UKk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=5oQVTnq-UKk&amp;t=47" target="_blank" rel="noopener nofollow">Rich Man<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:32</span>
+              <span class="row-len">45s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="aespa-deep-cuts">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="aespa-deep-cuts">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="aespa-deep-cuts"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="aespa-deep-cuts">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-aespa-deep-cuts">{"version":"1.0","name":"aespa - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=D8VEhcPeSlc","title":"aespa 에스파 'Drama' MV","startTime":"0:40","endTime":"1:36","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=M2WTUoy4y6E","title":"aespa 에스파 'Dirty Work' MV","startTime":"0:25","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=phuiiNCxRMg","title":"aespa 에스파 'Supernova' MV","startTime":"0:37","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=inxzQt78lOk","title":"aespa エスパ 'KISS N TELL' MV","startTime":"1:06","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=nFYwcndNuOY","title":"aespa 에스파 'Armageddon' MV","startTime":"0:43","endTime":"1:11","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-aespa-deep-cuts">{"version":"1.0","name":"aespa - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=M2WTUoy4y6E","title":"aespa 에스파 'Dirty Work' MV","startTime":"0:25","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=inxzQt78lOk","title":"aespa エスパ 'KISS N TELL' MV","startTime":"1:06","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=phuiiNCxRMg","title":"aespa 에스파 'Supernova' MV","startTime":"0:37","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=nFYwcndNuOY","title":"aespa 에스파 'Armageddon' MV","startTime":"0:44","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=4TWR90KJl84","title":"aespa 에스파 'Next Level' MV","startTime":"0:59","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=5oQVTnq-UKk","title":"aespa 에스파 'Rich Man' MV","startTime":"0:47","endTime":"1:32","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="mix-card" id="aespa-marathon">
-          <header class="mix-head">
-            <h3>Marathon Set</h3>
-            <p class="mix-blurb">The long one: songs drawn across the whole aespa pool, popular and obscure mixed together.</p>
-            <p class="mix-meta">
-              <span>7 songs</span>
-              <span>~4:49 total</span>
-              <span>5s countdown between tracks</span>
-            </p>
-          </header>
-          <ol class="mix-songs">
-            <li class="mix-song">
-              <span class="mix-song-num">1</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=iTJSbJtS8MU&t=55" target="_blank" rel="noopener nofollow">WDA (Whole Different Animal)</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:28</span>
-              <span class="mix-song-len">33s</span>
+        <article class="panel mix" id="aespa-marathon" aria-labelledby="aespa-marathon-title">
+          <div class="panel-head">
+            <h2 class="mix-name" id="aespa-marathon-title"><span class="status-dot" aria-hidden="true"></span>Marathon Set</h2>
+            <p class="mix-stats">8 SONGS · ~5:36 · 5S COUNTDOWN</p>
+          </div>
+          <p class="mix-blurb">The long one: songs drawn across the whole aespa pool, popular and obscure mixed together.</p>
+          <ol class="rows">
+            <li class="row">
+              <span class="row-num">01</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/H69tJmsgd9I/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=H69tJmsgd9I&amp;t=37" target="_blank" rel="noopener nofollow">Dreams Come True<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:31</span>
+              <span class="row-len">54s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">2</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=jWQx2f-CErU&t=33" target="_blank" rel="noopener nofollow">Whiplash</a>
-              </span>
-              <span class="mix-song-time">0:33&ndash;1:10</span>
-              <span class="mix-song-len">37s</span>
+            <li class="row">
+              <span class="row-num">02</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/jWQx2f-CErU/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=jWQx2f-CErU&amp;t=33" target="_blank" rel="noopener nofollow">Whiplash<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:33&ndash;1:10</span>
+              <span class="row-len">37s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">3</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=Os_heh8vPfs&t=35" target="_blank" rel="noopener nofollow">Spicy</a>
-              </span>
-              <span class="mix-song-time">0:35&ndash;1:17</span>
-              <span class="mix-song-len">42s</span>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/4TWR90KJl84/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=4TWR90KJl84&amp;t=59" target="_blank" rel="noopener nofollow">Next Level<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:59&ndash;1:41</span>
+              <span class="row-len">42s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">4</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=4TWR90KJl84&t=59" target="_blank" rel="noopener nofollow">Next Level</a>
-              </span>
-              <span class="mix-song-time">0:59&ndash;1:41</span>
-              <span class="mix-song-len">42s</span>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Os_heh8vPfs/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Os_heh8vPfs&amp;t=35" target="_blank" rel="noopener nofollow">Spicy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:35&ndash;1:17</span>
+              <span class="row-len">42s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">5</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=ZeerrnuLi5E&t=35" target="_blank" rel="noopener nofollow">Black Mamba</a>
-              </span>
-              <span class="mix-song-time">0:35&ndash;1:13</span>
-              <span class="mix-song-len">38s</span>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/phuiiNCxRMg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=phuiiNCxRMg&amp;t=37" target="_blank" rel="noopener nofollow">Supernova<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:37&ndash;1:00</span>
+              <span class="row-len">23s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">6</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=M2WTUoy4y6E&t=25" target="_blank" rel="noopener nofollow">Dirty Work</a>
-              </span>
-              <span class="mix-song-time">0:25&ndash;1:00</span>
-              <span class="mix-song-len">35s</span>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/gfk3QLU1x0E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=gfk3QLU1x0E&amp;t=54" target="_blank" rel="noopener nofollow">Better Things<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:27</span>
+              <span class="row-len">33s</span>
             </li>
-            <li class="mix-song">
-              <span class="mix-song-num">7</span>
-              <span class="mix-song-name">
-                <a href="https://www.youtube.com/watch?v=DuIhnZICrfE&t=55" target="_blank" rel="noopener nofollow">WDA</a>
-              </span>
-              <span class="mix-song-time">0:55&ndash;1:27</span>
-              <span class="mix-song-len">32s</span>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/inxzQt78lOk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=inxzQt78lOk&amp;t=66" target="_blank" rel="noopener nofollow">KISS N TELL<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:06&ndash;1:40</span>
+              <span class="row-len">34s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">08</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/nFYwcndNuOY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=nFYwcndNuOY&amp;t=44" target="_blank" rel="noopener nofollow">Armageddon<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:44&ndash;1:20</span>
+              <span class="row-len">36s</span>
             </li>
           </ol>
-          <div class="mix-actions">
-            <button class="btn btn-primary js-load-mix" data-mix="aespa-marathon">Open in generator</button>
-            <button class="btn btn-ghost js-download-mix" data-mix="aespa-marathon">Download .json</button>
+          <div class="mix-foot">
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="aespa-marathon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
+            <button type="button" class="link-btn js-download-mix" data-mix="aespa-marathon">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-aespa-marathon">{"version":"1.0","name":"aespa - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=iTJSbJtS8MU","title":"aespa 에스파 'WDA (Whole Different Animal) (Feat. G-DRAGON)' MV","startTime":"0:55","endTime":"1:28","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jWQx2f-CErU","title":"aespa 에스파 'Whiplash' MV","startTime":"0:33","endTime":"1:10","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Os_heh8vPfs","title":"aespa 에스파 'Spicy' MV","startTime":"0:35","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=4TWR90KJl84","title":"aespa 에스파 'Next Level' MV","startTime":"0:59","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ZeerrnuLi5E","title":"aespa 에스파 'Black Mamba' MV","startTime":"0:35","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=M2WTUoy4y6E","title":"aespa 에스파 'Dirty Work' MV","startTime":"0:25","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=DuIhnZICrfE","title":"aespa - 'WDA' Dance Practice [MIRRORED]","startTime":"0:55","endTime":"1:27","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-aespa-marathon">{"version":"1.0","name":"aespa - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=H69tJmsgd9I","title":"[STATION] aespa 에스파 'Dreams Come True' MV","startTime":"0:37","endTime":"1:31","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jWQx2f-CErU","title":"aespa 에스파 'Whiplash' MV","startTime":"0:33","endTime":"1:10","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=4TWR90KJl84","title":"aespa 에스파 'Next Level' MV","startTime":"0:59","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Os_heh8vPfs","title":"aespa 에스파 'Spicy' MV","startTime":"0:35","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=phuiiNCxRMg","title":"aespa 에스파 'Supernova' MV","startTime":"0:37","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=gfk3QLU1x0E","title":"aespa 에스파 'Better Things' MV","startTime":"0:54","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=inxzQt78lOk","title":"aespa エスパ 'KISS N TELL' MV","startTime":"1:06","endTime":"1:40","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=nFYwcndNuOY","title":"aespa 에스파 'Armageddon' MV","startTime":"0:44","endTime":"1:20","info":null,"isExpanded":false}]}</script>
         </article>
+      </div>
+
+      <section class="prose" aria-labelledby="how-title">
+        <h2 id="how-title">How to use these aespa mixes</h2>
+        <p>
+          Press <b>Open in builder</b> on any mix. The songs and their cut points load into the
+          builder on the home page in the order shown here. Drop songs you don't know, move songs up
+          or down, or nudge a start or end time in the editor. Press <b>Shuffle now</b> for a random
+          order (that is the point of a random play dance), then <b>Generate mix</b> to get one MP3
+          with a 5-second countdown before every song.
+        </p>
+        <p>
+          Want to keep a set? <b>Save as project file</b> saves it as a .json file. Open it later in
+          the builder from <b>Project &rarr; Open a saved file</b>, or send it to whoever is running
+          your RPD event.
+        </p>
+
+        <h2>Where these cut points come from</h2>
+        <p>
+          Each clip is the segment most commonly chosen for that video by people using this
+          generator. In practice that lands on the chorus or the dance break, because that is the
+          part of a aespa song a random play dance crowd knows and can actually follow.
+          The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
+          frozen at whatever was popular when the page was written.
+        </p>
+        <p>
+          Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
+          only once even when several uploads of it exist, so a mix never plays you the same
+          choreography twice.
+        </p>
+      </section>
+
+      <section class="others" aria-labelledby="others-title">
+        <h2 id="others-title">Mixes for other groups</h2>
+        <div class="chips">
+          <a href="/random-dance/illit">ILLIT</a>
+          <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/katseye">KATSEYE</a>
+          <a href="/random-dance/twice">TWICE</a>
+          <a href="/random-dance/stray-kids">Stray Kids</a>
+          <a href="/random-dance/ateez">ATEEZ</a>
+          <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/enhypen">ENHYPEN</a>
+          <a href="/random-dance/babymonster">BABYMONSTER</a>
+          <a href="/random-dance/newjeans">NewJeans</a>
+          <a href="/random-dance/ive">IVE</a>
+          <a href="/random-dance/seventeen">SEVENTEEN</a>
+          <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
+          <a href="/random-dance/itzy">ITZY</a>
+          <a href="/random-dance/g-i-dle">i-dle</a>
+          <a href="/random-dance/nct">NCT</a>
+          <a href="/random-dance/red-velvet">Red Velvet</a>
+          <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
+          <a href="/random-dance/xg">XG</a>
+          <a href="/random-dance/nmixx">NMIXX</a>
+        </div>
+        <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <section class="foot-col" aria-labelledby="foot-build">
+          <h2 id="foot-build">Make your own mix</h2>
+          <p>Search YouTube, pick the part of each song, and get one MP3 with a 5-second countdown before every song. Free, no sign-up.</p>
+          <p><a class="btn btn-primary" href="/">Open the builder</a></p>
         </section>
-
-        <section class="prose">
-          <h2>How to use these aespa mixes</h2>
-          <p>
-            Press <em>Open in generator</em> on any mix. The songs and their timings load straight
-            into the generator on the home page, in the order shown here, where you can drop tracks
-            you don't know, move songs up or down, or nudge a start time before generating the audio
-            file. Press <em>Shuffle now</em> for a random order whenever you like &mdash; which is the
-            point of a random play dance.
-          </p>
-          <p>
-            Prefer to keep a set? <em>Download .json</em> saves it as a project file you can open
-            later from the generator's <em>Project</em> menu, or send to whoever is running your RPD event.
-          </p>
-
-          <h2>Where these cut points come from</h2>
-          <p>
-            Each clip below is the segment most commonly chosen for that video by people using this
-            generator. In practice that lands on the chorus or the dance break, because that is the
-            part of a aespa song a random play dance crowd knows and can actually follow.
-            The pool is rebuilt as usage changes, so the mixes shift over time rather than sitting
-            frozen at whatever was popular when the page was written.
-          </p>
-          <p>
-            Lyric videos, audio rips and reaction uploads are filtered out, and each song appears
-            only once even when several uploads of it exist, so a mix never plays you the same
-            choreography twice.
+        <section class="foot-col" aria-labelledby="foot-support">
+          <h2 id="foot-support">Enjoying the tool?</h2>
+          <p>It's free and always will be. Support on Ko-fi helps pay for the servers.</p>
+          <p class="foot-row">
+            <a class="btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-footer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4A4.6 4.6 0 0 1 12 6.6a4.6 4.6 0 0 1 7.5 6z"></path></svg> Support on Ko-fi<span class="sr-only"> (opens in a new tab)</span></a>
+            <a class="foot-link" href="/#how-it-works">How it works</a>
+            <a class="foot-link" href="/#contact">Contact us</a>
           </p>
         </section>
+      </div>
+      <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
+    </footer>
 
-        <section class="other-bands">
-          <h2>Mixes for other groups</h2>
-          <div class="band-links">
-        <a href="/random-dance/nct">NCT</a>
-        <a href="/random-dance/bts">BTS</a>
-        <a href="/random-dance/twice">TWICE</a>
-        <a href="/random-dance/stray-kids">Stray Kids</a>
-        <a href="/random-dance/itzy">ITZY</a>
-        <a href="/random-dance/enhypen">ENHYPEN</a>
-        <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-        <a href="/random-dance/blackpink">BLACKPINK</a>
-        <a href="/random-dance/ateez">ATEEZ</a>
-        <a href="/random-dance/seventeen">SEVENTEEN</a>
-        <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
-        <a href="/random-dance/babymonster">BABYMONSTER</a>
-        <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-        <a href="/random-dance/g-i-dle">(G)I-DLE</a>
-        <a href="/random-dance/illit">ILLIT</a>
-        <a href="/random-dance/nmixx">NMIXX</a>
-        <a href="/random-dance/newjeans">NewJeans</a>
-        <a href="/random-dance/red-velvet">Red Velvet</a>
-        <a href="/random-dance/xg">XG</a>
-        <a href="/random-dance/ive">IVE</a>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-foot">
-        <p><a class="btn btn-primary" href="/">Build your own mix &rarr;</a></p>
-        <p class="fine">Made with 💜 for K-Pop dance lovers.</p>
-      </footer>
-    </div>
-    <script src="/app/landing.js"></script>
+    <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
+    <script src="/app/landing.js?v=3"></script>
   </body>
 </html>

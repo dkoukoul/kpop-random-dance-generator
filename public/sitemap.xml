@@ -2,139 +2,145 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
       <loc>https://kpopgenerator.cloud/</loc>
-      <lastmod>2026-09-06</lastmod>
+      <lastmod>2026-10-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>1.0</priority>
    </url>
    <url>
       <loc>https://kpopgenerator.cloud/random-dance/</loc>
-      <lastmod>2026-09-06</lastmod>
+      <lastmod>2026-10-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.9</priority>
    </url>
    <url>
-      <loc>https://kpopgenerator.cloud/random-dance/nct</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/bts</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/twice</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/stray-kids</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/itzy</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/enhypen</loc>
-      <lastmod>2026-09-06</lastmod>
+      <loc>https://kpopgenerator.cloud/random-dance/illit</loc>
+      <lastmod>2026-10-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
       <loc>https://kpopgenerator.cloud/random-dance/le-sserafim</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/blackpink</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/ateez</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/seventeen</loc>
-      <lastmod>2026-09-06</lastmod>
+      <lastmod>2026-10-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
       <loc>https://kpopgenerator.cloud/random-dance/aespa</loc>
-      <lastmod>2026-09-06</lastmod>
+      <lastmod>2026-10-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://kpopgenerator.cloud/random-dance/txt</loc>
-      <lastmod>2026-09-06</lastmod>
+      <loc>https://kpopgenerator.cloud/random-dance/bts</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/katseye</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/twice</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/stray-kids</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/ateez</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/blackpink</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/enhypen</loc>
+      <lastmod>2026-10-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
       <loc>https://kpopgenerator.cloud/random-dance/babymonster</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/boynextdoor</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/g-i-dle</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/illit</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/nmixx</loc>
-      <lastmod>2026-09-06</lastmod>
+      <lastmod>2026-10-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
       <loc>https://kpopgenerator.cloud/random-dance/newjeans</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/red-velvet</loc>
-      <lastmod>2026-09-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://kpopgenerator.cloud/random-dance/xg</loc>
-      <lastmod>2026-09-06</lastmod>
+      <lastmod>2026-10-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
       <loc>https://kpopgenerator.cloud/random-dance/ive</loc>
-      <lastmod>2026-09-06</lastmod>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/seventeen</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/txt</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/itzy</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/g-i-dle</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/nct</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/red-velvet</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/boynextdoor</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/xg</loc>
+      <lastmod>2026-10-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/nmixx</loc>
+      <lastmod>2026-10-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
