@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeEach, describe, expect, mock, test } from 'bun:test';
 import { rmSync } from 'fs';
 import { join } from 'path';
-import api, { countdownChoice, pruneJobs } from '../src/routes/api';
+import api, { countdownChoice, fadeOutChoice, pruneJobs } from '../src/routes/api';
 import { getStats, logGeneration } from '../src/services/analytics';
 import { audioDuration, resetFakeYtdlp, ytdlpCalls } from './helpers';
 
@@ -387,6 +387,23 @@ describe('setlist download', () => {
   test('only 3 picks the short countdown; anything else is 5', () => {
     expect(countdownChoice(3)).toBe(3);
     for (const v of [5, undefined, null, '3', 4, 0, 10]) expect(countdownChoice(v)).toBe(5);
+  });
+
+  test('fades out each song when the host picks it, without changing the length', async () => {
+    const jobId = await startJob([segment('ok-fade-a', 'TWICE - FANCY'), segment('ok-fade-b', 'IVE - I AM')], { fadeOutSeconds: 2 });
+    expect((await waitForJob(jobId)).status).toBe('complete');
+
+    const text = await (await api.request(`/download-setlist/${jobId}`)).text();
+    expect(text).toContain('Each song fades out over its last 2 seconds.');
+    // 5 s + 5 s song + 5 s + 5 s song
+    expect(await audioDuration(join(TEMP_DIR, `output_${jobId}.mp3`))).toBeCloseTo(20, 0);
+  }, 30_000);
+
+  test('only 1, 2 or 3 picks a fade-out; anything else is none', () => {
+    expect(fadeOutChoice(1)).toBe(1);
+    expect(fadeOutChoice(2)).toBe(2);
+    expect(fadeOutChoice(3)).toBe(3);
+    for (const v of [0, undefined, null, '2', 1.5, 4, -1, 10]) expect(fadeOutChoice(v)).toBe(0);
   });
 
   test('is 404 for an unknown job', async () => {

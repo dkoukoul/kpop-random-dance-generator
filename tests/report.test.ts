@@ -94,6 +94,13 @@ describe('setlist', () => {
     expect(buildSetlist(playlist, [3], 33, [], 3)).toContain('A 3-second countdown plays before every song.');
   });
 
+  test('mentions the fade-out only when there is one', () => {
+    const playlist = [{ order: 1, band: 'BTS', title: 'Dynamite', startTime: '0:52', endTime: '1:22' }];
+    expect(buildSetlist(playlist, [5], 35)).not.toContain('fades out');
+    expect(buildSetlist(playlist, [5], 35, [], 5, 2)).toContain('Each song fades out over its last 2 seconds.');
+    expect(buildSetlist(playlist, [5], 35, [], 5, 1)).toContain('Each song fades out over its last 1 second.');
+  });
+
   test('pads song numbers to the length of the list and shows hours', () => {
     const playlist = Array.from({ length: 100 }, (_, i) => ({ order: i + 1, band: 'X', title: `S${i}`, startTime: '0:00', endTime: '0:30' }));
     const starts = songStartTimes(5, playlist.map(() => 35));

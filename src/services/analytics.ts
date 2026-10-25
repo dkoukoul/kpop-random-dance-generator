@@ -51,6 +51,15 @@ try {
   // Column already exists, ignore error
 }
 
+// The mix options the host chose (NULL for mixes made before they were logged).
+for (const column of ['countdown_seconds INTEGER', 'fade_seconds INTEGER']) {
+  try {
+    db.run(`ALTER TABLE generations ADD COLUMN ${column}`);
+  } catch {
+    // Column already exists
+  }
+}
+
 export async function logVisit(userAgent: string, ip: string) {
   try {
     db.run('INSERT INTO visits (user_agent, ip) VALUES (?, ?)', [userAgent, ip]);
@@ -59,9 +68,15 @@ export async function logVisit(userAgent: string, ip: string) {
   }
 }
 
-export async function logGeneration(jobId: string, segments: SongSegment[]) {
+export async function logGeneration(
+  jobId: string,
+  segments: SongSegment[],
+  options: { countdownSeconds?: number; fadeOutSeconds?: number } = {},
+) {
   try {
-    const result = db.prepare('INSERT INTO generations (job_id, song_count) VALUES (?, ?)').run(jobId, segments.length);
+    const result = db
+      .prepare('INSERT INTO generations (job_id, song_count, countdown_seconds, fade_seconds) VALUES (?, ?, ?, ?)')
+      .run(jobId, segments.length, options.countdownSeconds ?? null, options.fadeOutSeconds ?? null);
     const generationId = result.lastInsertRowid;
 
     const insertSong = db.prepare('INSERT INTO generation_songs (generation_id, youtube_url, title, start_time, end_time) VALUES (?, ?, ?, ?, ?)');

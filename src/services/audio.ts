@@ -1,5 +1,5 @@
 import { spawn } from 'child_process';
-import { writeFile, unlink } from 'fs/promises';
+import { writeFile, unlink, rename } from 'fs/promises';
 import { join } from 'path';
 
 /** Length of an audio file in seconds, via ffprobe. */
@@ -136,6 +136,26 @@ export async function trimToLast(inputPath: string, seconds: number, outputPath:
     '-c:a', 'libmp3lame', '-b:a', '128k', '-ac', '2', outputPath], { stdout: 'ignore', stderr: 'pipe' });
   const stderr = await new Response(proc.stderr).text();
   if ((await proc.exited) !== 0) throw new Error(`Failed to trim ${inputPath}: ${stderr}`);
+}
+
+/**
+ * Fade out the last `seconds` of a song cut, in place. The fade is never more
+ * than half the cut, so a very short cut still plays at full volume first.
+ * `length` is the cut's real length, when the caller already has it.
+ */
+export async function fadeOutEnd(path: string, seconds: number, length?: number): Promise<void> {
+  const total = length ?? (await audioDuration(path));
+  const fade = Math.min(seconds, total / 2);
+  if (!(fade > 0)) return;
+  const faded = path.replace(/\.mp3$/, '') + '_fade.mp3';
+  const proc = Bun.spawn(['ffmpeg', '-y', '-i', path, '-af', `afade=t=out:st=${(total - fade).toFixed(3)}:d=${fade.toFixed(3)}`,
+    '-c:a', 'libmp3lame', '-q:a', '2', '-ar', '44100', '-ac', '2', faded], { stdout: 'ignore', stderr: 'pipe' });
+  const stderr = await new Response(proc.stderr).text();
+  if ((await proc.exited) !== 0) {
+    await unlink(faded).catch(() => {});
+    throw new Error(`Failed to fade out ${path}: ${stderr}`);
+  }
+  await rename(faded, path);
 }
 
 /**

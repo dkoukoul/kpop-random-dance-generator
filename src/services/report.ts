@@ -193,12 +193,14 @@ export function buildSetlist(
   totalSeconds: number,
   failed: FailedSegment[] = [],
   countdownSeconds = 5,
+  fadeOutSeconds = 0,
 ): string {
   const lines = [
     `K-Pop random dance mix: ${playlist.length} song${playlist.length === 1 ? '' : 's'}, ${clock(totalSeconds)}`,
     `A ${countdownSeconds}-second countdown plays before every song.`,
-    '',
   ];
+  if (fadeOutSeconds > 0) lines.push(`Each song fades out over its last ${fadeOutSeconds} second${fadeOutSeconds === 1 ? '' : 's'}.`);
+  lines.push('');
   const width = String(playlist.length).length < 2 ? 2 : String(playlist.length).length;
   playlist.forEach((item, i) => {
     const name = item.band && item.band !== 'Unknown' ? `${item.band} - ${item.title}` : item.title;

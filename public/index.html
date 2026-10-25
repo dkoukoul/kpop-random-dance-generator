@@ -116,7 +116,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/studio.css?v=17" />
+    <link rel="stylesheet" href="/css/studio.css?v=18" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
@@ -130,22 +130,22 @@
     <script type="importmap">
       {
         "imports": {
-          "/app/studio/api.js": "/app/studio/api.js?v=16",
-          "/app/studio/builder.js": "/app/studio/builder.js?v=16",
-          "/app/studio/countdown.js": "/app/studio/countdown.js?v=16",
-          "/app/studio/editor.js": "/app/studio/editor.js?v=16",
-          "/app/studio/generate.js": "/app/studio/generate.js?v=16",
-          "/app/studio/main.js": "/app/studio/main.js?v=16",
-          "/app/studio/mobile.js": "/app/studio/mobile.js?v=16",
-          "/app/studio/player.js": "/app/studio/player.js?v=16",
-          "/app/studio/progress.js": "/app/studio/progress.js?v=16",
-          "/app/studio/project.js": "/app/studio/project.js?v=16",
-          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=16",
-          "/app/studio/setlist.js": "/app/studio/setlist.js?v=16",
-          "/app/studio/themes.js": "/app/studio/themes.js?v=16",
-          "/app/studio/songs.js": "/app/studio/songs.js?v=16",
-          "/app/studio/ui.js": "/app/studio/ui.js?v=16",
-          "/app/studio/util.js": "/app/studio/util.js?v=16"
+          "/app/studio/api.js": "/app/studio/api.js?v=17",
+          "/app/studio/builder.js": "/app/studio/builder.js?v=17",
+          "/app/studio/mix-options.js": "/app/studio/mix-options.js?v=17",
+          "/app/studio/editor.js": "/app/studio/editor.js?v=17",
+          "/app/studio/generate.js": "/app/studio/generate.js?v=17",
+          "/app/studio/main.js": "/app/studio/main.js?v=17",
+          "/app/studio/mobile.js": "/app/studio/mobile.js?v=17",
+          "/app/studio/player.js": "/app/studio/player.js?v=17",
+          "/app/studio/progress.js": "/app/studio/progress.js?v=17",
+          "/app/studio/project.js": "/app/studio/project.js?v=17",
+          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=17",
+          "/app/studio/setlist.js": "/app/studio/setlist.js?v=17",
+          "/app/studio/themes.js": "/app/studio/themes.js?v=17",
+          "/app/studio/songs.js": "/app/studio/songs.js?v=17",
+          "/app/studio/ui.js": "/app/studio/ui.js?v=17",
+          "/app/studio/util.js": "/app/studio/util.js?v=17"
         }
       }
     </script>
@@ -289,23 +289,45 @@
             <a class="arrow-link" href="/random-dance/">All ready-made mixes →</a>
           </div>
         </div>
-        <!-- Phones: the Generate button in the bottom bar starts at once, so the choice sits here too. -->
-        <div class="countdown-row">
-          <span class="countdown-row-label">Countdown before each song</span>
-          <div class="seg" role="group" aria-label="Countdown before each song" data-countdown>
-            <button type="button" data-seconds="3" aria-pressed="false">3s</button>
-            <button type="button" data-seconds="5" aria-pressed="true">5s</button>
+        <!-- Phones: the Generate button in the bottom bar starts at once, so the mix options sit here too. -->
+        <div class="mix-rows">
+          <div class="mix-row">
+            <span class="mix-row-label" aria-hidden="true">Countdown</span>
+            <div class="seg" role="group" aria-label="Countdown before each song" data-countdown>
+              <button type="button" data-seconds="3" aria-pressed="false">3s</button>
+              <button type="button" data-seconds="5" aria-pressed="true">5s</button>
+            </div>
+          </div>
+          <div class="mix-row">
+            <span class="mix-row-label" aria-hidden="true">Fade-out</span>
+            <div class="seg" role="group" aria-label="Fade out the last seconds of each song" data-fade>
+              <button type="button" data-seconds="0" aria-pressed="true">Off</button>
+              <button type="button" data-seconds="1" aria-pressed="false">1s</button>
+              <button type="button" data-seconds="2" aria-pressed="false">2s</button>
+              <button type="button" data-seconds="3" aria-pressed="false">3s</button>
+            </div>
           </div>
         </div>
         <div class="panel-foot" id="setlistFoot">
           <div class="tiles">
             <div class="tile"><div class="tile-k">SONGS</div><div class="tile-v mono" id="tileSongs">00</div></div>
             <div class="tile"><div class="tile-k">RUNTIME</div><div class="tile-v mono" id="tileRuntime">00:00</div></div>
-            <div class="tile tile-countdown">
-              <div class="tile-k" aria-hidden="true">COUNTDOWN</div>
+          </div>
+          <div class="mix-options">
+            <div class="mix-option">
+              <span class="tile-k" aria-hidden="true">COUNTDOWN</span>
               <div class="seg" role="group" aria-label="Countdown before each song" data-countdown>
                 <button type="button" data-seconds="3" aria-pressed="false">3s</button>
                 <button type="button" data-seconds="5" aria-pressed="true">5s</button>
+              </div>
+            </div>
+            <div class="mix-option">
+              <span class="tile-k" aria-hidden="true">FADE-OUT</span>
+              <div class="seg" role="group" aria-label="Fade out the last seconds of each song" data-fade>
+                <button type="button" data-seconds="0" aria-pressed="true">Off</button>
+                <button type="button" data-seconds="1" aria-pressed="false">1s</button>
+                <button type="button" data-seconds="2" aria-pressed="false">2s</button>
+                <button type="button" data-seconds="3" aria-pressed="false">3s</button>
               </div>
             </div>
           </div>
@@ -330,7 +352,7 @@
 
     <!-- Status bar -->
     <div class="statusbar">
-      <span id="statusLine">0 SONGS · 00:00 TOTAL · 5S COUNTDOWN BEFORE EACH SONG · 1 MP3</span>
+      <span id="statusLine">0 SONGS · 00:00 TOTAL · 5S COUNTDOWN · 1 MP3</span>
       <span>FREE · NO SIGN-UP</span>
     </div>
 
@@ -397,7 +419,7 @@
             <ul>
               <li>Search YouTube or paste a link: any song, from BTS and BLACKPINK to the newest groups</li>
               <li>Exact start and end for every song, or the popular cut other hosts use</li>
-              <li>A 3- or 5-second countdown before every song, all in one MP3</li>
+              <li>A 3- or 5-second countdown before every song and an optional fade-out at the end of each, all in one MP3</li>
               <li>Shuffle now: the order on screen is the order of your mix; reorder with ↑ ↓</li>
               <li>Download a setlist with the start time of every song</li>
               <li>Saves in your browser as you work; save to a file to keep or share it</li>
@@ -472,6 +494,6 @@
         document.body.prepend(note);
       }
     </script>
-    <script type="module" src="/app/studio/main.js?v=16"></script>
+    <script type="module" src="/app/studio/main.js?v=17"></script>
   </body>
 </html>

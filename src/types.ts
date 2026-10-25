@@ -12,6 +12,8 @@ export interface GenerateRequest {
   segments: SongSegment[];
   /** Countdown before each song: 3 or 5 seconds (anything else means 5). */
   countdownSeconds?: number;
+  /** Fade-out at the end of each song: 1, 2 or 3 seconds (anything else means none). */
+  fadeOutSeconds?: number;
 }
 
 export interface VideoInfo {

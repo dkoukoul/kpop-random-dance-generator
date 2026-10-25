@@ -25,6 +25,15 @@ describe('analytics', () => {
     expect(getStats().totalGenerations).toBe(before + 1);
   });
 
+  test('logGeneration keeps the mix options', async () => {
+    const { Database } = await import('bun:sqlite');
+    await logGeneration('job-options', [seg(url('opt'))], { countdownSeconds: 3, fadeOutSeconds: 2 });
+    const db = new Database(process.env.ANALYTICS_DB_PATH!, { readonly: true });
+    const row = db.query("SELECT countdown_seconds, fade_seconds FROM generations WHERE job_id = 'job-options' ORDER BY id DESC").get();
+    db.close();
+    expect(row).toEqual({ countdown_seconds: 3, fade_seconds: 2 });
+  });
+
   test('top songs count the same video and cut across mixes', async () => {
     const popular = url('popular');
     for (let i = 0; i < 25; i++) await logGeneration(`job-pop-${i}`, [seg(popular)]);

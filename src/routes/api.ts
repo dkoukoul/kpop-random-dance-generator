@@ -6,7 +6,7 @@ import { mkdir, access, stat } from 'fs/promises';
 import type { GenerateRequest, SongSegment, FailedSegment } from '../types';
 import { getVideoInfo, downloadSegment, searchVideos, parseTimeToSeconds } from '../services/youtube';
 import { generateReport, buildSetlist, songStartTimes } from '../services/report';
-import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles, audioDuration, trimToLast } from '../services/audio';
+import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles, audioDuration, trimToLast, fadeOutEnd } from '../services/audio';
 import { logVisit, logGeneration, getStats, getPopularCut, getTopSongs } from '../services/analytics';
 import { getYtdlpStatus, updateYtdlp } from '../services/ytdlp-updater';
 import { toYoutubeWatchUrl } from '../services/youtube-url';
@@ -76,6 +76,11 @@ const COUNTDOWN_3S_PATH = join(ASSETS_DIR, 'countdown-3s.mp3');
 /** The countdown the host chose: 3 or 5 seconds, 5 for anything else. */
 export function countdownChoice(value: unknown): 3 | 5 {
   return value === 3 ? 3 : 5;
+}
+
+/** The fade-out at the end of each song: 1, 2 or 3 seconds, or 0 (none) for anything else. */
+export function fadeOutChoice(value: unknown): 0 | 1 | 2 | 3 {
+  return value === 1 || value === 2 || value === 3 ? value : 0;
 }
 
 // Ensure directories exist
@@ -298,6 +303,7 @@ api.post('/generate', async (c) => {
   }
 
   const countdownSeconds = countdownChoice(body.countdownSeconds);
+  const fadeOutSeconds = fadeOutChoice(body.fadeOutSeconds);
 
   pruneJobs();
   const jobId = uuidv4();
@@ -309,10 +315,10 @@ api.post('/generate', async (c) => {
   });
   
   // Log generation for analytics
-  logGeneration(jobId, body.segments).catch(err => console.error('Logging generation error:', err));
+  logGeneration(jobId, body.segments, { countdownSeconds, fadeOutSeconds }).catch(err => console.error('Logging generation error:', err));
   
   // Process in background
-  processGeneration(jobId, body.segments, countdownSeconds).catch((error) => {
+  processGeneration(jobId, body.segments, countdownSeconds, fadeOutSeconds).catch((error) => {
     console.error('Generation error:', error);
     updateJob(jobId, { status: 'error', error: error.message });
   });
@@ -459,7 +465,7 @@ api.post('/contact', async (c) => {
 /**
  * Background processing function
  */
-async function processGeneration(jobId: string, segments: SongSegment[], countdown: 3 | 5 = 5) {
+async function processGeneration(jobId: string, segments: SongSegment[], countdown: 3 | 5 = 5, fadeOut: 0 | 1 | 2 | 3 = 0) {
   const segmentPaths: string[] = [];
   const segmentSeconds: number[] = [];
   const successfulSegments: SongSegment[] = [];
@@ -515,7 +521,13 @@ async function processGeneration(jobId: string, segments: SongSegment[], countdo
         successfulSegments.push(segment);
         // The real length, for the setlist's start times.
         const cutSeconds = parseTimeToSeconds(segment.endTime) - parseTimeToSeconds(segment.startTime);
-        segmentSeconds.push(await audioDuration(segmentPath).catch(() => cutSeconds));
+        const length = await audioDuration(segmentPath).catch(() => cutSeconds);
+        segmentSeconds.push(length);
+        if (fadeOut > 0) {
+          // A song without its fade is better than no song.
+          await fadeOutEnd(segmentPath, fadeOut, length).catch((error) =>
+            console.error(`Could not fade out "${segment.title}"; keeping the hard cut:`, error));
+        }
         setSongState(jobId, i, 'done');
       } catch (error) {
         const reason = error instanceof Error ? error.message : String(error);
@@ -557,7 +569,7 @@ async function processGeneration(jobId: string, segments: SongSegment[], countdo
       const starts = songStartTimes(countdownSeconds, segmentSeconds, mixSeconds);
       const total = mixSeconds ?? segmentSeconds.reduce((t, s) => t + countdownSeconds + s, 0);
       setlistFilename = `${jobId}_setlist.txt`;
-      await Bun.write(join(TEMP_DIR, setlistFilename), buildSetlist(report.playlist, starts, total, failedSegments, countdown));
+      await Bun.write(join(TEMP_DIR, setlistFilename), buildSetlist(report.playlist, starts, total, failedSegments, countdown, fadeOut));
     } catch (error) {
       console.error(`Could not write the setlist for job ${jobId}:`, error);
       setlistFilename = undefined;

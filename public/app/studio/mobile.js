@@ -13,7 +13,7 @@
  */
 import { el, clock, pad2 } from "./util.js";
 import { runtime } from "./setlist.js";
-import { countdown } from "./countdown.js";
+import { countdown } from "./mix-options.js";
 import { setTheme, currentTheme, openHowItWorks } from "./ui.js";
 import { THEMES, themeName } from "./themes.js";
 

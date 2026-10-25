@@ -903,10 +903,11 @@ html.theme-fade *::after {
   color: var(--muted);
 }
 
-/* Two-option toggle (theme, countdown). */
+/* Toggle with equal-width options (theme, countdown, fade-out). */
 .seg {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   gap: 2px;
   padding: 2px;
   border-radius: 8px;
@@ -929,22 +930,21 @@ html.theme-fade *::after {
   color: var(--text);
 }
 
-/* Desktop: My mix shows the choice in the COUNTDOWN tile instead. */
-.countdown-row {
+/* Desktop: the mix options sit in the setlist footer instead. */
+.mix-rows {
   display: none;
 }
 
 /* ===== Setlist footer ===== */
 .tiles {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 6px;
 }
 
 .tile {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* values line up with the taller COUNTDOWN toggle */
   background: var(--inset);
   border: 1px solid var(--line2);
   border-radius: var(--radius-sm);
@@ -959,18 +959,35 @@ html.theme-fade *::after {
   color: var(--muted);
 }
 
-.tile-countdown .seg {
-  margin-top: 2px;
+/* Countdown and fade-out: label on the left, toggle on the right. Both
+   toggles share one column so their edges line up. */
+.mix-options {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.mix-option {
+  display: contents;
+}
+
+.mix-options .seg {
   padding: 1px;
 }
 
-.tile-countdown .seg button {
-  height: 24px;
+.mix-options .seg button,
+.mix-rows .seg button {
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: 13px;
 }
 
-.tile-countdown .seg button[aria-pressed='true'] {
+.mix-options .seg button {
+  height: 28px;
+}
+
+.mix-options .seg button[aria-pressed='true'],
+.mix-rows .seg button[aria-pressed='true'] {
   background: var(--accent);
   color: var(--accentText);
 }
@@ -2656,6 +2673,11 @@ textarea.field {
     display: inline;
   }
 
+  /* "THIS & THAT" would push the compact bar past the window. */
+  #themeName {
+    max-width: 6.5em;
+  }
+
   /* Hidden from sight only: screen readers still hear "Theme: Dark". */
   .theme-prefix {
     position: absolute;
@@ -2673,11 +2695,6 @@ textarea.field {
   .mainnav a {
     padding: 7px 8px;
   }
-  /* "THIS & THAT" would push the compact bar past the window. */
-  #themeName {
-    max-width: 6.5em;
-  }
-
 }
 
 /* The compact bar still needs about 945 px; the badge goes first. */
@@ -3292,25 +3309,32 @@ textarea.field {
     height: 44px;
   }
 
-  /* My mix: the countdown choice above the bottom bar's Generate. */
-  .countdown-row {
+  /* My mix: the mix options above the bottom bar's Generate. */
+  .mix-rows {
     display: flex;
     flex: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 4px; /* same inset as the song rows above */
+    border-top: 1px solid var(--line2);
+  }
+
+  .mix-row {
+    display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 10px 4px; /* same inset as the song rows above */
-    border-top: 1px solid var(--line2);
     font-size: 14px;
     color: var(--muted);
   }
 
-  .countdown-row .seg {
+  /* 196px keeps each of the four fade-out buttons at least 44px wide. */
+  .mix-row .seg {
     flex: none;
-    width: 120px;
+    width: 196px;
   }
 
-  .tile-countdown .seg button {
+  .mix-options .seg button {
     height: 44px;
   }
 
