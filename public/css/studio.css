@@ -126,7 +126,7 @@
   --cyanText: #0a0a0b;
   --cyanInk: #a9bfdc;
   --ok: #4ade80;
-  --heat: #45454c;
+  --heat: #6a6a72;
   --focus: #a9bfdc;
   --warnBg: #2a2210;
   --warnLine: #6b5418;
@@ -167,7 +167,7 @@
   --cyanText: #ffffff;
   --cyanInk: #b0306a;
   --ok: #15803d;
-  --heat: #a9b4c8;
+  --heat: #7d8aa4;
   --focus: #b0306a;
   --warnBg: #fef3c7;
   --warnLine: #d9a520;
@@ -209,7 +209,7 @@
   --cyanText: #0c0a09;
   --cyanInk: #8fe3c8;
   --ok: #a3e635;
-  --heat: #66574f;
+  --heat: #7a6a61;
   --focus: #8fe3c8;
   --warnBg: #2a2210;
   --warnLine: #6b5418;
@@ -251,7 +251,7 @@
   --cyanText: #0b0d06;
   --cyanInk: #7fe6dc;
   --ok: #4ade80;
-  --heat: #4e5842;
+  --heat: #64735a;
   --focus: #7fe6dc;
   --warnBg: #2a1d0c;
   --warnLine: #6b4a18;
@@ -700,6 +700,7 @@ html.theme-fade *::after {
 }
 
 .theme-chip {
+  position: relative;
   min-height: 48px;
   padding: 8px 10px;
   border: 1px solid var(--line);
@@ -730,9 +731,25 @@ html.theme-fade *::after {
   box-shadow: inset 0 0 0 1px var(--accent);
 }
 
-.theme-chip[aria-pressed='true'] b::after {
-  content: ' ✓';
+/* The check sits in the corner so a long name's ellipsis never hides it. */
+.theme-chip[aria-pressed='true']::after {
+  content: '✓';
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 12px;
+  font-weight: 700;
   color: var(--accentInk);
+}
+
+.theme-chip b {
+  padding-right: 12px;
+}
+
+/* Dark / Light in the phone menu sheet carry the same swatch. */
+.seg .theme-pill {
+  margin-right: 6px;
+  vertical-align: -3px;
 }
 
 @keyframes pop-in {
@@ -2656,6 +2673,11 @@ textarea.field {
   .mainnav a {
     padding: 7px 8px;
   }
+  /* "THIS & THAT" would push the compact bar past the window. */
+  #themeName {
+    max-width: 6.5em;
+  }
+
 }
 
 /* The compact bar still needs about 945 px; the badge goes first. */

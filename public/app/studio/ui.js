@@ -33,7 +33,7 @@ export function initMenus() {
       const open = button.getAttribute("aria-expanded") !== "true";
       closeMenus(menu);
       setMenu(menu, open);
-      if (open) panel.querySelector("button:not([aria-disabled='true']), a")?.focus();
+      if (open) (panel.querySelector("[aria-pressed='true']") ?? panel.querySelector("button:not([aria-disabled='true']), a"))?.focus();
     });
 
     wrap.addEventListener("keydown", (event) => {
@@ -96,6 +96,10 @@ function syncThemeMenu() {
   if (name) name.textContent = themeName(theme);
   for (const b of document.querySelectorAll("[data-theme-choice]")) {
     b.setAttribute("aria-pressed", String(b.dataset.themeChoice === theme));
+  }
+  // The phone menu sheet's buttons too: one choice, whichever menu made it.
+  for (const b of document.querySelectorAll("[data-sheet-theme]")) {
+    b.setAttribute("aria-pressed", String(b.dataset.sheetTheme === theme));
   }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = getComputedStyle(document.documentElement).getPropertyValue("--panel").trim() || meta.content;

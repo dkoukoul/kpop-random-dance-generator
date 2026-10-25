@@ -279,13 +279,11 @@ export function initMobile({ setlist, onGenerateState }) {
 
   const proxy = (label, id, small) =>
     el("button", { type: "button", class: "menu-item", onclick: () => { closeSheet({ silent: true }); document.getElementById(id).click(); } }, label, small ? el("small", { text: small }) : null);
-  // Dark, Light and the album themes are one choice: only the active one is pressed.
-  const pickTheme = (id) => {
-    setTheme(id);
-    for (const b of menuBody.querySelectorAll("[data-sheet-theme]")) b.setAttribute("aria-pressed", String(b.dataset.sheetTheme === id));
-  };
+  // Dark, Light and the album themes are one choice: setTheme presses only the active one.
+  const pickTheme = (id) => setTheme(id);
   const themeBtn = (id) =>
-    el("button", { type: "button", "aria-pressed": String(currentTheme() === id), "data-sheet-theme": id, text: themeName(id), onclick: () => pickTheme(id) });
+    el("button", { type: "button", "aria-pressed": String(currentTheme() === id), "data-sheet-theme": id, onclick: () => pickTheme(id) },
+      el("span", { class: "theme-pill", "data-pill": id, "aria-hidden": "true" }), themeName(id));
   const albumChip = (t) =>
     el("button", { type: "button", class: "theme-chip", "aria-pressed": String(currentTheme() === t.id), "data-sheet-theme": t.id, onclick: () => pickTheme(t.id) },
       el("span", { class: "theme-pill", "data-pill": t.id, "aria-hidden": "true" }),
