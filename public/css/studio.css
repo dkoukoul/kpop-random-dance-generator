@@ -98,6 +98,178 @@
   --glowCyan: none;
 }
 
+/*
+ * Album themes: fan-made colours from one album cover each (no logos or
+ * official art). The list lives in public/app/studio/themes.js. --accent is
+ * still "cut / create" and --cyan "listen", whatever their colour here.
+ */
+
+/* ARIRANG (BTS): monochrome suits and a red seal. Listen = steel blue. */
+:root[data-theme='arirang'] {
+  color-scheme: dark;
+  --bg: #0a0a0b;
+  --panel: #161618;
+  --raised: #1f1f22;
+  --inset: #0f0f10;
+  --line: #2c2c30;
+  --line2: #232326;
+  --lineStrong: #74747c;
+  --text: #f2f2f3;
+  --muted: #a4a4ab;
+  --accent: #d81539;
+  --accentText: #ffffff;
+  --accentInk: #ff5470;
+  --accentSoft: #24131a;
+  --accentLine: #5c1a28;
+  --popBg: #3a1420;
+  --cyan: #a9bfdc;
+  --cyanText: #0a0a0b;
+  --cyanInk: #a9bfdc;
+  --ok: #4ade80;
+  --heat: #45454c;
+  --focus: #a9bfdc;
+  --warnBg: #2a2210;
+  --warnLine: #6b5418;
+  --warnText: #fcd77a;
+  --errBg: #2a1416;
+  --errLine: #6b2a30;
+  --errText: #ff8a8a;
+  --footerBg: #060607;
+  --footerLine: #1b1b1e;
+  --footerText: #85858d;
+  --footerHead: #b8b8be;
+  --overlay: rgba(4, 4, 5, 0.72);
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --glow: 0 0 24px rgba(216, 21, 57, 0.35);
+  --glowSm: 0 0 6px rgba(216, 21, 57, 0.8);
+  --glowCyan: 0 0 8px #a9bfdc;
+}
+
+/* It's Me (ILLIT): blue-hour haze and white veils. Light. Listen = dusk rose. */
+:root[data-theme='itsme'] {
+  color-scheme: light;
+  --bg: #e2e8f4;
+  --panel: #f8faff;
+  --raised: #ecf0f9;
+  --inset: #f3f6fc;
+  --line: #cfd8e8;
+  --line2: #dee5f1;
+  --lineStrong: #7b88a2;
+  --text: #131a2b;
+  --muted: #4f5c76;
+  --accent: #4460b8;
+  --accentText: #ffffff;
+  --accentInk: #3550a6;
+  --accentSoft: #e3e9f9;
+  --accentLine: #a8b7e5;
+  --popBg: #e3e9f9;
+  --cyan: #b0306a;
+  --cyanText: #ffffff;
+  --cyanInk: #b0306a;
+  --ok: #15803d;
+  --heat: #a9b4c8;
+  --focus: #b0306a;
+  --warnBg: #fef3c7;
+  --warnLine: #d9a520;
+  --warnText: #7a4d00;
+  --errBg: #fdecec;
+  --errLine: #e8a0a0;
+  --errText: #b42318;
+  --footerBg: #d5ddec;
+  --footerLine: #c5cfe2;
+  --footerText: #4c586f;
+  --footerHead: #2c3548;
+  --overlay: rgba(19, 26, 43, 0.45);
+  --shadow: 0 12px 32px rgba(19, 26, 43, 0.18);
+  --glow: none;
+  --glowSm: none;
+  --glowCyan: none;
+}
+
+/* THIS & THAT (Stray Kids): black and burnt orange. Listen = mint (the Y2K
+   concept photos); --ok goes lime so "saved" never reads as mint. */
+:root[data-theme='thisthat'] {
+  color-scheme: dark;
+  --bg: #0c0a09;
+  --panel: #181412;
+  --raised: #211b18;
+  --inset: #110e0c;
+  --line: #322a26;
+  --line2: #27201d;
+  --lineStrong: #7a6a61;
+  --text: #f6f0ea;
+  --muted: #b0a196;
+  --accent: #f2581f;
+  --accentText: #0c0a09;
+  --accentInk: #ff8b5e;
+  --accentSoft: #26170f;
+  --accentLine: #602b16;
+  --popBg: #3b1d10;
+  --cyan: #8fe3c8;
+  --cyanText: #0c0a09;
+  --cyanInk: #8fe3c8;
+  --ok: #a3e635;
+  --heat: #66574f;
+  --focus: #8fe3c8;
+  --warnBg: #2a2210;
+  --warnLine: #6b5418;
+  --warnText: #fcd77a;
+  --errBg: #2a1416;
+  --errLine: #6b2a30;
+  --errText: #ff8a8a;
+  --footerBg: #070605;
+  --footerLine: #1e1916;
+  --footerText: #8a7c72;
+  --footerHead: #c2b5aa;
+  --overlay: rgba(8, 6, 5, 0.72);
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --glow: 0 0 24px rgba(242, 88, 31, 0.35);
+  --glowSm: 0 0 6px rgba(242, 88, 31, 0.8);
+  --glowCyan: 0 0 8px #8fe3c8;
+}
+
+/* LEMONADE (aespa): neon lime on black. Listen = water aqua; warnings go
+   amber so they don't blend into the lime. */
+:root[data-theme='lemonade'] {
+  color-scheme: dark;
+  --bg: #080a05;
+  --panel: #12160c;
+  --raised: #1a1f12;
+  --inset: #0d1009;
+  --line: #28301e;
+  --line2: #20271a;
+  --lineStrong: #6e7a60;
+  --text: #f3f7e6;
+  --muted: #a5af93;
+  --accent: #d7f30f;
+  --accentText: #0b0d06;
+  --accentInk: #dff54a;
+  --accentSoft: #1a2008;
+  --accentLine: #4a5812;
+  --popBg: #222a0a;
+  --cyan: #7fe6dc;
+  --cyanText: #0b0d06;
+  --cyanInk: #7fe6dc;
+  --ok: #4ade80;
+  --heat: #4e5842;
+  --focus: #7fe6dc;
+  --warnBg: #2a1d0c;
+  --warnLine: #6b4a18;
+  --warnText: #ffb454;
+  --errBg: #2a1416;
+  --errLine: #6b2a30;
+  --errText: #ff8a8a;
+  --footerBg: #050603;
+  --footerLine: #191e12;
+  --footerText: #848d75;
+  --footerHead: #bcc4ab;
+  --overlay: rgba(4, 5, 2, 0.72);
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --glow: 0 0 24px rgba(215, 243, 15, 0.3);
+  --glowSm: 0 0 6px rgba(215, 243, 15, 0.7);
+  --glowCyan: 0 0 8px #7fe6dc;
+}
+
 /* ===== Base ===== */
 *,
 *::before,
@@ -440,12 +612,14 @@ html.theme-fade *::after {
 }
 
 .menu-note {
+  margin: 0;
   padding: 6px 10px;
   font-size: 12px;
   color: var(--muted);
 }
 
 .menu-label {
+  margin: 0;
   padding: 6px 10px 2px;
   font-family: var(--mono);
   font-size: 10px;
@@ -458,6 +632,107 @@ html.theme-fade *::after {
   height: 11px;
   border-radius: 50%;
   background: var(--accent);
+}
+
+/* The theme's name can be long ("THIS & THAT"): never let it stretch the topbar. */
+#themeName {
+  display: inline-block;
+  max-width: 9em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+/* A theme in miniature: its background with the cut and listen colours.
+   Fixed colours, so every option looks the same whatever theme is on. */
+.theme-pill {
+  flex: none;
+  width: 28px;
+  height: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--pill-line);
+  background: var(--pill-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.theme-pill::before,
+.theme-pill::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pill-a);
+}
+
+.theme-pill::after {
+  background: var(--pill-b);
+}
+
+.theme-pill[data-pill='dark'] { --pill-bg: #0b0c10; --pill-line: #6b7385; --pill-a: #ff3d8b; --pill-b: #2de2e6; }
+.theme-pill[data-pill='light'] { --pill-bg: #eef0f4; --pill-line: #868e9c; --pill-a: #e0136b; --pill-b: #0b7c82; }
+.theme-pill[data-pill='arirang'] { --pill-bg: #0a0a0b; --pill-line: #74747c; --pill-a: #d81539; --pill-b: #a9bfdc; }
+.theme-pill[data-pill='itsme'] { --pill-bg: #e2e8f4; --pill-line: #7b88a2; --pill-a: #4460b8; --pill-b: #b0306a; }
+.theme-pill[data-pill='thisthat'] { --pill-bg: #0c0a09; --pill-line: #7a6a61; --pill-a: #f2581f; --pill-b: #8fe3c8; }
+.theme-pill[data-pill='lemonade'] { --pill-bg: #080a05; --pill-line: #6e7a60; --pill-a: #d7f30f; --pill-b: #7fe6dc; }
+
+.theme-opt {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.theme-opt small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* Phone menu sheet: the album themes as a 2×2 grid of chips. */
+.theme-chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.theme-chip {
+  min-height: 48px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--inset);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 8px;
+  align-items: center;
+  text-align: left;
+}
+
+.theme-chip b {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.theme-chip small {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.theme-chip[aria-pressed='true'] {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.theme-chip[aria-pressed='true'] b::after {
+  content: ' ✓';
+  color: var(--accentInk);
 }
 
 @keyframes pop-in {

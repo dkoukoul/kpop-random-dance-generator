@@ -98,7 +98,7 @@
     <!-- The saved theme, before anything paints (Dark is the default; ids from app/studio/themes.js). -->
     <script>
       try {
-        var t = localStorage.getItem("kpopgen:theme");
+        const t = localStorage.getItem("kpopgen:theme");
         if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
@@ -130,21 +130,22 @@
     <script type="importmap">
       {
         "imports": {
-          "/app/studio/api.js": "/app/studio/api.js?v=15",
-          "/app/studio/builder.js": "/app/studio/builder.js?v=15",
-          "/app/studio/countdown.js": "/app/studio/countdown.js?v=15",
-          "/app/studio/editor.js": "/app/studio/editor.js?v=15",
-          "/app/studio/generate.js": "/app/studio/generate.js?v=15",
+          "/app/studio/api.js": "/app/studio/api.js?v=16",
+          "/app/studio/builder.js": "/app/studio/builder.js?v=16",
+          "/app/studio/countdown.js": "/app/studio/countdown.js?v=16",
+          "/app/studio/editor.js": "/app/studio/editor.js?v=16",
+          "/app/studio/generate.js": "/app/studio/generate.js?v=16",
           "/app/studio/main.js": "/app/studio/main.js?v=16",
-          "/app/studio/mobile.js": "/app/studio/mobile.js?v=15",
-          "/app/studio/player.js": "/app/studio/player.js?v=15",
-          "/app/studio/progress.js": "/app/studio/progress.js?v=15",
-          "/app/studio/project.js": "/app/studio/project.js?v=15",
-          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=15",
-          "/app/studio/setlist.js": "/app/studio/setlist.js?v=15",
-          "/app/studio/songs.js": "/app/studio/songs.js?v=15",
-          "/app/studio/ui.js": "/app/studio/ui.js?v=15",
-          "/app/studio/util.js": "/app/studio/util.js?v=15"
+          "/app/studio/mobile.js": "/app/studio/mobile.js?v=16",
+          "/app/studio/player.js": "/app/studio/player.js?v=16",
+          "/app/studio/progress.js": "/app/studio/progress.js?v=16",
+          "/app/studio/project.js": "/app/studio/project.js?v=16",
+          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=16",
+          "/app/studio/setlist.js": "/app/studio/setlist.js?v=16",
+          "/app/studio/themes.js": "/app/studio/themes.js?v=16",
+          "/app/studio/songs.js": "/app/studio/songs.js?v=16",
+          "/app/studio/ui.js": "/app/studio/ui.js?v=16",
+          "/app/studio/util.js": "/app/studio/util.js?v=16"
         }
       }
     </script>

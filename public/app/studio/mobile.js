@@ -15,6 +15,7 @@ import { el, clock, pad2 } from "./util.js";
 import { runtime } from "./setlist.js";
 import { countdown } from "./countdown.js";
 import { setTheme, currentTheme, openHowItWorks } from "./ui.js";
+import { THEMES, themeName } from "./themes.js";
 
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -278,12 +279,18 @@ export function initMobile({ setlist, onGenerateState }) {
 
   const proxy = (label, id, small) =>
     el("button", { type: "button", class: "menu-item", onclick: () => { closeSheet({ silent: true }); document.getElementById(id).click(); } }, label, small ? el("small", { text: small }) : null);
-  const themeBtn = (name) =>
-    el("button", { type: "button", "aria-pressed": String(currentTheme() === name), "data-sheet-theme": name, text: name === "dark" ? "Dark" : "Light",
-      onclick: () => {
-        setTheme(name);
-        for (const b of menuBody.querySelectorAll("[data-sheet-theme]")) b.setAttribute("aria-pressed", String(b.dataset.sheetTheme === name));
-      } });
+  // Dark, Light and the album themes are one choice: only the active one is pressed.
+  const pickTheme = (id) => {
+    setTheme(id);
+    for (const b of menuBody.querySelectorAll("[data-sheet-theme]")) b.setAttribute("aria-pressed", String(b.dataset.sheetTheme === id));
+  };
+  const themeBtn = (id) =>
+    el("button", { type: "button", "aria-pressed": String(currentTheme() === id), "data-sheet-theme": id, text: themeName(id), onclick: () => pickTheme(id) });
+  const albumChip = (t) =>
+    el("button", { type: "button", class: "theme-chip", "aria-pressed": String(currentTheme() === t.id), "data-sheet-theme": t.id, onclick: () => pickTheme(t.id) },
+      el("span", { class: "theme-pill", "data-pill": t.id, "aria-hidden": "true" }),
+      el("b", { text: t.name }),
+      el("small", { text: t.light ? `${t.artist} · light` : t.artist }));
   menuBody.append(
     el("p", { class: "menu-label", text: "PROJECT" }),
     proxy("New mix", "newMixBtn"),
@@ -292,7 +299,9 @@ export function initMobile({ setlist, onGenerateState }) {
     el("div", { class: "menu-sep" }),
     el("p", { class: "menu-label", text: "THEME" }),
     el("div", { class: "seg", role: "group", "aria-label": "Theme" }, themeBtn("dark"), themeBtn("light")),
-    el("p", { class: "menu-note", text: "Coming soon: fan-made colour themes for your favourite groups." }),
+    el("p", { class: "menu-label", text: "ALBUM THEMES" }),
+    el("div", { class: "theme-chips", role: "group", "aria-label": "Album themes" }, ...THEMES.filter((t) => t.album).map(albumChip)),
+    el("p", { class: "menu-note", text: "Fan-made colours inspired by album covers. Not affiliated." }),
     el("div", { class: "menu-sep" }),
     el("a", { class: "menu-item", href: "/random-dance/" }, "Ready-made mixes", el("small", { text: "Sets for 20+ groups" })),
     el("button", {

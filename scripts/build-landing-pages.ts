@@ -624,7 +624,7 @@ function shell(opts: {
     <!-- The theme chosen in the builder, before anything paints (Dark is the default). -->
     <script>
       try {
-        var t = localStorage.getItem("kpopgen:theme");
+        const t = localStorage.getItem("kpopgen:theme");
         if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>

@@ -102,7 +102,7 @@ window.addEventListener("pageshow", (event) => {
   }
 });
 
-/* ===== Theme menu: Dark (default) or Light, shared with the builder ===== */
+/* ===== Theme menu: Dark (default), Light or an album theme, shared with the builder ===== */
 
 const menuWrap = document.querySelector("[data-menu]");
 const menuButton = menuWrap?.querySelector("button[aria-expanded]");
@@ -115,10 +115,15 @@ function setMenu(open, { focusButton = false } = {}) {
   else if (focusButton) menuButton.focus();
 }
 
+// The menu items are the list of themes (ids as in app/studio/themes.js).
+const themeItem = (id) => menu?.querySelector(`[data-theme-choice="${id}"]`);
+const knownTheme = (id) => (id && themeItem(id) ? id : "dark");
+
 function syncTheme() {
-  const theme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  const theme = knownTheme(document.documentElement.dataset.theme);
   const name = document.getElementById("themeName");
-  if (name) name.textContent = theme === "light" ? "Light" : "Dark";
+  // The item's label without its artist caption.
+  if (name) name.textContent = themeItem(theme).querySelector(".theme-opt").firstChild.textContent.trim();
   for (const b of document.querySelectorAll("[data-theme-choice]")) {
     b.setAttribute("aria-pressed", String(b.dataset.themeChoice === theme));
   }
@@ -133,8 +138,9 @@ function setTheme(theme) {
     root.classList.add("theme-fade");
     setTimeout(() => root.classList.remove("theme-fade"), 260);
   }
-  if (theme === "light") root.dataset.theme = "light";
-  else delete root.dataset.theme;
+  theme = knownTheme(theme);
+  if (theme === "dark") delete root.dataset.theme;
+  else root.dataset.theme = theme;
   try {
     localStorage.setItem(THEME_KEY, theme);
   } catch (err) {

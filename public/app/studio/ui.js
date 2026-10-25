@@ -4,6 +4,7 @@
  */
 import { el, store } from "./util.js";
 import { sendContact } from "./api.js";
+import { DEFAULT_THEME, knownTheme, themeName } from "./themes.js";
 
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -68,12 +69,12 @@ export function initMenus() {
   });
 }
 
-/* ===== Theme: Dark (default) or Light, remembered per browser ===== */
+/* ===== Theme: Dark (default), Light or an album theme, remembered per browser ===== */
 
 const THEME_KEY = "kpopgen:theme";
 
 export function currentTheme() {
-  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  return knownTheme(document.documentElement.dataset.theme);
 }
 
 export function setTheme(theme) {
@@ -82,8 +83,9 @@ export function setTheme(theme) {
     root.classList.add("theme-fade");
     setTimeout(() => root.classList.remove("theme-fade"), 260);
   }
-  if (theme === "light") root.dataset.theme = "light";
-  else delete root.dataset.theme;
+  theme = knownTheme(theme);
+  if (theme === DEFAULT_THEME) delete root.dataset.theme;
+  else root.dataset.theme = theme;
   store.set(THEME_KEY, theme);
   syncThemeMenu();
 }
@@ -91,7 +93,7 @@ export function setTheme(theme) {
 function syncThemeMenu() {
   const theme = currentTheme();
   const name = document.getElementById("themeName");
-  if (name) name.textContent = theme === "light" ? "Light" : "Dark";
+  if (name) name.textContent = themeName(theme);
   for (const b of document.querySelectorAll("[data-theme-choice]")) {
     b.setAttribute("aria-pressed", String(b.dataset.themeChoice === theme));
   }

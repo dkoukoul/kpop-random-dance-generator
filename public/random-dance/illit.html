@@ -25,7 +25,8 @@
     <!-- The theme chosen in the builder, before anything paints (Dark is the default). -->
     <script>
       try {
-        if (localStorage.getItem("kpopgen:theme") === "light") document.documentElement.dataset.theme = "light";
+        const t = localStorage.getItem("kpopgen:theme");
+        if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
 
@@ -36,7 +37,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css?v=3" />
+    <link rel="stylesheet" href="/css/landing.css?v=4" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -148,8 +149,15 @@
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
           </button>
           <div class="menu" id="themeMenu" hidden>
-            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true">Dark <span class="check" aria-hidden="true">✓</span></button>
-            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false">Light <span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true"><span class="theme-pill" data-pill="dark" aria-hidden="true"></span><span class="theme-opt">Dark</span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false"><span class="theme-pill" data-pill="light" aria-hidden="true"></span><span class="theme-opt">Light</span><span class="check" aria-hidden="true">✓</span></button>
+            <div class="menu-sep" role="separator"></div>
+            <p class="menu-label">ALBUM THEMES</p>
+            <button type="button" class="menu-item" data-theme-choice="arirang" aria-pressed="false"><span class="theme-pill" data-pill="arirang" aria-hidden="true"></span><span class="theme-opt">ARIRANG <small>BTS</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="itsme" aria-pressed="false"><span class="theme-pill" data-pill="itsme" aria-hidden="true"></span><span class="theme-opt">It's Me <small>ILLIT · light</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="thisthat" aria-pressed="false"><span class="theme-pill" data-pill="thisthat" aria-hidden="true"></span><span class="theme-opt">THIS &amp; THAT <small>Stray Kids</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="lemonade" aria-pressed="false"><span class="theme-pill" data-pill="lemonade" aria-hidden="true"></span><span class="theme-opt">LEMONADE <small>aespa</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <p class="menu-note">Fan-made colours inspired by album covers. Not affiliated.</p>
           </div>
         </div>
         <a class="btn btn-outline support-btn" href="https://ko-fi.com/dimitrisk80" target="_blank" rel="noopener" data-support="landing-header">
@@ -588,6 +596,6 @@
     </footer>
 
     <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
-    <script src="/app/landing.js?v=3"></script>
+    <script src="/app/landing.js?v=4"></script>
   </body>
 </html>
