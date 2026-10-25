@@ -62,8 +62,8 @@ export const newId = () => `s${nextId++}`;
 export const cutLength = (song) => Math.max(0, song.end - song.start);
 
 /** Total length of the MP3: every cut plus a countdown before each. */
-export function runtime(songs) {
-  return songs.reduce((t, s) => t + cutLength(s) + COUNTDOWN_SECONDS, 0);
+export function runtime(songs, countdown = COUNTDOWN_SECONDS) {
+  return songs.reduce((t, s) => t + cutLength(s) + countdown, 0);
 }
 
 /**

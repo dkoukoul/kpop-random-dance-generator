@@ -7,6 +7,7 @@
  */
 import { el, clock, pad2 } from "./util.js";
 import { cutLength, findDuplicates, generateProblem, runtime, thumbUrl } from "./setlist.js";
+import { countdown } from "./countdown.js";
 
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -220,9 +221,9 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onClear
 
     // Tiles and status bar
     tileSongs.textContent = pad2(songs.length);
-    const total = runtime(songs);
+    const total = runtime(songs, countdown.seconds);
     countTo(total);
-    statusLine.textContent = `${songs.length} SONG${songs.length === 1 ? "" : "S"} · ${clock(total)} TOTAL · 5S COUNTDOWN BEFORE EACH SONG · 1 MP3`;
+    statusLine.textContent = `${songs.length} SONG${songs.length === 1 ? "" : "S"} · ${clock(total)} TOTAL · ${countdown.seconds}S COUNTDOWN BEFORE EACH SONG · 1 MP3`;
 
     placeHighlight();
     if (before && !reducedMotion()) slide(before, flip);
@@ -331,6 +332,7 @@ export function initSetlistView({ setlist, onRemove, onRetry, onShuffle, onClear
     return { x: r.left + 8, y: last ? r.bottom : r.top };
   }
 
+  countdown.onChange(() => render());
   setlist.onChange((change) => {
     if (change.type === "select") {
       render();

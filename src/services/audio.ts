@@ -129,6 +129,15 @@ export async function concatenateWithCountdown(
   });
 }
 
+/** Write the last `seconds` of an audio file to `outputPath`, with a tiny fade-in so the cut doesn't click. */
+export async function trimToLast(inputPath: string, seconds: number, outputPath: string): Promise<void> {
+  const start = Math.max(0, (await audioDuration(inputPath)) - seconds);
+  const proc = Bun.spawn(['ffmpeg', '-y', '-ss', String(start), '-i', inputPath, '-af', 'afade=t=in:d=0.03',
+    '-c:a', 'libmp3lame', '-b:a', '128k', '-ac', '2', outputPath], { stdout: 'ignore', stderr: 'pipe' });
+  const stderr = await new Response(proc.stderr).text();
+  if ((await proc.exited) !== 0) throw new Error(`Failed to trim ${inputPath}: ${stderr}`);
+}
+
 /**
  * Generate a simple countdown audio file using ffmpeg
  * Creates a beep countdown: beep...beep...beep...beep...beep (5 beeps, 1 second apart)

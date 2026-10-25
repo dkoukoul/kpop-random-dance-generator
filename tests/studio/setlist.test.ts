@@ -54,6 +54,10 @@ describe('totals and checks', () => {
     expect(runtime([song('a'.repeat(11)), song('b'.repeat(11), { start: 10, end: 15 })])).toBe(35 + 10);
   });
 
+  test('runtime uses the countdown the host chose', () => {
+    expect(runtime([song('a'.repeat(11)), song('b'.repeat(11), { start: 10, end: 15 })], 3)).toBe(35 + 6);
+  });
+
   test('finds extra copies of the same video', () => {
     const songs = [song('aaaaaaaaaaa', { id: '1' }), song('bbbbbbbbbbb', { id: '2' }), song('aaaaaaaaaaa', { id: '3' }), song('aaaaaaaaaaa', { id: '4' })];
     expect(findDuplicates(songs)).toEqual([{ videoId: 'aaaaaaaaaaa', title: 'Song aaaaaaaaaaa', extraIds: ['3', '4'] }]);

@@ -115,7 +115,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/studio.css?v=14" />
+    <link rel="stylesheet" href="/css/studio.css?v=15" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
@@ -129,20 +129,21 @@
     <script type="importmap">
       {
         "imports": {
-          "/app/studio/api.js": "/app/studio/api.js?v=14",
-          "/app/studio/builder.js": "/app/studio/builder.js?v=14",
-          "/app/studio/editor.js": "/app/studio/editor.js?v=14",
-          "/app/studio/generate.js": "/app/studio/generate.js?v=14",
-          "/app/studio/main.js": "/app/studio/main.js?v=14",
-          "/app/studio/mobile.js": "/app/studio/mobile.js?v=14",
-          "/app/studio/player.js": "/app/studio/player.js?v=14",
-          "/app/studio/progress.js": "/app/studio/progress.js?v=14",
-          "/app/studio/project.js": "/app/studio/project.js?v=14",
-          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=14",
-          "/app/studio/setlist.js": "/app/studio/setlist.js?v=14",
-          "/app/studio/songs.js": "/app/studio/songs.js?v=14",
-          "/app/studio/ui.js": "/app/studio/ui.js?v=14",
-          "/app/studio/util.js": "/app/studio/util.js?v=14"
+          "/app/studio/api.js": "/app/studio/api.js?v=15",
+          "/app/studio/builder.js": "/app/studio/builder.js?v=15",
+          "/app/studio/countdown.js": "/app/studio/countdown.js?v=15",
+          "/app/studio/editor.js": "/app/studio/editor.js?v=15",
+          "/app/studio/generate.js": "/app/studio/generate.js?v=15",
+          "/app/studio/main.js": "/app/studio/main.js?v=15",
+          "/app/studio/mobile.js": "/app/studio/mobile.js?v=15",
+          "/app/studio/player.js": "/app/studio/player.js?v=15",
+          "/app/studio/progress.js": "/app/studio/progress.js?v=15",
+          "/app/studio/project.js": "/app/studio/project.js?v=15",
+          "/app/studio/setlist-view.js": "/app/studio/setlist-view.js?v=15",
+          "/app/studio/setlist.js": "/app/studio/setlist.js?v=15",
+          "/app/studio/songs.js": "/app/studio/songs.js?v=15",
+          "/app/studio/ui.js": "/app/studio/ui.js?v=15",
+          "/app/studio/util.js": "/app/studio/util.js?v=15"
         }
       }
     </script>
@@ -282,11 +283,25 @@
             <a class="arrow-link" href="/random-dance/">All ready-made mixes →</a>
           </div>
         </div>
+        <!-- Phones: the Generate button in the bottom bar starts at once, so the choice sits here too. -->
+        <div class="countdown-row">
+          <span class="countdown-row-label">Countdown before each song</span>
+          <div class="seg" role="group" aria-label="Countdown before each song" data-countdown>
+            <button type="button" data-seconds="3" aria-pressed="false">3s</button>
+            <button type="button" data-seconds="5" aria-pressed="true">5s</button>
+          </div>
+        </div>
         <div class="panel-foot" id="setlistFoot">
           <div class="tiles">
             <div class="tile"><div class="tile-k">SONGS</div><div class="tile-v mono" id="tileSongs">00</div></div>
             <div class="tile"><div class="tile-k">RUNTIME</div><div class="tile-v mono" id="tileRuntime">00:00</div></div>
-            <div class="tile"><div class="tile-k">COUNTDOWN</div><div class="tile-v mono">5s</div></div>
+            <div class="tile tile-countdown">
+              <div class="tile-k" aria-hidden="true">COUNTDOWN</div>
+              <div class="seg" role="group" aria-label="Countdown before each song" data-countdown>
+                <button type="button" data-seconds="3" aria-pressed="false">3s</button>
+                <button type="button" data-seconds="5" aria-pressed="true">5s</button>
+              </div>
+            </div>
           </div>
           <button type="button" class="btn generate-btn" id="generateBtn" disabled aria-describedby="generateWhy">Generate mix</button>
           <p class="generate-why" id="generateWhy">Add at least one song to generate.</p>
@@ -451,6 +466,6 @@
         document.body.prepend(note);
       }
     </script>
-    <script type="module" src="/app/studio/main.js?v=14"></script>
+    <script type="module" src="/app/studio/main.js?v=15"></script>
   </body>
 </html>

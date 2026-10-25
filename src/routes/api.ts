@@ -6,7 +6,7 @@ import { mkdir, access, stat } from 'fs/promises';
 import type { GenerateRequest, SongSegment, FailedSegment } from '../types';
 import { getVideoInfo, downloadSegment, searchVideos, parseTimeToSeconds } from '../services/youtube';
 import { generateReport, buildSetlist, songStartTimes } from '../services/report';
-import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles, audioDuration } from '../services/audio';
+import { concatenateWithCountdown, generateCountdownAudio, cleanupTempFiles, audioDuration, trimToLast } from '../services/audio';
 import { logVisit, logGeneration, getStats, getPopularCut, getTopSongs } from '../services/analytics';
 import { getYtdlpStatus, updateYtdlp } from '../services/ytdlp-updater';
 import { toYoutubeWatchUrl } from '../services/youtube-url';
@@ -70,6 +70,13 @@ function sleep(ms: number): Promise<void> {
 const TEMP_DIR = join(process.cwd(), 'temp');
 const ASSETS_DIR = join(process.cwd(), 'assets');
 const COUNTDOWN_PATH = join(ASSETS_DIR, 'countdown.mp3');
+// The last 3 seconds of countdown.mp3 ("3, 2, 1").
+const COUNTDOWN_3S_PATH = join(ASSETS_DIR, 'countdown-3s.mp3');
+
+/** The countdown the host chose: 3 or 5 seconds, 5 for anything else. */
+export function countdownChoice(value: unknown): 3 | 5 {
+  return value === 3 ? 3 : 5;
+}
 
 // Ensure directories exist
 async function ensureDirs() {
@@ -91,9 +98,35 @@ async function ensureCountdownAudio() {
   }
 }
 
+// The 3-second file ships in assets/; if it's missing, it's cut once from the
+// 5-second one. Never fails: without it, mixes use the 5-second countdown.
+let shortCountdown: Promise<boolean> | null = null;
+function ensureShortCountdown(): Promise<boolean> {
+  shortCountdown ??= (async () => {
+    try {
+      await access(COUNTDOWN_3S_PATH);
+      return true;
+    } catch {
+      console.log('3-second countdown not found, cutting it from the 5-second one...');
+      try {
+        await ensureCountdownAudio();
+        await trimToLast(COUNTDOWN_PATH, 3, COUNTDOWN_3S_PATH);
+        return true;
+      } catch (error) {
+        console.error('Could not make the 3-second countdown; using the 5-second one:', error);
+        shortCountdown = null; // try again next time
+        return false;
+      }
+    }
+  })();
+  return shortCountdown;
+}
+
 // Initialize
 ensureDirs();
-ensureCountdownAudio();
+ensureCountdownAudio()
+  .then(ensureShortCountdown)
+  .catch((error) => console.error('Could not make the countdown audio:', error));
 
 /**
  * POST /api/visit
@@ -264,6 +297,8 @@ api.post('/generate', async (c) => {
     return c.json({ error: 'None of the songs has a YouTube video link' }, 400);
   }
 
+  const countdownSeconds = countdownChoice(body.countdownSeconds);
+
   pruneJobs();
   const jobId = uuidv4();
   jobs.set(jobId, {
@@ -277,7 +312,7 @@ api.post('/generate', async (c) => {
   logGeneration(jobId, body.segments).catch(err => console.error('Logging generation error:', err));
   
   // Process in background
-  processGeneration(jobId, body.segments).catch((error) => {
+  processGeneration(jobId, body.segments, countdownSeconds).catch((error) => {
     console.error('Generation error:', error);
     updateJob(jobId, { status: 'error', error: error.message });
   });
@@ -424,7 +459,7 @@ api.post('/contact', async (c) => {
 /**
  * Background processing function
  */
-async function processGeneration(jobId: string, segments: SongSegment[]) {
+async function processGeneration(jobId: string, segments: SongSegment[], countdown: 3 | 5 = 5) {
   const segmentPaths: string[] = [];
   const segmentSeconds: number[] = [];
   const successfulSegments: SongSegment[] = [];
@@ -439,6 +474,7 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
 
   try {
     await ensureCountdownAudio();
+    const countdownPath = countdown === 3 && (await ensureShortCountdown()) ? COUNTDOWN_3S_PATH : COUNTDOWN_PATH;
 
     // Download each segment. A single segment failing (bad/blocked video,
     // yt-dlp/ffmpeg hiccup, etc.) shouldn't throw away everything already
@@ -505,7 +541,7 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
     const outputFilename = `output_${jobId}.mp3`;
     const outputPath = join(TEMP_DIR, outputFilename);
 
-    await concatenateWithCountdown(segmentPaths, COUNTDOWN_PATH, outputPath);
+    await concatenateWithCountdown(segmentPaths, countdownPath, outputPath);
 
     // Clean up segment files
     await cleanupTempFiles(segmentPaths);
@@ -516,12 +552,12 @@ async function processGeneration(jobId: string, segments: SongSegment[]) {
     // The setlist is a bonus: if it can't be written, the mix still ships.
     let setlistFilename: string | undefined;
     try {
-      const countdownSeconds = await audioDuration(COUNTDOWN_PATH);
+      const countdownSeconds = await audioDuration(countdownPath);
       const mixSeconds = await audioDuration(outputPath).catch(() => undefined);
       const starts = songStartTimes(countdownSeconds, segmentSeconds, mixSeconds);
       const total = mixSeconds ?? segmentSeconds.reduce((t, s) => t + countdownSeconds + s, 0);
       setlistFilename = `${jobId}_setlist.txt`;
-      await Bun.write(join(TEMP_DIR, setlistFilename), buildSetlist(report.playlist, starts, total, failedSegments));
+      await Bun.write(join(TEMP_DIR, setlistFilename), buildSetlist(report.playlist, starts, total, failedSegments, countdown));
     } catch (error) {
       console.error(`Could not write the setlist for job ${jobId}:`, error);
       setlistFilename = undefined;

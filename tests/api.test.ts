@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeEach, describe, expect, mock, test } from 'bun:test';
 import { rmSync } from 'fs';
 import { join } from 'path';
-import api, { pruneJobs } from '../src/routes/api';
+import api, { countdownChoice, pruneJobs } from '../src/routes/api';
 import { getStats, logGeneration } from '../src/services/analytics';
 import { audioDuration, resetFakeYtdlp, ytdlpCalls } from './helpers';
 
@@ -36,8 +36,8 @@ const segment = (id: string, title = `BTS - Song ${id}`) => ({
   endTime: '0:05',
 });
 
-async function startJob(segments: object[]): Promise<string> {
-  const res = await postJson('/generate', { segments });
+async function startJob(segments: object[], extra: object = {}): Promise<string> {
+  const res = await postJson('/generate', { segments, ...extra });
   expect(res.status).toBe(200);
   const { jobId } = (await res.json()) as { jobId: string };
   createdJobs.push(jobId);
@@ -372,6 +372,22 @@ describe('setlist download', () => {
     const last = total - 5; // the last song is 0:00-0:05
     expect(Math.abs(startsAt - last)).toBeLessThanOrEqual(1);
   }, 30_000);
+
+  test('uses the 3-second countdown when the host picks it', async () => {
+    const jobId = await startJob([segment('ok-short-a', 'TWICE - FANCY'), segment('ok-short-b', 'IVE - I AM')], { countdownSeconds: 3 });
+    expect((await waitForJob(jobId)).status).toBe('complete');
+
+    const text = await (await api.request(`/download-setlist/${jobId}`)).text();
+    expect(text).toContain('A 3-second countdown plays before every song.');
+    expect(text).toMatch(/^00:03  01  TWICE - FANCY/m);
+    // 3 s + 5 s song + 3 s + 5 s song
+    expect(await audioDuration(join(TEMP_DIR, `output_${jobId}.mp3`))).toBeCloseTo(16, 0);
+  }, 30_000);
+
+  test('only 3 picks the short countdown; anything else is 5', () => {
+    expect(countdownChoice(3)).toBe(3);
+    for (const v of [5, undefined, null, '3', 4, 0, 10]) expect(countdownChoice(v)).toBe(5);
+  });
 
   test('is 404 for an unknown job', async () => {
     expect((await api.request('/download-setlist/nope')).status).toBe(404);

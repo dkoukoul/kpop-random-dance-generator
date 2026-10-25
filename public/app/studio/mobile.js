@@ -13,6 +13,7 @@
  */
 import { el, clock, pad2 } from "./util.js";
 import { runtime } from "./setlist.js";
+import { countdown } from "./countdown.js";
 import { setTheme, currentTheme, openHowItWorks } from "./ui.js";
 
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -321,11 +322,12 @@ export function initMobile({ setlist, onGenerateState }) {
     }
     lastCount = n;
     if (genState.state === "idle" || genState.state === "failed") {
-      genSub.textContent = n ? `${pad2(n)} SONGS · ${clock(runtime(setlist.songs))}` : "ADD SONGS";
+      genSub.textContent = n ? `${pad2(n)} SONGS · ${clock(runtime(setlist.songs, countdown.seconds))}` : "ADD SONGS";
     } else genSub.textContent = genState.state === "ready" ? "OPEN TO DOWNLOAD" : "";
     mixCell.setAttribute("aria-label", `My mix, ${n} song${n === 1 ? "" : "s"}`);
   }
   setlist.onChange(syncCounts);
+  countdown.onChange(syncCounts);
 
   /* ----- crossing 900 px ----- */
   function apply() {

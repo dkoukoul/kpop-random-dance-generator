@@ -10,6 +10,7 @@ import { el, clock } from "./util.js";
 import { request } from "./api.js";
 import { announce, toast, trackEvent } from "./ui.js";
 import { runtime } from "./setlist.js";
+import { countdown } from "./countdown.js";
 import { signature, songToSaved } from "./project.js";
 import { formatLeft, lights, plainError, readProgress } from "./progress.js";
 
@@ -59,7 +60,7 @@ export function initGenerate({ setlist, view, onState = () => {} }) {
   const area = el("div", { class: "gen-area" });
   foot.append(area);
 
-  let job = null; // { jobId, startedAt, signature, ids: [song ids in the order sent], runtime }
+  let job = null; // { jobId, startedAt, signature, countdown, ids: [song ids in the order sent], runtime }
   let timer = null;
   let failures = 0;
   let polling = false;
@@ -94,13 +95,14 @@ export function initGenerate({ setlist, view, onState = () => {} }) {
       const saved = songToSaved(s);
       return { youtubeUrl: saved.youtubeUrl, title: s.title || "Song", startTime: saved.startTime, endTime: saved.endTime, artist: s.info?.channel || "" };
     });
+    const countdownSeconds = countdown.seconds;
     button.disabled = true;
     try {
-      const { jobId } = await request("/api/generate", { method: "POST", body: { segments }, timeoutMs: 30000 });
-      job = { jobId, startedAt: Date.now(), signature: signature(songs), ids: songs.map((s) => s.id), titles: songs.map((s) => s.title), runtime: runtime(songs) };
+      const { jobId } = await request("/api/generate", { method: "POST", body: { segments, countdownSeconds }, timeoutMs: 30000 });
+      job = { jobId, startedAt: Date.now(), signature: signature(songs), countdown: countdownSeconds, ids: songs.map((s) => s.id), titles: songs.map((s) => s.title), runtime: runtime(songs, countdownSeconds) };
       failures = 0;
       remember({ ...job, ids: undefined });
-      trackEvent("generate_mix", { song_count: songs.length, ui: "studio" });
+      trackEvent("generate_mix", { song_count: songs.length, countdown: countdownSeconds, ui: "studio" });
       showRunning({ status: "processing", songs: songs.map(() => ({ state: "waiting" })), startedAt: job.startedAt });
       poll();
     } catch (error) {
@@ -192,7 +194,10 @@ export function initGenerate({ setlist, view, onState = () => {} }) {
     onState({ state: "ready", jobId: finished.jobId });
     button.hidden = true;
     why.hidden = true;
-    const changed = finished.signature !== signature(setlist.songs);
+    const songsChanged = finished.signature !== signature(setlist.songs);
+    // Jobs saved before the countdown choice existed were all 5 s.
+    const countdownChanged = (finished.countdown || 5) !== countdown.seconds;
+    const changed = songsChanged || countdownChanged;
     const skipped = Array.isArray(status.failedSegments) ? status.failedSegments : [];
     const download = el("a", { class: "btn btn-primary download-btn", href: `/api/download/${finished.jobId}`, download: "" },
       "Download MP3",
@@ -212,7 +217,7 @@ export function initGenerate({ setlist, view, onState = () => {} }) {
               el("p", { text: `${skipped.length} song${skipped.length === 1 ? " was" : "s were"} skipped:` }),
               el("ul", {}, ...skipped.map((f) => el("li", {}, el("strong", { text: f.title || "A song" }), ` (${shortReason(f.reason)})`))))
           : null,
-        changed ? el("p", { class: "ready-note", text: "Your setlist changed since this mix was made." }) : null,
+        changed ? el("p", { class: "ready-note", text: songsChanged ? "Your setlist changed since this mix was made." : "The countdown changed since this mix was made." }) : null,
         el("button", { type: "button", class: "link-btn ready-again", text: changed ? "Generate again with your changes" : "Edit and generate again", onclick: () => { view.setDone([]); setIdle(); button.focus(); } }),
         el("p", { class: "ready-kofi" },
           "Saved you an hour in Audacity? The tool stays free. ",

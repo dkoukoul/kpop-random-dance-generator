@@ -10,6 +10,8 @@ export interface SongSegment {
 
 export interface GenerateRequest {
   segments: SongSegment[];
+  /** Countdown before each song: 3 or 5 seconds (anything else means 5). */
+  countdownSeconds?: number;
 }
 
 export interface VideoInfo {

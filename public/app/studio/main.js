@@ -7,12 +7,14 @@ import { initBuilder } from "./builder.js";
 import { initEditor } from "./editor.js";
 import { initGenerate } from "./generate.js";
 import { initMobile } from "./mobile.js";
+import { initCountdown } from "./countdown.js";
 
 initMenus();
 initTheme();
 initContact();
 initHowItWorks();
 initSupportTracking();
+initCountdown();
 
 const builder = initBuilder();
 initEditor({

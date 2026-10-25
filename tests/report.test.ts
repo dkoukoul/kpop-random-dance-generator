@@ -84,8 +84,14 @@ describe('setlist', () => {
       { title: 'aespa - Supernova', youtubeUrl: 'https://youtu.be/x', reason: 'Video unavailable' },
     ]);
     expect(text).toContain('K-Pop random dance mix: 2 songs, 01:15');
+    expect(text).toContain('A 5-second countdown plays before every song.');
     expect(text).toContain('00:05  01  BTS - Dynamite (0:52-1:22)\n00:40  02  Some video (1:05-1:40)');
     expect(text).toContain('Skipped (1):\n- aespa - Supernova: Video unavailable');
+  });
+
+  test('names the countdown the host chose', () => {
+    const playlist = [{ order: 1, band: 'BTS', title: 'Dynamite', startTime: '0:52', endTime: '1:22' }];
+    expect(buildSetlist(playlist, [3], 33, [], 3)).toContain('A 3-second countdown plays before every song.');
   });
 
   test('pads song numbers to the length of the list and shows hours', () => {

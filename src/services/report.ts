@@ -192,10 +192,11 @@ export function buildSetlist(
   startsAt: number[],
   totalSeconds: number,
   failed: FailedSegment[] = [],
+  countdownSeconds = 5,
 ): string {
   const lines = [
     `K-Pop random dance mix: ${playlist.length} song${playlist.length === 1 ? '' : 's'}, ${clock(totalSeconds)}`,
-    'A 5-second countdown plays before every song.',
+    `A ${countdownSeconds}-second countdown plays before every song.`,
     '',
   ];
   const width = String(playlist.length).length < 2 ? 2 : String(playlist.length).length;
