@@ -545,7 +545,7 @@ export function buildMixes(band: BandDef, pool: Video[]): Mix[] {
 // ---------------------------------------------------------------------------
 
 /** Bump when landing.css or landing.js change: both are cached for a while. */
-const ASSET_VERSION = 3;
+const ASSET_VERSION = 4;
 
 /** "1 song" / "2 songs" -- the stat row reads badly without it. */
 function plural(n: number, one: string, many = one + 's'): string {
@@ -624,7 +624,8 @@ function shell(opts: {
     <!-- The theme chosen in the builder, before anything paints (Dark is the default). -->
     <script>
       try {
-        if (localStorage.getItem("kpopgen:theme") === "light") document.documentElement.dataset.theme = "light";
+        var t = localStorage.getItem("kpopgen:theme");
+        if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
 
@@ -669,8 +670,15 @@ ${opts.jsonLd.map((o) => `    <script type="application/ld+json">\n${scriptJson(
             ${CHEVRON}
           </button>
           <div class="menu" id="themeMenu" hidden>
-            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true">Dark <span class="check" aria-hidden="true">✓</span></button>
-            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false">Light <span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true"><span class="theme-pill" data-pill="dark" aria-hidden="true"></span><span class="theme-opt">Dark</span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false"><span class="theme-pill" data-pill="light" aria-hidden="true"></span><span class="theme-opt">Light</span><span class="check" aria-hidden="true">✓</span></button>
+            <div class="menu-sep" role="separator"></div>
+            <p class="menu-label">ALBUM THEMES</p>
+            <button type="button" class="menu-item" data-theme-choice="arirang" aria-pressed="false"><span class="theme-pill" data-pill="arirang" aria-hidden="true"></span><span class="theme-opt">ARIRANG <small>BTS</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="itsme" aria-pressed="false"><span class="theme-pill" data-pill="itsme" aria-hidden="true"></span><span class="theme-opt">It's Me <small>ILLIT · light</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="thisthat" aria-pressed="false"><span class="theme-pill" data-pill="thisthat" aria-hidden="true"></span><span class="theme-opt">THIS &amp; THAT <small>Stray Kids</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="lemonade" aria-pressed="false"><span class="theme-pill" data-pill="lemonade" aria-hidden="true"></span><span class="theme-opt">LEMONADE <small>aespa</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <p class="menu-note">Fan-made colours inspired by album covers. Not affiliated.</p>
           </div>
         </div>
         <a class="btn btn-outline support-btn" href="${KOFI}" target="_blank" rel="noopener" data-support="landing-header">
@@ -686,7 +694,7 @@ ${opts.body}
       <div class="foot-inner">
         <section class="foot-col" aria-labelledby="foot-build">
           <h2 id="foot-build">Make your own mix</h2>
-          <p>Search YouTube, pick the part of each song, and get one MP3 with a 5-second countdown before every song. Free, no sign-up.</p>
+          <p>Search YouTube, pick the part of each song, and get one MP3 with a 3- or 5-second countdown before every song. Free, no sign-up.</p>
           <p><a class="btn btn-primary" href="/">Open the builder</a></p>
         </section>
         <section class="foot-col" aria-labelledby="foot-support">
@@ -869,7 +877,7 @@ ${mixes.map((m) => renderMix(m, band)).join('\n')}
           builder on the home page in the order shown here. Drop songs you don't know, move songs up
           or down, or nudge a start or end time in the editor. Press <b>Shuffle now</b> for a random
           order (that is the point of a random play dance), then <b>Generate mix</b> to get one MP3
-          with a 5-second countdown before every song.
+          with a 3- or 5-second countdown before every song.
         </p>
         <p>
           Want to keep a set? <b>Save as project file</b> saves it as a .json file. Open it later in
@@ -1007,7 +1015,7 @@ ${cards}
         <p>
           The mixes here are starting points. Open any of them in the
           <a href="/">random dance generator</a>, cut songs you don't want, add your own songs from
-          YouTube, and generate a single MP3 with a five-second countdown before every song.
+          YouTube, and generate a single MP3 with a 3- or 5-second countdown before every song.
         </p>
       </section>
     </main>`;

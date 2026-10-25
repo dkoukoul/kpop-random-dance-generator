@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>K-Pop Random Dance Generator | Free Random Play Dance Mix Maker</title>
-    <meta name="description" content="Create free K-Pop random dance mixes from YouTube clips, with 5-second countdowns between songs. Pick your own cut points or start from a ready-made mix." />
+    <meta name="description" content="Create free K-Pop random dance mixes from YouTube clips, with a 3- or 5-second countdown between songs. Pick your own cut points or start from a ready-made mix." />
     <meta name="author" content="Antigravity K-Pop Tools" />
     <meta name="robots" content="index, follow" />
 
@@ -12,7 +12,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kpopgenerator.cloud/" />
     <meta property="og:title" content="K-Pop Random Dance Generator | Free Random Play Dance Mix Maker" />
-    <meta property="og:description" content="Build a random dance practice mix from YouTube clips, with 5-second countdowns between songs. Ready-made sets for 20+ groups, or cut your own." />
+    <meta property="og:description" content="Build a random dance practice mix from YouTube clips, with a 3- or 5-second countdown between songs. Ready-made sets for 20+ groups, or cut your own." />
     <meta property="og:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -23,7 +23,7 @@
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://kpopgenerator.cloud/" />
     <meta property="twitter:title" content="K-Pop Random Dance Generator | Free Random Play Dance Mix Maker" />
-    <meta property="twitter:description" content="Build a random dance practice mix from YouTube clips, with 5-second countdowns between songs. Ready-made sets for 20+ groups, or cut your own." />
+    <meta property="twitter:description" content="Build a random dance practice mix from YouTube clips, with a 3- or 5-second countdown between songs. Ready-made sets for 20+ groups, or cut your own." />
     <meta property="twitter:image" content="https://kpopgenerator.cloud/assets/og-image.png" />
 
     <!-- Structured Data -->
@@ -33,7 +33,7 @@
       "@type": "WebApplication",
       "name": "K-Pop Random Dance Generator",
       "alternateName": ["Kpop Random Dance Maker", "K-Pop Dance Practice Tool", "Random Play Dance Generator"],
-      "description": "A free online tool to create random K-Pop dance practice audio by combining YouTube song segments with automatic 5-second countdown transitions. Perfect for BTS, BLACKPINK, NewJeans, TWICE, Stray Kids, and all K-Pop fans.",
+      "description": "A free online tool to create random K-Pop dance practice audio by combining YouTube song segments with automatic 3- or 5-second countdown transitions. Perfect for BTS, BLACKPINK, NewJeans, TWICE, Stray Kids, and all K-Pop fans.",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "All",
       "browserRequirements": "Requires JavaScript",
@@ -72,7 +72,7 @@
           "name": "How do I create a random dance practice mix?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Simply add YouTube URLs of your favorite K-Pop songs, set the start and end times for each segment, and click Generate. The tool will combine all segments with 5-second countdowns between them, creating a perfect practice mix."
+            "text": "Simply add YouTube URLs of your favorite K-Pop songs, set the start and end times for each segment, and click Generate. The tool will combine all segments with a 3- or 5-second countdown between them, creating a perfect practice mix."
           }
         },
         {
@@ -95,10 +95,11 @@
     }
     </script>
 
-    <!-- The saved theme, before anything paints (Dark is the default). -->
+    <!-- The saved theme, before anything paints (Dark is the default; ids from app/studio/themes.js). -->
     <script>
       try {
-        if (localStorage.getItem("kpopgen:theme") === "light") document.documentElement.dataset.theme = "light";
+        var t = localStorage.getItem("kpopgen:theme");
+        if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
 
@@ -115,7 +116,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/studio.css?v=15" />
+    <link rel="stylesheet" href="/css/studio.css?v=16" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
@@ -134,7 +135,7 @@
           "/app/studio/countdown.js": "/app/studio/countdown.js?v=15",
           "/app/studio/editor.js": "/app/studio/editor.js?v=15",
           "/app/studio/generate.js": "/app/studio/generate.js?v=15",
-          "/app/studio/main.js": "/app/studio/main.js?v=15",
+          "/app/studio/main.js": "/app/studio/main.js?v=16",
           "/app/studio/mobile.js": "/app/studio/mobile.js?v=15",
           "/app/studio/player.js": "/app/studio/player.js?v=15",
           "/app/studio/progress.js": "/app/studio/progress.js?v=15",
@@ -193,11 +194,15 @@
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
           </button>
           <div class="menu" id="themeMenu" hidden>
-            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true">Dark <span class="check" aria-hidden="true">✓</span></button>
-            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false">Light <span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="dark" aria-pressed="true"><span class="theme-pill" data-pill="dark" aria-hidden="true"></span><span class="theme-opt">Dark</span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="light" aria-pressed="false"><span class="theme-pill" data-pill="light" aria-hidden="true"></span><span class="theme-opt">Light</span><span class="check" aria-hidden="true">✓</span></button>
             <div class="menu-sep" role="separator"></div>
-            <p class="menu-label">GROUP THEMES</p>
-            <p class="menu-note">Coming soon: fan-made colour themes for your favourite groups.</p>
+            <p class="menu-label">ALBUM THEMES</p>
+            <button type="button" class="menu-item" data-theme-choice="arirang" aria-pressed="false"><span class="theme-pill" data-pill="arirang" aria-hidden="true"></span><span class="theme-opt">ARIRANG <small>BTS</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="itsme" aria-pressed="false"><span class="theme-pill" data-pill="itsme" aria-hidden="true"></span><span class="theme-opt">It's Me <small>ILLIT · light</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="thisthat" aria-pressed="false"><span class="theme-pill" data-pill="thisthat" aria-hidden="true"></span><span class="theme-opt">THIS &amp; THAT <small>Stray Kids</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <button type="button" class="menu-item" data-theme-choice="lemonade" aria-pressed="false"><span class="theme-pill" data-pill="lemonade" aria-hidden="true"></span><span class="theme-opt">LEMONADE <small>aespa</small></span><span class="check" aria-hidden="true">✓</span></button>
+            <p class="menu-note">Fan-made colours inspired by album covers. Not affiliated.</p>
           </div>
         </div>
 
@@ -277,7 +282,7 @@
               <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
               <a href="/random-dance/aespa">aespa</a>
               <a href="/random-dance/bts">BTS</a>
-              <a href="/random-dance/katseye">KATSEYE</a>
+              <a href="/random-dance/blackpink">BLACKPINK</a>
               <!-- TOP_GROUPS:END -->
             </div>
             <a class="arrow-link" href="/random-dance/">All ready-made mixes →</a>
@@ -345,18 +350,18 @@
               <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
               <a href="/random-dance/aespa">aespa</a>
               <a href="/random-dance/bts">BTS</a>
-              <a href="/random-dance/katseye">KATSEYE</a>
+              <a href="/random-dance/blackpink">BLACKPINK</a>
               <a href="/random-dance/twice">TWICE</a>
+              <a href="/random-dance/katseye">KATSEYE</a>
               <a href="/random-dance/stray-kids">Stray Kids</a>
               <a href="/random-dance/ateez">ATEEZ</a>
-              <a href="/random-dance/blackpink">BLACKPINK</a>
               <a href="/random-dance/enhypen">ENHYPEN</a>
               <a href="/random-dance/babymonster">BABYMONSTER</a>
               <a href="/random-dance/newjeans">NewJeans</a>
-              <a href="/random-dance/ive">IVE</a>
-              <a href="/random-dance/seventeen">SEVENTEEN</a>
               <a href="/random-dance/txt">TOMORROW X TOGETHER</a>
               <a href="/random-dance/itzy">ITZY</a>
+              <a href="/random-dance/seventeen">SEVENTEEN</a>
+              <a href="/random-dance/ive">IVE</a>
               <a href="/random-dance/g-i-dle">i-dle</a>
               <a href="/random-dance/nct">NCT</a>
               <a href="/random-dance/red-velvet">Red Velvet</a>
@@ -373,7 +378,7 @@
       <section class="fcol" id="about" aria-labelledby="about-title">
         <div class="fcol-head">
           <h2 id="about-title">About K-Pop Random Dance Generator</h2>
-          <span class="sub">Make a random play dance (RPD) mix in minutes: add songs from YouTube, choose the part of each song, and get one MP3 with a 5-second countdown before every song. Free, no sign-up.</span>
+          <span class="sub">Make a random play dance (RPD) mix in minutes: add songs from YouTube, choose the part of each song, and get one MP3 with a 3- or 5-second countdown before every song. Free, no sign-up.</span>
         </div>
         <details id="how-it-works">
           <summary>How it works <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
@@ -381,7 +386,7 @@
             <ol>
               <li>Search YouTube or paste a link to add songs.</li>
               <li>Pick the part of each song you want to dance to.</li>
-              <li>Shuffle, then generate one MP3 with a 5-second countdown before every song.</li>
+              <li>Shuffle, then generate one MP3 with a 3- or 5-second countdown before every song.</li>
             </ol>
           </div>
         </details>
@@ -391,7 +396,7 @@
             <ul>
               <li>Search YouTube or paste a link: any song, from BTS and BLACKPINK to the newest groups</li>
               <li>Exact start and end for every song, or the popular cut other hosts use</li>
-              <li>A 5-second countdown before every song, all in one MP3</li>
+              <li>A 3- or 5-second countdown before every song, all in one MP3</li>
               <li>Shuffle now: the order on screen is the order of your mix; reorder with ↑ ↓</li>
               <li>Download a setlist with the start time of every song</li>
               <li>Saves in your browser as you work; save to a file to keep or share it</li>
@@ -408,7 +413,7 @@
           <summary>Common questions <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
           <div class="fcol-body faq">
             <p><strong>What is a K-Pop Random Dance Generator?</strong><br />An online tool that makes random dance practice mixes from short parts of many K-pop songs, with a countdown before every song, so you can practise choreography from BTS, BLACKPINK, NewJeans, TWICE and more.</p>
-            <p><strong>How do I create a random dance practice mix?</strong><br />Add songs from YouTube, set the start and end of each part, and press Generate. You get one MP3 with a 5-second countdown before every song.</p>
+            <p><strong>How do I create a random dance practice mix?</strong><br />Add songs from YouTube, set the start and end of each part, and press Generate. You get one MP3 with a 3- or 5-second countdown before every song.</p>
             <p><strong>Which K-Pop groups can I use?</strong><br />Any group on YouTube, including BTS, BLACKPINK, NewJeans, TWICE, Stray Kids, SEVENTEEN, aespa, (G)I-DLE, IVE, LE SSERAFIM, ITZY, Red Velvet, NCT, TXT, ENHYPEN and ATEEZ.</p>
             <p><strong>Is it free?</strong><br />Yes. Make as many mixes as you like, with no sign-up.</p>
           </div>
@@ -466,6 +471,6 @@
         document.body.prepend(note);
       }
     </script>
-    <script type="module" src="/app/studio/main.js?v=15"></script>
+    <script type="module" src="/app/studio/main.js?v=16"></script>
   </body>
 </html>
