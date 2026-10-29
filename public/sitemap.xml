@@ -19,25 +19,25 @@
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://kpopgenerator.cloud/random-dance/le-sserafim</loc>
-      <lastmod>2026-10-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
       <loc>https://kpopgenerator.cloud/random-dance/blackpink</loc>
       <lastmod>2026-10-29</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://kpopgenerator.cloud/random-dance/bts</loc>
+      <loc>https://kpopgenerator.cloud/random-dance/le-sserafim</loc>
       <lastmod>2026-10-29</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
       <loc>https://kpopgenerator.cloud/random-dance/aespa</loc>
+      <lastmod>2026-10-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://kpopgenerator.cloud/random-dance/bts</loc>
       <lastmod>2026-10-29</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>

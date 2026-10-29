@@ -92,7 +92,7 @@ document.addEventListener("click", (event) => {
   if (support) track("support_click", { location: support.dataset.support });
 
   const shop = event.target.closest("[data-aff]");
-  if (shop) track("affiliate_click", { location: shop.dataset.aff, link: shop.dataset.affLink, group: shop.dataset.affGroup || "" });
+  if (shop && !window.kpopShopPreview) track("affiliate_click", { location: shop.dataset.aff, link: shop.dataset.affLink, group: shop.dataset.affGroup || "" });
 });
 
 // Back from the builder via the browser's back button: the page comes from

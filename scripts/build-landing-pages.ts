@@ -553,7 +553,7 @@ export function buildMixes(band: BandDef, pool: Video[]): Mix[] {
 // ---------------------------------------------------------------------------
 
 /** Bump when landing.css or landing.js change: both are cached for a while. */
-const ASSET_VERSION = 6;
+const ASSET_VERSION = 7;
 
 /** "1 song" / "2 songs" -- the stat row reads badly without it. */
 function plural(n: number, one: string, many = one + 's'): string {

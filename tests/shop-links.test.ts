@@ -124,4 +124,24 @@ describe('shop region (US and Canada, by time zone)', () => {
     '%p is out',
     (z) => expect(inRegion(z)).toBe(false),
   );
+
+  test('?shop-preview=on turns preview on and is remembered; =off turns it off', () => {
+    const readPreview = (globalThis as any).kpopReadShopPreview as (s: string, st: unknown) => boolean;
+    const data = new Map<string, string>();
+    const storage = { getItem: (k: string) => data.get(k) ?? null, setItem: (k: string, v: string) => data.set(k, v), removeItem: (k: string) => data.delete(k) };
+    expect(readPreview('', storage)).toBe(false);
+    expect(readPreview('?shop-preview=on', storage)).toBe(true);
+    expect(readPreview('?mix=1', storage)).toBe(true);
+    expect(readPreview('?a=1&shop-preview=off', storage)).toBe(false);
+    expect(readPreview('?shop-preview=online', storage)).toBe(false);
+  });
+
+  test('preview still follows the URL when storage throws', () => {
+    const readPreview = (globalThis as any).kpopReadShopPreview as (s: string, st: unknown) => boolean;
+    const boom = () => { throw new Error('blocked'); };
+    const storage = { getItem: boom, setItem: boom, removeItem: boom };
+    expect(readPreview('?shop-preview=on', storage)).toBe(true);
+    expect(readPreview('?shop-preview=off', storage)).toBe(false);
+    expect(readPreview('', storage)).toBe(false);
+  });
 });
