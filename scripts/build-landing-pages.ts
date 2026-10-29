@@ -12,6 +12,7 @@
 import { Database } from 'bun:sqlite';
 import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from 'fs';
 import { join } from 'path';
+import { BEST_SELLERS, builderData, resolveShopLinks, shopUrl, type ShopDef, type ShopGroup, type ShopLink } from './shop-links';
 
 const ORIGIN = 'https://kpopgenerator.cloud';
 const OUT_DIR = join(process.cwd(), 'public', 'random-dance');
@@ -31,6 +32,8 @@ export interface BandDef {
   aliases?: string[];
   /** Members whose solo uploads belong on the group's page. */
   members?: { name: string; match: RegExp }[];
+  /** The group on kpop.exchange (see scripts/shop-links.ts). */
+  shop: ShopDef;
 }
 
 /**
@@ -54,36 +57,41 @@ export const BANDS: BandDef[] = [
     hangul: '엔시티',
     aliases: ['NCT 127', 'NCT DREAM', 'NCT U', 'NCT WISH', 'NCT DOJAEJUNG', 'WayV', '威神V', '엔시티 127', '엔시티 드림', '엔시티 위시'],
     match: /\bNCT\b|엔시티|WayV/i,
+    shop: { handle: 'nct-merch', boys: true },
   },
-  { slug: 'bts', name: 'BTS', hangul: '방탄소년단', match: /\bBTS\b|방탄소년단/i },
-  { slug: 'twice', name: 'TWICE', hangul: '트와이스', match: /\bTWICE\b|트와이스/i },
-  { slug: 'stray-kids', name: 'Stray Kids', hangul: '스트레이 키즈', aliases: ['SKZ', 'Straykids'], match: /Stray ?Kids|스트레이 ?키즈|\bSKZ\b/i },
-  { slug: 'itzy', name: 'ITZY', hangul: '있지', match: /\bITZY\b|있지/i },
-  { slug: 'enhypen', name: 'ENHYPEN', hangul: '엔하이픈', match: /ENHYPEN|엔하이픈/i },
-  { slug: 'le-sserafim', name: 'LE SSERAFIM', hangul: '르세라핌', match: /LE ?SSERAFIM|르세라핌/i },
+  { slug: 'bts', name: 'BTS', hangul: '방탄소년단', match: /\bBTS\b|방탄소년단/i, shop: { handle: 'bts', boys: true } },
+  { slug: 'twice', name: 'TWICE', hangul: '트와이스', match: /\bTWICE\b|트와이스/i, shop: { handle: 'twice' } },
+  { slug: 'stray-kids', name: 'Stray Kids', hangul: '스트레이 키즈', aliases: ['SKZ', 'Straykids'], match: /Stray ?Kids|스트레이 ?키즈|\bSKZ\b/i, shop: { handle: 'stray-kids', boys: true } },
+  { slug: 'itzy', name: 'ITZY', hangul: '있지', match: /\bITZY\b|있지/i, shop: { handle: 'itzy-merch' } },
+  { slug: 'enhypen', name: 'ENHYPEN', hangul: '엔하이픈', match: /ENHYPEN|엔하이픈/i, shop: { handle: 'enhypen', boys: true } },
+  { slug: 'le-sserafim', name: 'LE SSERAFIM', hangul: '르세라핌', match: /LE ?SSERAFIM|르세라핌/i, shop: { handle: 'le-sserafim' } },
   {
     slug: 'blackpink',
     name: 'BLACKPINK',
     hangul: '블랙핑크',
     match: /BLACKPINK|블랙핑크|BLΛƆKPIИK/i,
     members: [solo('JENNIE'), solo('LISA'), solo('ROSÉ', 'ROSÉ|ROSE'), solo('JISOO')],
+    shop: { handle: 'blackpink' },
   },
-  { slug: 'ateez', name: 'ATEEZ', hangul: '에이티즈', match: /ATEEZ|에이티즈/i },
-  { slug: 'seventeen', name: 'SEVENTEEN', hangul: '세븐틴', match: /SEVENTEEN|세븐틴/i },
-  { slug: 'aespa', name: 'aespa', hangul: '에스파', match: /aespa|æspa|에스파/i },
-  { slug: 'txt', name: 'TOMORROW X TOGETHER', hangul: '투모로우바이투게더', aliases: ['TXT'], match: /\bTXT\b|투모로우바이투게더|TOMORROW X TOGETHER/i },
-  { slug: 'babymonster', name: 'BABYMONSTER', hangul: '베이비몬스터', match: /BABYMONSTER|베이비몬스터/i },
-  { slug: 'boynextdoor', name: 'BOYNEXTDOOR', hangul: '보이넥스트도어', match: /BOYNEXTDOOR|보이넥스트도어/i },
+  { slug: 'ateez', name: 'ATEEZ', hangul: '에이티즈', match: /ATEEZ|에이티즈/i, shop: { handle: 'ateez-merch', boys: true } },
+  { slug: 'seventeen', name: 'SEVENTEEN', hangul: '세븐틴', match: /SEVENTEEN|세븐틴/i, shop: { handle: 'seventeen', boys: true } },
+  { slug: 'aespa', name: 'aespa', hangul: '에스파', match: /aespa|æspa|에스파/i, shop: { handle: 'aespa' } },
+  { slug: 'txt', name: 'TOMORROW X TOGETHER', hangul: '투모로우바이투게더', aliases: ['TXT'], match: /\bTXT\b|투모로우바이투게더|TOMORROW X TOGETHER/i, shop: { handle: 'txt', boys: true } },
+  { slug: 'babymonster', name: 'BABYMONSTER', hangul: '베이비몬스터', match: /BABYMONSTER|베이비몬스터/i, shop: { handle: 'babymonster' } },
+  { slug: 'boynextdoor', name: 'BOYNEXTDOOR', hangul: '보이넥스트도어', match: /BOYNEXTDOOR|보이넥스트도어/i, shop: { handle: 'boynextdoor', boys: true } },
   // Renamed from (G)I-DLE in 2025; the URL keeps the old name.
-  { slug: 'g-i-dle', name: 'i-dle', hangul: '아이들', formerly: '(G)I-DLE', match: /\(G\)I-?DLE|\bi-dle\b|여자\(아이들\)|아이들/i },
-  { slug: 'illit', name: 'ILLIT', hangul: '아일릿', match: /\bILLIT\b|아일릿/i },
-  { slug: 'nmixx', name: 'NMIXX', hangul: '엔믹스', match: /NMIXX|엔믹스/i },
-  { slug: 'katseye', name: 'KATSEYE', match: /KATSEYE/i },
-  { slug: 'newjeans', name: 'NewJeans', hangul: '뉴진스', match: /New ?Jeans|뉴진스/i },
-  { slug: 'red-velvet', name: 'Red Velvet', hangul: '레드벨벳', match: /Red ?Velvet|레드벨벳/i },
-  { slug: 'xg', name: 'XG', match: /\bXG\b/ },
-  { slug: 'ive', name: 'IVE', hangul: '아이브', match: /\bIVE\b|아이브/i },
+  { slug: 'g-i-dle', name: 'i-dle', hangul: '아이들', formerly: '(G)I-DLE', match: /\(G\)I-?DLE|\bi-dle\b|여자\(아이들\)|아이들/i, shop: { handle: 'gi-dle', mystery: /\(G\)-?I-?DLE/i } },
+  { slug: 'illit', name: 'ILLIT', hangul: '아일릿', match: /\bILLIT\b|아일릿/i, shop: { handle: 'illit' } },
+  { slug: 'nmixx', name: 'NMIXX', hangul: '엔믹스', match: /NMIXX|엔믹스/i, shop: { handle: 'nmixx' } },
+  { slug: 'katseye', name: 'KATSEYE', match: /KATSEYE/i, shop: { handle: 'katseye' } },
+  { slug: 'newjeans', name: 'NewJeans', hangul: '뉴진스', match: /New ?Jeans|뉴진스/i, shop: { handle: 'newjeans' } },
+  { slug: 'red-velvet', name: 'Red Velvet', hangul: '레드벨벳', match: /Red ?Velvet|레드벨벳/i, shop: { handle: 'red-velvet' } },
+  { slug: 'xg', name: 'XG', match: /\bXG\b/, shop: { handle: 'xg-1' } },
+  { slug: 'ive', name: 'IVE', hangul: '아이브', match: /\bIVE\b|아이브/i, shop: { handle: 'ive' } },
 ];
+
+/** Groups with no page yet that the builder's ready card can still link to. */
+export const SHOP_ONLY: ShopGroup[] = [{ name: 'CORTIS', match: /\bCORTIS\b/i, shop: { handle: 'cortis', boys: true } }];
 
 // ---------------------------------------------------------------------------
 // Mining analytics.db
@@ -545,7 +553,7 @@ export function buildMixes(band: BandDef, pool: Video[]): Mix[] {
 // ---------------------------------------------------------------------------
 
 /** Bump when landing.css or landing.js change: both are cached for a while. */
-const ASSET_VERSION = 4;
+const ASSET_VERSION = 6;
 
 /** "1 song" / "2 songs" -- the stat row reads badly without it. */
 function plural(n: number, one: string, many = one + 's'): string {
@@ -588,6 +596,36 @@ const PLAY = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor
 
 const KOFI = 'https://ko-fi.com/dimitrisk80';
 
+const DISCLOSURE =
+  'Some shop links are affiliate links: if you buy something, the site gets a small commission at no extra cost to you. It helps keep the generator free.';
+
+/** A kpop.exchange link: new tab, rel="sponsored", tracked by landing.js. */
+export function shopAnchor(link: ShopLink, placement: string, cls: string, label: string, group?: string): string {
+  return `<a class="${cls}" href="${esc(shopUrl(link.path, placement))}" target="_blank" rel="sponsored noopener" data-aff="${placement}" data-aff-link="${link.kind}"${
+    group ? ` data-aff-group="${esc(group)}"` : ''
+  }>${esc(label)} <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a>`;
+}
+
+/** The merch strip after a group's mixes, or after the hub's group grid. */
+export function shopStrip(link: ShopLink, placement: 'landing' | 'hub', band?: BandDef): string {
+  const copy =
+    link.kind === 'group' && band
+      ? { title: `Dancing to ${band.name} all night?`, sub: 'Albums, merch and more at kpop.exchange', button: `Shop ${band.name}` }
+      : link.kind === 'mystery'
+        ? { title: 'Feeling lucky?', sub: 'A mystery K-pop album: you get a random album, like a random play round.', button: 'Get a mystery album' }
+        : { title: 'Popular K-pop albums right now', sub: '', button: 'See best sellers' };
+  return `      <aside class="shop-strip aff${copy.sub ? '' : ' slim'}" aria-label="Shop">
+        <span class="shop-tag" aria-hidden="true">MERCH</span>
+        <div class="shop-text">
+          <p class="shop-title">${esc(copy.title)}</p>${copy.sub ? `\n          <p class="shop-sub">${esc(copy.sub)}</p>` : ''}
+        </div>
+        <div class="shop-act">
+          ${shopAnchor(link, placement, 'btn btn-shop', copy.button, band?.name)}
+          <span class="aff-label" aria-hidden="true">Affiliate link</span>
+        </div>
+      </aside>`;
+}
+
 function shell(opts: {
   title: string;
   description: string;
@@ -628,6 +666,8 @@ function shell(opts: {
         if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
+    <!-- Shop links show only in the US and Canada (sets data-shop on <html>). -->
+    <script src="/app/shop-region.js?v=${ASSET_VERSION}"></script>
 
     <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -705,6 +745,8 @@ ${opts.body}
             <a class="foot-link" href="/#how-it-works">How it works</a>
             <a class="foot-link" href="/#contact">Contact us</a>
           </p>
+          <p class="foot-shop aff">${shopAnchor(BEST_SELLERS, 'footer', 'foot-link', 'Popular K-pop albums')} <span class="aff-label" aria-hidden="true">(affiliate link)</span></p>
+          <p class="foot-disc aff">${DISCLOSURE}</p>
         </section>
       </div>
       <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
@@ -793,7 +835,7 @@ function otherGroups(bands: BandDef[]): string {
   return bands.map((b) => `          <a href="/random-dance/${b.slug}">${esc(b.name)}</a>`).join('\n');
 }
 
-function renderBandPage(band: BandDef, mixes: Mix[], pool: Video[], others: BandDef[]): string {
+function renderBandPage(band: BandDef, mixes: Mix[], pool: Video[], others: BandDef[], shop: ShopLink): string {
   const top = pool[0]!;
   const avg = Math.round(pool.reduce((s, v) => s + v.seconds, 0) / pool.length);
   const practiceCount = pool.filter((v) => v.isPractice).length;
@@ -869,6 +911,8 @@ ${mixes.map((m) => `          <a href="#${band.slug}-${m.id}">${esc(m.name)}</a>
       <div class="mixes">
 ${mixes.map((m) => renderMix(m, band)).join('\n')}
       </div>
+
+${shopStrip(shop, 'landing', band)}
 
       <section class="prose" aria-labelledby="how-title">
         <h2 id="how-title">How to use these ${esc(band.name)} mixes</h2>
@@ -1003,6 +1047,8 @@ ${tiles([
 ${cards}
         </ol>
       </section>
+
+${shopStrip(BEST_SELLERS, 'hub')}
 
       <section class="prose" aria-labelledby="rpd-title">
         <h2 id="rpd-title">What is a random play dance?</h2>
@@ -1147,7 +1193,7 @@ function recentMixCounts(bands: BandDef[]): Map<string, number> {
   return counts;
 }
 
-function main() {
+async function main() {
   const videos = loadVideos();
   console.log(`Usable videos with real cut points: ${videos.length}`);
 
@@ -1185,8 +1231,16 @@ function main() {
 
   const ranked = rankEntries(entries);
   const bandDefs = ranked.map((e) => e.band);
+
+  console.log('\nChecking kpop.exchange stock...');
+  const shopGroups: ShopGroup[] = [...BANDS.map((b) => ({ name: b.name, match: b.match, shop: b.shop })), ...SHOP_ONLY];
+  const shop = await resolveShopLinks(shopGroups);
+  for (const g of shopGroups) console.log(`  ${g.name.padEnd(22)} ${shop.links.get(g.name)!.kind}`);
+  writeFileSync(join(process.cwd(), 'public', 'app', 'shop-links.json'), JSON.stringify(builderData(shopGroups, shop.links, shop.fallback), null, 2) + '\n');
+  console.log('');
+
   for (const e of ranked) {
-    writeFileSync(join(OUT_DIR, `${e.band.slug}.html`), renderBandPage(e.band, e.mixes, e.pool, bandDefs));
+    writeFileSync(join(OUT_DIR, `${e.band.slug}.html`), renderBandPage(e.band, e.mixes, e.pool, bandDefs, shop.links.get(e.band.name)!));
     console.log(
       `  ${e.band.name.padEnd(22)} ${String(e.mixes.length).padStart(2)} mixes, ${String(e.pool.length).padStart(2)} songs, used in ${e.recent} mixes lately`,
     );
@@ -1200,4 +1254,4 @@ function main() {
 }
 
 // Only build when run directly, so tests can import the helpers.
-if (import.meta.main) main();
+if (import.meta.main) await main();

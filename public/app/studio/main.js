@@ -8,12 +8,14 @@ import { initEditor } from "./editor.js";
 import { initGenerate } from "./generate.js";
 import { initMobile } from "./mobile.js";
 import { initMixOptions } from "./mix-options.js";
+import { loadShopLinks } from "./shop.js";
 
 initMenus();
 initTheme();
 initContact();
 initHowItWorks();
 initSupportTracking();
+loadShopLinks();
 initMixOptions();
 
 const builder = initBuilder();

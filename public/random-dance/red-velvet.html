@@ -29,6 +29,8 @@
         if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
+    <!-- Shop links show only in the US and Canada (sets data-shop on <html>). -->
+    <script src="/app/shop-region.js?v=6"></script>
 
     <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -37,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css?v=4" />
+    <link rel="stylesheet" href="/css/landing.css?v=6" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -181,7 +183,7 @@
         <dl class="tiles">
           <div class="tile"><dt class="tile-k">SONGS</dt><dd class="tile-v">22</dd></div>
           <div class="tile"><dt class="tile-k">MIXES</dt><dd class="tile-v">5</dd></div>
-          <div class="tile"><dt class="tile-k">AVG CLIP</dt><dd class="tile-v">37s</dd></div>
+          <div class="tile"><dt class="tile-k">AVG CLIP</dt><dd class="tile-v">38s</dd></div>
           <div class="tile"><dt class="tile-k">PRACTICE VIDEOS</dt><dd class="tile-v">3</dd></div>
         </dl>
         <p class="top-song">
@@ -243,17 +245,17 @@
             </li>
             <li class="row">
               <span class="row-num">06</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/R9At2ICm4LQ/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=R9At2ICm4LQ&amp;t=62" target="_blank" rel="noopener nofollow">Feel My Rhythm<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>1:02&ndash;1:39</span>
-              <span class="row-len">37s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">07</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/J_CFBjAyPWE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=J_CFBjAyPWE&amp;t=43" target="_blank" rel="noopener nofollow">Bad Boy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:43&ndash;1:30</span>
               <span class="row-len">47s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">07</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/R9At2ICm4LQ/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=R9At2ICm4LQ&amp;t=62" target="_blank" rel="noopener nofollow">Feel My Rhythm<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:02&ndash;1:39</span>
+              <span class="row-len">37s</span>
             </li>
           </ol>
           <div class="mix-foot">
@@ -261,7 +263,7 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="red-velvet-essentials">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-red-velvet-essentials">{"version":"1.0","name":"Red Velvet - Red Velvet Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=WyiIGEHQP8o","title":"Red Velvet 레드벨벳 '빨간 맛 (Red Flavor)' MV","startTime":"0:56","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=aiHSVQy9xN8","title":"Red Velvet 레드벨벳 'Power Up' MV","startTime":"0:40","endTime":"1:16","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=vHS9E6JFja8","title":"Red Velvet 레드벨벳 '음파음파 (Umpah Umpah)' MV","startTime":"0:40","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Z7yNvMzz2zg","title":"Red Velvet 레드벨벳 'Psycho' Performance Video","startTime":"0:48","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QslJYDX3o8s","title":"Red Velvet 레드벨벳 '러시안 룰렛 (Russian Roulette)' MV","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=R9At2ICm4LQ","title":"Red Velvet 레드벨벳 'Feel My Rhythm' MV","startTime":"1:02","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=J_CFBjAyPWE","title":"Red Velvet 레드벨벳 'Bad Boy' MV","startTime":"0:43","endTime":"1:30","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-red-velvet-essentials">{"version":"1.0","name":"Red Velvet - Red Velvet Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=WyiIGEHQP8o","title":"Red Velvet 레드벨벳 '빨간 맛 (Red Flavor)' MV","startTime":"0:56","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=aiHSVQy9xN8","title":"Red Velvet 레드벨벳 'Power Up' MV","startTime":"0:40","endTime":"1:16","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=vHS9E6JFja8","title":"Red Velvet 레드벨벳 '음파음파 (Umpah Umpah)' MV","startTime":"0:40","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Z7yNvMzz2zg","title":"Red Velvet 레드벨벳 'Psycho' Performance Video","startTime":"0:48","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QslJYDX3o8s","title":"Red Velvet 레드벨벳 '러시안 룰렛 (Russian Roulette)' MV","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=J_CFBjAyPWE","title":"Red Velvet 레드벨벳 'Bad Boy' MV","startTime":"0:43","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=R9At2ICm4LQ","title":"Red Velvet 레드벨벳 'Feel My Rhythm' MV","startTime":"1:02","endTime":"1:39","info":null,"isExpanded":false}]}</script>
         </article>
         <article class="panel mix" id="red-velvet-quick-warmup" aria-labelledby="red-velvet-quick-warmup-title">
           <div class="panel-head">
@@ -316,7 +318,7 @@
         <article class="panel mix" id="red-velvet-full-sections" aria-labelledby="red-velvet-full-sections-title">
           <div class="panel-head">
             <h2 class="mix-name" id="red-velvet-full-sections-title"><span class="status-dot" aria-hidden="true"></span>Long Sections</h2>
-            <p class="mix-stats">6 SONGS · ~5:35 · 5S COUNTDOWN</p>
+            <p class="mix-stats">6 SONGS · ~5:45 · 5S COUNTDOWN</p>
           </div>
           <p class="mix-blurb">The longest cuts in the pool, for when you want to dance a full chorus and the section after it rather than just the hook.</p>
           <ol class="rows">
@@ -336,31 +338,31 @@
             </li>
             <li class="row">
               <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/QoxL0TOEECE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=QoxL0TOEECE&amp;t=47" target="_blank" rel="noopener nofollow">Cosmic<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:35</span>
+              <span class="row-len">48s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/J_CFBjAyPWE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=J_CFBjAyPWE&amp;t=43" target="_blank" rel="noopener nofollow">Bad Boy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:43&ndash;1:30</span>
               <span class="row-len">47s</span>
             </li>
             <li class="row">
-              <span class="row-num">04</span>
+              <span class="row-num">05</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/c9RzZpV460k/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=c9RzZpV460k&amp;t=46" target="_blank" rel="noopener nofollow">Queendom<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:46&ndash;1:27</span>
               <span class="row-len">41s</span>
             </li>
             <li class="row">
-              <span class="row-num">05</span>
+              <span class="row-num">06</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/IWJUPY-2EIM/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=IWJUPY-2EIM&amp;t=43" target="_blank" rel="noopener nofollow">RBB (Really Bad Boy)<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:43&ndash;1:22</span>
               <span class="row-len">39s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">06</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/Z7yNvMzz2zg/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=Z7yNvMzz2zg&amp;t=48" target="_blank" rel="noopener nofollow">Psycho<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:48&ndash;1:26</span>
-              <span class="row-len">38s</span>
             </li>
           </ol>
           <div class="mix-foot">
@@ -368,7 +370,7 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="red-velvet-full-sections">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-red-velvet-full-sections">{"version":"1.0","name":"Red Velvet - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=6uJf2IT2Zh8","title":"Red Velvet 레드벨벳 '피카부 (Peek-A-Boo)' MV","startTime":"1:50","endTime":"3:23","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Ut1OzEVUiM4","title":"Red Velvet 레드벨벳 'Birthday' MV","startTime":"1:05","endTime":"1:57","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=J_CFBjAyPWE","title":"Red Velvet 레드벨벳 'Bad Boy' MV","startTime":"0:43","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=c9RzZpV460k","title":"Red Velvet 레드벨벳 'Queendom' MV","startTime":"0:46","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=IWJUPY-2EIM","title":"Red Velvet 레드벨벳 'RBB (Really Bad Boy)' MV","startTime":"0:43","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Z7yNvMzz2zg","title":"Red Velvet 레드벨벳 'Psycho' Performance Video","startTime":"0:48","endTime":"1:26","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-red-velvet-full-sections">{"version":"1.0","name":"Red Velvet - Long Sections","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=6uJf2IT2Zh8","title":"Red Velvet 레드벨벳 '피카부 (Peek-A-Boo)' MV","startTime":"1:50","endTime":"3:23","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Ut1OzEVUiM4","title":"Red Velvet 레드벨벳 'Birthday' MV","startTime":"1:05","endTime":"1:57","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QoxL0TOEECE","title":"Red Velvet 레드벨벳 'Cosmic' Performance Video","startTime":"0:47","endTime":"1:35","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=J_CFBjAyPWE","title":"Red Velvet 레드벨벳 'Bad Boy' MV","startTime":"0:43","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=c9RzZpV460k","title":"Red Velvet 레드벨벳 'Queendom' MV","startTime":"0:46","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=IWJUPY-2EIM","title":"Red Velvet 레드벨벳 'RBB (Really Bad Boy)' MV","startTime":"0:43","endTime":"1:22","info":null,"isExpanded":false}]}</script>
         </article>
         <article class="panel mix" id="red-velvet-deep-cuts" aria-labelledby="red-velvet-deep-cuts-title">
           <div class="panel-head">
@@ -437,7 +439,7 @@
         <article class="panel mix" id="red-velvet-marathon" aria-labelledby="red-velvet-marathon-title">
           <div class="panel-head">
             <h2 class="mix-name" id="red-velvet-marathon-title"><span class="status-dot" aria-hidden="true"></span>Marathon Set</h2>
-            <p class="mix-stats">9 SONGS · ~5:49 · 5S COUNTDOWN</p>
+            <p class="mix-stats">9 SONGS · ~5:48 · 5S COUNTDOWN</p>
           </div>
           <p class="mix-blurb">The long one: songs drawn across the whole Red Velvet pool, popular and obscure mixed together.</p>
           <ol class="rows">
@@ -457,10 +459,10 @@
             </li>
             <li class="row">
               <span class="row-num">03</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/J_CFBjAyPWE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=J_CFBjAyPWE&amp;t=43" target="_blank" rel="noopener nofollow">Bad Boy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:43&ndash;1:30</span>
-              <span class="row-len">47s</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/R9At2ICm4LQ/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=R9At2ICm4LQ&amp;t=62" target="_blank" rel="noopener nofollow">Feel My Rhythm<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:02&ndash;1:39</span>
+              <span class="row-len">37s</span>
             </li>
             <li class="row">
               <span class="row-num">04</span>
@@ -485,10 +487,10 @@
             </li>
             <li class="row">
               <span class="row-num">07</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/QoxL0TOEECE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=QoxL0TOEECE&amp;t=51" target="_blank" rel="noopener nofollow">Cosmic<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:51&ndash;1:23</span>
-              <span class="row-len">32s</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/c9RzZpV460k/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=c9RzZpV460k&amp;t=46" target="_blank" rel="noopener nofollow">Queendom<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:46&ndash;1:27</span>
+              <span class="row-len">41s</span>
             </li>
             <li class="row">
               <span class="row-num">08</span>
@@ -510,9 +512,21 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="red-velvet-marathon">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-red-velvet-marathon">{"version":"1.0","name":"Red Velvet - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=JFgv8bKfxEs","title":"Red Velvet 레드벨벳 '행복 (Happiness)' MV","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Z7yNvMzz2zg","title":"Red Velvet 레드벨벳 'Psycho' Performance Video","startTime":"0:48","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=J_CFBjAyPWE","title":"Red Velvet 레드벨벳 'Bad Boy' MV","startTime":"0:43","endTime":"1:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Ujb-gvqsoi0","title":"Red Velvet - IRENE & SEULGI 'Monster' MV","startTime":"0:28","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=PHp3wWbR9cw","title":"Red Velvet - IRENE & SEULGI '놀이 (Naughty)' Choreography Video","startTime":"0:40","endTime":"1:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=wlTvVgI5FEI","title":"Red Velvet - IRENE & SEULGI 'TILT' MV","startTime":"0:53","endTime":"1:31","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=QoxL0TOEECE","title":"Red Velvet 레드벨벳 'Cosmic' Performance Video","startTime":"0:51","endTime":"1:23","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=IWJUPY-2EIM","title":"Red Velvet 레드벨벳 'RBB (Really Bad Boy)' MV","startTime":"0:43","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=NZP153MUpHY","title":"Red Velvet 레드벨벳 'Surfin' Boy' MV","startTime":"0:30","endTime":"0:58","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-red-velvet-marathon">{"version":"1.0","name":"Red Velvet - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=JFgv8bKfxEs","title":"Red Velvet 레드벨벳 '행복 (Happiness)' MV","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Z7yNvMzz2zg","title":"Red Velvet 레드벨벳 'Psycho' Performance Video","startTime":"0:48","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=R9At2ICm4LQ","title":"Red Velvet 레드벨벳 'Feel My Rhythm' MV","startTime":"1:02","endTime":"1:39","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Ujb-gvqsoi0","title":"Red Velvet - IRENE & SEULGI 'Monster' MV","startTime":"0:28","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=PHp3wWbR9cw","title":"Red Velvet - IRENE & SEULGI '놀이 (Naughty)' Choreography Video","startTime":"0:40","endTime":"1:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=wlTvVgI5FEI","title":"Red Velvet - IRENE & SEULGI 'TILT' MV","startTime":"0:53","endTime":"1:31","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=c9RzZpV460k","title":"Red Velvet 레드벨벳 'Queendom' MV","startTime":"0:46","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=IWJUPY-2EIM","title":"Red Velvet 레드벨벳 'RBB (Really Bad Boy)' MV","startTime":"0:43","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=NZP153MUpHY","title":"Red Velvet 레드벨벳 'Surfin' Boy' MV","startTime":"0:30","endTime":"0:58","info":null,"isExpanded":false}]}</script>
         </article>
       </div>
+
+      <aside class="shop-strip aff" aria-label="Shop">
+        <span class="shop-tag" aria-hidden="true">MERCH</span>
+        <div class="shop-text">
+          <p class="shop-title">Feeling lucky?</p>
+          <p class="shop-sub">A mystery K-pop album: you get a random album, like a random play round.</p>
+        </div>
+        <div class="shop-act">
+          <a class="btn btn-shop" href="https://www.kpop.exchange/products/mystery-kpop-album?variant=44541180805372&amp;aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=landing" target="_blank" rel="sponsored noopener" data-aff="landing" data-aff-link="mystery" data-aff-group="Red Velvet">Get a mystery album <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a>
+          <span class="aff-label" aria-hidden="true">Affiliate link</span>
+        </div>
+      </aside>
 
       <section class="prose" aria-labelledby="how-title">
         <h2 id="how-title">How to use these Red Velvet mixes</h2>
@@ -549,9 +563,9 @@
         <div class="chips">
           <a href="/random-dance/illit">ILLIT</a>
           <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-          <a href="/random-dance/aespa">aespa</a>
-          <a href="/random-dance/bts">BTS</a>
           <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/aespa">aespa</a>
           <a href="/random-dance/twice">TWICE</a>
           <a href="/random-dance/katseye">KATSEYE</a>
           <a href="/random-dance/stray-kids">Stray Kids</a>
@@ -566,8 +580,8 @@
           <a href="/random-dance/g-i-dle">i-dle</a>
           <a href="/random-dance/nct">NCT</a>
           <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-          <a href="/random-dance/xg">XG</a>
           <a href="/random-dance/nmixx">NMIXX</a>
+          <a href="/random-dance/xg">XG</a>
         </div>
         <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
       </section>
@@ -588,12 +602,14 @@
             <a class="foot-link" href="/#how-it-works">How it works</a>
             <a class="foot-link" href="/#contact">Contact us</a>
           </p>
+          <p class="foot-shop aff"><a class="foot-link" href="https://www.kpop.exchange/collections/best-sellers?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=footer" target="_blank" rel="sponsored noopener" data-aff="footer" data-aff-link="bestsellers">Popular K-pop albums <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a> <span class="aff-label" aria-hidden="true">(affiliate link)</span></p>
+          <p class="foot-disc aff">Some shop links are affiliate links: if you buy something, the site gets a small commission at no extra cost to you. It helps keep the generator free.</p>
         </section>
       </div>
       <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
     </footer>
 
     <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
-    <script src="/app/landing.js?v=4"></script>
+    <script src="/app/landing.js?v=6"></script>
   </body>
 </html>

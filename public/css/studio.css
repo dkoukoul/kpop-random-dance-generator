@@ -2198,6 +2198,43 @@ button.generate-why {
   color: var(--accentInk);
 }
 
+/* Shop link (kpop.exchange affiliate): US and Canada only, see app/shop-region.js.
+ * Cyan, not pink: pink is for creating the mix. The whole row is the link. */
+html:not([data-shop]) .aff {
+  display: none !important;
+}
+
+.aff-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ready-shop {
+  min-height: 44px;
+  padding: 8px 4px;
+  border-top: 1px solid var(--line2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.ready-shop:hover {
+  background: var(--inset);
+}
+
+.ready-shop u {
+  color: var(--cyanInk);
+  text-underline-offset: 2px;
+}
+
 .gen-failed {
   display: flex;
   flex-direction: column;
@@ -2450,6 +2487,37 @@ details[open] > summary ~ * {
 }
 
 .fcol-support .thanks {
+  font-size: 11px;
+  color: var(--footerText);
+}
+
+.fcol-support .foot-shop {
+  margin: 0;
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+}
+
+/* A 44px tap target, like the buttons above it. */
+.fcol-support .foot-shop a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fcol-support .foot-shop a {
+  color: var(--footerHead);
+}
+
+.fcol-support .foot-shop .aff-label {
+  color: var(--footerText);
+}
+
+.fcol-support .foot-disc {
+  margin: 0;
   font-size: 11px;
   color: var(--footerText);
 }
@@ -3303,6 +3371,10 @@ textarea.field {
   .menu-sheet .menu-kofi {
     color: var(--accentInk);
     font-weight: 700;
+  }
+
+  .menu-sheet .menu-shop {
+    color: var(--cyanInk);
   }
 
   .seg button {

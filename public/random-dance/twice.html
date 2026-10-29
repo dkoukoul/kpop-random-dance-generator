@@ -29,6 +29,8 @@
         if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
+    <!-- Shop links show only in the US and Canada (sets data-shop on <html>). -->
+    <script src="/app/shop-region.js?v=6"></script>
 
     <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -37,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css?v=4" />
+    <link rel="stylesheet" href="/css/landing.css?v=6" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -415,17 +417,17 @@
             </li>
             <li class="row">
               <span class="row-num">02</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/pmkWBgayoUk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=pmkWBgayoUk&amp;t=53" target="_blank" rel="noopener nofollow">Talk that Talk<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:53&ndash;1:21</span>
-              <span class="row-len">28s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">03</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/ePpPVE-GGJw/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=ePpPVE-GGJw&amp;t=50" target="_blank" rel="noopener nofollow">TT<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:32</span>
               <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/pmkWBgayoUk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=pmkWBgayoUk&amp;t=53" target="_blank" rel="noopener nofollow">Talk that Talk<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:53&ndash;1:21</span>
+              <span class="row-len">28s</span>
             </li>
             <li class="row">
               <span class="row-num">04</span>
@@ -475,7 +477,7 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="twice-deep-cuts">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-twice-deep-cuts">{"version":"1.0","name":"TWICE - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=Sz_wWzgh-vQ","title":"TWICE “Strategy (feat. Megan Thee Stallion)” M/V","startTime":"1:14","endTime":"1:23","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=pmkWBgayoUk","title":"TWICE \"Talk that Talk\" Performance Video","startTime":"0:53","endTime":"1:21","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ePpPVE-GGJw","title":"TWICE \"TT\" M/V","startTime":"0:50","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=f5_wn8mexmM","title":"TWICE \"The Feels\" M/V","startTime":"0:50","endTime":"1:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=VQtonf1fv_s","title":"TWICE \"SIGNAL\" M/V","startTime":"1:40","endTime":"2:08","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0rtV5esQT6I","title":"TWICE \"Like OOH-AHH(OOH-AHH하게)\" M/V","startTime":"0:47","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=V2hlQkVJZhE","title":"TWICE \"LIKEY\" M/V","startTime":"1:13","endTime":"1:51","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=rRzxEiBLQCA","title":"TWICE \"Heart Shaker\" M/V","startTime":"0:43","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=mAKsZ26SabQ","title":"TWICE \"YES or YES\" M/V","startTime":"1:27","endTime":"2:14","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-twice-deep-cuts">{"version":"1.0","name":"TWICE - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=Sz_wWzgh-vQ","title":"TWICE “Strategy (feat. Megan Thee Stallion)” M/V","startTime":"1:14","endTime":"1:23","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ePpPVE-GGJw","title":"TWICE \"TT\" M/V","startTime":"0:50","endTime":"1:32","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=pmkWBgayoUk","title":"TWICE \"Talk that Talk\" Performance Video","startTime":"0:53","endTime":"1:21","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=f5_wn8mexmM","title":"TWICE \"The Feels\" M/V","startTime":"0:50","endTime":"1:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=VQtonf1fv_s","title":"TWICE \"SIGNAL\" M/V","startTime":"1:40","endTime":"2:08","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0rtV5esQT6I","title":"TWICE \"Like OOH-AHH(OOH-AHH하게)\" M/V","startTime":"0:47","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=V2hlQkVJZhE","title":"TWICE \"LIKEY\" M/V","startTime":"1:13","endTime":"1:51","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=rRzxEiBLQCA","title":"TWICE \"Heart Shaker\" M/V","startTime":"0:43","endTime":"1:17","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=mAKsZ26SabQ","title":"TWICE \"YES or YES\" M/V","startTime":"1:27","endTime":"2:14","info":null,"isExpanded":false}]}</script>
         </article>
         <article class="panel mix" id="twice-dance-practice" aria-labelledby="twice-dance-practice-title">
           <div class="panel-head">
@@ -614,6 +616,18 @@
         </article>
       </div>
 
+      <aside class="shop-strip aff" aria-label="Shop">
+        <span class="shop-tag" aria-hidden="true">MERCH</span>
+        <div class="shop-text">
+          <p class="shop-title">Dancing to TWICE all night?</p>
+          <p class="shop-sub">Albums, merch and more at kpop.exchange</p>
+        </div>
+        <div class="shop-act">
+          <a class="btn btn-shop" href="https://www.kpop.exchange/collections/twice?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=landing" target="_blank" rel="sponsored noopener" data-aff="landing" data-aff-link="group" data-aff-group="TWICE">Shop TWICE <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a>
+          <span class="aff-label" aria-hidden="true">Affiliate link</span>
+        </div>
+      </aside>
+
       <section class="prose" aria-labelledby="how-title">
         <h2 id="how-title">How to use these TWICE mixes</h2>
         <p>
@@ -649,9 +663,9 @@
         <div class="chips">
           <a href="/random-dance/illit">ILLIT</a>
           <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-          <a href="/random-dance/aespa">aespa</a>
-          <a href="/random-dance/bts">BTS</a>
           <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/aespa">aespa</a>
           <a href="/random-dance/katseye">KATSEYE</a>
           <a href="/random-dance/stray-kids">Stray Kids</a>
           <a href="/random-dance/ateez">ATEEZ</a>
@@ -666,8 +680,8 @@
           <a href="/random-dance/nct">NCT</a>
           <a href="/random-dance/red-velvet">Red Velvet</a>
           <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-          <a href="/random-dance/xg">XG</a>
           <a href="/random-dance/nmixx">NMIXX</a>
+          <a href="/random-dance/xg">XG</a>
         </div>
         <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
       </section>
@@ -688,12 +702,14 @@
             <a class="foot-link" href="/#how-it-works">How it works</a>
             <a class="foot-link" href="/#contact">Contact us</a>
           </p>
+          <p class="foot-shop aff"><a class="foot-link" href="https://www.kpop.exchange/collections/best-sellers?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=footer" target="_blank" rel="sponsored noopener" data-aff="footer" data-aff-link="bestsellers">Popular K-pop albums <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a> <span class="aff-label" aria-hidden="true">(affiliate link)</span></p>
+          <p class="foot-disc aff">Some shop links are affiliate links: if you buy something, the site gets a small commission at no extra cost to you. It helps keep the generator free.</p>
         </section>
       </div>
       <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
     </footer>
 
     <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
-    <script src="/app/landing.js?v=4"></script>
+    <script src="/app/landing.js?v=6"></script>
   </body>
 </html>

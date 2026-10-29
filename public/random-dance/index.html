@@ -29,6 +29,8 @@
         if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
+    <!-- Shop links show only in the US and Canada (sets data-shop on <html>). -->
+    <script src="/app/shop-region.js?v=6"></script>
 
     <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -37,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css?v=4" />
+    <link rel="stylesheet" href="/css/landing.css?v=6" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -80,8 +82,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "aespa random dance mixes",
-      "url": "https://kpopgenerator.cloud/random-dance/aespa"
+      "name": "BLACKPINK random dance mixes",
+      "url": "https://kpopgenerator.cloud/random-dance/blackpink"
     },
     {
       "@type": "ListItem",
@@ -92,8 +94,8 @@
     {
       "@type": "ListItem",
       "position": 5,
-      "name": "BLACKPINK random dance mixes",
-      "url": "https://kpopgenerator.cloud/random-dance/blackpink"
+      "name": "aespa random dance mixes",
+      "url": "https://kpopgenerator.cloud/random-dance/aespa"
     },
     {
       "@type": "ListItem",
@@ -188,14 +190,14 @@
     {
       "@type": "ListItem",
       "position": 21,
-      "name": "XG random dance mixes",
-      "url": "https://kpopgenerator.cloud/random-dance/xg"
+      "name": "NMIXX random dance mixes",
+      "url": "https://kpopgenerator.cloud/random-dance/nmixx"
     },
     {
       "@type": "ListItem",
       "position": 22,
-      "name": "NMIXX random dance mixes",
-      "url": "https://kpopgenerator.cloud/random-dance/nmixx"
+      "name": "XG random dance mixes",
+      "url": "https://kpopgenerator.cloud/random-dance/xg"
     }
   ]
 }
@@ -269,7 +271,7 @@
         <dl class="tiles tiles-3">
           <div class="tile"><dt class="tile-k">GROUPS</dt><dd class="tile-v">22</dd></div>
           <div class="tile"><dt class="tile-k">MIXES</dt><dd class="tile-v">130</dd></div>
-          <div class="tile"><dt class="tile-k">SONGS</dt><dd class="tile-v">512</dd></div>
+          <div class="tile"><dt class="tile-k">SONGS</dt><dd class="tile-v">522</dd></div>
         </dl>
       </header>
 
@@ -285,7 +287,7 @@
               <span class="band-top"><span class="band-rank">01</span><span class="tag">MOST MIXED</span></span>
               <h3 class="band-name">ILLIT</h3>
               <span class="band-hangul" lang="ko">아일릿</span>
-              <span class="band-meta">6 MIXES · 15 SONGS</span>
+              <span class="band-meta">5 MIXES · 16 SONGS</span>
               <span class="band-song">Most mixed: <b>It’s Me</b></span>
             </a>
           </li>
@@ -300,13 +302,13 @@
             </a>
           </li>
           <li>
-            <a class="band-card" href="/random-dance/aespa">
-              <img class="band-cover" src="https://i.ytimg.com/vi/83C3TZ4Zm_o/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async" />
+            <a class="band-card" href="/random-dance/blackpink">
+              <img class="band-cover" src="https://i.ytimg.com/vi/IHNzOHi8sJs/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async" />
               <span class="band-top"><span class="band-rank">03</span><span class="tag">MOST MIXED</span></span>
-              <h3 class="band-name">aespa</h3>
-              <span class="band-hangul" lang="ko">에스파</span>
-              <span class="band-meta">5 MIXES · 19 SONGS</span>
-              <span class="band-song">Most mixed: <b>LEMONADE</b></span>
+              <h3 class="band-name">BLACKPINK</h3>
+              <span class="band-hangul" lang="ko">블랙핑크</span>
+              <span class="band-meta">6 MIXES · 35 SONGS</span>
+              <span class="band-song">Most mixed: <b>DDU-DU DDU-DU</b></span>
             </a>
           </li>
           <li>
@@ -315,18 +317,18 @@
               <span class="band-top"><span class="band-rank">04</span><span class="tag">MOST MIXED</span></span>
               <h3 class="band-name">BTS</h3>
               <span class="band-hangul" lang="ko">방탄소년단</span>
-              <span class="band-meta">6 MIXES · 36 SONGS</span>
+              <span class="band-meta">7 MIXES · 38 SONGS</span>
               <span class="band-song">Most mixed: <b>2.0</b></span>
             </a>
           </li>
           <li>
-            <a class="band-card" href="/random-dance/blackpink">
-              <img class="band-cover" src="https://i.ytimg.com/vi/IHNzOHi8sJs/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async" />
+            <a class="band-card" href="/random-dance/aespa">
+              <img class="band-cover" src="https://i.ytimg.com/vi/83C3TZ4Zm_o/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async" />
               <span class="band-top"><span class="band-rank">05</span><span class="tag">MOST MIXED</span></span>
-              <h3 class="band-name">BLACKPINK</h3>
-              <span class="band-hangul" lang="ko">블랙핑크</span>
-              <span class="band-meta">5 MIXES · 34 SONGS</span>
-              <span class="band-song">Most mixed: <b>DDU-DU DDU-DU</b></span>
+              <h3 class="band-name">aespa</h3>
+              <span class="band-hangul" lang="ko">에스파</span>
+              <span class="band-meta">5 MIXES · 20 SONGS</span>
+              <span class="band-song">Most mixed: <b>LEMONADE</b></span>
             </a>
           </li>
           <li>
@@ -375,7 +377,7 @@
               <span class="band-top"><span class="band-rank">10</span></span>
               <h3 class="band-name">ENHYPEN</h3>
               <span class="band-hangul" lang="ko">엔하이픈</span>
-              <span class="band-meta">7 MIXES · 23 SONGS</span>
+              <span class="band-meta">7 MIXES · 24 SONGS</span>
               <span class="band-song">Most mixed: <b>No Doubt</b></span>
             </a>
           </li>
@@ -405,7 +407,7 @@
               <span class="band-top"><span class="band-rank">13</span></span>
               <h3 class="band-name">TOMORROW X TOGETHER</h3>
               <span class="band-hangul" lang="ko">투모로우바이투게더</span>
-              <span class="band-meta">7 MIXES · 27 SONGS</span>
+              <span class="band-meta">7 MIXES · 28 SONGS</span>
               <span class="band-song">Most mixed: <b>CROWN</b></span>
             </a>
           </li>
@@ -425,7 +427,7 @@
               <span class="band-top"><span class="band-rank">15</span></span>
               <h3 class="band-name">SEVENTEEN</h3>
               <span class="band-hangul" lang="ko">세븐틴</span>
-              <span class="band-meta">6 MIXES · 26 SONGS</span>
+              <span class="band-meta">6 MIXES · 27 SONGS</span>
               <span class="band-song">Most mixed: <b>HOT</b></span>
             </a>
           </li>
@@ -455,7 +457,7 @@
               <span class="band-top"><span class="band-rank">18</span></span>
               <h3 class="band-name">NCT</h3>
               <span class="band-hangul" lang="ko">엔시티</span>
-              <span class="band-meta">6 MIXES · 57 SONGS</span>
+              <span class="band-meta">6 MIXES · 58 SONGS</span>
               <span class="band-song">Most mixed: <b>poppop</b></span>
             </a>
           </li>
@@ -480,27 +482,38 @@
             </a>
           </li>
           <li>
+            <a class="band-card" href="/random-dance/nmixx">
+              <img class="band-cover" src="https://i.ytimg.com/vi/EmeW6li6bbo/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async" />
+              <span class="band-top"><span class="band-rank">21</span></span>
+              <h3 class="band-name">NMIXX</h3>
+              <span class="band-hangul" lang="ko">엔믹스</span>
+              <span class="band-meta">7 MIXES · 17 SONGS</span>
+              <span class="band-song">Most mixed: <b>Blue Valentine</b></span>
+            </a>
+          </li>
+          <li>
             <a class="band-card" href="/random-dance/xg">
               <img class="band-cover" src="https://i.ytimg.com/vi/cUfDOS2SINM/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async" />
-              <span class="band-top"><span class="band-rank">21</span></span>
+              <span class="band-top"><span class="band-rank">22</span></span>
               <h3 class="band-name">XG</h3>
               
               <span class="band-meta">6 MIXES · 18 SONGS</span>
               <span class="band-song">Most mixed: <b>HYPNOTIZE</b></span>
             </a>
           </li>
-          <li>
-            <a class="band-card" href="/random-dance/nmixx">
-              <img class="band-cover" src="https://i.ytimg.com/vi/EmeW6li6bbo/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async" />
-              <span class="band-top"><span class="band-rank">22</span></span>
-              <h3 class="band-name">NMIXX</h3>
-              <span class="band-hangul" lang="ko">엔믹스</span>
-              <span class="band-meta">8 MIXES · 16 SONGS</span>
-              <span class="band-song">Most mixed: <b>Blue Valentine</b></span>
-            </a>
-          </li>
         </ol>
       </section>
+
+      <aside class="shop-strip aff slim" aria-label="Shop">
+        <span class="shop-tag" aria-hidden="true">MERCH</span>
+        <div class="shop-text">
+          <p class="shop-title">Popular K-pop albums right now</p>
+        </div>
+        <div class="shop-act">
+          <a class="btn btn-shop" href="https://www.kpop.exchange/collections/best-sellers?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=hub" target="_blank" rel="sponsored noopener" data-aff="hub" data-aff-link="bestsellers">See best sellers <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a>
+          <span class="aff-label" aria-hidden="true">Affiliate link</span>
+        </div>
+      </aside>
 
       <section class="prose" aria-labelledby="rpd-title">
         <h2 id="rpd-title">What is a random play dance?</h2>
@@ -533,12 +546,14 @@
             <a class="foot-link" href="/#how-it-works">How it works</a>
             <a class="foot-link" href="/#contact">Contact us</a>
           </p>
+          <p class="foot-shop aff"><a class="foot-link" href="https://www.kpop.exchange/collections/best-sellers?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=footer" target="_blank" rel="sponsored noopener" data-aff="footer" data-aff-link="bestsellers">Popular K-pop albums <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a> <span class="aff-label" aria-hidden="true">(affiliate link)</span></p>
+          <p class="foot-disc aff">Some shop links are affiliate links: if you buy something, the site gets a small commission at no extra cost to you. It helps keep the generator free.</p>
         </section>
       </div>
       <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
     </footer>
 
     <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
-    <script src="/app/landing.js?v=4"></script>
+    <script src="/app/landing.js?v=6"></script>
   </body>
 </html>

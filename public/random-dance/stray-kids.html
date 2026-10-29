@@ -29,6 +29,8 @@
         if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
+    <!-- Shop links show only in the US and Canada (sets data-shop on <html>). -->
+    <script src="/app/shop-region.js?v=6"></script>
 
     <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -37,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css?v=4" />
+    <link rel="stylesheet" href="/css/landing.css?v=6" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -181,7 +183,7 @@
         <dl class="tiles">
           <div class="tile"><dt class="tile-k">SONGS</dt><dd class="tile-v">26</dd></div>
           <div class="tile"><dt class="tile-k">MIXES</dt><dd class="tile-v">5</dd></div>
-          <div class="tile"><dt class="tile-k">AVG CLIP</dt><dd class="tile-v">38s</dd></div>
+          <div class="tile"><dt class="tile-k">AVG CLIP</dt><dd class="tile-v">37s</dd></div>
           <div class="tile"><dt class="tile-k">PRACTICE VIDEOS</dt><dd class="tile-v">6</dd></div>
         </dl>
         <p class="top-song">
@@ -215,17 +217,17 @@
             </li>
             <li class="row">
               <span class="row-num">02</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/0P0aQreFs8w/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=0P0aQreFs8w&amp;t=60" target="_blank" rel="noopener nofollow">Chk Chk Boom<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>1:00&ndash;1:26</span>
-              <span class="row-len">26s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">03</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/TQTlCHxyuu8/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=TQTlCHxyuu8&amp;t=47" target="_blank" rel="noopener nofollow">God&#39;s Menu<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:29</span>
               <span class="row-len">42s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">03</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/0P0aQreFs8w/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=0P0aQreFs8w&amp;t=60" target="_blank" rel="noopener nofollow">Chk Chk Boom<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>1:00&ndash;1:26</span>
+              <span class="row-len">26s</span>
             </li>
             <li class="row">
               <span class="row-num">04</span>
@@ -268,7 +270,7 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="stray-kids-essentials">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-stray-kids-essentials">{"version":"1.0","name":"Stray Kids - Stray Kids Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=NED7nev2ywQ","title":"Stray Kids \"Do It\" M/V","startTime":"0:45","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0P0aQreFs8w","title":"Stray Kids \"Chk Chk Boom\" M/V","startTime":"1:00","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TQTlCHxyuu8","title":"Stray Kids \"神메뉴(God's Menu)\" M/V","startTime":"0:47","endTime":"1:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=BZ4UzthYTss","title":"Stray Kids \"This & That\" M/V","startTime":"0:54","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=dBDkYofMUs4","title":"Stray Kids \"락 (樂) (LALALALA)\" M/V","startTime":"0:52","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=JsOOis4bBFg","title":"Stray Kids \"특(S-Class)\" M/V","startTime":"0:50","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=OvioeS1ZZ7o","title":"Stray Kids \"MANIAC\" M/V","startTime":"0:46","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Q7IFjVUUb_E","title":"Stray Kids \"RUN IT\" M/V","startTime":"0:35","endTime":"1:09","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-stray-kids-essentials">{"version":"1.0","name":"Stray Kids - Stray Kids Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=NED7nev2ywQ","title":"Stray Kids \"Do It\" M/V","startTime":"0:45","endTime":"1:13","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=TQTlCHxyuu8","title":"Stray Kids \"神메뉴(God's Menu)\" M/V","startTime":"0:47","endTime":"1:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=0P0aQreFs8w","title":"Stray Kids \"Chk Chk Boom\" M/V","startTime":"1:00","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=BZ4UzthYTss","title":"Stray Kids \"This & That\" M/V","startTime":"0:54","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=dBDkYofMUs4","title":"Stray Kids \"락 (樂) (LALALALA)\" M/V","startTime":"0:52","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=JsOOis4bBFg","title":"Stray Kids \"특(S-Class)\" M/V","startTime":"0:50","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=OvioeS1ZZ7o","title":"Stray Kids \"MANIAC\" M/V","startTime":"0:46","endTime":"1:19","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Q7IFjVUUb_E","title":"Stray Kids \"RUN IT\" M/V","startTime":"0:35","endTime":"1:09","info":null,"isExpanded":false}]}</script>
         </article>
         <article class="panel mix" id="stray-kids-full-sections" aria-labelledby="stray-kids-full-sections-title">
           <div class="panel-head">
@@ -330,7 +332,7 @@
         <article class="panel mix" id="stray-kids-deep-cuts" aria-labelledby="stray-kids-deep-cuts-title">
           <div class="panel-head">
             <h2 class="mix-name" id="stray-kids-deep-cuts-title"><span class="status-dot" aria-hidden="true"></span>Deep Cuts</h2>
-            <p class="mix-stats">8 SONGS · ~5:09 · 5S COUNTDOWN</p>
+            <p class="mix-stats">8 SONGS · ~5:12 · 5S COUNTDOWN</p>
           </div>
           <p class="mix-blurb">Stray Kids tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
           <ol class="rows">
@@ -385,10 +387,10 @@
             </li>
             <li class="row">
               <span class="row-num">08</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/n2exCNzcxzE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=n2exCNzcxzE&amp;t=49" target="_blank" rel="noopener nofollow">My Pace<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:49&ndash;1:26</span>
-              <span class="row-len">37s</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/XZSv3aMGg5Q/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=XZSv3aMGg5Q&amp;t=36" target="_blank" rel="noopener nofollow">Easy<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:36&ndash;1:16</span>
+              <span class="row-len">40s</span>
             </li>
           </ol>
           <div class="mix-foot">
@@ -396,7 +398,7 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="stray-kids-deep-cuts">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-stray-kids-deep-cuts">{"version":"1.0","name":"Stray Kids - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=6Vq3kCd9QG8","title":"[Stray Kids - MIROH] dance practice mirrored","startTime":"1:04","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=P7vBoGWoReg","title":"Stray Kids \"CEREMONY\" M/V","startTime":"1:46","endTime":"2:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7ytGFxD-FcI","title":"Stray Kids \"JJAM\" M/V","startTime":"0:57","endTime":"1:10","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ovHoY8UBIu8","title":"Stray Kids \"Walkin On Water\" M/V","startTime":"0:45","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=X-uJtV8ScYk","title":"Stray Kids \"Back Door\" M/V","startTime":"0:50","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jYSlpC6Ud2A","title":"Stray Kids \"CASE 143\" M/V","startTime":"0:45","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=EaswWiwMVs8","title":"Stray Kids \"소리꾼(Thunderous)\" M/V","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=n2exCNzcxzE","title":"Stray Kids \"My Pace\" Performance Video","startTime":"0:49","endTime":"1:26","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-stray-kids-deep-cuts">{"version":"1.0","name":"Stray Kids - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=6Vq3kCd9QG8","title":"[Stray Kids - MIROH] dance practice mirrored","startTime":"1:04","endTime":"1:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=P7vBoGWoReg","title":"Stray Kids \"CEREMONY\" M/V","startTime":"1:46","endTime":"2:41","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7ytGFxD-FcI","title":"Stray Kids \"JJAM\" M/V","startTime":"0:57","endTime":"1:10","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=ovHoY8UBIu8","title":"Stray Kids \"Walkin On Water\" M/V","startTime":"0:45","endTime":"1:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=X-uJtV8ScYk","title":"Stray Kids \"Back Door\" M/V","startTime":"0:50","endTime":"1:20","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=jYSlpC6Ud2A","title":"Stray Kids \"CASE 143\" M/V","startTime":"0:45","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=EaswWiwMVs8","title":"Stray Kids \"소리꾼(Thunderous)\" M/V","startTime":"0:00","endTime":"0:30","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=XZSv3aMGg5Q","title":"Stray Kids \"Easy\" M/V","startTime":"0:36","endTime":"1:16","info":null,"isExpanded":false}]}</script>
         </article>
         <article class="panel mix" id="stray-kids-dance-practice" aria-labelledby="stray-kids-dance-practice-title">
           <div class="panel-head">
@@ -542,6 +544,18 @@
         </article>
       </div>
 
+      <aside class="shop-strip aff" aria-label="Shop">
+        <span class="shop-tag" aria-hidden="true">MERCH</span>
+        <div class="shop-text">
+          <p class="shop-title">Dancing to Stray Kids all night?</p>
+          <p class="shop-sub">Albums, merch and more at kpop.exchange</p>
+        </div>
+        <div class="shop-act">
+          <a class="btn btn-shop" href="https://www.kpop.exchange/collections/stray-kids?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=landing" target="_blank" rel="sponsored noopener" data-aff="landing" data-aff-link="group" data-aff-group="Stray Kids">Shop Stray Kids <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a>
+          <span class="aff-label" aria-hidden="true">Affiliate link</span>
+        </div>
+      </aside>
+
       <section class="prose" aria-labelledby="how-title">
         <h2 id="how-title">How to use these Stray Kids mixes</h2>
         <p>
@@ -577,9 +591,9 @@
         <div class="chips">
           <a href="/random-dance/illit">ILLIT</a>
           <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-          <a href="/random-dance/aespa">aespa</a>
-          <a href="/random-dance/bts">BTS</a>
           <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/aespa">aespa</a>
           <a href="/random-dance/twice">TWICE</a>
           <a href="/random-dance/katseye">KATSEYE</a>
           <a href="/random-dance/ateez">ATEEZ</a>
@@ -594,8 +608,8 @@
           <a href="/random-dance/nct">NCT</a>
           <a href="/random-dance/red-velvet">Red Velvet</a>
           <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-          <a href="/random-dance/xg">XG</a>
           <a href="/random-dance/nmixx">NMIXX</a>
+          <a href="/random-dance/xg">XG</a>
         </div>
         <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
       </section>
@@ -616,12 +630,14 @@
             <a class="foot-link" href="/#how-it-works">How it works</a>
             <a class="foot-link" href="/#contact">Contact us</a>
           </p>
+          <p class="foot-shop aff"><a class="foot-link" href="https://www.kpop.exchange/collections/best-sellers?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=footer" target="_blank" rel="sponsored noopener" data-aff="footer" data-aff-link="bestsellers">Popular K-pop albums <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a> <span class="aff-label" aria-hidden="true">(affiliate link)</span></p>
+          <p class="foot-disc aff">Some shop links are affiliate links: if you buy something, the site gets a small commission at no extra cost to you. It helps keep the generator free.</p>
         </section>
       </div>
       <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
     </footer>
 
     <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
-    <script src="/app/landing.js?v=4"></script>
+    <script src="/app/landing.js?v=6"></script>
   </body>
 </html>

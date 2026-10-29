@@ -29,6 +29,8 @@
         if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
+    <!-- Shop links show only in the US and Canada (sets data-shop on <html>). -->
+    <script src="/app/shop-region.js?v=6"></script>
 
     <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -37,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css?v=4" />
+    <link rel="stylesheet" href="/css/landing.css?v=6" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -103,9 +105,9 @@
     {
       "@type": "ListItem",
       "position": 5,
-      "name": "i-dle - Marathon Set",
-      "description": "The long one: songs drawn across the whole i-dle pool, popular and obscure mixed together.",
-      "url": "https://kpopgenerator.cloud/random-dance/g-i-dle#g-i-dle-marathon"
+      "name": "i-dle - Shuffle Set A",
+      "description": "A randomised draw from the i-dle pool. Different songs from the sets above, same real cut points.",
+      "url": "https://kpopgenerator.cloud/random-dance/g-i-dle#g-i-dle-shuffle-a"
     }
   ]
 }
@@ -194,7 +196,7 @@
           <a href="#g-i-dle-quick-warmup">Quick Warm-Up</a>
           <a href="#g-i-dle-full-sections">Long Sections</a>
           <a href="#g-i-dle-deep-cuts">Deep Cuts</a>
-          <a href="#g-i-dle-marathon">Marathon Set</a>
+          <a href="#g-i-dle-shuffle-a">Shuffle Set A</a>
         </nav>
       </header>
 
@@ -222,17 +224,17 @@
             </li>
             <li class="row">
               <span class="row-num">03</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/Km-wD44iJ4E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=Km-wD44iJ4E&amp;t=47" target="_blank" rel="noopener nofollow">Oh my god<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:12</span>
-              <span class="row-len">25s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">04</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/Jh4QFaPmdss/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=Jh4QFaPmdss&amp;t=50" target="_blank" rel="noopener nofollow">TOMBOY<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:18</span>
               <span class="row-len">28s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Km-wD44iJ4E/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Km-wD44iJ4E&amp;t=47" target="_blank" rel="noopener nofollow">Oh my god<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:12</span>
+              <span class="row-len">25s</span>
             </li>
             <li class="row">
               <span class="row-num">05</span>
@@ -254,21 +256,21 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="g-i-dle-essentials">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-g-i-dle-essentials">{"version":"1.0","name":"i-dle - i-dle Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=HPQ5mqovXHo","title":"(여자)아이들((G)I-DLE) - '덤디덤디 (DUMDi DUMDi)' Official Music Video","startTime":"2:28","endTime":"3:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7HDeem-JaSY","title":"(여자)아이들((G)I-DLE) - '퀸카 (Queencard)' Official Music Video","startTime":"2:25","endTime":"2:47","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Km-wD44iJ4E","title":"(G)I-DLE ((여자)아이들) - Oh my god Dance Practice (Mirrored)","startTime":"0:47","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Jh4QFaPmdss","title":"(G)I-DLE - 'TOMBOY' Official Music Video","startTime":"0:50","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=FFjDEkZg-54","title":"i-dle (아이들) 'Gimme Dat Love' Official Music Video","startTime":"0:35","endTime":"1:02","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6f3RzjXPQwA","title":"(여자)아이들((G)I-DLE) - 'Super Lady' Official Music Video","startTime":"0:45","endTime":"1:28","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-g-i-dle-essentials">{"version":"1.0","name":"i-dle - i-dle Essentials","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=HPQ5mqovXHo","title":"(여자)아이들((G)I-DLE) - '덤디덤디 (DUMDi DUMDi)' Official Music Video","startTime":"2:28","endTime":"3:05","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7HDeem-JaSY","title":"(여자)아이들((G)I-DLE) - '퀸카 (Queencard)' Official Music Video","startTime":"2:25","endTime":"2:47","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Jh4QFaPmdss","title":"(G)I-DLE - 'TOMBOY' Official Music Video","startTime":"0:50","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Km-wD44iJ4E","title":"(G)I-DLE ((여자)아이들) - Oh my god Dance Practice (Mirrored)","startTime":"0:47","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=FFjDEkZg-54","title":"i-dle (아이들) 'Gimme Dat Love' Official Music Video","startTime":"0:35","endTime":"1:02","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6f3RzjXPQwA","title":"(여자)아이들((G)I-DLE) - 'Super Lady' Official Music Video","startTime":"0:45","endTime":"1:28","info":null,"isExpanded":false}]}</script>
         </article>
         <article class="panel mix" id="g-i-dle-quick-warmup" aria-labelledby="g-i-dle-quick-warmup-title">
           <div class="panel-head">
             <h2 class="mix-name" id="g-i-dle-quick-warmup-title"><span class="status-dot" aria-hidden="true"></span>Quick Warm-Up</h2>
-            <p class="mix-stats">5 SONGS · ~2:10 · 5S COUNTDOWN</p>
+            <p class="mix-stats">5 SONGS · ~2:11 · 5S COUNTDOWN</p>
           </div>
           <p class="mix-blurb">Short segments to loosen up with before a longer run — the tightest cuts in the i-dle pool.</p>
           <ol class="rows">
             <li class="row">
               <span class="row-num">01</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/baaNwRAhHBo/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=baaNwRAhHBo&amp;t=7" target="_blank" rel="noopener nofollow">Wife<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:07&ndash;0:22</span>
-              <span class="row-len">15s</span>
+              <a class="row-title" href="https://www.youtube.com/watch?v=baaNwRAhHBo&amp;t=6" target="_blank" rel="noopener nofollow">Wife<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:06&ndash;0:22</span>
+              <span class="row-len">16s</span>
             </li>
             <li class="row">
               <span class="row-num">02</span>
@@ -304,7 +306,7 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="g-i-dle-quick-warmup">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-g-i-dle-quick-warmup">{"version":"1.0","name":"i-dle - Quick Warm-Up","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=baaNwRAhHBo","title":"(여자)아이들((G)I-DLE) - 'Wife' Official Music Video","startTime":"0:07","endTime":"0:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=bUMLC9lCgHo","title":"i-dle (아이들) 'Crow' Official Music Video","startTime":"0:54","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7HDeem-JaSY","title":"(여자)아이들((G)I-DLE) - '퀸카 (Queencard)' Official Music Video","startTime":"2:25","endTime":"2:47","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Km-wD44iJ4E","title":"(G)I-DLE ((여자)아이들) - Oh my god Dance Practice (Mirrored)","startTime":"0:47","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=FFjDEkZg-54","title":"i-dle (아이들) 'Gimme Dat Love' Official Music Video","startTime":"0:35","endTime":"1:02","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-g-i-dle-quick-warmup">{"version":"1.0","name":"i-dle - Quick Warm-Up","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=baaNwRAhHBo","title":"(여자)아이들((G)I-DLE) - 'Wife' Official Music Video","startTime":"0:06","endTime":"0:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=bUMLC9lCgHo","title":"i-dle (아이들) 'Crow' Official Music Video","startTime":"0:54","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7HDeem-JaSY","title":"(여자)아이들((G)I-DLE) - '퀸카 (Queencard)' Official Music Video","startTime":"2:25","endTime":"2:47","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Km-wD44iJ4E","title":"(G)I-DLE ((여자)아이들) - Oh my god Dance Practice (Mirrored)","startTime":"0:47","endTime":"1:12","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=FFjDEkZg-54","title":"i-dle (아이들) 'Gimme Dat Love' Official Music Video","startTime":"0:35","endTime":"1:02","info":null,"isExpanded":false}]}</script>
         </article>
         <article class="panel mix" id="g-i-dle-full-sections" aria-labelledby="g-i-dle-full-sections-title">
           <div class="panel-head">
@@ -393,17 +395,17 @@
             </li>
             <li class="row">
               <span class="row-num">05</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/6oanIo_2Z4Q/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=6oanIo_2Z4Q&amp;t=30" target="_blank" rel="noopener nofollow">LION<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:30&ndash;1:16</span>
-              <span class="row-len">46s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">06</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/Si5pQHRRH5w/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=Si5pQHRRH5w&amp;t=0" target="_blank" rel="noopener nofollow">MY BAG<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:00&ndash;0:27</span>
               <span class="row-len">27s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">06</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/6oanIo_2Z4Q/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=6oanIo_2Z4Q&amp;t=30" target="_blank" rel="noopener nofollow">LION<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:30&ndash;1:16</span>
+              <span class="row-len">46s</span>
             </li>
           </ol>
           <div class="mix-foot">
@@ -411,80 +413,71 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="g-i-dle-deep-cuts">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-g-i-dle-deep-cuts">{"version":"1.0","name":"i-dle - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=hAONx6nuEgI","title":"i-dle (아이들) 'Good Thing' Official Music Video","startTime":"1:35","endTime":"2:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=fCO7f0SmrDc","title":"(G)I-DLE - 'Nxde' Official Music Video","startTime":"0:44","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=p4RIhcY7V3c","title":"(G) I-DLE - 'LATATA' Official Music Video","startTime":"2:03","endTime":"3:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=DYgE3SGPEqk","title":"i-dle (아이들) 'Mono (Feat. skaiwater)' Official Music Video","startTime":"0:23","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6oanIo_2Z4Q","title":"(여자)아이들((G)I-DLE) - 'LION' Official Music Video","startTime":"0:30","endTime":"1:16","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Si5pQHRRH5w","title":"(여자)아이들((G)I-DLE) - 'MY BAG' (Choreography Practice Video)","startTime":"0:00","endTime":"0:27","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-g-i-dle-deep-cuts">{"version":"1.0","name":"i-dle - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=hAONx6nuEgI","title":"i-dle (아이들) 'Good Thing' Official Music Video","startTime":"1:35","endTime":"2:33","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=fCO7f0SmrDc","title":"(G)I-DLE - 'Nxde' Official Music Video","startTime":"0:44","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=p4RIhcY7V3c","title":"(G) I-DLE - 'LATATA' Official Music Video","startTime":"2:03","endTime":"3:29","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=DYgE3SGPEqk","title":"i-dle (아이들) 'Mono (Feat. skaiwater)' Official Music Video","startTime":"0:23","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Si5pQHRRH5w","title":"(여자)아이들((G)I-DLE) - 'MY BAG' (Choreography Practice Video)","startTime":"0:00","endTime":"0:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=6oanIo_2Z4Q","title":"(여자)아이들((G)I-DLE) - 'LION' Official Music Video","startTime":"0:30","endTime":"1:16","info":null,"isExpanded":false}]}</script>
         </article>
-        <article class="panel mix" id="g-i-dle-marathon" aria-labelledby="g-i-dle-marathon-title">
+        <article class="panel mix" id="g-i-dle-shuffle-a" aria-labelledby="g-i-dle-shuffle-a-title">
           <div class="panel-head">
-            <h2 class="mix-name" id="g-i-dle-marathon-title"><span class="status-dot" aria-hidden="true"></span>Marathon Set</h2>
-            <p class="mix-stats">8 SONGS · ~4:59 · 5S COUNTDOWN</p>
+            <h2 class="mix-name" id="g-i-dle-shuffle-a-title"><span class="status-dot" aria-hidden="true"></span>Shuffle Set A</h2>
+            <p class="mix-stats">5 SONGS · ~3:34 · 5S COUNTDOWN</p>
           </div>
-          <p class="mix-blurb">The long one: songs drawn across the whole i-dle pool, popular and obscure mixed together.</p>
+          <p class="mix-blurb">A randomised draw from the i-dle pool. Different songs from the sets above, same real cut points.</p>
           <ol class="rows">
             <li class="row">
               <span class="row-num">01</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/FFjDEkZg-54/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=FFjDEkZg-54&amp;t=35" target="_blank" rel="noopener nofollow">Gimme Dat Love<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:35&ndash;1:02</span>
-              <span class="row-len">27s</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/6f3RzjXPQwA/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=6f3RzjXPQwA&amp;t=45" target="_blank" rel="noopener nofollow">Super Lady<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:45&ndash;1:28</span>
+              <span class="row-len">43s</span>
             </li>
             <li class="row">
               <span class="row-num">02</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/Jh4QFaPmdss/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=Jh4QFaPmdss&amp;t=50" target="_blank" rel="noopener nofollow">TOMBOY<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:18</span>
-              <span class="row-len">28s</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/DYgE3SGPEqk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=DYgE3SGPEqk&amp;t=23" target="_blank" rel="noopener nofollow">Mono<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:23&ndash;1:00</span>
+              <span class="row-len">37s</span>
             </li>
             <li class="row">
               <span class="row-num">03</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/7HDeem-JaSY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=7HDeem-JaSY&amp;t=145" target="_blank" rel="noopener nofollow">Queencard<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>2:25&ndash;2:47</span>
-              <span class="row-len">22s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">04</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/2cevbhEqQF4/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=2cevbhEqQF4&amp;t=52" target="_blank" rel="noopener nofollow">Senorita<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:52&ndash;1:57</span>
               <span class="row-len">65s</span>
             </li>
             <li class="row">
+              <span class="row-num">04</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/Si5pQHRRH5w/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=Si5pQHRRH5w&amp;t=0" target="_blank" rel="noopener nofollow">MY BAG<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:00&ndash;0:27</span>
+              <span class="row-len">27s</span>
+            </li>
+            <li class="row">
               <span class="row-num">05</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/3VTkBuxU4yk/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=3VTkBuxU4yk&amp;t=50" target="_blank" rel="noopener nofollow">K/DA<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:50&ndash;1:24</span>
-              <span class="row-len">34s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">06</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/fCO7f0SmrDc/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=fCO7f0SmrDc&amp;t=44" target="_blank" rel="noopener nofollow">Nxde<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:44&ndash;1:22</span>
-              <span class="row-len">38s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">07</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/bUMLC9lCgHo/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=bUMLC9lCgHo&amp;t=54" target="_blank" rel="noopener nofollow">Crow<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:54&ndash;1:15</span>
-              <span class="row-len">21s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">08</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/1XIi9ofX2kE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=1XIi9ofX2kE&amp;t=52" target="_blank" rel="noopener nofollow">YENA<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:52&ndash;1:21</span>
-              <span class="row-len">29s</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/7HDeem-JaSY/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=7HDeem-JaSY&amp;t=145" target="_blank" rel="noopener nofollow">Queencard<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>2:25&ndash;2:47</span>
+              <span class="row-len">22s</span>
             </li>
           </ol>
           <div class="mix-foot">
-            <button type="button" class="btn btn-primary js-load-mix" data-mix="g-i-dle-marathon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
+            <button type="button" class="btn btn-primary js-load-mix" data-mix="g-i-dle-shuffle-a"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"></path></svg> Open in builder</button>
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
-            <button type="button" class="link-btn js-download-mix" data-mix="g-i-dle-marathon">Save as project file (.json)</button>
+            <button type="button" class="link-btn js-download-mix" data-mix="g-i-dle-shuffle-a">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-g-i-dle-marathon">{"version":"1.0","name":"i-dle - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=FFjDEkZg-54","title":"i-dle (아이들) 'Gimme Dat Love' Official Music Video","startTime":"0:35","endTime":"1:02","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Jh4QFaPmdss","title":"(G)I-DLE - 'TOMBOY' Official Music Video","startTime":"0:50","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7HDeem-JaSY","title":"(여자)아이들((G)I-DLE) - '퀸카 (Queencard)' Official Music Video","startTime":"2:25","endTime":"2:47","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=2cevbhEqQF4","title":"((G)I-DLE) - 'Senorita' Official Music Video","startTime":"0:52","endTime":"1:57","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=3VTkBuxU4yk","title":"K/DA - MORE ft. Madison Beer, (G)I-DLE, Lexie Liu, Jaira Burns, Seraphine (Official Music Video)","startTime":"0:50","endTime":"1:24","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=fCO7f0SmrDc","title":"(G)I-DLE - 'Nxde' Official Music Video","startTime":"0:44","endTime":"1:22","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=bUMLC9lCgHo","title":"i-dle (아이들) 'Crow' Official Music Video","startTime":"0:54","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=1XIi9ofX2kE","title":"YENA (최예나) - Hate Rodrigo (Feat. 우기 ((여자)아이들)) MV","startTime":"0:52","endTime":"1:21","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-g-i-dle-shuffle-a">{"version":"1.0","name":"i-dle - Shuffle Set A","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=6f3RzjXPQwA","title":"(여자)아이들((G)I-DLE) - 'Super Lady' Official Music Video","startTime":"0:45","endTime":"1:28","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=DYgE3SGPEqk","title":"i-dle (아이들) 'Mono (Feat. skaiwater)' Official Music Video","startTime":"0:23","endTime":"1:00","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=2cevbhEqQF4","title":"((G)I-DLE) - 'Senorita' Official Music Video","startTime":"0:52","endTime":"1:57","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=Si5pQHRRH5w","title":"(여자)아이들((G)I-DLE) - 'MY BAG' (Choreography Practice Video)","startTime":"0:00","endTime":"0:27","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=7HDeem-JaSY","title":"(여자)아이들((G)I-DLE) - '퀸카 (Queencard)' Official Music Video","startTime":"2:25","endTime":"2:47","info":null,"isExpanded":false}]}</script>
         </article>
       </div>
+
+      <aside class="shop-strip aff" aria-label="Shop">
+        <span class="shop-tag" aria-hidden="true">MERCH</span>
+        <div class="shop-text">
+          <p class="shop-title">Dancing to i-dle all night?</p>
+          <p class="shop-sub">Albums, merch and more at kpop.exchange</p>
+        </div>
+        <div class="shop-act">
+          <a class="btn btn-shop" href="https://www.kpop.exchange/collections/gi-dle?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=landing" target="_blank" rel="sponsored noopener" data-aff="landing" data-aff-link="group" data-aff-group="i-dle">Shop i-dle <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a>
+          <span class="aff-label" aria-hidden="true">Affiliate link</span>
+        </div>
+      </aside>
 
       <section class="prose" aria-labelledby="how-title">
         <h2 id="how-title">How to use these i-dle mixes</h2>
@@ -521,9 +514,9 @@
         <div class="chips">
           <a href="/random-dance/illit">ILLIT</a>
           <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-          <a href="/random-dance/aespa">aespa</a>
-          <a href="/random-dance/bts">BTS</a>
           <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/aespa">aespa</a>
           <a href="/random-dance/twice">TWICE</a>
           <a href="/random-dance/katseye">KATSEYE</a>
           <a href="/random-dance/stray-kids">Stray Kids</a>
@@ -538,8 +531,8 @@
           <a href="/random-dance/nct">NCT</a>
           <a href="/random-dance/red-velvet">Red Velvet</a>
           <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-          <a href="/random-dance/xg">XG</a>
           <a href="/random-dance/nmixx">NMIXX</a>
+          <a href="/random-dance/xg">XG</a>
         </div>
         <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
       </section>
@@ -560,12 +553,14 @@
             <a class="foot-link" href="/#how-it-works">How it works</a>
             <a class="foot-link" href="/#contact">Contact us</a>
           </p>
+          <p class="foot-shop aff"><a class="foot-link" href="https://www.kpop.exchange/collections/best-sellers?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=footer" target="_blank" rel="sponsored noopener" data-aff="footer" data-aff-link="bestsellers">Popular K-pop albums <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a> <span class="aff-label" aria-hidden="true">(affiliate link)</span></p>
+          <p class="foot-disc aff">Some shop links are affiliate links: if you buy something, the site gets a small commission at no extra cost to you. It helps keep the generator free.</p>
         </section>
       </div>
       <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
     </footer>
 
     <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
-    <script src="/app/landing.js?v=4"></script>
+    <script src="/app/landing.js?v=6"></script>
   </body>
 </html>

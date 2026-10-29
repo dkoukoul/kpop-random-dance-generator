@@ -303,5 +303,7 @@ export function initSupportTracking() {
   document.addEventListener("click", (event) => {
     const link = event.target.closest("[data-support]");
     if (link) trackEvent("support_click", { location: link.dataset.support });
+    const shop = event.target.closest("[data-aff]");
+    if (shop) trackEvent("affiliate_click", { location: shop.dataset.aff, link: shop.dataset.affLink, group: shop.dataset.affGroup || "" });
   });
 }

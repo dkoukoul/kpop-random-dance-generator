@@ -1411,6 +1411,143 @@ h1 {
   }
 }
 
+/* ===== Shop links (kpop.exchange affiliate) =====
+ * Only for visitors in the US and Canada: app/shop-region.js sets data-shop
+ * on <html>. Cyan, not pink: pink is for creating a mix.
+ */
+html:not([data-shop]) .aff {
+  display: none !important;
+}
+
+.aff-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.shop-strip {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.shop-strip.slim {
+  padding: 10px 14px;
+}
+
+.shop-tag {
+  flex: none;
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 3px 6px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.shop-strip.slim .shop-tag {
+  align-self: center;
+  margin-top: 0;
+}
+
+/* Slim (hub): label beside the button, so the strip stays one line tall. */
+.shop-strip.slim .shop-act {
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 10px;
+}
+
+.shop-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.shop-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.shop-sub {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.shop-act {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.btn-shop {
+  height: 40px;
+  padding: 0 14px;
+  background: transparent;
+  border-color: var(--cyanInk);
+  color: var(--cyanInk);
+  font-weight: 700;
+}
+
+.btn-shop:hover:not(:disabled) {
+  border-color: var(--cyanInk);
+  background: var(--inset);
+}
+
+.foot-shop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+
+.foot-shop .aff-label {
+  color: var(--footerText);
+}
+
+.foot-disc {
+  padding-top: 10px;
+  border-top: 1px solid var(--footerLine);
+  font-size: 12px;
+}
+
+@media (max-width: 599px) {
+  .shop-strip {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .shop-act,
+  .shop-strip.slim .shop-act {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .shop-strip.slim .shop-tag {
+    align-self: flex-start;
+  }
+
+  .btn-shop {
+    height: 44px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

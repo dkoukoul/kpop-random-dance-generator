@@ -29,6 +29,8 @@
         if (/^(light|arirang|itsme|thisthat|lemonade)$/.test(t)) document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
+    <!-- Shop links show only in the US and Canada (sets data-shop on <html>). -->
+    <script src="/app/shop-region.js?v=6"></script>
 
     <meta name="theme-color" content="#15171d" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -37,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/landing.css?v=4" />
+    <link rel="stylesheet" href="/css/landing.css?v=6" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -352,7 +354,7 @@
         <article class="panel mix" id="ive-deep-cuts" aria-labelledby="ive-deep-cuts-title">
           <div class="panel-head">
             <h2 class="mix-name" id="ive-deep-cuts-title"><span class="status-dot" aria-hidden="true"></span>Deep Cuts</h2>
-            <p class="mix-stats">5 SONGS · ~3:08 · 5S COUNTDOWN</p>
+            <p class="mix-stats">5 SONGS · ~3:03 · 5S COUNTDOWN</p>
           </div>
           <p class="mix-blurb">IVE tracks that get mixed regularly but never crack the top of the list. Good for an RPD crowd that knows the hits already.</p>
           <ol class="rows">
@@ -379,17 +381,17 @@
             </li>
             <li class="row">
               <span class="row-num">04</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/07EzMbVH3QE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=07EzMbVH3QE&amp;t=47" target="_blank" rel="noopener nofollow">HEYA<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:15</span>
-              <span class="row-len">28s</span>
-            </li>
-            <li class="row">
-              <span class="row-num">05</span>
               <img class="row-thumb" src="https://i.ytimg.com/vi/F0B7HDiY-10/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
               <a class="row-title" href="https://www.youtube.com/watch?v=F0B7HDiY-10&amp;t=27" target="_blank" rel="noopener nofollow">After LIKE<span class="sr-only"> (opens YouTube in a new tab)</span></a>
               <span class="row-time"><span class="sr-only">Plays </span>0:27&ndash;1:06</span>
               <span class="row-len">39s</span>
+            </li>
+            <li class="row">
+              <span class="row-num">05</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/pG6iaOMV46I/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=pG6iaOMV46I&amp;t=57" target="_blank" rel="noopener nofollow">Kitsch<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:57&ndash;1:20</span>
+              <span class="row-len">23s</span>
             </li>
           </ol>
           <div class="mix-foot">
@@ -397,12 +399,12 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="ive-deep-cuts">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-ive-deep-cuts">{"version":"1.0","name":"IVE - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=B1ShLiq3EVc","title":"IVE 아이브 ‘XOXZ’ MV","startTime":"0:27","endTime":"0:54","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=38xYeot-ciM","title":"IVE 아이브 'ATTITUDE' MV","startTime":"0:50","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=1Lmy7qwmSMc","title":"IVE 아이브 'BLACKHOLE' MV","startTime":"0:36","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=07EzMbVH3QE","title":"IVE 아이브 '해야 (HEYA)' MV","startTime":"0:47","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=F0B7HDiY-10","title":"IVE 아이브 'After LIKE' MV","startTime":"0:27","endTime":"1:06","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-ive-deep-cuts">{"version":"1.0","name":"IVE - Deep Cuts","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=B1ShLiq3EVc","title":"IVE 아이브 ‘XOXZ’ MV","startTime":"0:27","endTime":"0:54","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=38xYeot-ciM","title":"IVE 아이브 'ATTITUDE' MV","startTime":"0:50","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=1Lmy7qwmSMc","title":"IVE 아이브 'BLACKHOLE' MV","startTime":"0:36","endTime":"1:14","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=F0B7HDiY-10","title":"IVE 아이브 'After LIKE' MV","startTime":"0:27","endTime":"1:06","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=pG6iaOMV46I","title":"IVE 아이브 'Kitsch' MV","startTime":"0:57","endTime":"1:20","info":null,"isExpanded":false}]}</script>
         </article>
         <article class="panel mix" id="ive-marathon" aria-labelledby="ive-marathon-title">
           <div class="panel-head">
             <h2 class="mix-name" id="ive-marathon-title"><span class="status-dot" aria-hidden="true"></span>Marathon Set</h2>
-            <p class="mix-stats">6 SONGS · ~3:54 · 5S COUNTDOWN</p>
+            <p class="mix-stats">6 SONGS · ~4:05 · 5S COUNTDOWN</p>
           </div>
           <p class="mix-blurb">The long one: songs drawn across the whole IVE pool, popular and obscure mixed together.</p>
           <ol class="rows">
@@ -415,10 +417,10 @@
             </li>
             <li class="row">
               <span class="row-num">02</span>
-              <img class="row-thumb" src="https://i.ytimg.com/vi/07EzMbVH3QE/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
-              <a class="row-title" href="https://www.youtube.com/watch?v=07EzMbVH3QE&amp;t=47" target="_blank" rel="noopener nofollow">HEYA<span class="sr-only"> (opens YouTube in a new tab)</span></a>
-              <span class="row-time"><span class="sr-only">Plays </span>0:47&ndash;1:15</span>
-              <span class="row-len">28s</span>
+              <img class="row-thumb" src="https://i.ytimg.com/vi/F0B7HDiY-10/mqdefault.jpg" width="64" height="36" alt="" loading="lazy" decoding="async" />
+              <a class="row-title" href="https://www.youtube.com/watch?v=F0B7HDiY-10&amp;t=27" target="_blank" rel="noopener nofollow">After LIKE<span class="sr-only"> (opens YouTube in a new tab)</span></a>
+              <span class="row-time"><span class="sr-only">Plays </span>0:27&ndash;1:06</span>
+              <span class="row-len">39s</span>
             </li>
             <li class="row">
               <span class="row-num">03</span>
@@ -454,9 +456,21 @@
             <p class="mix-hint">Opens in this order. Press <b>Shuffle now</b>, then <b>Generate mix</b> to get the MP3.</p>
             <button type="button" class="link-btn js-download-mix" data-mix="ive-marathon">Save as project file (.json)</button>
           </div>
-          <script type="application/json" id="data-ive-marathon">{"version":"1.0","name":"IVE - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=B1ShLiq3EVc","title":"IVE 아이브 ‘XOXZ’ MV","startTime":"0:27","endTime":"0:54","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=07EzMbVH3QE","title":"IVE 아이브 '해야 (HEYA)' MV","startTime":"0:47","endTime":"1:15","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=38xYeot-ciM","title":"IVE 아이브 'ATTITUDE' MV","startTime":"0:50","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=vL4y-ZuKzZs","title":"IVE 아이브 'Looks Can Kill' PERFORMANCE VIDEO","startTime":"0:38","endTime":"1:21","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=PGLx4V680J8","title":"IVE 아이브 'Accendio' MV","startTime":"0:43","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=g36q0ZLvygQ","title":"IVE 아이브 'REBEL HEART' MV","startTime":"0:45","endTime":"1:25","info":null,"isExpanded":false}]}</script>
+          <script type="application/json" id="data-ive-marathon">{"version":"1.0","name":"IVE - Marathon Set","shuffleEnabled":true,"songs":[{"youtubeUrl":"https://www.youtube.com/watch?v=B1ShLiq3EVc","title":"IVE 아이브 ‘XOXZ’ MV","startTime":"0:27","endTime":"0:54","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=F0B7HDiY-10","title":"IVE 아이브 'After LIKE' MV","startTime":"0:27","endTime":"1:06","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=38xYeot-ciM","title":"IVE 아이브 'ATTITUDE' MV","startTime":"0:50","endTime":"1:26","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=vL4y-ZuKzZs","title":"IVE 아이브 'Looks Can Kill' PERFORMANCE VIDEO","startTime":"0:38","endTime":"1:21","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=PGLx4V680J8","title":"IVE 아이브 'Accendio' MV","startTime":"0:43","endTime":"1:18","info":null,"isExpanded":false},{"youtubeUrl":"https://www.youtube.com/watch?v=g36q0ZLvygQ","title":"IVE 아이브 'REBEL HEART' MV","startTime":"0:45","endTime":"1:25","info":null,"isExpanded":false}]}</script>
         </article>
       </div>
+
+      <aside class="shop-strip aff" aria-label="Shop">
+        <span class="shop-tag" aria-hidden="true">MERCH</span>
+        <div class="shop-text">
+          <p class="shop-title">Dancing to IVE all night?</p>
+          <p class="shop-sub">Albums, merch and more at kpop.exchange</p>
+        </div>
+        <div class="shop-act">
+          <a class="btn btn-shop" href="https://www.kpop.exchange/collections/ive?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=landing" target="_blank" rel="sponsored noopener" data-aff="landing" data-aff-link="group" data-aff-group="IVE">Shop IVE <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a>
+          <span class="aff-label" aria-hidden="true">Affiliate link</span>
+        </div>
+      </aside>
 
       <section class="prose" aria-labelledby="how-title">
         <h2 id="how-title">How to use these IVE mixes</h2>
@@ -493,9 +507,9 @@
         <div class="chips">
           <a href="/random-dance/illit">ILLIT</a>
           <a href="/random-dance/le-sserafim">LE SSERAFIM</a>
-          <a href="/random-dance/aespa">aespa</a>
-          <a href="/random-dance/bts">BTS</a>
           <a href="/random-dance/blackpink">BLACKPINK</a>
+          <a href="/random-dance/bts">BTS</a>
+          <a href="/random-dance/aespa">aespa</a>
           <a href="/random-dance/twice">TWICE</a>
           <a href="/random-dance/katseye">KATSEYE</a>
           <a href="/random-dance/stray-kids">Stray Kids</a>
@@ -510,8 +524,8 @@
           <a href="/random-dance/nct">NCT</a>
           <a href="/random-dance/red-velvet">Red Velvet</a>
           <a href="/random-dance/boynextdoor">BOYNEXTDOOR</a>
-          <a href="/random-dance/xg">XG</a>
           <a href="/random-dance/nmixx">NMIXX</a>
+          <a href="/random-dance/xg">XG</a>
         </div>
         <a class="arrow-link" href="/random-dance/">All groups &rarr;</a>
       </section>
@@ -532,12 +546,14 @@
             <a class="foot-link" href="/#how-it-works">How it works</a>
             <a class="foot-link" href="/#contact">Contact us</a>
           </p>
+          <p class="foot-shop aff"><a class="foot-link" href="https://www.kpop.exchange/collections/best-sellers?aff=206&amp;utm_source=kpopgenerator&amp;utm_medium=affiliate&amp;utm_content=footer" target="_blank" rel="sponsored noopener" data-aff="footer" data-aff-link="bestsellers">Popular K-pop albums <span aria-hidden="true">↗</span><span class="sr-only"> at kpop.exchange (affiliate link, opens in a new tab)</span></a> <span class="aff-label" aria-hidden="true">(affiliate link)</span></p>
+          <p class="foot-disc aff">Some shop links are affiliate links: if you buy something, the site gets a small commission at no extra cost to you. It helps keep the generator free.</p>
         </section>
       </div>
       <p class="thanks">Made with 💜 for K-pop dance lovers · FREE · NO SIGN-UP</p>
     </footer>
 
     <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
-    <script src="/app/landing.js?v=4"></script>
+    <script src="/app/landing.js?v=6"></script>
   </body>
 </html>

@@ -16,6 +16,7 @@ import { runtime } from "./setlist.js";
 import { countdown } from "./mix-options.js";
 import { setTheme, currentTheme, openHowItWorks } from "./ui.js";
 import { THEMES, themeName } from "./themes.js";
+import { BEST_SELLERS, shopUrl } from "./shop.js";
 
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -315,6 +316,10 @@ export function initMobile({ setlist, onGenerateState }) {
     el("button", { type: "button", class: "menu-item", text: "Contact us", onclick: () => { closeSheet({ silent: true }); document.querySelector('#helpMenu [data-contact=""]')?.click(); } }),
     el("button", { type: "button", class: "menu-item", text: "Report a problem", onclick: () => { closeSheet({ silent: true }); document.querySelector('#helpMenu [data-contact="problem"]')?.click(); } }),
     el("a", { class: "menu-item menu-kofi", href: "https://ko-fi.com/dimitrisk80", target: "_blank", rel: "noopener", "data-support": "menu" }, "♥ Support on Ko-fi", el("span", { class: "sr-only", text: " (opens in a new tab)" })),
+    el("a", { class: "menu-item menu-shop aff", href: shopUrl(BEST_SELLERS, "menu"), target: "_blank", rel: "sponsored noopener", "data-aff": "menu", "data-aff-link": "bestsellers" },
+      el("span", {}, "Popular K-pop albums", el("span", { "aria-hidden": "true", text: " ↗" })),
+      el("small", { text: "Affiliate link" }),
+      el("span", { class: "sr-only", text: " (opens in a new tab)" })),
   );
 
   /* ----- counts on the bar ----- */

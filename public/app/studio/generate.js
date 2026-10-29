@@ -13,6 +13,7 @@ import { runtime } from "./setlist.js";
 import { countdown, fadeOut } from "./mix-options.js";
 import { signature, songToSaved } from "./project.js";
 import { formatLeft, lights, plainError, readProgress } from "./progress.js";
+import { readyShopLine } from "./shop.js";
 
 const JOB_KEY = "kpopgen:studioJob";
 const POLL_MS = 1500;
@@ -220,6 +221,7 @@ export function initGenerate({ setlist, view, onState = () => {} }) {
           : null,
         changed ? el("p", { class: "ready-note", text: songsChanged ? "Your setlist changed since this mix was made." : "Your mix settings changed since this mix was made." }) : null,
         el("button", { type: "button", class: "link-btn ready-again", text: changed ? "Generate again with your changes" : "Edit and generate again", onclick: () => { view.setDone([]); setIdle(); button.focus(); } }),
+        readyShopLine(setlist.songs),
         el("p", { class: "ready-kofi" },
           "Saved you an hour in Audacity? The tool stays free. ",
           el("a", { href: "https://ko-fi.com/dimitrisk80", target: "_blank", rel: "noopener", "data-support": "ready", text: "Support it on Ko-fi" }),
